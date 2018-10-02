@@ -62,7 +62,7 @@ public class KeithTeleOp extends OpMode{
     boolean debugTelemetry = false;
 
     KeithRobot keithRobot = null;
-    KeithJewlKnocker jwl = null;
+    //KeithJewlKnocker jwl = null;
 
     // Variables that control the driving system
     MecanumDS ds = null;
@@ -75,7 +75,7 @@ public class KeithTeleOp extends OpMode{
     PowerLvl pwrLvl = PowerLvl.MED;
 
     // Variables that control the relic arm system
-    FishingRodSystem frs = null;
+    //FishingRodSystem frs = null;
     boolean relicArmMoving = false;
     boolean relicArmAnalog = false;
     boolean gripperMoving = false;
@@ -84,8 +84,8 @@ public class KeithTeleOp extends OpMode{
     double frsSelectionTime = 0;
 
     // Variables that control the harvester system
-    KeithElevator ele = null;
-    KeithCarriage car = null;
+    //KeithElevator ele = null;
+    //KeithCarriage car = null;
     double lTrigger2 = 1.0;
     double rTrigger2 = 1.0;
     //Reverse should always be between -1.0 and 0.0, positive should always be between 0.0 and 1.0
@@ -108,13 +108,13 @@ public class KeithTeleOp extends OpMode{
     public void init() {
         keithRobot = new KeithRobot(hardwareMap, telemetry);
         ds = (MecanumDS) (keithRobot.GetDriveSystem());
-        frs = (FishingRodSystem) (keithRobot.GetRelicArmSubsystem());
-        ele = (KeithElevator) (keithRobot.GetKeithElevator());
-        car = (KeithCarriage) (keithRobot.GetKeithCarriage());
-        jwl = (KeithJewlKnocker) (keithRobot.GetJewelKnockerSubsystem());
+        //frs = (FishingRodSystem) (keithRobot.GetRelicArmSubsystem());
+        //ele = (KeithElevator) (keithRobot.GetKeithElevator());
+        //car = (KeithCarriage) (keithRobot.GetKeithCarriage());
+        //jwl = (KeithJewlKnocker) (keithRobot.GetJewelKnockerSubsystem());
         //jds = (JewlDetect) (keithRobot.GetKeithJewlDetect());
 
-        ele.kickerSetPosition(ele.downPos);
+        //ele.kickerSetPosition(ele.downPos);
 
         if (jewlDetectDebug) {
             //jds.JewlDetectForInit(telemetry, hardwareMap);
@@ -122,8 +122,8 @@ public class KeithTeleOp extends OpMode{
 
 //        jwl.setBasePosition(0.2);
 //        jwl.setKnockerPosition(0.75);
-        jwl.setKnockerPosition(0.99);
-        jwl.setBasePosition(0.18);
+        //jwl.setKnockerPosition(0.99);
+        //jwl.setBasePosition(0.18);
 
         telemetry.addLine("init...");
         telemetry.update();
@@ -237,34 +237,34 @@ public class KeithTeleOp extends OpMode{
             telemetry.addLine("command: slide left");
             telemetry.update();
 //            car.slideTo(KeithCarriage.LEFT);
-            car.slideStart(KeithCarriage.LEFT);
+            //car.slideStart(KeithCarriage.LEFT);
         }
         if (gamepad2.dpad_up) {
             telemetry.addLine("command: slide center");
             telemetry.update();
 //            car.slideTo(KeithCarriage.CENTER);
-            car.slideStart(KeithCarriage.CENTER);
+            //car.slideStart(KeithCarriage.CENTER);
         }
         if (gamepad2.dpad_right) {
             telemetry.addLine("command: slide right");
             telemetry.update();
 //            car.slideTo(KeithCarriage.RIGHT);
-            car.slideStart(KeithCarriage.RIGHT);
+            //car.slideStart(KeithCarriage.RIGHT);
         }
         //stop any finished sliding movement
-        car.slideVerify();
+        //car.slideVerify();
 
         if (gamepad2.x) {
             telemetry.addLine("Flipper toggle");
-            car.flipperToggle();
+            //car.flipperToggle();
         }
         if (gamepad2.left_bumper) {
             telemetry.addLine("left servo toggle");
-            car.holderToggle(KeithCarriage.LEFTS);
+            //car.holderToggle(KeithCarriage.LEFTS);
         }
         if (gamepad2.right_bumper) {
             telemetry.addLine("right servo toggle");
-            car.holderToggle(KeithCarriage.RIGHTS);
+            //car.holderToggle(KeithCarriage.RIGHTS);
         }
 
         //Kicker and Elevator Code
@@ -272,25 +272,25 @@ public class KeithTeleOp extends OpMode{
 
         if (gamepad2.a && !gamepad2.b) {
             telemetry.addLine("command: kick");
-            ele.kickerKick();
+            //ele.kickerKick();
         }
 
         if (gamepad2.b && !gamepad2.a) {
             telemetry.addLine("command: kicker reset");
-            ele.kickerReset();
+            //ele.kickerReset();
         }
 
 
         if (gamepad2.left_trigger <= lTrigger2 && gamepad2.left_trigger != 0.0 && gamepad2.right_trigger == 0.0) {
             telemetry.addLine("command: elevator reverse");
-            ele.elevatorPower(pwrReverse);
+            //ele.elevatorPower(pwrReverse);
         }
         if (gamepad2.right_trigger <= 1.0 && gamepad2.right_trigger != 0.0 && gamepad2.left_trigger == 0.0) {
             telemetry.addLine("command: elevator forward");
-            ele.elevatorPower(pwrForward);
+            //ele.elevatorPower(pwrForward);
         }
         if (gamepad2.left_trigger == 0 && gamepad2.right_trigger == 0) {
-            ele.elevatorPower(0.0);
+            //ele.elevatorPower(0.0);
         }
 
         telemetry.update();
@@ -305,7 +305,7 @@ public class KeithTeleOp extends OpMode{
             relicArmCommand = true;
             if ((!relicArmMoving) && (!gripperMoving) && (!tiltActive)) {
                 relicArmMoving = true;
-                frs.extendOn(1);
+                //frs.extendOn(1);
             }
         }
         if (gamepad2.dpad_left) {
@@ -313,7 +313,7 @@ public class KeithTeleOp extends OpMode{
             if ((!relicArmMoving) && (!gripperMoving) && (!tiltActive)) {
                 relicArmMoving = true;
                 relicArmCommand = true;
-                frs.extendOn(-1);
+                //frs.extendOn(-1);
             }
         }
         if ((gamepad2.left_trigger > 0.1) || (gamepad2.right_trigger > 0.1)) {
@@ -322,13 +322,13 @@ public class KeithTeleOp extends OpMode{
                 relicArmMoving = true;
                 relicArmAnalog = true;
                 double moveValue = gamepad2.right_trigger - gamepad2.left_trigger;
-                frs.setRodMotorPower(moveValue);
+                //frs.setRodMotorPower(moveValue);
             }
         }
         if ((!relicArmCommand) && relicArmMoving) {
             relicArmAnalog = false;
             relicArmMoving = false;
-            frs.extendOff();
+            //frs.extendOff();
         }
 
         // deal with the gripper lowering/retracting
@@ -337,28 +337,28 @@ public class KeithTeleOp extends OpMode{
             gripperCommand = true;
             if ((!relicArmMoving) && (!gripperMoving) && (!tiltActive)) {
                 gripperMoving = true;
-                frs.gripperMoveOn(1);
+                //frs.gripperMoveOn(1);
             }
         }
         if (gamepad2.dpad_down) {
             gripperCommand = true;
             if ((!relicArmMoving) && (!gripperMoving) && (!tiltActive)) {
                 gripperMoving = true;
-                frs.gripperMoveOn(-1);
+                //frs.gripperMoveOn(-1);
             }
         }
         if (gamepad2.b) {
             gripperCommand = true;
             if ((!relicArmMoving) && (!gripperMoving) && (!tiltActive)) {
                 gripperMoving = true;
-                frs.setUpperReelPower(1);
+                //frs.setUpperReelPower(1);
             }
         }
         if (gamepad2.x) {
             gripperCommand = true;
             if ((!relicArmMoving) && (!gripperMoving) && (!tiltActive)) {
                 gripperMoving = true;
-                frs.setLowerReelPower(1);
+                //frs.setLowerReelPower(1);
             }
         }
         if ((Math.abs(gamepad2.left_stick_y) > 0.1) || (Math.abs(gamepad2.right_stick_y) > 0.1)) {
@@ -367,17 +367,17 @@ public class KeithTeleOp extends OpMode{
                 gripperMoving = true;
                 gripperAnalog = true;
                 if (Math.abs(gamepad2.left_stick_y) > 0.1) {
-                    frs.setLowerReelPower(-gamepad2.left_stick_y);
+                    //frs.setLowerReelPower(-gamepad2.left_stick_y);
                 }
                 if (Math.abs(gamepad2.right_stick_y) > 0.1) {
-                    frs.setUpperReelPower(-gamepad2.right_stick_y);
+                    //frs.setUpperReelPower(-gamepad2.right_stick_y);
                 }
             }
         }
         if ((!gripperCommand) && gripperMoving) {
             gripperMoving = false;
             gripperAnalog = false;
-            frs.gripperMoveOff();
+            //frs.gripperMoveOff();
         }
 
         // non-continuous optaions
@@ -387,17 +387,17 @@ public class KeithTeleOp extends OpMode{
             // deal with the claw opening/closing
             if (gamepad2.a) {
                 frsSelection = true;
-                frs.gripperToggle();
+                //frs.gripperToggle();
             }
 
             // modify the conversion ration between motor and servos
             if (gamepad2.right_bumper) {
                 frsSelection = true;
-                frs.incRatio(0.001);
+                //frs.incRatio(0.001);
             }
             if (gamepad2.left_bumper) {
                 frsSelection = true;
-                frs.incRatio(-0.001);
+                //frs.incRatio(-0.001);
             }
 
             // tilt the claw
@@ -405,7 +405,7 @@ public class KeithTeleOp extends OpMode{
                 if ((!relicArmMoving) && (!gripperMoving) && (!tiltActive)) {
                     frsSelection = true;
                     tiltActive = true;
-                    frs.tiltToggleStart();
+                    //frs.tiltToggleStart();
                 }
             }
 
@@ -414,11 +414,11 @@ public class KeithTeleOp extends OpMode{
             }
         }
         if (tiltActive) {
-            if (frs.tiltToggleVerify()) {
-                tiltActive = false;
-            }
+            //if (frs.tiltToggleVerify()) {
+            //    tiltActive = false;
+            // }
         }
-        telemetry.addData("", "Ratio(Bumpers): %.3f, Tilting: %s", frs.getRatio(), tiltActive ? "Yes" : "No");
+        telemetry.addData("", "Ratio(Bumpers): %.3f, Tilting: %s", tiltActive ? "Yes" : "No");
     }
 
     void CallTestDriveSystem(PowerLvl pwrLvl) {
@@ -501,6 +501,7 @@ public class KeithTeleOp extends OpMode{
         double RightX = gamepad1.left_stick_x;
         double RightY = -gamepad1.left_stick_y;
         double spinFactor = gamepad1.right_stick_x;
+
         if (debugTelemetry) {
             telemetry.addData("", "LX: %.3f, LY: %.3f, RX: %.3f, RY: %.3f", LeftX, LeftY, RightX, RightY);
         }

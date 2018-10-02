@@ -19,15 +19,15 @@ public class AutoRed2 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         KeithRobot keith = new KeithRobot(hardwareMap, telemetry);
         MecanumDS ds = (MecanumDS) (keith.GetDriveSystem());
-        KeithElevator ele = keith.GetKeithElevator();
-        KeithCarriage car = keith.GetKeithCarriage();
+        //KeithElevator ele = keith.GetKeithElevator();
+        //KeithCarriage car = keith.GetKeithCarriage();
         //JewlDetect jwld = keith.GetKeithJewlDetect();
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.UNKNOWN;
         int jewelColor = Color.TRANSPARENT;
-        ele.kickerSetPosition(0.7);
-        KeithJewlKnocker jks = keith.GetJewelKnockerSubsystem();
-        jks.setKnockerPosition(0.65);
-        jks.setBasePosition(0.0);
+        //ele.kickerSetPosition(0.7);
+        //KeithJewlKnocker jks = keith.GetJewelKnockerSubsystem();
+        //jks.setKnockerPosition(0.65);
+        //jks.setBasePosition(0.0);
 
         double movePower = 0.1;
         double spinPower = 0.1;
@@ -42,7 +42,7 @@ public class AutoRed2 extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            AutoUtilities.CarriageGrip(car, opModeIsActive());
+            //AutoUtilities.CarriageGrip(car, opModeIsActive());
 
             // At this point we should have a pictogram and a color for the
             // jewel that is close to the pictogram, i.e. on the left side of
@@ -64,8 +64,7 @@ public class AutoRed2 extends LinearOpMode {
             } else {
                 telemetry.addData("", "Could not find jewel color.");
             }
-            */
-            telemetry.update();
+            */            telemetry.update();
             // irrespective of whether we knocked the jewel or not, we are now
             // going to navigate towards the glyph box. We are in the Red zone
             // and we are opposite to the relic recovery area.
@@ -87,7 +86,7 @@ public class AutoRed2 extends LinearOpMode {
                 // TODO - implement this
             }
 
-            AutoUtilities.CarriageFlip(car);
+            //AutoUtilities.CarriageFlip(car);
 
             ds.Move(0.1, 0, 0, 300, 1000);
 

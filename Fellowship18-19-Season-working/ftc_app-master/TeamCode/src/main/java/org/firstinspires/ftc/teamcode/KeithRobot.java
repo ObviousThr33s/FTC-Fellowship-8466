@@ -12,19 +12,19 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class KeithRobot extends FTCRobot {
     BoschIMU imu;
     MecanumDS mds;
-    FishingRodSystem frs;
-    KeithJewlKnocker jks;
-    KeithElevator ele;
-    KeithCarriage car;
+    //FishingRodSystem frs;
+    //KeithJewlKnocker jks;
+    //KeithElevator ele;
+    //KeithCarriage car;
     //JewlDetect jds;
 
     KeithRobot(HardwareMap hardwareMap, Telemetry telemetry) {
         imu = new BoschIMU(hardwareMap, "imu");
         mds = new MecanumDS(hardwareMap, telemetry, imu, "Front Left", "Front Right", "Back Left", "Back Right");
-        frs = new FishingRodSystem(hardwareMap, telemetry, "lowerReel", "upperReel", "claw", "rodMotor");
-        jks = new KeithJewlKnocker(hardwareMap, "JewlBase", "JewlKnocker","colorSensor", telemetry);
-        ele = new KeithElevator(hardwareMap, telemetry, "HarvesterMain", "Kicker");
-        car = new KeithCarriage(hardwareMap,telemetry, "slideMotor", "flipMotor", "lServo","rServo");
+        //frs = new FishingRodSystem(hardwareMap, telemetry, "lowerReel", "upperReel", "claw", "rodMotor");
+        //jks = new KeithJewlKnocker(hardwareMap, "JewlBase", "JewlKnocker","colorSensor", telemetry);
+        //ele = new KeithElevator(hardwareMap, telemetry, "HarvesterMain", "Kicker");
+        //car = new KeithCarriage(hardwareMap,telemetry, "slideMotor", "flipMotor", "lServo","rServo");
         //jds = new JewlDetect();
 
         Servo carriageLeftServo = hardwareMap.servo.get("lServo");
@@ -43,17 +43,13 @@ public class KeithRobot extends FTCRobot {
         return mds;
     }
 
-    public RelicArmSubsystem GetRelicArmSubsystem() {
-        return frs;
-    }
+    //public RelicArmSubsystem GetRelicArmSubsystem() {return frs;}
 
-    public KeithJewlKnocker GetJewelKnockerSubsystem() {
-        return jks;
-    }
+    //public KeithJewlKnocker GetJewelKnockerSubsystem() { return jks;}
 
-    public KeithElevator GetKeithElevator() { return ele; }
+    //public KeithElevator GetKeithElevator() { return ele; }
 
-    public KeithCarriage GetKeithCarriage() { return car; }
+    //public KeithCarriage GetKeithCarriage() { return car; }
 
     //public JewlDetect GetKeithJewlDetect() { return  jds; }
 }
