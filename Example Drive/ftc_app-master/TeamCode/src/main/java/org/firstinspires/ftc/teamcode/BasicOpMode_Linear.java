@@ -51,13 +51,12 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Simple Controller", group="Linear Opmode")
+@TeleOp(name="michael test", group="Linear Opmode")
 public class BasicOpMode_Linear extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    private double motorPower = 1.0;
 
     @Override
     public void runOpMode() {
@@ -66,27 +65,17 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         waitForStart();
         runtime.reset();
 
         while (opModeIsActive()) {
-            if (gamepad1.dpad_up && gamepad1.dpad_down){
-                leftDrive.setPower(-motorPower);
-                rightDrive.setPower(motorPower);
-            }
-            if(gamepad1.dpad_down){
-                leftDrive.setPower(motorPower);
-                rightDrive.setPower(-motorPower);
-            }else{
-                leftDrive.setPower(0);
-                rightDrive.setPower(0);
-            }
-
+            leftDrive.setPower(gamepad1.left_stick_y);
+            rightDrive.setPower(gamepad1.right_stick_y);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f)",motorPower, "right (%.2f)", motorPower);
+            telemetry.addData("Motors", "left (%.2f)",gamepad1.left_stick_y, "right (%.2f)", gamepad1.right_stick_y);
             telemetry.update();
         }
     }
