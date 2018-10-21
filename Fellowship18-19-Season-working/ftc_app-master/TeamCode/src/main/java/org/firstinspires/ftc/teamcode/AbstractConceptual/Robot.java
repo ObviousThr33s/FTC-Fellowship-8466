@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
 
 public abstract class Robot {
 
-    public abstract MotorsAndServos motors (); //Put motor instances here
+    public abstract MotorsAndServos motorsAndServos (); //Put motor instances here
 
     public abstract Sensors sensors(); //Put sensor instances here
 
