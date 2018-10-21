@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Sampling;
+package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision;
 
 import org.firstinspires.ftc.teamcode.AbstractConceptual.Robot;
 import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.AbstractPhysical.Sensors;
 import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
-public class sampling extends Vision {
-
+public class SamwiseVision extends Vision {
 
 }
