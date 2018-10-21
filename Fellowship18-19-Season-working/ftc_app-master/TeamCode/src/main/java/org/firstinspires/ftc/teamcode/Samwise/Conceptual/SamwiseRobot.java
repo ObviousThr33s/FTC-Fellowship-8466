@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 public class SamwiseRobot extends Robot{
 
     @Override
-    public MotorsAndServos motors() {
+    public MotorsAndServos motorsAndServos() {
         return null;
     }
 
