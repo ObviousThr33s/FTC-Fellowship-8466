@@ -43,7 +43,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * The code REQUIRES that you DO have encoders on the wheels,
  *   otherwise you would use: PushbotAutoDriveByTime;
  *
- *  This code ALSO requires that the drive Motors have been configured such that a positive
+ *  This code ALSO requires that the drive MotorsAndServos have been configured such that a positive
  *  power command moves them forwards, and causes the encoders to count UP.
  *
  *   The desired path in this example is:

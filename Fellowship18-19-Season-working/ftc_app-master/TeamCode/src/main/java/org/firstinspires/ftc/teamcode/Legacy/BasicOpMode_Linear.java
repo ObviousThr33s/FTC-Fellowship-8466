@@ -75,7 +75,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             leftDrive.setPower(gamepad1.left_stick_y);
             rightDrive.setPower(gamepad1.right_stick_y);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f)",gamepad1.left_stick_y, "right (%.2f)", gamepad1.right_stick_y);
+            telemetry.addData("MotorsAndServos", "left (%.2f)",gamepad1.left_stick_y, "right (%.2f)", gamepad1.right_stick_y);
             telemetry.update();
         }
     }

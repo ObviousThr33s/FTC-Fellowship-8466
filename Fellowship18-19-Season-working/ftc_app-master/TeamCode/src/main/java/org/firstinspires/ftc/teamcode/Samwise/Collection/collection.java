@@ -1,13 +1,8 @@
 package org.firstinspires.ftc.teamcode.Samwise.Collection;
 
-import org.firstinspires.ftc.teamcode.AbstractConceptual.Robot;
-import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
-import org.firstinspires.ftc.teamcode.AbstractPhysical.Motors;
-import org.firstinspires.ftc.teamcode.AbstractPhysical.Sensors;
-import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
-import org.firstinspires.ftc.teamcode.Samwise.Physical.SamwiseDriveTrain;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
 
-public class SamwiseCollection extends Collection {
+public class SamwiseCollection extends MotorsAndServos {
 
 
 
