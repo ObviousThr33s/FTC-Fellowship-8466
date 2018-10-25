@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Samwise;
+package org.firstinspires.ftc.teamcode.Samwise.Hanger;
 
 import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
 
