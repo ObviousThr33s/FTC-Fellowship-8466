@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
+import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.*;
 
 /**
@@ -40,6 +42,8 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     /* Declare OpMode members. */
     SamwiseDriveTrain robot   = new SamwiseDriveTrain();   // Use a drivetrain's hardware
+    Vision vis = new SamwiseVision();
+
     private ElapsedTime runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 144 ;    // eg: TETRIX Motor Encoder
@@ -77,6 +81,8 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
+
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)

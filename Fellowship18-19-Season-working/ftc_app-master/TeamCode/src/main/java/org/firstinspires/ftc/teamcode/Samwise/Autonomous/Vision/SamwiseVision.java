@@ -9,4 +9,9 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
 public class SamwiseVision extends Vision {
 
+
+    @Override
+    public String getGoldPosition() {
+        return "left"; //mockup return
+    }
 }
