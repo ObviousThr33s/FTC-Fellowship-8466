@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
 public class SamwiseVision extends Vision {
-
-
-    @Override
+    /*
+    returns left, center, right, unknown
+    */
     public String getGoldPosition() {
         return "left"; //mockup return
     }
