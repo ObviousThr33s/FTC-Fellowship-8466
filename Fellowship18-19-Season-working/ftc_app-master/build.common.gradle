@@ -21,7 +21,7 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 26
+    compileSdkVersion 23
 
     signingConfigs {
         debug {
@@ -32,10 +32,14 @@ android {
         }
     }
 
+    aaptOptions {
+        noCompress "tflite"
+    }
+
     defaultConfig {
         applicationId 'com.qualcomm.ftcrobotcontroller'
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 19
 
         /**
          * We keep the versionCode and versionName of robot controller applications in sync with
@@ -87,8 +91,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     sourceSets.main {
@@ -98,8 +102,6 @@ android {
 }
 
 repositories {
-    google()
-    jcenter()
     flatDir {
         dirs rootProject.file('libs')
     }
