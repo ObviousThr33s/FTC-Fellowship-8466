@@ -25,10 +25,11 @@ public class SamwiseCollectionTeleOp extends LinearOpMode {
             if (gamepad1.a)
                 //The math for the servos go here. The individual servo speeds must be
                 // different for each servo when the whole arm moves FORWARD
-                servo3Position = 0.6;// Don't worry this is just a temporary place holder
+                servo3Position = 0.6;// Don't worry this is just a temporary PLACEHOLDER
+
             else if (gamepad1.y)
                 //For when the arm goes BACKWARDS
-                servo4Position = 0.6; //Another temp placeholder for testing
+                servo4Position = 0.6; //Another temp PLACEHOLDER for testing
 
             servo3Position = Range.clip(servo3Position, arm.servo3_MIN_RANGE, arm.servo3_MAX_RANGE);
             servo4Position = Range.clip(servo4Position, arm.servo4_MIN_RANGE, arm.servo4_MAX_RANGE);
@@ -37,7 +38,10 @@ public class SamwiseCollectionTeleOp extends LinearOpMode {
 
             arm.servo3.setPosition(servo3Position);
 
+            telemetry.addData("left", "%.2f", servo3Position);
+            //add more telemetries later as needed
 
+            sleep(40;)
         }
     }
 }
