@@ -41,7 +41,7 @@ public class SamwiseCollectionTeleOp extends LinearOpMode {
             telemetry.addData("left", "%.2f", servo3Position);
             //add more telemetries later as needed
 
-            sleep(40;)
+            sleep(40);
         }
     }
 }
