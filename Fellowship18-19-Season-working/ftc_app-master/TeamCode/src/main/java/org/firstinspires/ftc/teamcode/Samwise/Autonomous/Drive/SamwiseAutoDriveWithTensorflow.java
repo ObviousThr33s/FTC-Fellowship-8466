@@ -125,32 +125,32 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         //0=Center, 1=Right -1=Left
         //TODO
-        int position = 1; //getGoldPosition();
+        int position = getGoldPosition();
 
         System.out.println("Lauren Position: "+position);
         switch (position){
             case 1: //right
 
                 System.out.println("Lauren Right");
-                encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED,   0.5, -0.5, 1.5);
-                encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);
-                encoderDrive(TURN_SPEED,   0.5, -0.5, 1.5);
-                encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
+                encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
+                encoderDrive(TURN_SPEED,   -1.5, 1.5, 1.5);
+                encoderDrive(DRIVE_SPEED,   1.5, 1.5, 1.5);
+                //encoderDrive(TURN_SPEED,   1, -1, 1.5);
+                //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
                 //TODO
                 break;
             case -1: //left
                 System.out.println("Lauren Left");
-                encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED,   -0.5, 0.5, 1.5);
-                encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);
-                encoderDrive(TURN_SPEED,   -0.5, 0.5, 1.5);
-                encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
+                encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
+                encoderDrive(TURN_SPEED,   1.5, -1.5, 1.5);
+                encoderDrive(DRIVE_SPEED,   1.5, 1.5, 1.5);
+                //encoderDrive(TURN_SPEED,   -1, 1, 1.5);
+                //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
                 //TODO
                 break;
             case 0:  //center
                 default:
-                encoderDrive(DRIVE_SPEED,  1,  1, 2.5);  // S1: Forward 47 Inches with 5 Sec timeout
+                encoderDrive(DRIVE_SPEED,  1.2,  1.2, 2.5);  // S1: Forward 47 Inches with 5 Sec timeout
         }
 
         //robot.leftClaw.set/Position(1.0);            // S4: Stop and close the claw.
@@ -172,7 +172,7 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode {
                 tfod.activate();
             }
 
-            while (opModeIsActive()) {
+            //while (opModeIsActive()) {
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
@@ -209,7 +209,7 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode {
                             }
                         }
                         telemetry.update();
-                }
+               // }
             }
         }
         return result;
