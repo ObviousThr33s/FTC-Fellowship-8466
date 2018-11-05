@@ -116,15 +116,22 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        //TODO: remove this test code
+        //encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
+        //encoderDrive(TURN_SPEED,   1.5, -1.5, 1.5);
 
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         //0=Center, 1=Right -1=Left
         //TODO
-        int position = getGoldPosition();
+        int position = 1; //getGoldPosition();
+
+        System.out.println("Lauren Position: "+position);
         switch (position){
             case 1: //right
+
+                System.out.println("Lauren Right");
                 encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
                 encoderDrive(TURN_SPEED,   0.5, -0.5, 1.5);
                 encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);
@@ -133,6 +140,7 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode {
                 //TODO
                 break;
             case -1: //left
+                System.out.println("Lauren Left");
                 encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
                 encoderDrive(TURN_SPEED,   -0.5, 0.5, 1.5);
                 encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);
@@ -152,9 +160,6 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode {
         telemetry.addData("Path", "Complete");
         telemetry.update();
 
-        if (tfod != null) {
-            tfod.shutdown();
-        }
     }
 
     private int getGoldPosition()
@@ -172,7 +177,10 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
+                    while (updatedRecognitions==null || updatedRecognitions.size() != 3)
+                    {
+                        updatedRecognitions = tfod.getUpdatedRecognitions();
+                    }
                         telemetry.addData("# Object Detected", updatedRecognitions.size());
                         if (updatedRecognitions.size() == 3) {
                             int goldMineralX = -1;
@@ -201,7 +209,6 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode {
                             }
                         }
                         telemetry.update();
-                    }
                 }
             }
         }
