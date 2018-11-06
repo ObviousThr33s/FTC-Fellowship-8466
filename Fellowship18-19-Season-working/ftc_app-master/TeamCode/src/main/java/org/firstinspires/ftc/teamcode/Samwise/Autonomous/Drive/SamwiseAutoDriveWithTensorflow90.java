@@ -5,10 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import android.graphics.Camera;
-import android.hardware.Camera.CameraInfo;
-import 	android.hardware.camera2.CameraManager;
-
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -19,46 +15,13 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
 import java.util.List;
 
-/**
- * This file illustrates the concept of driving a path based on encoder counts.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
- * <p>
- * The code REQUIRES that you DO have encoders on the wheels,
- * otherwise you would use: PushbotAutoDriveByTime;
- * <p>
- * This code ALSO requires that the drive Motors have been configured such that a positive
- * power command moves them forwards, and causes the encoders to count UP.
- * <p>
- * The desired path in this example is:
- * - Drive forward for 48 inches
- * - Spin right for 12 Inches
- * - Drive Backwards for 24 inches
- * - Stop and close the claw.
- * <p>
- * The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
- * that performs the actual movement.
- * This methods assumes that each movement is relative to the last stopping place.
- * There are other ways to perform encoder based moves, but this method is probably the simplest.
- * This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
- * <p>
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
-//enum GoldPosition
-//{
-//    LEFT, CENTER, RIGHT, UNKNOWN;
-//}
-
-@Autonomous(name = "Samwise: Auto Drive with Tensorflow", group = "Samwise")
+@Autonomous(name = "Samwise: Auto Drive with Tensorflow 90 View", group = "Samwise")
 //@Disabled
-public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
+public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
-
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -91,7 +54,6 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-
         //initialize Vuforia
         initVuforia();
 
@@ -125,12 +87,22 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //Activate object detector to get gold position, then shut it down
+        //TODO: remove this test code
+        //encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
+        //encoderDrive(TURN_SPEED,   1.5, -1.5, 1.5);
+
+
+        // Step through each leg of the path,
+        // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        //0=Center, 1=Right -1=Left
+        //Find gold mineral position
         GoldPosition position = GoldPosition.UNKNOWN;
+
+        //Activate object detector to get gold position, then shut it down
         if (opModeIsActive() && tfod != null)
         {
             tfod.activate();
-            position =GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_0);
+            position = GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_90);
             tfod.deactivate();
             tfod.shutdown();
         }
@@ -254,7 +226,7 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
         int                         tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters    = new TFObjectDetector.Parameters(tfodMonitorViewId);
         //TODO: Adjust confidence value
-//        tfodParameters.minimumConfidence = 0.75;
+        //        tfodParameters.minimumConfidence = 0.75;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
