@@ -3,40 +3,29 @@ package org.firstinspires.ftc.teamcode.Samwise.Collection;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseMotors.SamwiseMotors;
+
 
 public class SamwiseCollectionHardware {
 
-    public Servo servo3 = null;
-    public Servo servo4 = null;
-    public Servo servo5 = null;
-    public Servo servo6 = null;
+    public DcMotor motor1 = null;
+    public DcMotor motor2 = null;
+    public DcMotor motor3 = null;
+    public DcMotor motor4 = null;
 
-    public final static double servo3_HOME = 0.5;
-    public final static double servo3_MIN_RANGE = 0.2;
-    public final static double servo3_MAX_RANGE = 0.7;
-    public final static double servo4_HOME = 0.5;
-    public final static double servo4_MIN_RANGE = 0.2;
-    public final static double servo4_MAX_RANGE = 0.7;
-    public final static double servo5_HOME = 0.5;
-    public final static double servo5_MIN_RANGE = 0.2;
-    public final static double servo5_MAX_RANGE = 0.7;
-    public final static double servo6_HOME = 0.5;
-    public final static double servo6_MIN_RANGE = 0.2;
-    public final static double servo6_MAX_RANGE = 0.7;
+    public Servo servo1 = null;
+    public Servo servo2 = null;
+    public Servo servo3 = null;
 
     public void init(HardwareMap ahwMap) {
         //Define names on the phone
-        servo3 = ahwMap.servo.get("servo_3");
-        servo4 = ahwMap.servo.get("servo_4");
-        servo5 = ahwMap.servo.get("servo_5");
-        servo6 = ahwMap.servo.get("servo_6");
+        motor1 = ahwMap.dcMotor.get("motor_1");
+        motor2 = ahwMap.dcMotor.get("motor_2");
+        motor3 = ahwMap.dcMotor.get("motor_3");
+        motor4 = ahwMap.dcMotor.get("motor_4");
 
-        servo3.setPosition(servo3_HOME);
-        servo4.setPosition(servo4_HOME);
-        servo5.setPosition(servo5_HOME);
-        servo6.setPosition(servo6_HOME);
+        servo1 = ahwMap.servo.get("servo_1");
+        servo2 = ahwMap.servo.get("servo_2");
+        servo3 = ahwMap.servo.get("servo_3");
     }
 
 }
