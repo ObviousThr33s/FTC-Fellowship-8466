@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Samwise.Collection;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "CollectionArmTeleOp")
+
+/*@TeleOp(name = "CollectionArmTeleOp")
 public class SamwiseCollectionTeleOp extends LinearOpMode {
 
     SamwiseCollectionHardware arm = new SamwiseCollectionHardware();
@@ -44,4 +46,4 @@ public class SamwiseCollectionTeleOp extends LinearOpMode {
             sleep(40);
         }
     }
-}
+} */

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Samwise.Collection;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -22,6 +23,12 @@ public class SamwiseCollectionHardware {
         motor2 = ahwMap.dcMotor.get("motor_2");
         motor3 = ahwMap.dcMotor.get("motor_3");
         motor4 = ahwMap.dcMotor.get("motor_4");
+
+        motor1.setDirection(DcMotor.Direction.FORWARD);
+        motor2.setDirection(DcMotor.Direction.REVERSE);
+        motor3.setDirection(DcMotor.Direction.FORWARD);
+        motor4.setDirection(DcMotor.Direction.REVERSE);
+
 
         servo1 = ahwMap.servo.get("servo_1");
         servo2 = ahwMap.servo.get("servo_2");
