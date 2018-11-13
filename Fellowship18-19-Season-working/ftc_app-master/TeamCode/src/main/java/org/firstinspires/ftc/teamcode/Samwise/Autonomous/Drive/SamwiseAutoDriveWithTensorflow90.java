@@ -38,7 +38,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double COUNTS_PER_MOTOR_REV = 144;    // eg: TETRIX Motor Encoder
+    static final double COUNTS_PER_MOTOR_REV = 1024;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
@@ -114,24 +114,24 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         switch (position)
         {
             case RIGHT: //right
-                encoderDrive(DRIVE_SPEED, 0.6, 0.6, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, -1.3, 1.3, 1.5);
-                encoderDrive(DRIVE_SPEED, 1.5, 1.5, 1.5);
+                encoderDrive(DRIVE_SPEED, 5, 5, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
+                encoderDrive(TURN_SPEED, -4, 4, 1);
+                encoderDrive(DRIVE_SPEED, 15, 15, 1);
                 //encoderDrive(TURN_SPEED,   1, -1, 1.5);
                 //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
                 //TODO
                 break;
             case LEFT: //left
-                encoderDrive(DRIVE_SPEED, 0.6, 0.6, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, 1.3, -1.3, 1.5);
-                encoderDrive(DRIVE_SPEED, 1.5, 1.5, 1.5);
+                encoderDrive(DRIVE_SPEED, 5, 5, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
+                encoderDrive(TURN_SPEED, 4, -4, 1);
+                encoderDrive(DRIVE_SPEED, 15, 15, 1);
                 //encoderDrive(TURN_SPEED,   -1, 1, 1.5);
                 //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
                 //TODO
                 break;
             case CENTER:  //center
             default:
-                encoderDrive(DRIVE_SPEED, 1.2, 1.2, 2.5);  // S1: Forward 47 Inches with 5 Sec timeout
+                encoderDrive(DRIVE_SPEED, 20, 20, 3);  // S1: Forward 47 Inches with 5 Sec timeout
         }
 
         //robot.leftClaw.set/Position(1.0);            // S4: Stop and close the claw.
