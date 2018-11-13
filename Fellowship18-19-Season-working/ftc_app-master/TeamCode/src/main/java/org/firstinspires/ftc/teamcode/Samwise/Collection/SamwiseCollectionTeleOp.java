@@ -21,31 +21,42 @@ public class SamwiseCollectionTeleOp extends OpMode {
     public Servo servo2 = null;
     public Servo servo3 = null;
 
-
     public void init() {
         cMotor1 = hardwareMap.dcMotor.get("motor1");
         cMotor2 = hardwareMap.dcMotor.get("motor2");
         cMotor3 = hardwareMap.dcMotor.get("motor3");
         cMotor4 = hardwareMap.dcMotor.get("motor4");
 
+        servo1 = hardwareMap.servo.get("servo1");
+        servo2 = hardwareMap.servo.get("servo2");
+        servo3 = hardwareMap.servo.get("servo3");
+
+
         cMotor1.setPower(0);
         cMotor2.setPower(0);
         cMotor3.setPower(0);
         cMotor4.setPower(0);
+
+        servo1.setPosition(0);
+        servo2.setPosition(0);
+        servo3.setPosition(0);
 
         cMotor1.setDirection(DcMotor.Direction.REVERSE);
         cMotor2.setDirection(DcMotor.Direction.REVERSE);
         cMotor3.setDirection(DcMotor.Direction.REVERSE);
         cMotor4.setDirection(DcMotor.Direction.REVERSE);
 
+
+
     }
 
 
     public void loop() {
-        float motor1power = gamepad1.left_stick_x;
-        float motor2power = gamepad1.left_stick_y/2;
-        double motor3power = gamepad1.left_stick_y/1.2;
+        float cmotor1power = gamepad1.left_stick_y;
+        double cmotor2power = gamepad1.left_stick_y/1.3;
+        double cmotor3power = gamepad1.left_stick_y/1.8;
 
+        
 
     }
 
