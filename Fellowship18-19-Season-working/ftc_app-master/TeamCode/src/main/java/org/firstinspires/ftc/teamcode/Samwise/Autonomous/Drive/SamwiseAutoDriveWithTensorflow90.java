@@ -115,7 +115,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         {
             case RIGHT: //right
                 encoderDrive(DRIVE_SPEED, 5, 5, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, -4, 4, 1);
+                encoderDrive(TURN_SPEED, -3.5, 3.5, 1);
                 encoderDrive(DRIVE_SPEED, 15, 15, 1);
                 //encoderDrive(TURN_SPEED,   1, -1, 1.5);
                 //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
@@ -123,7 +123,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
                 break;
             case LEFT: //left
                 encoderDrive(DRIVE_SPEED, 5, 5, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, 4, -4, 1);
+                encoderDrive(TURN_SPEED, 3.5, -3.5, 1);
                 encoderDrive(DRIVE_SPEED, 15, 15, 1);
                 //encoderDrive(TURN_SPEED,   -1, 1, 1.5);
                 //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
