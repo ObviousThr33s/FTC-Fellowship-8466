@@ -97,22 +97,25 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         //0=Center, 1=Right -1=Left
         //Find gold mineral position
         GoldPosition position = GoldPosition.UNKNOWN;
-
+        boolean isCrater = false;
         //Activate object detector to get gold position, then shut it down
         if (opModeIsActive() && tfod != null)
         {
             tfod.activate();
             position = GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_90);
+            isCrater = CraterDepotUtil.getInstance().isCrater(tfod);
             tfod.deactivate();
             tfod.shutdown();
         }
+
+        System.out.println("This is the "+(isCrater?"Crater":"Depot"));
 
         //Sampling
         switch (position)
         {
             case RIGHT: //right
                 encoderDrive(DRIVE_SPEED, 0.6, 0.6, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, -1.5, 1.5, 1.5);
+                encoderDrive(TURN_SPEED, -1.3, 1.3, 1.5);
                 encoderDrive(DRIVE_SPEED, 1.5, 1.5, 1.5);
                 //encoderDrive(TURN_SPEED,   1, -1, 1.5);
                 //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
@@ -120,7 +123,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
                 break;
             case LEFT: //left
                 encoderDrive(DRIVE_SPEED, 0.6, 0.6, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, 1.5, -1.5, 1.5);
+                encoderDrive(TURN_SPEED, 1.3, -1.3, 1.5);
                 encoderDrive(DRIVE_SPEED, 1.5, 1.5, 1.5);
                 //encoderDrive(TURN_SPEED,   -1, 1, 1.5);
                 //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);

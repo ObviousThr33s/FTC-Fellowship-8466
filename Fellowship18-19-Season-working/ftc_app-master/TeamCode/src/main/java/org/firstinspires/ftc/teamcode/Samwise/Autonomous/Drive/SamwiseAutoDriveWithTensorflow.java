@@ -127,13 +127,17 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
 
         //Activate object detector to get gold position, then shut it down
         GoldPosition position = GoldPosition.UNKNOWN;
+        boolean isCrater = false;
         if (opModeIsActive() && tfod != null)
         {
             tfod.activate();
             position =GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_0);
+            isCrater = CraterDepotUtil.getInstance().isCrater(tfod);
             tfod.deactivate();
             tfod.shutdown();
         }
+
+        System.out.println("This is the "+(isCrater? "Crater":"Depot"));
 
         //Sampling
         switch (position)
