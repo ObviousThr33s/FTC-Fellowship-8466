@@ -42,7 +42,7 @@ public class SamwiseCollectionTeleOp extends OpMode {
         servo3.setPosition(0);
 
         cMotor1.setDirection(DcMotor.Direction.REVERSE);
-        cMotor2.setDirection(DcMotor.Direction.REVERSE);
+        cMotor2.setDirection(DcMotor.Direction.FORWARD);
         cMotor3.setDirection(DcMotor.Direction.REVERSE);
         cMotor4.setDirection(DcMotor.Direction.REVERSE);
 
@@ -56,7 +56,9 @@ public class SamwiseCollectionTeleOp extends OpMode {
         double cmotor2power = gamepad1.left_stick_y/1.3;
         double cmotor3power = gamepad1.left_stick_y/1.8;
 
-        
+        cMotor1.setPower(cmotor1power);
+        cMotor2.setPower(cmotor2power);
+        cMotor3.setPower(cmotor3power);
 
     }
 
