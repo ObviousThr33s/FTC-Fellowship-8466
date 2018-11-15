@@ -21,7 +21,7 @@ public class SamwiseCollectionTeleOp extends OpMode {
     public Servo servo2 = null;
     public Servo servo3 = null;
 
-    static final float motorTickCount = 1120;
+    static final float cmotorTickCount = 1120;
 
     public void init() {
         cMotor1 = hardwareMap.dcMotor.get("motor1");
@@ -67,8 +67,8 @@ public class SamwiseCollectionTeleOp extends OpMode {
             cMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             cMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             cMotor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            float turn90 = motorTickCount/4;
-            
+            float turn90 = cmotorTickCount/4;
+
             cMotor1.setTargetPosition((int)turn90);
 
             cMotor1.setPower(0.8);
