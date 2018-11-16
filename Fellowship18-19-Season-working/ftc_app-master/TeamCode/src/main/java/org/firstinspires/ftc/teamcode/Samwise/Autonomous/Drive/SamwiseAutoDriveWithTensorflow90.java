@@ -38,7 +38,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double COUNTS_PER_MOTOR_REV = 1024;    // eg: TETRIX Motor Encoder
+    static final double COUNTS_PER_MOTOR_REV = 482;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
@@ -87,10 +87,6 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //TODO: remove this test code
-        //encoderDrive(DRIVE_SPEED,   0.2, 0.2, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
-        //encoderDrive(TURN_SPEED,   1.5, -1.5, 1.5);
-
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
@@ -137,6 +133,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         //robot.leftClaw.set/Position(1.0);            // S4: Stop and close the claw.
         //robot.rightClaw.setPosition(0.0);
         sleep(1000);     // pause for servos to move
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
