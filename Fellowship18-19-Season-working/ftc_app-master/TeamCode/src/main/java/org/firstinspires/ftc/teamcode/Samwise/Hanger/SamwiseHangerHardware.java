@@ -47,4 +47,3 @@ public class SamwiseHangerHardware extends LinearOpMode {
             }
         }
     }
-}
