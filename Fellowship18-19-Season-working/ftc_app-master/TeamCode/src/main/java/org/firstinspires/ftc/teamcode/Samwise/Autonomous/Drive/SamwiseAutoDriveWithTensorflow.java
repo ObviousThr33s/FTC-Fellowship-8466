@@ -75,7 +75,7 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double COUNTS_PER_MOTOR_REV = 144;    // eg: TETRIX Motor Encoder
+    static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
@@ -125,17 +125,22 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        //TODO: Remove this test drive
+        encoderDrive(DRIVE_SPEED, 10, 10, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
+        encoderDrive(TURN_SPEED, -1.5, 1.5, 1);
+        encoderDrive(DRIVE_SPEED, 10, 10, 1);
+
         //Activate object detector to get gold position, then shut it down
         GoldPosition position = GoldPosition.UNKNOWN;
         boolean isCrater = false;
-        if (opModeIsActive() && tfod != null)
-        {
-            tfod.activate();
-            position =GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_0);
-            isCrater = CraterDepotUtil.getInstance().isCrater(tfod);
-            tfod.deactivate();
-            tfod.shutdown();
-        }
+//        if (opModeIsActive() && tfod != null)
+//        {
+//            tfod.activate();
+//            position =GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_0);
+//            isCrater = CraterDepotUtil.getInstance().isCrater(tfod);
+//            tfod.deactivate();
+//            tfod.shutdown();
+//        }
 
         System.out.println("This is the "+(isCrater? "Crater":"Depot"));
 
@@ -143,24 +148,24 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
         switch (position)
         {
             case RIGHT: //right
-                encoderDrive(DRIVE_SPEED, 0.6, 0.6, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, -1.5, 1.5, 1.5);
-                encoderDrive(DRIVE_SPEED, 1.5, 1.5, 1.5);
+                encoderDrive(DRIVE_SPEED, 10, 10, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
+                encoderDrive(TURN_SPEED, -1.5, 1.5, 1);
+                encoderDrive(DRIVE_SPEED, 10, 10, 1);
                 //encoderDrive(TURN_SPEED,   1, -1, 1.5);
                 //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
                 //TODO
                 break;
             case LEFT: //left
-                encoderDrive(DRIVE_SPEED, 0.6, 0.6, 1.5);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, 1.5, -1.5, 1.5);
-                encoderDrive(DRIVE_SPEED, 1.5, 1.5, 1.5);
+                encoderDrive(DRIVE_SPEED, 10, 10, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
+                encoderDrive(TURN_SPEED, 1.5, -1.5, 1);
+                encoderDrive(DRIVE_SPEED, 10, 10, 1);
                 //encoderDrive(TURN_SPEED,   -1, 1, 1.5);
                 //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
                 //TODO
                 break;
             case CENTER:  //center
             default:
-                encoderDrive(DRIVE_SPEED, 1.2, 1.2, 2.5);  // S1: Forward 47 Inches with 5 Sec timeout
+                encoderDrive(DRIVE_SPEED, 20, 20, 3);  // S1: Forward 47 Inches with 5 Sec timeout
         }
 
         //robot.leftClaw.set/Position(1.0);            // S4: Stop and close the claw.

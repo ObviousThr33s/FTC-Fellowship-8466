@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-public class SamwiseCollectionHardware {
+/*public class SamwiseCollectionHardware {
 
     public DcMotor motor1 = null;
     public DcMotor motor2 = null;
@@ -36,3 +36,4 @@ public class SamwiseCollectionHardware {
     }
 
 }
+*/
