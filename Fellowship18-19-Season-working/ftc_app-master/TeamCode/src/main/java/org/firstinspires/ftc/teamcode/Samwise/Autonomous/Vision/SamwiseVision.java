@@ -14,4 +14,6 @@ public class SamwiseVision extends Vision {
     public String getGoldPosition() {
         return "left"; //mockup return
     }
+
+    public boolean isCrater() {return true;}
 }
