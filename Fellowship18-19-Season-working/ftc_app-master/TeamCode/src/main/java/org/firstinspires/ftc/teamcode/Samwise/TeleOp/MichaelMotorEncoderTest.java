@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-@TeleOp (name = "EncoderTestOfTheMichael")
+@TeleOp (name = "EncoderTestOfTheMichael7879")
 public class MichaelMotorEncoderTest extends OpMode {
 
     public DcMotor testMotorEncoder1 = null;
@@ -23,13 +23,19 @@ public class MichaelMotorEncoderTest extends OpMode {
     }
 
     public void loop() {
-        if (gamepad1.x) {
+        if (gamepad1.right_bumper) {
             testMotorEncoder1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             float testrightturn90 = TestEncoderTIckCount/4;
             testMotorEncoder1.setTargetPosition((int)testrightturn90);
             testMotorEncoder1.setPower(0.8);
             testMotorEncoder1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        } else {
+            testMotorEncoder1.setPower(0);
         }
+    }
+    public void stop() {
+        testMotorEncoder1.setPower(0);
     }
 
 }
