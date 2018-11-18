@@ -4,18 +4,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
+import org.firstinspires.ftc.teamcode.Samwise.Conceptual.SamwiseRobot;
 
-public class SamwiseDriveTrain extends DriveTrain {
+public class SamwiseDriveTrain extends SamwiseRobot {
 
-    public DcMotor leftDrive = null;
-    public DcMotor rightDrive = null;
+    public SamwiseDriveTrain(){
+    }
 
-    public SamwiseDriveTrain(HardwareMap hwm){
-
-        // Define and Initialize MotorsAndServos
-        leftDrive  = hwm.get(DcMotor.class, "left_drive");
-        rightDrive = hwm.get(DcMotor.class, "right_drive");
-
+    public void init(){
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
@@ -39,7 +35,6 @@ public class SamwiseDriveTrain extends DriveTrain {
         //rightClaw.setPosition(MID_SERVO);
     }
 
-    @Override
     public void drive(double power){
         leftDrive.setPower(power);
         rightDrive.setPower(power);
