@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-/*public class SamwiseCollectionHardware {
+public class SamwiseCollectionHardware {
 
     public DcMotor motor1 = null;
     public DcMotor motor2 = null;
@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hardware.Servo;
     public Servo servo2 = null;
     public Servo servo3 = null;
 
-    public void init(HardwareMap ahwMap) {
+    public SamwiseCollectionHardware(HardwareMap ahwMap){
         //Define names on the phone
         motor1 = ahwMap.dcMotor.get("motor_1");
         motor2 = ahwMap.dcMotor.get("motor_2");
@@ -36,4 +36,3 @@ import com.qualcomm.robotcore.hardware.Servo;
     }
 
 }
-*/

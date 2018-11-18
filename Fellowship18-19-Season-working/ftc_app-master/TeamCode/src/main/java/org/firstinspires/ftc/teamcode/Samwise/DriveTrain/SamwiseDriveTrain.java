@@ -10,15 +10,12 @@ public class SamwiseDriveTrain extends DriveTrain {
     public DcMotor leftDrive = null;
     public DcMotor rightDrive = null;
 
-    public SamwiseDriveTrain(){
-    }
-
-    /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap hwm) {
+    public SamwiseDriveTrain(HardwareMap hwm){
 
         // Define and Initialize MotorsAndServos
         leftDrive  = hwm.get(DcMotor.class, "left_drive");
         rightDrive = hwm.get(DcMotor.class, "right_drive");
+
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
@@ -26,6 +23,7 @@ public class SamwiseDriveTrain extends DriveTrain {
         // Set all motors to zero power
         leftDrive.setPower(0);
         rightDrive.setPower(0);
+
         //leftArm.setPower(0);
 
         // Set all motors to run without encoders.

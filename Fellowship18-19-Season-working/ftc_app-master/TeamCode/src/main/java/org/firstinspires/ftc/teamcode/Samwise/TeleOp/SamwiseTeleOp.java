@@ -57,7 +57,7 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 public class SamwiseTeleOp extends OpMode{
 
     /* Declare OpMode members. */
-    SamwiseDriveTrain robot  = new SamwiseDriveTrain(); // use the class created to define a Pushbot's hardware
+    SamwiseDriveTrain robot  = new SamwiseDriveTrain(hardwareMap); // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class.
     //double          clawOffset  = 0.0 ;                  // Servo mid position
     //final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
@@ -70,7 +70,6 @@ public class SamwiseTeleOp extends OpMode{
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
