@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
+package org.firstinspires.ftc.teamcode.Samwise.Collection;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -48,8 +48,10 @@ public class SamwiseCollectionTeleOp extends OpMode {
         cMotor3.setDirection(DcMotor.Direction.REVERSE);
         cMotor4.setDirection(DcMotor.Direction.REVERSE);
 
-
-
+        cMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        cMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        cMotor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        cMotor4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 
