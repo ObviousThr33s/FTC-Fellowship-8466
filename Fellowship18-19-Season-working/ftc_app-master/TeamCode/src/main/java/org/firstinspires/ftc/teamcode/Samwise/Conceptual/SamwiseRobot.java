@@ -1,18 +1,31 @@
 package org.firstinspires.ftc.teamcode.Samwise.Conceptual;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.teamcode.AbstractConceptual.Robot;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.Sensors;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
+import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
-public class SamwiseRobot {
+public class SamwiseRobot extends Robot {
 
-    public HardwareMap hm;
-
-    public void init(HardwareMap hwm){
-        hm = hwm;
+    @Override
+    public MotorsAndServos motorsAndServos() {
+        return null;
     }
 
-    //Drive Train Motors
-    public DcMotor leftDrive = hm.get(DcMotor.class, "left_drive");
-    public DcMotor rightDrive = hm.get(DcMotor.class, "right_drive");
+    @Override
+    public Sensors sensors() {
+        return null;
+    }
 
+    @Override
+    public DriveTrain driveTrain() {
+        return null;
+    }
+
+    @Override
+    public Vision vision() {
+        return null;
+    }
 }

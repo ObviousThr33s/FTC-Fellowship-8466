@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
+package org.firstinspires.ftc.teamcode.Samwise.Collection;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;

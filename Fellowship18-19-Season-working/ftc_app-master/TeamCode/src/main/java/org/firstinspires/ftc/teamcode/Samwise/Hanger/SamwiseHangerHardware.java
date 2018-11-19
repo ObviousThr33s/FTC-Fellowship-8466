@@ -1,27 +1,49 @@
 package org.firstinspires.ftc.teamcode.Samwise.Hanger;
 
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseMotors.SamwiseMotorsAndServos;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseMotors.SamwiseMotors;
 
-public class SamwiseHangerHardware extends SamwiseMotorsAndServos{
+@Autonomous(name="SamwiseHangerHardware", group="Exercises")
+public class SamwiseHangerHardware extends LinearOpMode {
 
-    public void moveMotor1(double pwr){
-        hangermotor1.setPower(pwr);
+    public DcMotor hangermotor1 = null;
+
+    public Servo hangerservo1 = null;
+
+    public void init(HardwareMap ahwMap) {
+        hangermotor1 = ahwMap.dcMotor.get("hangermotor_1");
+        hangerservo1 = ahwMap.servo.get("hangerservo_1");
     }
+    public void runOpMode() {
 
-    public void moveServo1(double direction){
-        hangerservo1.setPosition(direction);
-    }
+            hangermotor1.setDirection(DcMotor.Direction.REVERSE);
 
-    enum Posistion{
-        UP, DOWN
-    }
+            hangerservo1.setPosition(0.0);
 
-    public void moveToPos(Posistion pos){
-        if (pos == Posistion.UP) {
-            //moveMotor1();
+            telemetry.addData("Mode", "GGwp");
+            telemetry.update();
+
+            waitForStart(); {
+
+                telemetry.addData("Mode", "DoubleBoys");
+                telemetry.update();
+
+                hangermotor1.setPower(0.00000000025);
+
+                sleep(1000000000);
+
+                hangermotor1.setPower(0.0);
+
+                hangerservo1.setPosition(1);
+
+                sleep(1000000000);
+
+                hangerservo1.setPosition(0.0);
+            }
         }
-        if (pos == Posistion.DOWN){
-            //moveMotor1();
-        }
     }
-}

@@ -3,14 +3,10 @@ package org.firstinspires.ftc.teamcode.Samwise.Collection;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.MotorControlAlgorithm;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseMotors.SamwiseMotorsAndServos;
 
-
-public class SamwiseCollectionHardware extends SamwiseMotorsAndServos {
+/*public class SamwiseCollectionHardware {
 
     public DcMotor motor1 = null;
     public DcMotor motor2 = null;
@@ -21,13 +17,23 @@ public class SamwiseCollectionHardware extends SamwiseMotorsAndServos {
     public Servo servo2 = null;
     public Servo servo3 = null;
 
-    public SamwiseCollectionHardware(HardwareMap ahwMap){
+    public void init(HardwareMap ahwMap) {
         //Define names on the phone
+        motor1 = ahwMap.dcMotor.get("motor_1");
+        motor2 = ahwMap.dcMotor.get("motor_2");
+        motor3 = ahwMap.dcMotor.get("motor_3");
+        motor4 = ahwMap.dcMotor.get("motor_4");
 
         motor1.setDirection(DcMotor.Direction.FORWARD);
         motor2.setDirection(DcMotor.Direction.REVERSE);
         motor3.setDirection(DcMotor.Direction.FORWARD);
         motor4.setDirection(DcMotor.Direction.REVERSE);
+
+
+        servo1 = ahwMap.servo.get("servo_1");
+        servo2 = ahwMap.servo.get("servo_2");
+        servo3 = ahwMap.servo.get("servo_3");
     }
 
 }
+*/
