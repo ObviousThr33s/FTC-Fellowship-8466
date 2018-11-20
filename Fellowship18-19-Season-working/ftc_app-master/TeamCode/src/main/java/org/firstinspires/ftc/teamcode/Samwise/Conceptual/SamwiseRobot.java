@@ -7,12 +7,15 @@ public class SamwiseRobot {
 
     public HardwareMap hm;
 
-    public void init(HardwareMap hwm){
-        hm = hwm;
-    }
 
     //Drive Train Motors
-    public DcMotor leftDrive = hm.get(DcMotor.class, "left_drive");
-    public DcMotor rightDrive = hm.get(DcMotor.class, "right_drive");
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
+
+    public void init(HardwareMap hwm){
+        hm = hwm;
+        leftDrive = hm.get(DcMotor.class, "left_drive");
+        rightDrive = hm.get(DcMotor.class, "right_drive");
+    }
 
 }
