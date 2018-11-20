@@ -14,6 +14,7 @@ public class SamwiseRobot extends Robot {
         return null;
     }
 
+
     @Override
     public Sensors sensors() {
         return null;
@@ -28,4 +29,15 @@ public class SamwiseRobot extends Robot {
     public Vision vision() {
         return null;
     }
+    /*
+    //Drive Train Motors
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
+
+    public void init(HardwareMap hwm){
+        hm = hwm;
+        leftDrive = hm.get(DcMotor.class, "left_drive");
+        rightDrive = hm.get(DcMotor.class, "right_drive");
+    }
+    */
 }

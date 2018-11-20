@@ -54,7 +54,7 @@ class CraterDepotUtil
         long startTime = System.currentTimeMillis();
         boolean isDepot = false;
         int depotCounter = 0;
-        while ((updatedRecognitions == null || updatedRecognitions.size() <3) /*&& (System.currentTimeMillis()-startTime) < TIMEOUT*/ && !isDepot)
+        while ((updatedRecognitions == null || updatedRecognitions.size() <3) && (System.currentTimeMillis()-startTime) < TIMEOUT && !isDepot)
         {
             updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null)

@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
@@ -44,6 +43,25 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED = 0.6;
     static final double TURN_SPEED = 0.5;
+    static final double INCHES_PER_DEGREE = 0.1640556;
+
+    enum TurnDirection
+    {
+        LEFT, RIGHT;
+    }
+
+    private void turnDrive( TurnDirection direction, double degrees, double timeout)
+    {
+        double inches = INCHES_PER_DEGREE * degrees;
+        switch (direction)
+        {
+            case RIGHT:
+                encoderDrive(TURN_SPEED,-inches, inches, timeout);
+                break;
+            case LEFT:
+                encoderDrive(TURN_SPEED, inches, -inches, timeout);
+        }
+    }
 
     @Override
     public void runOpMode()
@@ -54,44 +72,49 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+
         //initialize Vuforia
-        initVuforia();
+        //TODO
+//         initVuforia();
 
         //initialize tensorflow object detector
-        if (ClassFactory.getInstance().canCreateTFObjectDetector())
-        {
-            initTfod();
-        }
-        else
-        {
-            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-        }
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Resetting Encoders");    //
-        telemetry.update();
-
-        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0", "Starting at %7d :%7d", robot.leftDrive.getCurrentPosition(), robot.rightDrive.getCurrentPosition());
-        telemetry.update();
-
-        //tf
-        telemetry.addData(">", "Press Play to start tracking");
-        telemetry.update();
+//        if (ClassFactory.getInstance().canCreateTFObjectDetector())
+//        {
+//            initTfod();
+//        }
+//        else
+//        {
+//            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+//        }
+//        // Send telemetry message to signify robot waiting;
+//        telemetry.addData("Status", "Resetting Encoders");    //
+//        telemetry.update();
+//
+//        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//        robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//        // Send telemetry message to indicate successful Encoder reset
+//        telemetry.addData("Path0", "Starting at %7d :%7d", robot.leftDrive.getCurrentPosition(), robot.rightDrive.getCurrentPosition());
+//        telemetry.update();
+//
+//        //tf
+//        telemetry.addData(">", "Press Play to start tracking");
+//        telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
-
+//TODO: Remove this test code
+        //turnDrive(TurnDirection.LEFT, 45, 10);
+        //turnDrive(TurnDirection.RIGHT,45, 10);
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         //0=Center, 1=Right -1=Left
         //Find gold mineral position
+
+/*
         GoldPosition position = GoldPosition.UNKNOWN;
         boolean isCrater = false;
         //Activate object detector to get gold position, then shut it down
@@ -100,6 +123,9 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
             tfod.activate();
             position = GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_90);
             isCrater = CraterDepotUtil.getInstance().isCrater(tfod);
+            telemetry.addData("Gold Position:", position);
+            telemetry.addData("isCrater:", isCrater);
+            telemetry.update();
             tfod.deactivate();
             tfod.shutdown();
         }
@@ -107,39 +133,80 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         System.out.println("This is the "+(isCrater?"Crater":"Depot"));
 
         //Sampling
-        switch (position)
+        if (!isCrater)
         {
-            case RIGHT: //right
-                encoderDrive(DRIVE_SPEED, 5, 5, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, -3.5, 3.5, 1);
-                encoderDrive(DRIVE_SPEED, 15, 15, 1);
-                //encoderDrive(TURN_SPEED,   1, -1, 1.5);
-                //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
-                //TODO
-                break;
-            case LEFT: //left
-                encoderDrive(DRIVE_SPEED, 5, 5, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, 3.5, -3.5, 1);
-                encoderDrive(DRIVE_SPEED, 15, 15, 1);
-                //encoderDrive(TURN_SPEED,   -1, 1, 1.5);
-                //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
-                //TODO
-                break;
-            case CENTER:  //center
-            default:
-                encoderDrive(DRIVE_SPEED, 20, 20, 3);  // S1: Forward 47 Inches with 5 Sec timeout
+            switch (position)
+            {
+                case RIGHT: //right
+                    encoderDrive(TURN_SPEED, -4.5, 4.5, 1);
+                    encoderDrive(DRIVE_SPEED, 30, 30, 2);
+                    encoderDrive(TURN_SPEED,   7, -7, 1.5);
+                    encoderDrive(DRIVE_SPEED,   30, 30, 2);
+                    encoderDrive(TURN_SPEED,30, 30, 3 );
+                    //TODO
+                    break;
+                case LEFT: //left
+                    encoderDrive(TURN_SPEED, 4.5, -4.5, 1);
+                    encoderDrive(DRIVE_SPEED, 30, 30, 2);
+                    encoderDrive(TURN_SPEED,   -7, 7, 1.5);
+                    encoderDrive(DRIVE_SPEED,   30, 30, 2);
+                    //TODO
+                    break;
+                case CENTER:  //center
+                default:
+                    encoderDrive(DRIVE_SPEED, 54, 54, 3);  // S1: Forward 47 Inches with 5 Sec timeout
+            }
         }
-
         //robot.leftClaw.set/Position(1.0);            // S4: Stop and close the claw.
         //robot.rightClaw.setPosition(0.0);
         sleep(1000);     // pause for servos to move
 
+*/
 
+        this.depotCenter();
         telemetry.addData("Path", "Complete");
         telemetry.update();
 
     }
 
+    private void depotCenter()
+    {
+        telemetry.addData("Depot Center", "starting");
+        telemetry.update();
+        encoderDrive(DRIVE_SPEED, 54,54,3);
+        telemetry.addData("Depot Center", "finish first drive");
+        telemetry.update();
+        turnDrive(TurnDirection.RIGHT,135,2);
+        telemetry.addData("Depot Center", "finish second turn");
+        telemetry.update();
+        //TODO: Drop Team Marker here
+        encoderDrive(DRIVE_SPEED, 96,96,3);
+        telemetry.addData("Depot Center", "finish third drive");
+        telemetry.update();
+    }
+
+    private void depotRight()
+    {
+        turnDrive(TurnDirection.RIGHT, 27.429725, 10);
+        encoderDrive(DRIVE_SPEED, 30,30, 3);
+        turnDrive(TurnDirection.LEFT, 42.6684716, 10);
+        encoderDrive(DRIVE_SPEED, 30, 30, 3);
+        turnDrive(TurnDirection.RIGHT, 180, 10);
+        //TODO: Drop Team Marker here
+        encoderDrive(DRIVE_SPEED, 96, 96,3);
+    }
+
+    private void depotLeft()
+    {
+        turnDrive(TurnDirection.LEFT, 27.429725, 2);
+        encoderDrive(DRIVE_SPEED,30, 30, 2);
+        turnDrive(TurnDirection.RIGHT,42.6684716,2);
+        encoderDrive(DRIVE_SPEED, 32,32,2);
+        turnDrive(TurnDirection.RIGHT, 70, 2);
+        //TODO: Drop Team Marker here
+        encoderDrive(DRIVE_SPEED,96,96, 3);
+
+    }
     /*
      *  Method to perfmorm a relative move, based on encoder counts.
      *  Encoders are not reset as the move is based on the current position.
