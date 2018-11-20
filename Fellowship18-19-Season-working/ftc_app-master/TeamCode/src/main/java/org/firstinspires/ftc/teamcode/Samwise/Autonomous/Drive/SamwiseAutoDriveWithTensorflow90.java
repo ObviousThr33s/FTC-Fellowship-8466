@@ -32,7 +32,8 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
      * Detection engine.
      */
     private TFObjectDetector tfod;
-    /* Declare OpMode members. */ SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
+    /* Declare OpMode members. */
+    SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
     Vision vis = new SamwiseVision();
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -151,7 +152,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 
 */
 
-        this.depotCenter();
+        this.depotLeft();
 
 //        encoderDrive(DRIVE_SPEED, 54,54,3);
         telemetry.addData("Path", "Complete");
@@ -161,33 +162,33 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 
     private void depotCenter()
     {
-        encoderDrive(DRIVE_SPEED, 65,65,5);
-        turnDrive(TurnDirection.RIGHT,132,3);
+        encoderDrive(DRIVE_SPEED, 60,60,5);
+        turnDrive(TurnDirection.RIGHT,125,3);
         //TODO: Drop Team Marker here
-        encoderDrive(DRIVE_SPEED, 68,68,10);
+        encoderDrive(DRIVE_SPEED, 70,70,5);
 
     }
 
     private void depotRight()
     {
-        turnDrive(TurnDirection.RIGHT, 27.429725, 10);
-        encoderDrive(DRIVE_SPEED, 30,30, 3);
-        turnDrive(TurnDirection.LEFT, 42.6684716, 10);
-        encoderDrive(DRIVE_SPEED, 30, 30, 3);
-        turnDrive(TurnDirection.RIGHT, 180, 10);
+        turnDrive(TurnDirection.RIGHT, 29, 3);
+        encoderDrive(DRIVE_SPEED, 30,30, 4);
+        turnDrive(TurnDirection.LEFT, 42.6684716, 3);
+        encoderDrive(DRIVE_SPEED, 30, 30, 4);
+        turnDrive(TurnDirection.RIGHT, 147.75, 3);
         //TODO: Drop Team Marker here
-        encoderDrive(DRIVE_SPEED, 103, 103,3);
+        encoderDrive(DRIVE_SPEED, 66, 66,5);
     }
 
     private void depotLeft()
     {
-        turnDrive(TurnDirection.LEFT, 27.429725, 2);
-        encoderDrive(DRIVE_SPEED,30, 30, 2);
-        turnDrive(TurnDirection.RIGHT,42.6684716,2);
-        encoderDrive(DRIVE_SPEED, 32,32,2);
-        turnDrive(TurnDirection.RIGHT, 70, 2);
+        turnDrive(TurnDirection.LEFT, 28, 3);
+        encoderDrive(DRIVE_SPEED,30, 30, 4);
+        turnDrive(TurnDirection.RIGHT,50,3);
+        encoderDrive(DRIVE_SPEED, 38,38,4);
+        turnDrive(TurnDirection.RIGHT, 99, 3);
         //TODO: Drop Team Marker here
-        encoderDrive(DRIVE_SPEED,103,103, 3);
+        encoderDrive(DRIVE_SPEED,73,73, 5);
 
     }
 
