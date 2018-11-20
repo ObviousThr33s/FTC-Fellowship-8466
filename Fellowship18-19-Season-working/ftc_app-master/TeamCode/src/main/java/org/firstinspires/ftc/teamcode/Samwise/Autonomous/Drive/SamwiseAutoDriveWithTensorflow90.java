@@ -50,18 +50,6 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         LEFT, RIGHT;
     }
 
-    private void turnDrive( TurnDirection direction, double degrees, double timeout)
-    {
-        double inches = INCHES_PER_DEGREE * degrees;
-        switch (direction)
-        {
-            case RIGHT:
-                encoderDrive(TURN_SPEED,-inches, inches, timeout);
-                break;
-            case LEFT:
-                encoderDrive(TURN_SPEED, inches, -inches, timeout);
-        }
-    }
 
     @Override
     public void runOpMode()
@@ -95,7 +83,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 //
 //        robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
+
 //        // Send telemetry message to indicate successful Encoder reset
 //        telemetry.addData("Path0", "Starting at %7d :%7d", robot.leftDrive.getCurrentPosition(), robot.rightDrive.getCurrentPosition());
 //        telemetry.update();
@@ -164,6 +152,8 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 */
 
         this.depotCenter();
+
+//        encoderDrive(DRIVE_SPEED, 54,54,3);
         telemetry.addData("Path", "Complete");
         telemetry.update();
 
@@ -171,18 +161,11 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 
     private void depotCenter()
     {
-        telemetry.addData("Depot Center", "starting");
-        telemetry.update();
-        encoderDrive(DRIVE_SPEED, 54,54,3);
-        telemetry.addData("Depot Center", "finish first drive");
-        telemetry.update();
-        turnDrive(TurnDirection.RIGHT,135,2);
-        telemetry.addData("Depot Center", "finish second turn");
-        telemetry.update();
+        encoderDrive(DRIVE_SPEED, 65,65,5);
+        turnDrive(TurnDirection.RIGHT,132,3);
         //TODO: Drop Team Marker here
-        encoderDrive(DRIVE_SPEED, 96,96,3);
-        telemetry.addData("Depot Center", "finish third drive");
-        telemetry.update();
+        encoderDrive(DRIVE_SPEED, 68,68,10);
+
     }
 
     private void depotRight()
@@ -193,7 +176,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         encoderDrive(DRIVE_SPEED, 30, 30, 3);
         turnDrive(TurnDirection.RIGHT, 180, 10);
         //TODO: Drop Team Marker here
-        encoderDrive(DRIVE_SPEED, 96, 96,3);
+        encoderDrive(DRIVE_SPEED, 103, 103,3);
     }
 
     private void depotLeft()
@@ -204,9 +187,23 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         encoderDrive(DRIVE_SPEED, 32,32,2);
         turnDrive(TurnDirection.RIGHT, 70, 2);
         //TODO: Drop Team Marker here
-        encoderDrive(DRIVE_SPEED,96,96, 3);
+        encoderDrive(DRIVE_SPEED,103,103, 3);
 
     }
+
+    protected void turnDrive( TurnDirection direction, double degrees, double timeout)
+    {
+        double inches = INCHES_PER_DEGREE * degrees;
+        switch (direction)
+        {
+            case RIGHT:
+                encoderDrive(TURN_SPEED,-inches, inches, timeout);
+                break;
+            case LEFT:
+                encoderDrive(TURN_SPEED, inches, -inches, timeout);
+        }
+    }
+
     /*
      *  Method to perfmorm a relative move, based on encoder counts.
      *  Encoders are not reset as the move is based on the current position.
@@ -223,6 +220,12 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         // Ensure that the opmode is still active
         if (opModeIsActive())
         {
+//            robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            //
+//            robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
             // Determine new target position, and pass to motor controller
             newLeftTarget = robot.leftDrive.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
