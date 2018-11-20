@@ -4,6 +4,8 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 class GoldPositionUtil
@@ -256,4 +258,55 @@ class GoldPositionUtil
 
         return result;
     }
+
+    /*
+        Sort by getRight()
+     */
+    class SortByRight implements Comparator<Recognition>
+    {
+        // Used for sorting in ascending order of
+        // roll number
+        public int compare(Recognition a, Recognition b)
+        {
+            float diff = a.getRight() - b.getRight();
+            if(diff < 0) {
+                return -1;
+            }
+            else if (diff > 0) {
+                return 1;
+            }
+            return 0;
+        }
+    }
+
+    private List<Recognition> getSamples(List<Recognition> recognitions) {
+
+        if( recognitions.size() < 3)
+            return recognitions;
+
+        System.out.println("--- before sorting --- size: "+recognitions.size());
+        for (Recognition recog : recognitions) {
+            System.out.println(recog);
+        }
+
+        Collections.sort(recognitions, new SortByRight());
+
+
+        System.out.println("--- after sorting --- size: "+recognitions.size());
+
+        for (Recognition recog : recognitions) {
+            System.out.println(recog);
+        }
+
+        List<Recognition> samples = new ArrayList<Recognition> ();
+
+        samples.add(recognitions.get(0));
+        samples.add(recognitions.get(1));
+        samples.add(recognitions.get(2));
+
+        return samples; //recognitions.subList(0,2);
+
+    }
+
+
 }
