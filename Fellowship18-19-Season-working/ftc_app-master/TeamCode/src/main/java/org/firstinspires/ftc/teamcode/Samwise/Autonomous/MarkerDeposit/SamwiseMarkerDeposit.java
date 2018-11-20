@@ -12,19 +12,22 @@ public class SamwiseMarkerDeposit {
     public Servo servo9 = null;  /*Probably rename servo to a useful number when
                                 we figure out the hardware map diagram of it*/
 
-    public static double servo9_HOME = 0.0;
+    //public static double servo9_HOME = 0.0;
+
+    public static final  Servo.Direction direction = Servo.Direction.FORWARD;
 
     final double servo9_SPEED = 0.04;
 
     public void init(HardwareMap ahwmap) {
+
         servo9 = ahwmap.servo.get("marker");
 
-        servo9.setPosition(servo9_HOME);
+        servo9.setDirection(direction);
 
     }
 
-    public void move(int i) {
-        servo9.setPosition(i);
+    public void move(double d) {
+        servo9.setPosition(d);
     }
 
 

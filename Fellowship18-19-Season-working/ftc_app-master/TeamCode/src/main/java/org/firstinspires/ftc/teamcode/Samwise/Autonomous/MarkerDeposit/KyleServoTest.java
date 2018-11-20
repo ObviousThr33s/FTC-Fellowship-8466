@@ -13,14 +13,25 @@ public class KyleServoTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
         md.init(hardwareMap);
+
         waitForStart();
+
         //while (opModeIsActive()) {
             md.move(1);
+                telemetry.addData("move", "1");
+                telemetry.update();
             sleep(2000);
             md.move(0);
-            //telemetry.addData("test", "%.2f",md);
-            //telemetry.update();
+                telemetry.addData("move", "0");
+                telemetry.update();
+            sleep(2000);
+            md.move(0.5);
+                telemetry.addData("move", "0");
+                telemetry.update();
+            sleep(2000);
+
         //}
     }
 }
