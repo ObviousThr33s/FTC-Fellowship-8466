@@ -10,21 +10,21 @@ import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name = "CollectionArmTeleOp")
-public class SamwiseCollectionTeleOp extends OpMode {
+public class SamwiseCollectionTeleOp extends OpMode {       //will eventually extend to SamewiseRobot
 
-    public DcMotor cMotor1 = null; //left and right
-    public DcMotor cMotor2 = null; //slow up and down
-    public DcMotor cMotor3 = null; //fast up an down
-    public DcMotor cMotor4 = null;
+    public DcMotor cMotor1 = null; //left and right range of motion
+    public DcMotor cMotor2 = null; //up and down
+    public DcMotor cMotor3 = null; //up and down
+    public DcMotor cMotor4 = null; //for the grabber at the end
 
-    public Servo servo1 = null;
-    public Servo servo2 = null;
-    public Servo servo3 = null;
+    public Servo servo1 = null; //latch release 1
+    public Servo servo2 = null; //latch release 2
+    public Servo servo3 = null; //for the grabber
 
-    static final float cmotorTickCount = 1120;
+    static final float cmotorTickCount = 1120; //for a AndyMark Neverest motor
 
     public void init() {
-        cMotor1 = hardwareMap.dcMotor.get("motor1");
+        cMotor1 = hardwareMap.dcMotor.get("motor1"); //hardware mapping
         cMotor2 = hardwareMap.dcMotor.get("motor2");
         cMotor3 = hardwareMap.dcMotor.get("motor3");
         cMotor4 = hardwareMap.dcMotor.get("motor4");
@@ -64,7 +64,7 @@ public class SamwiseCollectionTeleOp extends OpMode {
         cMotor2.setPower(cmotor2power);
         cMotor3.setPower(cmotor3power);
 
-        if (gamepad1.x) {
+        if (gamepad1.x) {               //Gold scoring
             cMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             cMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             cMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -72,9 +72,9 @@ public class SamwiseCollectionTeleOp extends OpMode {
 
             float turn90 = cmotorTickCount/2;
 
-            cMotor1.setTargetPosition(500);
-            cMotor2.setTargetPosition(850);
-            cMotor3.setTargetPosition(360);
+            cMotor1.setTargetPosition(1);
+            cMotor2.setTargetPosition(1);
+            cMotor3.setTargetPosition(1);
 
             cMotor1.setPower(0.8);
             cMotor2.setPower(0.8);
@@ -85,11 +85,26 @@ public class SamwiseCollectionTeleOp extends OpMode {
             cMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         }
-        if (gamepad1.y) {
+        if (gamepad1.y) {                   //silver scoring
             cMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             cMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             cMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             cMotor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            cMotor1.setTargetPosition(1);
+            cMotor2.setTargetPosition(1);
+            cMotor3.setTargetPosition(1);
+
+            cMotor1.setPower(0.8);
+            cMotor2.setPower(0.8);
+            cMotor3.setPower(0.8);
+
+            cMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            cMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            cMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        }
+        if (gamepad1.a) {
 
         }
 
