@@ -27,27 +27,27 @@ public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDriveWithTensorflo
 
         encoderDrive(DRIVE_SPEED, 22, 22, 5);
         telemetry.addData(route, "finish second drive");
-        telemetry.update();
+        //telemetry.update();
 
         encoderDrive(DRIVE_SPEED, -8, -7, 4);
         telemetry.addData(route, "finish third drive");
-        telemetry.update();
+        //telemetry.update();
 
         turnDrive(TurnDirection.RIGHT, 90, 5);
         telemetry.addData(route, "finish fourth turn");
-        telemetry.update();
+        //telemetry.update();
 
         encoderDrive(DRIVE_SPEED, -45,-45,20);
         telemetry.addData(route, "finish fifth drive");
-        telemetry.update();
+        //telemetry.update();
 
         turnDrive(TurnDirection.LEFT, 46.5, 3);
         telemetry.addData(route, "finish sixth turn");
-        telemetry.update();
+        //telemetry.update();
 
         encoderDrive(DRIVE_SPEED, -49,-49, 20);
         telemetry.addData(route, "finish seventh drive");
-        telemetry.update();
+        //telemetry.update();
 
         md.move(1);
 
