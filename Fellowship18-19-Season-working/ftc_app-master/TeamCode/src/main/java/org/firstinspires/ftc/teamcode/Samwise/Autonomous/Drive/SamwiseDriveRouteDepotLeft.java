@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Kyla v1.0 CraterLeft", group = "Samwise")
+@Autonomous(name = "Depot Left", group = "Samwise")
 public class SamwiseDriveRouteDepotLeft extends SamwiseAutoDriveWithTensorflow90 {
 
     String route = "depot left";
