@@ -90,10 +90,10 @@ public class SamwiseCollectionTeleOp extends OpMode {
             cMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             cMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             cMotor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            
-        }
 
         }
+
+    }
 
 
     public void stop() {
