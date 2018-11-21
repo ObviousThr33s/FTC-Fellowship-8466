@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 
-@Autonomous(name = "Kyla v1.0 CraterRight", group = "Samwise")
+@Autonomous(name = "Kyla v1.1 CraterRight", group = "Samwise")
 public class SamwiseDriveRouteCraterRight extends SamwiseAutoDriveWithTensorflow90 {
 
     String route = "crater right";
@@ -20,13 +20,14 @@ public class SamwiseDriveRouteCraterRight extends SamwiseAutoDriveWithTensorflow
 
         waitForStart();
 
-        driveRouteCraterRight();
+        this.drive();
     }
 
-    private void driveRouteCraterRight() {
+    protected void drive() {
 
-        telemetry.addData(route, "starting");
-        telemetry.update();
+        //common drive defined by the parent
+        telemetryNow(route, "starting parent common drive ...");
+        super.drive();
 
         turnDrive(TurnDirection.RIGHT, 30.429725, 2);
         telemetry.addData(route, "finish first turn");
@@ -44,19 +45,19 @@ public class SamwiseDriveRouteCraterRight extends SamwiseAutoDriveWithTensorflow
         telemetry.addData(route, "finish fourth turn");
         telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -60,-60,10);
+        encoderDrive(DRIVE_SPEED, -59,-59,20);
         telemetry.addData(route, "finish fifth drive");
         telemetry.update();
 
-        turnDrive(TurnDirection.LEFT, 42, 3);
+        turnDrive(TurnDirection.LEFT, 48, 3);
         telemetry.addData(route, "finish sixth turn");
         telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -48,-48, 6);
+        encoderDrive(DRIVE_SPEED, -48,-48, 20);
         telemetry.addData(route, "finish seventh drive");
         telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, 64, 64,15);
+        encoderDrive(DRIVE_SPEED, 69, 69,20);
         telemetry.addData(route, "finish eighth drive");
         telemetry.update();
 

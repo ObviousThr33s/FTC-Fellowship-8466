@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
-
 @Autonomous(name = "Kyla v1.0 CraterLeft", group = "Samwise")
 public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDriveWithTensorflow90 {
 
@@ -20,13 +18,14 @@ public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDriveWithTensorflow9
 
         waitForStart();
 
-        driveRouteCraterLeft();
+        this.drive();
     }
 
-    private void driveRouteCraterLeft() {
+    protected void drive() {
 
-        telemetry.addData(route, "starting");
-        telemetry.update();
+        //common drive defined by the parent
+        telemetryNow(route, "starting parent common drive ...");
+        super.drive();
 
         turnDrive(TurnDirection.LEFT, 32.429725, 2);
         telemetry.addData(route, "finish first turn");
