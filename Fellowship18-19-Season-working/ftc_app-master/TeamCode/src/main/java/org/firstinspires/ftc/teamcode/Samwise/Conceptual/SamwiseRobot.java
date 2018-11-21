@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.Samwise.Conceptual;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.teamcode.AbstractConceptual.Robot;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.Sensors;
+import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
+import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
-<<<<<<< HEAD
 public class SamwiseRobot extends Robot {
 
     @Override
@@ -11,13 +14,23 @@ public class SamwiseRobot extends Robot {
         return null;
 
     }
-=======
-public class SamwiseRobot {
->>>>>>> parent of 5bd7e30... Merge branch 'master' of https://github.com/ObviousThr33s/FTC-Fellowship-8466
-
-    public HardwareMap hm;
 
 
+    @Override
+    public Sensors sensors() {
+        return null;
+    }
+
+    @Override
+    public DriveTrain driveTrain() {
+        return null;
+    }
+
+    @Override
+    public Vision vision() {
+        return null;
+    }
+    /*
     //Drive Train Motors
     public DcMotor leftDrive = null;
     public DcMotor rightDrive = null;
@@ -27,5 +40,5 @@ public class SamwiseRobot {
         leftDrive = hm.get(DcMotor.class, "left_drive");
         rightDrive = hm.get(DcMotor.class, "right_drive");
     }
-
+    */
 }
