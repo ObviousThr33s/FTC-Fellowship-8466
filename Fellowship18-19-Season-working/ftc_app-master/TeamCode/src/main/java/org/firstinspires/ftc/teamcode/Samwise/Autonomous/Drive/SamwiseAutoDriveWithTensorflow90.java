@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
+import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
@@ -35,6 +36,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
     /* Declare OpMode members. */
     SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
     Vision vis = new SamwiseVision();
+    SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -61,6 +63,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        md.init(hardwareMap);
 
         //initialize Vuforia
         //TODO
@@ -93,8 +96,10 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 //        telemetry.addData(">", "Press Play to start tracking");
 //        telemetry.update();
 
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
 //TODO: Remove this test code
         //turnDrive(TurnDirection.LEFT, 45, 10);
         //turnDrive(TurnDirection.RIGHT,45, 10);
@@ -152,11 +157,14 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 
 */
 
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
+        /**
+         * drive the specific route
+         */
+        drive();
 
+        telemetryNow("Autonomous", "Completed");
     }
-    
+
 
 
     protected void turnDrive( TurnDirection direction, double degrees, double timeout)
