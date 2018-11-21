@@ -37,11 +37,11 @@ public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDriveWithTensorflow9
         telemetry.addData(route, "finish third turn");
         telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -29,-29,3);
+        encoderDrive(DRIVE_SPEED, -31,-31,3);
         telemetry.addData(route, "finish fourth drive");
         telemetry.update();
 
-        turnDrive(TurnDirection.LEFT, 31, 3);
+        turnDrive(TurnDirection.LEFT, 35, 3);
         telemetry.addData(route, "finish fifth turn");
         telemetry.update();
 
