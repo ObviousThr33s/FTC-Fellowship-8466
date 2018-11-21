@@ -19,6 +19,7 @@ public class SamwiseHangerHardware extends LinearOpMode {
         hangermotor1 = ahwMap.dcMotor.get("hangermotor_1");
         hangerservo1 = ahwMap.servo.get("hangerservo_1");
     }
+
     public void runOpMode() {
 
             hangermotor1.setDirection(DcMotor.Direction.REVERSE);
