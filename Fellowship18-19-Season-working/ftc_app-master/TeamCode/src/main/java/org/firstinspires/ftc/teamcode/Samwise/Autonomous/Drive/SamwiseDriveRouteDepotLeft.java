@@ -10,15 +10,13 @@ public class SamwiseDriveRouteDepotLeft extends SamwiseAutoDriveWithTensorflow90
     @Override
     public void runOpMode()
     {
-        /*
-         * Initialize the drive system variables.
-         * The init() method of the hardware class does all the work here
+        /**
+         * call parent to start:
+         * 1. init
+         * 2. waitforStart
+         * 3. start drive
          */
-        robot.init(hardwareMap);
-
-        waitForStart();
-
-        this.drive();
+        super.runOpMode();
     }
 
     protected void drive() {
@@ -40,6 +38,7 @@ public class SamwiseDriveRouteDepotLeft extends SamwiseAutoDriveWithTensorflow90
         turnDrive(TurnDirection.RIGHT, 99, 3);
 
         //TODO: Drop Team Marker here
+        md.move(1);
 
         encoderDrive(DRIVE_SPEED,73,73, 5);
 

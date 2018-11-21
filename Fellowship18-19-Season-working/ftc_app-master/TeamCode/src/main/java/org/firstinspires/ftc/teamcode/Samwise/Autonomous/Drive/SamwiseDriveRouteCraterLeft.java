@@ -10,16 +10,14 @@ public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDriveWithTensorflow9
     @Override
     public void runOpMode()
     {
-        /*
-         * Initialize the drive system variables.
-         * The init() method of the hardware class does all the work here
+        /**
+         * call parent to start:
+         * 1. init
+         * 2. waitforStart
+         * 3. start drive
          */
-        robot.init(hardwareMap);
-
-        waitForStart();
-
-        this.drive();
-    }
+        super.runOpMode();
+}
 
     protected void drive() {
 
@@ -50,6 +48,8 @@ public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDriveWithTensorflow9
         encoderDrive(DRIVE_SPEED, -45,-45,5);
         telemetry.addData(route, "finish sixth drive");
         telemetry.update();
+
+        md.move(1);
 
         encoderDrive(DRIVE_SPEED, 64, 64,15);
         telemetry.addData(route, "finish seventh drive");
