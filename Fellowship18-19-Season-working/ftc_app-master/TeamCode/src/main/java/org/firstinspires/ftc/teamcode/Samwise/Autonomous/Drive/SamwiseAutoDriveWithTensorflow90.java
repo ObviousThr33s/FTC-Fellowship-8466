@@ -152,45 +152,12 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 
 */
 
-        this.depotLeft();
-
-//        encoderDrive(DRIVE_SPEED, 54,54,3);
         telemetry.addData("Path", "Complete");
         telemetry.update();
 
     }
+    
 
-    private void depotCenter()
-    {
-        encoderDrive(DRIVE_SPEED, 60,60,5);
-        turnDrive(TurnDirection.RIGHT,125,3);
-        //TODO: Drop Team Marker here
-        encoderDrive(DRIVE_SPEED, 70,70,5);
-
-    }
-
-    private void depotRight()
-    {
-        turnDrive(TurnDirection.RIGHT, 29, 3);
-        encoderDrive(DRIVE_SPEED, 30,30, 4);
-        turnDrive(TurnDirection.LEFT, 42.6684716, 3);
-        encoderDrive(DRIVE_SPEED, 30, 30, 4);
-        turnDrive(TurnDirection.RIGHT, 147.75, 3);
-        //TODO: Drop Team Marker here
-        encoderDrive(DRIVE_SPEED, 66, 66,5);
-    }
-
-    private void depotLeft()
-    {
-        turnDrive(TurnDirection.LEFT, 28, 3);
-        encoderDrive(DRIVE_SPEED,30, 30, 4);
-        turnDrive(TurnDirection.RIGHT,50,3);
-        encoderDrive(DRIVE_SPEED, 38,38,4);
-        turnDrive(TurnDirection.RIGHT, 99, 3);
-        //TODO: Drop Team Marker here
-        encoderDrive(DRIVE_SPEED,73,73, 5);
-
-    }
 
     protected void turnDrive( TurnDirection direction, double degrees, double timeout)
     {
@@ -300,5 +267,31 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         //        tfodParameters.minimumConfidence = 0.75;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+    }
+
+    /**
+     * Common drive for all routes:
+     * 1. Landing
+     * 2. Orientation identification
+     * 3. Gold mineral identification
+     *
+     * Routes (Sub classes) need to override this method for their own specific drives
+     */
+    protected void drive(){
+
+        // landing
+
+        // tensorflow for Orientation identification and Gold mineral identification
+
+    }
+
+    /**
+     * util to print on screen now
+     * @param name
+     * @param obj
+     */
+    protected void telemetryNow (String name, Object obj) {
+        telemetry.addData(name, obj);
+        telemetry.update();
     }
 }
