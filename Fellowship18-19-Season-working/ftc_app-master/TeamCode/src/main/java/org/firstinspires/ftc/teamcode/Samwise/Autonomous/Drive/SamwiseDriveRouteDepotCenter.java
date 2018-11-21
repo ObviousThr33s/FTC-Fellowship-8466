@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Kyla v1.0 CraterLeft", group = "Samwise")
+@Autonomous(name = "Depot Center", group = "Samwise")
 public class SamwiseDriveRouteDepotCenter extends SamwiseAutoDriveWithTensorflow90 {
 
     String route = "depot center";
@@ -10,15 +10,13 @@ public class SamwiseDriveRouteDepotCenter extends SamwiseAutoDriveWithTensorflow
     @Override
     public void runOpMode()
     {
-        /*
-         * Initialize the drive system variables.
-         * The init() method of the hardware class does all the work here
+        /**
+         * call parent to start:
+         * 1. init
+         * 2. waitforStart
+         * 3. start drive
          */
-        robot.init(hardwareMap);
-
-        waitForStart();
-
-        this.drive();
+        super.runOpMode();
     }
 
     protected void drive() {
@@ -32,6 +30,7 @@ public class SamwiseDriveRouteDepotCenter extends SamwiseAutoDriveWithTensorflow
         encoderDrive(DRIVE_SPEED, 60,60,5);
         turnDrive(TurnDirection.RIGHT,125,3);
         //TODO: Drop Team Marker here
+        md.move(1);
         encoderDrive(DRIVE_SPEED, 70,70,5);
 
     }
