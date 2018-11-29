@@ -7,6 +7,30 @@ public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDriveWithTensorflow9
 
     String route = "crater left";
 
+    SamwiseAutoDriveWithTensorflow90 parent;
+
+    public SamwiseDriveRouteCraterLeft(){
+        //default
+    }
+
+    /**
+     * Construct from parent class
+     * @param parent
+     */
+    public SamwiseDriveRouteCraterLeft(SamwiseAutoDriveWithTensorflow90 parent){
+        this.parent = parent;
+
+        this.robot = parent.robot;
+        this.md = parent.md;
+
+        this.telemetry = parent.telemetry;
+    }
+
+    @Override
+    protected boolean isOpModeActive(){
+        return parent.opModeIsActive();
+    }
+
     @Override
     public void runOpMode()
     {

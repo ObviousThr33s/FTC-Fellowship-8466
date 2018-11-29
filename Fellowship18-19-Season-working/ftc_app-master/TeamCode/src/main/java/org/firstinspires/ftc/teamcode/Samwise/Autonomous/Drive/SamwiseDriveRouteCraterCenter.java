@@ -7,6 +7,30 @@ public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDriveWithTensorflo
 
     String route = "crater center";
 
+    SamwiseAutoDriveWithTensorflow90 parent;
+
+    public SamwiseDriveRouteCraterCenter(){
+        //default
+    }
+
+    /**
+     * Construct from parent class
+     * @param parent
+     */
+    public SamwiseDriveRouteCraterCenter(SamwiseAutoDriveWithTensorflow90 parent){
+        this.parent = parent;
+
+        this.robot = parent.robot;
+        this.md = parent.md;
+
+        this.telemetry = parent.telemetry;
+    }
+
+    @Override
+    protected boolean isOpModeActive(){
+        return parent.opModeIsActive();
+    }
+
     @Override
     public void runOpMode()
     {
