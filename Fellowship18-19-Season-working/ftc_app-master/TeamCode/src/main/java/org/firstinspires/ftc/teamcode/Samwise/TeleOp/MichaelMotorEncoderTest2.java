@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-@TeleOp (name = "EncoderTestOfTheMichael7879")
-public class MichaelMotorEncoderTest extends OpMode {
+@TeleOp (name = "EncoderTestOfTheMichael1")
+public class MichaelMotorEncoderTest2 extends OpMode {
 
     private DcMotor testMotorEncoder1 = null;
     private DcMotor testMotorEncoder2 = null;
@@ -38,8 +38,8 @@ public class MichaelMotorEncoderTest extends OpMode {
     }
 
     public void loop() {
-        double theta = gamepad1.left_stick_y;
-        double phi = Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180;
+        double theta = gamepad1.left_stick_y * 1000;
+        double phi = (Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180) * 100;
         testMotorEncoder3.setTargetPosition(750);
         testMotorEncoder1.setTargetPosition((int)750);
         testMotorEncoder2.setTargetPosition((int)750);
