@@ -38,11 +38,17 @@ public class MichaelMotorEncoderTest2 extends OpMode {
     }
 
     public void loop() {
-        double theta = gamepad1.left_stick_y * 1000;
+        /*double theta = gamepad1.left_stick_y * 1000;
         double phi = (Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180) * 100;
         testMotorEncoder3.setTargetPosition(750);
-        testMotorEncoder1.setTargetPosition((int)750);
-        testMotorEncoder2.setTargetPosition((int)750);
+        testMotorEncoder1.setTargetPosition((int)theta);
+        testMotorEncoder2.setTargetPosition((int)phi); */
+        double theta = gamepad1.left_stick_y * 100;
+        double phi = Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180;
+
+        testMotorEncoder1.setTargetPosition((int)theta);
+        testMotorEncoder2.setTargetPosition((int)phi);
+        testMotorEncoder3.setTargetPosition(750);
 
         testMotorEncoder1.setPower(0.8);
         testMotorEncoder1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
