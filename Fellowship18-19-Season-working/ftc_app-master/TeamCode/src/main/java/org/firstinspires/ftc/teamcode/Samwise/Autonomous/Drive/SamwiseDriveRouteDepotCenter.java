@@ -7,35 +7,11 @@ public class SamwiseDriveRouteDepotCenter extends SamwiseAutoDriveWithTensorflow
 
     String route = "depot center";
 
-    SamwiseAutoDriveWithTensorflow90 parent;
-
-    public SamwiseDriveRouteDepotCenter(){
-        //default
-    }
-
-    /**
-     * Construct from parent class
-     * @param parent
-     */
-    public SamwiseDriveRouteDepotCenter(SamwiseAutoDriveWithTensorflow90 parent){
-        this.parent = parent;
-
-        this.robot = parent.robot;
-        this.md = parent.md;
-
-        this.telemetry = parent.telemetry;
-    }
-
-    @Override
-    protected boolean isOpModeActive(){
-        return parent.opModeIsActive();
-    }
-
     @Override
     public void runOpMode()
     {
         /**
-         * call parent to start\
+         * call parent to start:
          * 1. init
          * 2. waitforStart
          * 3. start drive
@@ -46,8 +22,7 @@ public class SamwiseDriveRouteDepotCenter extends SamwiseAutoDriveWithTensorflow
     protected void drive() {
 
         //common drive defined by the parent
-        //telemetryNow(route, "starting parent common drive ...");
-        System.out.println("SamwiseDriveRouteDepotCenter "+route+" start driving ... ");
+        telemetryNow(route, "starting parent common drive ...");
         super.drive();
 
         // specific drive for this route
