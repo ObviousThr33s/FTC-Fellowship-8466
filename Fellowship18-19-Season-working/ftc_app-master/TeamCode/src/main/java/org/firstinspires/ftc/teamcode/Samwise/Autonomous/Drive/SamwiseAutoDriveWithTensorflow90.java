@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -15,7 +16,7 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
 import java.util.List;
 
-@Autonomous(name = "Samwise: Auto Drive with Tensorflow 90 View", group = "Samwise")
+@Autonomous(name = "AutoDrive v1: Auto Drive with Tensorflow 90 View", group = "Samwise")
 //@Disabled
 public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 {
@@ -53,66 +54,27 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         LEFT, RIGHT;
     }
 
+    /**
+     * Should be override by all subclasses
+     * @return
+     */
+    protected boolean isOpModeActive(){
+        return this.opModeIsActive();
+    }
 
     @Override
     public void runOpMode()
     {
-
-        /*
-         * Initialize the drive system variables.
-         * The init() method of the hardware class does all the work here
-         */
-        robot.init(hardwareMap);
-        md.init(hardwareMap);
-
-        //initialize Vuforia
-        //TODO
-//         initVuforia();
-
-        //initialize tensorflow object detector
-//        if (ClassFactory.getInstance().canCreateTFObjectDetector())
-//        {
-//            initTfod();
-//        }
-//        else
-//        {
-//            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-//        }
-//        // Send telemetry message to signify robot waiting;
-//        telemetry.addData("Status", "Resetting Encoders");    //
-//        telemetry.update();
-//
-//        robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
-//        robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-//        // Send telemetry message to indicate successful Encoder reset
-//        telemetry.addData("Path0", "Starting at %7d :%7d", robot.leftDrive.getCurrentPosition(), robot.rightDrive.getCurrentPosition());
-//        telemetry.update();
-//
-//        //tf
-//        telemetry.addData(">", "Press Play to start tracking");
-//        telemetry.update();
-
+        this.init(true);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-//TODO: Remove this test code
-        //turnDrive(TurnDirection.LEFT, 45, 10);
-        //turnDrive(TurnDirection.RIGHT,45, 10);
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        //0=Center, 1=Right -1=Left
-        //Find gold mineral position
-
-/*
+        //Find gold mineral position and identify crater or depot
         GoldPosition position = GoldPosition.UNKNOWN;
         boolean isCrater = false;
         //Activate object detector to get gold position, then shut it down
-        if (opModeIsActive() && tfod != null)
+        if (isOpModeActive() && tfod != null)
         {
             tfod.activate();
             position = GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_90);
@@ -125,46 +87,83 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         }
 
         System.out.println("This is the "+(isCrater?"Crater":"Depot"));
+        System.out.println("The Gold Position: "+position);
 
         //Sampling
-        if (!isCrater)
-        {
-            switch (position)
-            {
-                case RIGHT: //right
-                    encoderDrive(TURN_SPEED, -4.5, 4.5, 1);
-                    encoderDrive(DRIVE_SPEED, 30, 30, 2);
-                    encoderDrive(TURN_SPEED,   7, -7, 1.5);
-                    encoderDrive(DRIVE_SPEED,   30, 30, 2);
-                    encoderDrive(TURN_SPEED,30, 30, 3 );
-                    //TODO
-                    break;
-                case LEFT: //left
-                    encoderDrive(TURN_SPEED, 4.5, -4.5, 1);
-                    encoderDrive(DRIVE_SPEED, 30, 30, 2);
-                    encoderDrive(TURN_SPEED,   -7, 7, 1.5);
-                    encoderDrive(DRIVE_SPEED,   30, 30, 2);
-                    //TODO
-                    break;
-                case CENTER:  //center
-                default:
-                    encoderDrive(DRIVE_SPEED, 54, 54, 3);  // S1: Forward 47 Inches with 5 Sec timeout
-            }
-        }
-        //robot.leftClaw.set/Position(1.0);            // S4: Stop and close the claw.
-        //robot.rightClaw.setPosition(0.0);
-        sleep(1000);     // pause for servos to move
-
-*/
+        SamwiseAutoDriveWithTensorflow90 driveRoute = samplingRoute(position, isCrater);
 
         /**
          * drive the specific route
          */
-        drive();
+        driveRoute.drive();
 
         telemetryNow("Autonomous", "Completed");
     }
 
+    protected SamwiseAutoDriveWithTensorflow90 samplingRoute(GoldPosition position, boolean isCrater) {
+
+        SamwiseAutoDriveWithTensorflow90 driveRoute;
+        if (isCrater)
+        {
+            switch (position)
+            {
+                case RIGHT: //right
+                    driveRoute = new SamwiseDriveRouteCraterRight();
+                    break;
+                case LEFT: //left
+                    driveRoute = new SamwiseDriveRouteCraterLeft();
+                    break;
+                case CENTER:  //center
+                default:
+                    driveRoute = new SamwiseDriveRouteCraterCenter();
+            }
+        }
+        else {
+            switch (position)
+            {
+                case RIGHT: //right
+                    driveRoute = new SamwiseDriveRouteDepotRight();
+                    break;
+                case LEFT: //left
+                    driveRoute = new SamwiseDriveRouteDepotLeft();
+                    break;
+                case CENTER:  //center
+                default:
+                    driveRoute = new SamwiseDriveRouteDepotCenter(this);
+            }
+        }
+        return driveRoute;
+    }
+
+    /**
+     * init with and without tensorflow
+     * @param tf
+     */
+    protected void init(boolean tf) {
+        /*
+         * Initialize the drive system variables.
+         * The init() method of the hardware class does all the work here
+         */
+        robot.init(hardwareMap);
+        md.init(hardwareMap);
+
+        if(!tf){
+            return;
+        }
+
+        //initialize Vuforia
+        initVuforia();
+
+        //initialize tensorflow object detector
+        if (ClassFactory.getInstance().canCreateTFObjectDetector())
+        {
+            initTfod();
+        }
+        else
+        {
+            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        }
+    }
 
 
     protected void turnDrive( TurnDirection direction, double degrees, double timeout)
@@ -194,7 +193,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         int newRightTarget;
 
         // Ensure that the opmode is still active
-        if (opModeIsActive())
+        if (isOpModeActive())
         {
 //            robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //            robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -224,7 +223,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opModeIsActive() && (runtime.seconds() < timeoutS) && (robot.leftDrive.isBusy() && robot.rightDrive.isBusy()))
+            while (isOpModeActive() && (runtime.seconds() < timeoutS) && (robot.leftDrive.isBusy() && robot.rightDrive.isBusy()))
             {
 
                 // Display it for the driver.
@@ -269,10 +268,10 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
      */
     private void initTfod()
     {
-        int                         tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters    = new TFObjectDetector.Parameters(tfodMonitorViewId);
         //TODO: Adjust confidence value
-        //        tfodParameters.minimumConfidence = 0.75;
+        //tfodParameters.minimumConfidence = 0.75;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }

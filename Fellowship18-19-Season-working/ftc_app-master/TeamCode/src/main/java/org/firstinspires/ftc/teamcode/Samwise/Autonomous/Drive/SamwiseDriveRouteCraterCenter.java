@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Kyla v1.0 CraterCenter", group = "Samwise")
+@Autonomous(name = "Kyla v2.0 CraterCenter", group = "Samwise")
 public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDriveWithTensorflow90 {
 
     String route = "crater center";
@@ -16,7 +16,13 @@ public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDriveWithTensorflo
          * 2. waitforStart
          * 3. start drive
          */
-        super.runOpMode();
+        init(false);
+
+        waitForStart();
+
+        drive();
+
+        //super.runOpMode();
     }
 
     protected void drive() {

@@ -22,6 +22,8 @@ public class SamwiseMarkerDeposit {
 
         servo9 = ahwmap.servo.get("marker");
 
+        System.out.println("SamwiseMarkerDeposit.init : initialized");
+
         servo9.setDirection(direction);
 
     }
