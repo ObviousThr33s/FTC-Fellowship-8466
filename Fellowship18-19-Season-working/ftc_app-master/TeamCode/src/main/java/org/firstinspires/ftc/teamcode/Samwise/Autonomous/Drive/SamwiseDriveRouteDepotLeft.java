@@ -37,7 +37,6 @@ public class SamwiseDriveRouteDepotLeft extends SamwiseAutoDriveWithTensorflow90
 
         turnDrive(TurnDirection.RIGHT, 99, 3);
 
-        //TODO: Drop Team Marker here
         md.move(1);
 
         encoderDrive(DRIVE_SPEED,73,73, 5);
