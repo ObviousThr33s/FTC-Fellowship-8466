@@ -100,32 +100,42 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         telemetryNow("Autonomous", "Completed");
     }
 
+    /**
+     * select sampling drive route
+     * @param position
+     * @param isCrater
+     * @return
+     */
     protected SamwiseAutoDriveWithTensorflow90 samplingRoute(GoldPosition position, boolean isCrater) {
 
         SamwiseAutoDriveWithTensorflow90 driveRoute;
+
+        /**
+         * todo: externalize the routes
+         */
         if (isCrater)
         {
             switch (position)
             {
                 case RIGHT: //right
-                    driveRoute = new SamwiseDriveRouteCraterRight();
+                    driveRoute = new SamwiseDriveRouteCraterRight(this);
                     break;
                 case LEFT: //left
-                    driveRoute = new SamwiseDriveRouteCraterLeft();
+                    driveRoute = new SamwiseDriveRouteCraterLeft(this);
                     break;
                 case CENTER:  //center
                 default:
-                    driveRoute = new SamwiseDriveRouteCraterCenter();
+                    driveRoute = new SamwiseDriveRouteCraterCenter(this);
             }
         }
         else {
             switch (position)
             {
                 case RIGHT: //right
-                    driveRoute = new SamwiseDriveRouteDepotRight();
+                    driveRoute = new SamwiseDriveRouteDepotRight(this);
                     break;
                 case LEFT: //left
-                    driveRoute = new SamwiseDriveRouteDepotLeft();
+                    driveRoute = new SamwiseDriveRouteDepotLeft(this);
                     break;
                 case CENTER:  //center
                 default:
