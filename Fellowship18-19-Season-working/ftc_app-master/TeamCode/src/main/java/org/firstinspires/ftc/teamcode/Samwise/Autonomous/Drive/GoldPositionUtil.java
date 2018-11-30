@@ -80,7 +80,16 @@ class GoldPositionUtil
 
                         //TODO: Remove if too strict. Removing will lower the confidence level.
                         //consider valid only when recognition X is bigger than 0
+                        switch (camRotate)
+                        {
+                            case ROTATE_0:
+                                tempLeft = recognition.getLeft();
+                                break;
+                            case ROTATE_90:
                                 tempLeft = recognition.getTop();
+                                break;
+                            default:
+                        }
                         if (tempLeft < 0)
                         {
                             outOfBoundary = true;
@@ -98,7 +107,7 @@ class GoldPositionUtil
         int i = 1;
         for (Recognition recognition : nearestMinerals)
         {
-            System.out.println("recognition " + i++ + ": " + recognition.toString());
+            System.out.println("recognition " + i + ":" + recognition.toString());
         }
 
         if (nearestMinerals.size() == 3)
@@ -110,7 +119,16 @@ class GoldPositionUtil
             for (Recognition recognition : nearestMinerals)
             {
                 //get each left
+                switch (camRotate)
+                {
+                    case ROTATE_0:
+                        tempLeft = recognition.getLeft();
+                        break;
+                    case ROTATE_90:
                         tempLeft = recognition.getTop();
+                        break;
+                    default:
+                }
 
                 if (recognition.getLabel().equals(LABEL_GOLD_MINERAL))
                 {
@@ -132,13 +150,13 @@ class GoldPositionUtil
             System.out.println("goldMineralX: " + goldMineralX + "; silverMineral1X: " + silverMineral1X + "; silverMineral2X: " + silverMineral2X);
             if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X)
             {
-                        result = GoldPosition.RIGHT;
-                        System.out.println("Gold Mineral Position: Right");
+                        result = GoldPosition.LEFT;
+                        System.out.println("Gold Mineral Position: Left");
             }
             else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X)
             {
-                        result = GoldPosition.LEFT;
-                        System.out.println("Gold Mineral Position: Left");
+                        result = GoldPosition.RIGHT;
+                        System.out.println("Gold Mineral Position: Right");
             }
             else
             {
@@ -164,20 +182,48 @@ class GoldPositionUtil
         // save the diameter of this nearest mineral
         float nearestMineralDiameter = 0;
         float nearestMineralBottom = 0;
+        switch (camRotate)
+        {
+            case ROTATE_0:
+                nearestMineralBottom = recognitions.get(0).getBottom();
+                nearestMineralDiameter = recognitions.get(0).getBottom()-recognitions.get(0).getTop();
+                break;
+            case ROTATE_90:
                 nearestMineralBottom = recognitions.get(0).getRight();
                 nearestMineralDiameter = recognitions.get(0).getRight()-recognitions.get(0).getLeft();
+                break;
+        }
         float tempBottom = 0;
         for (Recognition recognition: recognitions)
         {
-//            System.out.println("Raw mineral: "+recognition);
             if (recognition.getLabel().equals(LABEL_GOLD_MINERAL) || recognition.getLabel().equals(LABEL_SILVER_MINERAL))
             {
+                switch (camRotate)
+                {
+                    case ROTATE_0:
+                        tempBottom = recognition.getBottom();
+                        break;
+                    case ROTATE_90:
                         tempBottom = recognition.getRight();
+                        break;
+                }
+                switch (camRotate)
+                {
+                    case ROTATE_0:
                         if (nearestMineralBottom < tempBottom)
+                        {
+                            nearestMineralBottom = tempBottom;
+                            nearestMineralDiameter = recognition.getBottom()-recognition.getTop();
+                        }
+                        break;
+                    case ROTATE_90:
+                        if (nearestMineralBottom > tempBottom)
                         {
                             nearestMineralBottom = tempBottom;
                             nearestMineralDiameter = recognition.getRight()-recognition.getLeft();
                         }
+                }
+
             }
         }
 
@@ -188,7 +234,15 @@ class GoldPositionUtil
         //Giving room of twice the diameter of the nearest mineral
         for (Recognition recognition: recognitions)
         {
+            switch (camRotate)
+            {
+                case ROTATE_0:
+                    tempBottom = recognition.getBottom();
+                    break;
+                case ROTATE_90:
                     tempBottom = recognition.getRight();
+                    break;
+            }
 
            if ( Math.abs(nearestMineralBottom-tempBottom) < (2*nearestMineralDiameter))
             {
