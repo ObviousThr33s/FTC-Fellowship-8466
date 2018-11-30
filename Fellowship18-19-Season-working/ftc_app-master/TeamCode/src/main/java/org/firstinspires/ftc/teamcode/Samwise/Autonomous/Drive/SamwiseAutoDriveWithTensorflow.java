@@ -1,55 +1,19 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import android.graphics.Camera;
-import android.hardware.Camera.CameraInfo;
-import 	android.hardware.camera2.CameraManager;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
-import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
+import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
 import java.util.List;
-
-/**
- * This file illustrates the concept of driving a path based on encoder counts.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
- * <p>
- * The code REQUIRES that you DO have encoders on the wheels,
- * otherwise you would use: PushbotAutoDriveByTime;
- * <p>
- * This code ALSO requires that the drive Motors have been configured such that a positive
- * power command moves them forwards, and causes the encoders to count UP.
- * <p>
- * The desired path in this example is:
- * - Drive forward for 48 inches
- * - Spin right for 12 Inches
- * - Drive Backwards for 24 inches
- * - Stop and close the claw.
- * <p>
- * The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
- * that performs the actual movement.
- * This methods assumes that each movement is relative to the last stopping place.
- * There are other ways to perform encoder based moves, but this method is probably the simplest.
- * This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
- * <p>
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
-//enum GoldPosition
-//{
-//    LEFT, CENTER, RIGHT, UNKNOWN;
-//}
 
 @Autonomous(name = "Samwise: Auto Drive with Tensorflow", group = "Samwise")
 //@Disabled
@@ -58,7 +22,6 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
-
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -71,28 +34,41 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
      */
     private TFObjectDetector tfod;
     /* Declare OpMode members. */ SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
-    Vision vis = new SamwiseVision();
+    SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
+    //TODO: this number may not work on different field. Should use IMU to help
+    static final double COUNTS_PER_MOTOR_REV = 482;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED = 0.6;
     static final double TURN_SPEED = 0.5;
+    static final double INCHES_PER_DEGREE = 0.1640556;
+
+
+    BNO055IMU imu;
+
+    enum TurnDirection
+    {
+        LEFT, RIGHT;
+    }
+
 
     @Override
     public void runOpMode()
     {
-
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        md.init(hardwareMap);
+        this.initIMU();
 
         //initialize Vuforia
+        //TODO
         initVuforia();
 
         //initialize tensorflow object detector
@@ -122,59 +98,177 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
 
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //TODO: Remove this test drive
-        encoderDrive(DRIVE_SPEED, 10, 10, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
-        encoderDrive(TURN_SPEED, -1.5, 1.5, 1);
-        encoderDrive(DRIVE_SPEED, 10, 10, 1);
 
-        //Activate object detector to get gold position, then shut it down
+        //Find gold mineral position
         GoldPosition position = GoldPosition.UNKNOWN;
         boolean isCrater = false;
-//        if (opModeIsActive() && tfod != null)
-//        {
-//            tfod.activate();
-//            position =GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_0);
-//            isCrater = CraterDepotUtil.getInstance().isCrater(tfod);
-//            tfod.deactivate();
-//            tfod.shutdown();
-//        }
-
-        System.out.println("This is the "+(isCrater? "Crater":"Depot"));
-
-        //Sampling
-        switch (position)
+        //Activate object detector to get gold position, then shut it down
+        if (opModeIsActive() && tfod != null)
         {
-            case RIGHT: //right
-                encoderDrive(DRIVE_SPEED, 10, 10, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, -1.5, 1.5, 1);
-                encoderDrive(DRIVE_SPEED, 10, 10, 1);
-                //encoderDrive(TURN_SPEED,   1, -1, 1.5);
-                //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
-                //TODO
-                break;
-            case LEFT: //left
-                encoderDrive(DRIVE_SPEED, 10, 10, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
-                encoderDrive(TURN_SPEED, 1.5, -1.5, 1);
-                encoderDrive(DRIVE_SPEED, 10, 10, 1);
-                //encoderDrive(TURN_SPEED,   -1, 1, 1.5);
-                //encoderDrive(DRIVE_SPEED,   0.6, 0.6, 1.5);
-                //TODO
-                break;
-            case CENTER:  //center
-            default:
-                encoderDrive(DRIVE_SPEED, 20, 20, 3);  // S1: Forward 47 Inches with 5 Sec timeout
+            tfod.activate();
+            position = GoldPositionUtil.getInstance().getGoldPosition(tfod, CameraOrientation.ROTATE_90);
+            isCrater = CraterDepotUtil.getInstance().isCrater(tfod);
+            telemetry.addData("Gold Position:", position);
+            telemetry.addData("isCrater:", isCrater);
+            RobotLog.a("Gold Position:" + position);
+            RobotLog.a("isCrater:" + isCrater);
+            telemetry.update();
+            tfod.deactivate();
+            tfod.shutdown();
         }
 
-        //robot.leftClaw.set/Position(1.0);            // S4: Stop and close the claw.
-        //robot.rightClaw.setPosition(0.0);
-        sleep(1000);     // pause for servos to move
+        System.out.println("This is the " + (isCrater ? "Crater" : "Depot"));
 
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
+        //TODO: REMOVE testMoveIMU()
+        this.testMoveIMU();
 
+        //drive
+        this.drive(isCrater, position);
+    }
+
+    private void initIMU()
+    {
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
+
+        // make sure the imu gyro is calibrated before continuing.
+        while (!isStopRequested() && !imu.isGyroCalibrated())
+        {
+            sleep(50);
+            idle();
+        }
+    }
+    private void testMoveIMU()
+    {
+
+    }
+
+    /**
+     * Autonomous drive
+     *
+     * @param isCrater
+     * @param position
+     */
+    private void drive(boolean isCrater, GoldPosition position)
+    {
+        //Sampling
+        if (isCrater)  //crater
+        {
+            switch (position)
+            {
+                case RIGHT: //right
+                    turnDrive(30.429725, 2);
+                    encoderDrive(DRIVE_SPEED, 28, 28, 5);
+                    encoderDrive(DRIVE_SPEED, -8, -8, 4);
+                    turnDrive(65, 5);
+                    encoderDrive(DRIVE_SPEED, -59, -59, 20);
+                    turnDrive(-48, 3);
+                    encoderDrive(DRIVE_SPEED, -48, -48, 20);
+
+                    md.move(1);
+
+                    encoderDrive(DRIVE_SPEED, 69, 69, 20);
+                    break;
+                case LEFT: //left
+                    turnDrive(-32.429725, 2);
+                    encoderDrive(DRIVE_SPEED, 28, 28, 3);
+                    turnDrive(-120, 3);
+                    encoderDrive(DRIVE_SPEED, -29, -29, 3);
+                    turnDrive(-31, 3);
+                    encoderDrive(DRIVE_SPEED, -45, -45, 5);
+
+                    md.move(1);
+
+                    encoderDrive(DRIVE_SPEED, 64, 64, 15);
+                    break;
+                case CENTER:  //depot
+                default:
+                    encoderDrive(DRIVE_SPEED, 26, 26, 5);
+                    encoderDrive(DRIVE_SPEED, -8, -8, 4);
+                    turnDrive(65, 5);
+                    encoderDrive(DRIVE_SPEED, -39, -39, 20);
+                    turnDrive(-48, 3);
+                    encoderDrive(DRIVE_SPEED, -48, -48, 20);
+
+                    md.move(1);
+
+                    encoderDrive(DRIVE_SPEED, 69, 69, 20);
+            }
+        }
+        else        //depot
+        {
+            switch (position)
+            {
+                case RIGHT: //right
+                    turnDrive(31, 3);
+                    encoderDrive(DRIVE_SPEED, 30, 30, 4);
+                    turnDrive(-44, 3);
+                    encoderDrive(DRIVE_SPEED, 24, 28, 4);
+                    turnDrive(147, 3);
+                    encoderDrive(DRIVE_SPEED, -6, -6, 2);
+
+                    md.move(1);
+
+                    encoderDrive(DRIVE_SPEED, 38, 38, 2);
+                    turnDrive(55, 3);
+                    encoderDrive(DRIVE_SPEED, 66, 66, 5);
+                    turnDrive(-20, 3);
+                    encoderDrive(DRIVE_SPEED, 27, 27, 2);
+                    break;
+                case LEFT: //left
+                    turnDrive(-31, 3);
+                    encoderDrive(DRIVE_SPEED, 30, 30, 4);
+                    turnDrive(48, 3);
+                    encoderDrive(DRIVE_SPEED, 34, 34, 4);
+                    turnDrive(110, 3);
+
+                    md.move(1);
+
+                    encoderDrive(DRIVE_SPEED, 33, 33, 2);
+                    turnDrive(55, 3);
+                    encoderDrive(DRIVE_SPEED, 73, 73, 6);
+                    turnDrive(-30, 3);
+                    encoderDrive(DRIVE_SPEED, 27, 27, 3);
+                    break;
+                case CENTER:  //center
+                default:
+                    encoderDrive(DRIVE_SPEED, 57, 57, 5);
+                    turnDrive(124, 3);
+
+                    md.move(1);
+
+                    encoderDrive(DRIVE_SPEED, 45, 45, 3);
+                    turnDrive(55, 2);
+                    encoderDrive(DRIVE_SPEED, 60, 25, 2);
+                    turnDrive(-20, 3);
+                    encoderDrive(DRIVE_SPEED, 27, 27, 2);
+            }
+        }
+    }
+
+    /**
+     * @param degrees Positive for turning RIGHT, negative for turning LEFT.
+     * @param timeout
+     */
+    protected void turnDrive(double degrees, double timeout)
+    {
+        double inches = INCHES_PER_DEGREE * degrees;
+        encoderDrive(TURN_SPEED, -inches, inches, timeout);
     }
 
     /*
@@ -193,7 +287,6 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
         // Ensure that the opmode is still active
         if (opModeIsActive())
         {
-
             // Determine new target position, and pass to motor controller
             newLeftTarget = robot.leftDrive.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
             newRightTarget = robot.rightDrive.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
@@ -263,7 +356,7 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
         int                         tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters    = new TFObjectDetector.Parameters(tfodMonitorViewId);
         //TODO: Adjust confidence value
-//        tfodParameters.minimumConfidence = 0.75;
+        //        tfodParameters.minimumConfidence = 0.75;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
