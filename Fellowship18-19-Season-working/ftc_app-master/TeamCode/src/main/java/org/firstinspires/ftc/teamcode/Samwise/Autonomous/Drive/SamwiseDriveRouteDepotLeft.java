@@ -7,30 +7,6 @@ public class SamwiseDriveRouteDepotLeft extends SamwiseAutoDriveWithTensorflow90
 
     String route = "depot left";
 
-    SamwiseAutoDriveWithTensorflow90 parent;
-
-    public SamwiseDriveRouteDepotLeft(){
-        //default
-    }
-
-    /**
-     * Construct from parent class
-     * @param parent
-     */
-    public SamwiseDriveRouteDepotLeft(SamwiseAutoDriveWithTensorflow90 parent){
-        this.parent = parent;
-
-        this.robot = parent.robot;
-        this.md = parent.md;
-
-        this.telemetry = parent.telemetry;
-    }
-
-    @Override
-    protected boolean isOpModeActive(){
-        return parent.opModeIsActive();
-    }
-
     @Override
     public void runOpMode()
     {
@@ -61,6 +37,7 @@ public class SamwiseDriveRouteDepotLeft extends SamwiseAutoDriveWithTensorflow90
 
         turnDrive(TurnDirection.RIGHT, 99, 3);
 
+        //TODO: Drop Team Marker here
         md.move(1);
 
         encoderDrive(DRIVE_SPEED,73,73, 5);

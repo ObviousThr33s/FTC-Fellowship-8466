@@ -7,30 +7,6 @@ public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDriveWithTensorflow9
 
     String route = "crater left";
 
-    SamwiseAutoDriveWithTensorflow90 parent;
-
-    public SamwiseDriveRouteCraterLeft(){
-        //default
-    }
-
-    /**
-     * Construct from parent class
-     * @param parent
-     */
-    public SamwiseDriveRouteCraterLeft(SamwiseAutoDriveWithTensorflow90 parent){
-        this.parent = parent;
-
-        this.robot = parent.robot;
-        this.md = parent.md;
-
-        this.telemetry = parent.telemetry;
-    }
-
-    @Override
-    protected boolean isOpModeActive(){
-        return parent.opModeIsActive();
-    }
-
     @Override
     public void runOpMode()
     {
@@ -46,32 +22,32 @@ public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDriveWithTensorflow9
     protected void drive() {
 
         //common drive defined by the parent
-        //telemetryNow(route, "starting parent common drive ...");
+        telemetryNow(route, "starting parent common drive ...");
         super.drive();
 
         turnDrive(TurnDirection.LEFT, 32.429725, 2);
         telemetry.addData(route, "finish first turn");
-        //telemetry.update();
+        telemetry.update();
 
         encoderDrive(DRIVE_SPEED, 28, 28, 3);
         telemetry.addData(route, "finish second drive");
-        //telemetry.update();
+        telemetry.update();
 
         turnDrive(TurnDirection.RIGHT, 120, 3);
         telemetry.addData(route, "finish third turn");
-        //telemetry.update();
+        telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -31,-31,3);
+        encoderDrive(DRIVE_SPEED, -29,-29,3);
         telemetry.addData(route, "finish fourth drive");
-        //telemetry.update();
+        telemetry.update();
 
-        turnDrive(TurnDirection.LEFT, 35, 3);
+        turnDrive(TurnDirection.LEFT, 31, 3);
         telemetry.addData(route, "finish fifth turn");
-        //telemetry.update();
+        telemetry.update();
 
         encoderDrive(DRIVE_SPEED, -45,-45,5);
         telemetry.addData(route, "finish sixth drive");
-        //telemetry.update();
+        telemetry.update();
 
         md.move(1);
 

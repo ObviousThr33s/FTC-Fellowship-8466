@@ -2,51 +2,23 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Kyla v2.0 CraterCenter", group = "Samwise")
+@Autonomous(name = "Kyla v1.0 CraterCenter", group = "Samwise")
 public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDriveWithTensorflow90 {
 
     String route = "crater center";
 
-    SamwiseAutoDriveWithTensorflow90 parent;
-
-    public SamwiseDriveRouteCraterCenter(){
-        //default
-    }
-
-    /**
-     * Construct from parent class
-     * @param parent
-     */
-    public SamwiseDriveRouteCraterCenter(SamwiseAutoDriveWithTensorflow90 parent){
-        this.parent = parent;
-
-        this.robot = parent.robot;
-        this.md = parent.md;
-
-        this.telemetry = parent.telemetry;
-    }
-
-    @Override
-    protected boolean isOpModeActive(){
-        return parent.opModeIsActive();
-    }
-
     @Override
     public void runOpMode()
     {
-        /**
-         * call parent to start:
-         * 1. init
-         * 2. waitforStart
-         * 3. start drive
+        /*
+         * Initialize the drive system variables.
+         * The init() method of the hardware class does all the work here
          */
-        init(false);
+        robot.init(hardwareMap);
 
         waitForStart();
 
-        drive();
-
-        //super.runOpMode();
+        this.drive();
     }
 
     protected void drive() {
@@ -55,31 +27,29 @@ public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDriveWithTensorflo
         telemetryNow(route, "starting parent common drive ...");
         super.drive();
 
-        encoderDrive(DRIVE_SPEED, 22, 22, 5);
+        encoderDrive(DRIVE_SPEED, 26, 26, 5);
         telemetry.addData(route, "finish second drive");
-        //telemetry.update();
+        telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -8, -7, 4);
+        encoderDrive(DRIVE_SPEED, -8, -8, 4);
         telemetry.addData(route, "finish third drive");
-        //telemetry.update();
+        telemetry.update();
 
-        turnDrive(TurnDirection.RIGHT, 90, 5);
+        turnDrive(TurnDirection.RIGHT, 65, 5);
         telemetry.addData(route, "finish fourth turn");
-        //telemetry.update();
+        telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -45,-45,20);
+        encoderDrive(DRIVE_SPEED, -39,-39,20);
         telemetry.addData(route, "finish fifth drive");
-        //telemetry.update();
+        telemetry.update();
 
-        turnDrive(TurnDirection.LEFT, 46.5, 3);
+        turnDrive(TurnDirection.LEFT, 48, 3);
         telemetry.addData(route, "finish sixth turn");
-        //telemetry.update();
+        telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -49,-49, 20);
+        encoderDrive(DRIVE_SPEED, -48,-48, 20);
         telemetry.addData(route, "finish seventh drive");
-        //telemetry.update();
-
-        md.move(1);
+        telemetry.update();
 
         encoderDrive(DRIVE_SPEED, 69, 69,20);
         telemetry.addData(route, "finish eighth drive");
