@@ -7,6 +7,30 @@ public class SamwiseDriveRouteDepotRight extends SamwiseAutoDriveWithTensorflow9
 
     String route = "depot right";
 
+    SamwiseAutoDriveWithTensorflow90 parent;
+
+    public SamwiseDriveRouteDepotRight(){
+        //default
+    }
+
+    /**
+     * Construct from parent class
+     * @param parent
+     */
+    public SamwiseDriveRouteDepotRight(SamwiseAutoDriveWithTensorflow90 parent){
+        this.parent = parent;
+
+        this.robot = parent.robot;
+        this.md = parent.md;
+
+        this.telemetry = parent.telemetry;
+    }
+
+    @Override
+    protected boolean isOpModeActive(){
+        return parent.opModeIsActive();
+    }
+
     @Override
     public void runOpMode()
     {

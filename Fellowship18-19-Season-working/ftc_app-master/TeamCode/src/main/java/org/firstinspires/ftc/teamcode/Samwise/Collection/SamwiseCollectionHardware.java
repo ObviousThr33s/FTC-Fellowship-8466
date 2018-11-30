@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-/*public class SamwiseCollectionHardware {
+public class SamwiseCollectionHardware {
 
     public DcMotor motor1 = null;
     public DcMotor motor2 = null;
@@ -35,5 +35,34 @@ import com.qualcomm.robotcore.hardware.Servo;
         servo3 = ahwMap.servo.get("servo_3");
     }
 
+    enum armMovement{
+        FORWARD,
+        BACKWARD
+    }
+
+    enum graberState{
+        OPEN,
+        CLOSED
+    }
+
+    public void move(armMovement direction, double distance){
+        if(direction == armMovement.FORWARD){
+            //Set motor powers to move indicated distance
+        }
+        if(direction == armMovement.BACKWARD){
+            //Set motor powers to move indicated distance
+        }
+    }
+
+    public void grab(graberState state){
+        if(state == graberState.OPEN){
+            //Move motor 4 (needs verification) forward/backward
+        }
+        if(state == graberState.CLOSED){
+            //Move motor 4 (needs verification) backward/forawad
+        }
+    }
+
+
+
 }
-*/
