@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import java.util.List;
 
 @Autonomous(name = "AutoDrive v2: Auto Drive with Tensorflow 90 View", group = "Samwise")
-//@Disabled
+@Disabled
 public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";

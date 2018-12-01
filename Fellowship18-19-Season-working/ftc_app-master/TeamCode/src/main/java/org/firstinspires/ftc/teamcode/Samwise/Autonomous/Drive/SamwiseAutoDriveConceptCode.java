@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -37,7 +38,7 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.*;
  */
 
 @Autonomous(name="Samwise: Auto Drive", group="Samwise")
-//@Disabled
+@Disabled
 public class SamwiseAutoDriveConceptCode extends LinearOpMode {
 
     /* Declare OpMode members. */

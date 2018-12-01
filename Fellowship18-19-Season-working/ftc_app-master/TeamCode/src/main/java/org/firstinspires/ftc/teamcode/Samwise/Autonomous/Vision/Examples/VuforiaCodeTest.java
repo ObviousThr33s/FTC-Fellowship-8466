@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
+package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.Examples;
 
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.Examples.ConceptVuforiaNavRoverRuckus;
 

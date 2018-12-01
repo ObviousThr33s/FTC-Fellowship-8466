@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "Kyla v2.0 CraterCenter", group = "Samwise")
+@Disabled
 public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDrive {
 
     String route = "crater center";
