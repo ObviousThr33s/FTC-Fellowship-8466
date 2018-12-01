@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
 import java.util.List;
 
-@Autonomous(name = "AutoDrive v1: Auto Drive with Tensorflow 90 View", group = "Samwise")
+@Autonomous(name = "AutoDrive v2: Auto Drive with Tensorflow 90 View", group = "Samwise")
 //@Disabled
 public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
 {
@@ -90,12 +90,12 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         System.out.println("The Gold Position: "+position);
 
         //Sampling
-        SamwiseAutoDriveWithTensorflow90 driveRoute = samplingRoute(position, isCrater);
+        //SamwiseAutoDriveWithTensorflow90 driveRoute = samplingRoute(position, isCrater);
 
         /**
          * drive the specific route
          */
-        driveRoute.drive();
+        //driveRoute.drive();
 
         telemetryNow("Autonomous", "Completed");
     }
@@ -106,13 +106,11 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
      * @param isCrater
      * @return
      */
+    /**
     protected SamwiseAutoDriveWithTensorflow90 samplingRoute(GoldPosition position, boolean isCrater) {
 
         SamwiseAutoDriveWithTensorflow90 driveRoute;
 
-        /**
-         * todo: externalize the routes
-         */
         if (isCrater)
         {
             switch (position)
@@ -144,6 +142,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         }
         return driveRoute;
     }
+    **/
 
     /**
      * init with and without tensorflow
@@ -281,7 +280,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters    = new TFObjectDetector.Parameters(tfodMonitorViewId);
         //TODO: Adjust confidence value
-        //tfodParameters.minimumConfidence = 0.75;
+        tfodParameters.minimumConfidence = 0.8;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }

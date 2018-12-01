@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 
 @Autonomous(name = "Kyla v1.1 CraterRight", group = "Samwise")
-public class SamwiseDriveRouteCraterRight extends SamwiseAutoDriveWithTensorflow90 {
+public class SamwiseDriveRouteCraterRight extends SamwiseAutoDrive {
 
     String route = "crater right";
 
-    SamwiseAutoDriveWithTensorflow90 parent;
+    SamwiseAutoDrive parent;
 
     public SamwiseDriveRouteCraterRight(){
         //default
@@ -19,7 +19,7 @@ public class SamwiseDriveRouteCraterRight extends SamwiseAutoDriveWithTensorflow
      * Construct from parent class
      * @param parent
      */
-    public SamwiseDriveRouteCraterRight(SamwiseAutoDriveWithTensorflow90 parent){
+    public SamwiseDriveRouteCraterRight(SamwiseAutoDrive parent){
         this.parent = parent;
 
         this.robot = parent.robot;
