@@ -34,10 +34,12 @@ public class SamwiseHangerHardware {
             default: {
                 hangerservo1.setPosition(0.0);
                 hook = 2;
+                telemetry.addLine("Stopped  1");
             }
             case 2: {
                 hangerservo1.setPosition(1);
                 hook = 1;
+                telemetry.addLine("Stopped   2");
             }
         }
     }
@@ -48,20 +50,22 @@ public class SamwiseHangerHardware {
 
                 hangermotor1.setTargetPosition(1);
 
-                hangermotor1.setPower(0.00000000025);
+                hangermotor1.setPower(0.25);
 
                 hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide = 2;
+                telemetry.addLine("Stopped   1");
             }
             case 2: {
                 hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
                 hangermotor1.setTargetPosition(0);
 
-                hangermotor1.setPower(-0.00000000025);
+                hangermotor1.setPower(-0.25);
 
                 hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 slide = 1;
+                telemetry.addLine("Stopped   2");
             }
         }
     }

@@ -41,6 +41,6 @@ public class SamwiseHangerTeleOp extends OpMode {
             movieboi.unHook();
             telemetry.addLine("Unhooked");
         }
-        telemetry.update();
+
     }
 }
