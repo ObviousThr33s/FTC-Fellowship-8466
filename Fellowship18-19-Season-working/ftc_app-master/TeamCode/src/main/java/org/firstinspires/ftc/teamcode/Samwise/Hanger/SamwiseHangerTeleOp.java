@@ -1,81 +1,46 @@
 package org.firstinspires.ftc.teamcode.Samwise.Hanger;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp(name = "HangerArmTeleOp")
 public class SamwiseHangerTeleOp extends OpMode {
 
-    public DcMotor hangermotor1 = null;
+    HardwareMap hw;
+    Telemetry t;
+    SamwiseHangerHardware movieboi;
 
-    public Servo hangerservo1 = null;
+    //these bad bois control the button pressing of the gamepad
+    boolean apressed, xpressed;
 
-    int hook = 1;
-    int slide = 1;
-
-    @Override
-    public void init() {
-        hangermotor1 = hardwareMap.dcMotor.get("hangermotor_1");
-        hangerservo1 = hardwareMap.servo.get("hangerservo_1");
-
-        telemetry.addData("Mode", "(Boron-Oxygen-Oxygen-Phosphorus Beryllium-Phosphorus) init time");
-        telemetry.update();
-
-        hangerservo1.setPosition(1);
-
-        hangermotor1.setDirection(DcMotor.Direction.REVERSE);
-
+    public SamwiseHangerTeleOp(HardwareMap hardwareMap, Telemetry telemetry) {
+        hw = hardwareMap;
+        t = telemetry;
     }
 
-    @Override
+    public void init() {
+        movieboi = new SamwiseHangerHardware(hw, t);
+    }
+
     public void loop() {
 
-        if(gamepad1.a) {
-            switch(hook) {
-                case 1: {
-                    hangerservo1.setPosition(0.0);
-                    hook++;
-                    telemetry.addData("Mode", "Beep boop Done");
-                    telemetry.update();
-                }
-                case 2: {
-                    hangerservo1.setPosition(1);
-                    hook--;
-                    telemetry.addData("Mode", "Beep boop Done");
-                    telemetry.update();
-                }
+        apressed = gamepad1.a;
+        xpressed = gamepad1.x;
 
-            }
+        //if the a button is pressed then is moves the hanger arm
+        if(apressed) {
+            telemetry.addLine("Moving...");
+            movieboi.moveDown();
+            telemetry.addLine("Stopped");
         }
-        if(gamepad1.x) {
-            switch(slide) {
-                case 1: {
-                    hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-                    hangermotor1.setTargetPosition(1);
-
-                    hangermotor1.setPower(0.00000000025);
-
-                    hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    slide++;
-                    telemetry.addData("Mode", "Beep boop Done");
-                    telemetry.update();
-                }
-                case 2: {
-                    hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-                    hangermotor1.setTargetPosition(0);
-
-                    hangermotor1.setPower(-0.00000000025);
-
-                    hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    slide--;
-                    telemetry.addData("Mode", "Beep boop Done");
-                    telemetry.update();
-                }
-            }
+        if(xpressed) {
+            telemetry.addLine("Unhooking");
+            movieboi.unHook();
+            telemetry.addLine("Unhooked");
         }
+        telemetry.update();
     }
 }

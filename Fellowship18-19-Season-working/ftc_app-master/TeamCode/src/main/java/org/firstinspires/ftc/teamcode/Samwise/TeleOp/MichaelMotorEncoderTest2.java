@@ -43,25 +43,22 @@ public class MichaelMotorEncoderTest2 extends OpMode {
         testMotorEncoder3.setTargetPosition(750);
         testMotorEncoder1.setTargetPosition((int)theta);
         testMotorEncoder2.setTargetPosition((int)phi); */
-        double theta = gamepad1.left_stick_y * 100;
-        double phi = Math.toDegrees(Math.acos( (H + L1*Math.cos(Math.toRadians(180 - theta)))/L2)- theta + 180);
 
-        testMotorEncoder1.setTargetPosition((int)theta);
-        testMotorEncoder2.setTargetPosition((int)phi);
-        testMotorEncoder3.setTargetPosition(750);
+            double theta = gamepad1.left_stick_y * 100;
+            double phi = Math.toDegrees(Math.acos((H + L1 * Math.cos(Math.toRadians(180 - theta))) / L2) - theta + 180);
+            System.out.println("Michael==> phi = " + phi);
+            float armTurnX = gamepad1.left_stick_x * 100;
+            testMotorEncoder1.setTargetPosition((int) theta);
+            testMotorEncoder2.setTargetPosition((int) phi);
+            testMotorEncoder3.setTargetPosition((int)armTurnX);
+            testMotorEncoder1.setPower(0.8);
+            testMotorEncoder1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            testMotorEncoder2.setPower(0.8);
+            testMotorEncoder2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            testMotorEncoder3.setPower(0.8);
+            testMotorEncoder3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        testMotorEncoder1.setPower(0.8);
-        testMotorEncoder1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        testMotorEncoder2.setPower(0.8);
-        testMotorEncoder2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        testMotorEncoder3.setPower(0.8);
-        testMotorEncoder3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        if (gamepad1.left_stick_y < 0.1) {
-            testMotorEncoder1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            testMotorEncoder2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            testMotorEncoder3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
 
     }
     public void stop() {
