@@ -88,12 +88,12 @@ public class SamwiseAutoDrive extends LinearOpMode {
         //System.out.println("This is the " + (isCrater ? "Crater" : "Depot"));
 
         //Sampling
-        //SamwiseAutoDrive driveRoute = samplingRoute(position, isCrater);
+        SamwiseAutoDrive driveRoute = samplingRoute(position, isCrater);
 
         /**
          * drive the specific route
          */
-        // driveRoute.drive();
+        driveRoute.drive();
 
         // telemetryNow("Autonomous", "Completed");
     }

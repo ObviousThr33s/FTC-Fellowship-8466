@@ -19,8 +19,9 @@ public class SamwiseVision extends Vision {
     /**
      * on screen distance btwn samples and camera. Must be calibrated!!!
      */
-    private final float sampleDistance = 120;
-    private final double ratio = 1.5;
+    private final float sampleDistance = 85;
+    private final double ratio = 1.6;
+    private final double confidence = 0.75;
 
     // private GoldPosition goldPos = GoldPosition.UNKNOWN;
     private boolean crater = false;
@@ -61,7 +62,7 @@ public class SamwiseVision extends Vision {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         //TODO: Adjust confidence value
-        tfodParameters.minimumConfidence = 0.8;
+        tfodParameters.minimumConfidence = confidence;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TfodRoverRuckus.TFOD_MODEL_ASSET, TfodRoverRuckus.LABEL_GOLD_MINERAL, TfodRoverRuckus.LABEL_SILVER_MINERAL);
 
@@ -118,10 +119,13 @@ public class SamwiseVision extends Vision {
         {
             updatedRecognitions = tfod.getUpdatedRecognitions();
 
+            System.out.println("==> minerals found :"+updatedRecognitions);
+
             // ONLY the middle and right side minerals shown in the camera view
             if (updatedRecognitions != null && updatedRecognitions.size() >= 2) {
                 samples = getSamples(updatedRecognitions); // getNearestMinerals(updatedRecognitions, camRotate);
             }
+            //idle();
         }
 
         if (samples == null) {

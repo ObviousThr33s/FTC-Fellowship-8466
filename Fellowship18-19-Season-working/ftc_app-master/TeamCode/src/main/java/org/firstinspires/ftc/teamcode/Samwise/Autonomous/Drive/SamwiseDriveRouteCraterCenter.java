@@ -54,15 +54,17 @@ public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDrive {
     protected void drive() {
 
         //common drive defined by the parent
-        telemetryNow(route, "starting parent common drive ...");
+        //telemetryNow(route, "starting parent common drive ...");
+        System.out.println("==>Driving route "+route);
+
         super.drive();
 
         encoderDrive(DRIVE_SPEED, 22, 22, 5);
-        telemetry.addData(route, "finish second drive");
+        //telemetry.addData(route, "finish second drive");
         //telemetry.update();
 
         encoderDrive(DRIVE_SPEED, -8, -7, 4);
-        telemetry.addData(route, "finish third drive");
+        //telemetry.addData(route, "finish third drive");
         //telemetry.update();
 
         turnDrive(TurnDirection.RIGHT, 90, 5);

@@ -51,6 +51,8 @@ public class SamwiseDriveRouteCraterRight extends SamwiseAutoDrive {
 
         //common drive defined by the parent
         //telemetryNow(route, "starting parent common drive ...");
+        System.out.println("==>Driving route "+route);
+
         super.drive();
 
         turnDrive(TurnDirection.RIGHT, 30.429725, 2);

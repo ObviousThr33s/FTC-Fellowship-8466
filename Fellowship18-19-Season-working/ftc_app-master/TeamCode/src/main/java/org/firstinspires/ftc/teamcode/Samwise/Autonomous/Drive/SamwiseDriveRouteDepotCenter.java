@@ -49,7 +49,8 @@ public class SamwiseDriveRouteDepotCenter extends SamwiseAutoDrive {
 
         //common drive defined by the parent
         //telemetryNow(route, "starting parent common drive ...");
-        System.out.println("SamwiseDriveRouteDepotCenter "+route+" start driving ... ");
+        System.out.println("==>Driving route "+route);
+
         super.drive();
 
         // specific drive for this route
