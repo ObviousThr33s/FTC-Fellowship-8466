@@ -132,10 +132,11 @@ public class SamwiseVision extends Vision {
             return GoldPosition.UNKNOWN;
         }
 
+        /** this detection is not reliable
         if (updatedRecognitions.size()>2) {
             // This is very very likely the crater side
             this.crater = true;
-        }
+        }**/
 
         //Sort samples from right to left
         Collections.sort(samples, new SortByBottom());
@@ -158,6 +159,10 @@ public class SamwiseVision extends Vision {
 
     public boolean isCrater() {
         return crater;
+    }
+
+    public void setCrater(boolean isCrater) {
+        this.crater = isCrater;
     }
 
     /**

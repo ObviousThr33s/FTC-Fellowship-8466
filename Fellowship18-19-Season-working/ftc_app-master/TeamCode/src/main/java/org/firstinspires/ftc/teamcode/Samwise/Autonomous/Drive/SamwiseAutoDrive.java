@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,8 +11,11 @@ import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
 @Autonomous(name = "SamwiseAutoDrive v1", group = "Samwise")
-//@Disabled
+@Disabled
 public class SamwiseAutoDrive extends LinearOpMode {
+
+    // this is set before the robot is initialized
+    protected boolean isCrater = false;
 
     /* Declare OpMode members. */
     SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
@@ -70,7 +74,6 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         //Find gold mineral position and identify crater or depot
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
-        boolean isCrater = false;
         //Activate object detector to get gold position, then shut it down
         if (isOpModeActive()) {
             vis.activate();
@@ -88,7 +91,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         //System.out.println("This is the " + (isCrater ? "Crater" : "Depot"));
 
         //Sampling
-        SamwiseAutoDrive driveRoute = samplingRoute(position, isCrater);
+        SamwiseAutoDrive driveRoute = samplingRoute(position);
 
         /**
          * drive the specific route
@@ -102,10 +105,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
      * select sampling drive route
      *
      * @param position
-     * @param isCrater
      * @return
      */
-    protected SamwiseAutoDrive samplingRoute(SamwiseVision.GoldPosition position, boolean isCrater) {
+    protected SamwiseAutoDrive samplingRoute(SamwiseVision.GoldPosition position) {
 
         SamwiseAutoDrive driveRoute = null;
 
