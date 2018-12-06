@@ -63,7 +63,7 @@ public class SamwiseDriveRouteDepotLeft extends SamwiseAutoDrive {
 
         encoderDrive(DRIVE_SPEED, 38,38,4);
 
-        turnDrive(TurnDirection.RIGHT, 99, 3);
+        turnDrive(TurnDirection.RIGHT, 107, 3);
 
         md.move(1);
 

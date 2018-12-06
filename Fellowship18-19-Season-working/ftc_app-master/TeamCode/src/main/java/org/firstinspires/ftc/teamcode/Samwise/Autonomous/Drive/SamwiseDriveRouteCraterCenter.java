@@ -71,11 +71,11 @@ public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDrive {
         telemetry.addData(route, "finish fourth turn");
         //telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -45,-45,20);
+        encoderDrive(DRIVE_SPEED, -49,-49,20);
         telemetry.addData(route, "finish fifth drive");
         //telemetry.update();
 
-        turnDrive(TurnDirection.LEFT, 46.5, 3);
+        turnDrive(TurnDirection.LEFT, 52 , 3);
         telemetry.addData(route, "finish sixth turn");
         //telemetry.update();
 
@@ -85,7 +85,7 @@ public class SamwiseDriveRouteCraterCenter extends SamwiseAutoDrive {
 
         md.move(1);
 
-        encoderDrive(DRIVE_SPEED, 69, 69,20);
+        encoderDrive(DRIVE_SPEED, 70, 70,20);
         telemetry.addData(route, "finish eighth drive");
         telemetry.update();
 

@@ -56,12 +56,17 @@ public class SamwiseDriveRouteDepotRight extends SamwiseAutoDrive {
         // specific drive for this route
 
         turnDrive(TurnDirection.RIGHT, 29, 3);
+
         encoderDrive(DRIVE_SPEED, 30,30, 4);
+
         turnDrive(TurnDirection.LEFT, 42.6684716, 3);
+
         encoderDrive(DRIVE_SPEED, 30, 30, 4);
+
         turnDrive(TurnDirection.RIGHT, 147.75, 3);
-        //TODO: Drop Team Marker here
+
         md.move(1);
+
         encoderDrive(DRIVE_SPEED, 66, 66,5);
     }
 
