@@ -7,19 +7,49 @@ import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMa
 
 @Autonomous(name = "Kyla v1.1 CraterRight", group = "Samwise")
 //@Disabled
-public class SamwiseDriveRouteCraterRight extends SamwiseDriveRouteTest {
+public class SamwiseDriveRouteCraterRight extends SamwiseAutoDrive {
 
     String route = "crater right";
 
+    SamwiseAutoDrive parent;
+
+
     /**
      * Construct from parent class
-     *
      * @param parent
      */
-    public SamwiseDriveRouteCraterRight(SamwiseAutoDrive parent)
-    {
-        super(parent);
+    public SamwiseDriveRouteCraterRight(SamwiseAutoDrive parent){
+        this.parent = parent;
+
+        this.robot = parent.robot;
+        this.md = parent.md;
+
+        this.telemetry = parent.telemetry;
     }
+
+    @Override
+    protected boolean isOpModeActive(){
+        return parent.opModeIsActive();
+    }
+
+    @Override
+    public void runOpMode()
+    {
+        /**
+         * call parent to start:
+         * 1. init
+         * 2. waitforStart
+         * 3. start drive
+         */
+        init(false);
+
+        waitForStart();
+
+        drive();
+
+        //super.runOpMode();
+    }
+
 
     protected void drive() {
 
