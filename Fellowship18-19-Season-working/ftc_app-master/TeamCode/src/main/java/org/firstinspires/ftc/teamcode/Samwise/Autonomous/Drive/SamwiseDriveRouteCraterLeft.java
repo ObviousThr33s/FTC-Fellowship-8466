@@ -4,47 +4,20 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "Kyla v1.0 CraterLeft", group = "Samwise")
-@Disabled
-public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDrive {
+//@Disabled
+public class SamwiseDriveRouteCraterLeft extends SamwiseDriveRouteTest {
 
     String route = "crater left";
 
-    SamwiseAutoDrive parent;
-
-    public SamwiseDriveRouteCraterLeft(){
-        //default
-    }
-
     /**
      * Construct from parent class
+     *
      * @param parent
      */
-    public SamwiseDriveRouteCraterLeft(SamwiseAutoDrive parent){
-        this.parent = parent;
-
-        this.robot = parent.robot;
-        this.md = parent.md;
-
-        this.telemetry = parent.telemetry;
-    }
-
-    @Override
-    protected boolean isOpModeActive(){
-        return parent.opModeIsActive();
-    }
-
-    @Override
-    public void runOpMode()
+    public SamwiseDriveRouteCraterLeft(SamwiseAutoDrive parent)
     {
-        /**
-         * call parent to start:
-         * 1. init
-         * 2. waitforStart
-         * 3. start drive
-         */
-        super.runOpMode();
-}
-
+        super(parent);
+    }
     protected void drive() {
 
         //common drive defined by the parent
@@ -53,33 +26,33 @@ public class SamwiseDriveRouteCraterLeft extends SamwiseAutoDrive {
 
         super.drive();
 
-        turnDrive(TurnDirection.LEFT, 32.429725, 2);
+        this.robot.turnDrive(this, 32.429725, 2);
         telemetry.addData(route, "finish first turn");
         //telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, 28, 28, 3);
+        this.robot.encoderDrive(this, 28, 28, 3);
         telemetry.addData(route, "finish second drive");
         //telemetry.update();
 
-        turnDrive(TurnDirection.RIGHT, 120, 3);
+        this.robot.turnDrive(this, -120, 3);
         telemetry.addData(route, "finish third turn");
         //telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -31,-31,3);
+        this.robot.encoderDrive(this, -31,-31,3);
         telemetry.addData(route, "finish fourth drive");
         //telemetry.update();
 
-        turnDrive(TurnDirection.LEFT, 35, 3);
+        this.robot.turnDrive(this, 35, 3);
         telemetry.addData(route, "finish fifth turn");
         //telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, -45,-45,5);
+        this.robot.encoderDrive(this, -45,-45,5);
         telemetry.addData(route, "finish sixth drive");
         //telemetry.update();
 
         md.move(1);
 
-        encoderDrive(DRIVE_SPEED, 64, 64,15);
+        this.robot.encoderDrive(this, 64, 64,15);
         telemetry.addData(route, "finish seventh drive");
         telemetry.update();
 

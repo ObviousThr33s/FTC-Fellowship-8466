@@ -55,19 +55,19 @@ public class SamwiseDriveRouteDepotLeft extends SamwiseAutoDrive {
 
         // specific drive for this route
 
-        turnDrive(TurnDirection.LEFT, 28, 3);
+        this.robot.turnDrive(this, 28, 3);
 
-        encoderDrive(DRIVE_SPEED,30, 30, 4);
+        this.robot.encoderDrive(this,30, 30, 4);
 
-        turnDrive(TurnDirection.RIGHT,50,3);
+        this.robot.turnDrive(this,-50,3);
 
-        encoderDrive(DRIVE_SPEED, 38,38,4);
+        this.robot.encoderDrive(this, 38,38,4);
 
-        turnDrive(TurnDirection.RIGHT, 107, 3);
+        this.robot.turnDrive(this, -107, 3);
 
         md.move(1);
 
-        encoderDrive(DRIVE_SPEED,73,73, 5);
+        this.robot.encoderDrive(this,73,73, 5);
 
     }
 
