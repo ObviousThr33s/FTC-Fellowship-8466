@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
@@ -21,16 +19,6 @@ public class SamwiseAutoDrive extends LinearOpMode {
     SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
     SamwiseVision vis = new SamwiseVision();
     SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
-
-    /**
-     * Should be override by all subclasses
-     *
-     * @return
-     */
-    protected boolean isOpModeActive() {
-        return this.opModeIsActive();
-    }
-
 
     /**
      * init with and without tensorflow
@@ -61,7 +49,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         //Find gold mineral position and identify crater or depot
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
         //Activate object detector to get gold position, then shut it down
-        if (isOpModeActive()) {
+        if (opModeIsActive()) {
             vis.activate();
 
             position = vis.getGoldPosition();
@@ -77,7 +65,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         //System.out.println("This is the " + (isCrater ? "Crater" : "Depot"));
 
         //Sampling
-        SamwiseAutoDrive driveRoute = samplingRoute(position);
+        ISamwiseDriveRoute driveRoute = samplingRoute(position);
 
         /**
          * drive the specific route
@@ -93,9 +81,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
      * @param position
      * @return
      */
-    protected SamwiseAutoDrive samplingRoute(SamwiseVision.GoldPosition position) {
+    protected ISamwiseDriveRoute samplingRoute(SamwiseVision.GoldPosition position) {
 
-        SamwiseAutoDrive driveRoute = null;
+        ISamwiseDriveRoute driveRoute = null;
 
         /**
          * todo: externalize the routes
@@ -103,56 +91,30 @@ public class SamwiseAutoDrive extends LinearOpMode {
         if (isCrater) {
             switch (position) {
                 case RIGHT: //right
-                    driveRoute = new SamwiseDriveRouteCraterRight(this);
+                    driveRoute = SamwiseDriveRouteFactory.createCraterRight(this);
                     break;
                 case LEFT: //left
-                    driveRoute = new SamwiseDriveRouteCraterLeft(this);
+                    driveRoute = SamwiseDriveRouteFactory.createCraterLeft(this);
                     break;
                 case CENTER:  //center
                 default:
-                    driveRoute = new SamwiseDriveRouteCraterCenter(this);
+                    driveRoute = SamwiseDriveRouteFactory.createCraterCenter(this);
             }
         } else {
             switch (position) {
                 case RIGHT: //right
-                    driveRoute = new SamwiseDriveRouteDepotRight(this);
+                    driveRoute = SamwiseDriveRouteFactory.createDepotRight(this);
                     break;
                 case LEFT: //left
-                    driveRoute = new SamwiseDriveRouteDepotLeft(this);
+                    driveRoute =SamwiseDriveRouteFactory.createDepotLeft(this);
                     break;
                 case CENTER:  //center
                 default:
-                    driveRoute = new SamwiseDriveRouteDepotCenter(this);
+                    driveRoute = SamwiseDriveRouteFactory.createDepotCenter(this);
             }
         }
         return driveRoute;
     }
 
-    /**
-     * Common drive for all routes:
-     * 1. Landing
-     * 2. Orientation identification
-     * 3. Gold mineral identification
-     * <p>
-     * Routes (Sub classes) need to override this method for their own specific drives
-     */
-    protected void drive() {
-
-        // landing
-
-        // tensorflow for Orientation identification and Gold mineral identification
-
-    }
-
-    /**
-     * util to print on screen now
-     *
-     * @param name
-     * @param obj
-     */
-    protected void telemetryNow(String name, Object obj) {
-        telemetry.addData(name, obj);
-        telemetry.update();
-    }
 }
 

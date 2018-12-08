@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
+import android.widget.ImageSwitcher;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
@@ -15,23 +17,23 @@ public class SamwiseAutoDriveCrater extends SamwiseAutoDrive {
      * @return
      */
     @Override
-    protected SamwiseAutoDrive samplingRoute(SamwiseVision.GoldPosition position) {
+    protected ISamwiseDriveRoute samplingRoute(SamwiseVision.GoldPosition position) {
 
-        SamwiseAutoDrive driveRoute = null;
+        ISamwiseDriveRoute driveRoute = null;
 
         /**
          * todo: externalize the routes
          */
         switch (position) {
             case RIGHT: //right
-                driveRoute = new SamwiseDriveRouteCraterRight(this);
+                driveRoute = SamwiseDriveRouteFactory.createCraterRight(this);
                 break;
             case LEFT: //left
-                driveRoute = new SamwiseDriveRouteCraterLeft(this);
+                driveRoute = SamwiseDriveRouteFactory.createCraterLeft(this);
                 break;
             case CENTER:  //center
             default:
-                driveRoute = new SamwiseDriveRouteCraterCenter(this);
+                driveRoute = SamwiseDriveRouteFactory.createCraterCenter(this);
         }
 
         return driveRoute;

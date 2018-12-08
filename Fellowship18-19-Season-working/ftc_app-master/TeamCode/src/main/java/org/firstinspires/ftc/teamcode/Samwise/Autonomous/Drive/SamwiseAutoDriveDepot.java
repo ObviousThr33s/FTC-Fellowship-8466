@@ -15,23 +15,23 @@ public class SamwiseAutoDriveDepot extends SamwiseAutoDrive {
      * @return
      */
     @Override
-    protected SamwiseAutoDrive samplingRoute(SamwiseVision.GoldPosition position) {
+    protected ISamwiseDriveRoute samplingRoute(SamwiseVision.GoldPosition position) {
 
-        SamwiseAutoDrive driveRoute = null;
+        ISamwiseDriveRoute driveRoute = null;
 
         /**
          * todo: externalize the routes
          */
         switch (position) {
             case RIGHT: //right
-                driveRoute = new SamwiseDriveRouteDepotRight(this);
+                driveRoute = SamwiseDriveRouteFactory.createDepotRight(this);
                 break;
             case LEFT: //left
-                driveRoute = new SamwiseDriveRouteDepotLeft(this);
+                driveRoute = SamwiseDriveRouteFactory.createDepotLeft(this);
                 break;
             case CENTER:  //center
             default:
-                driveRoute = new SamwiseDriveRouteDepotCenter(this);
+                driveRoute = SamwiseDriveRouteFactory.createDepotCenter(this);
         }
 
         return driveRoute;

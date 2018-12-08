@@ -4,70 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "Depot Right", group = "Samwise")
-@Disabled
-public class SamwiseDriveRouteDepotRight extends SamwiseAutoDrive {
-
-    String route = "depot right";
-
-    SamwiseAutoDrive parent;
-
-    public SamwiseDriveRouteDepotRight(){
-        //default
-    }
-
-    /**
-     * Construct from parent class
-     * @param parent
-     */
-    public SamwiseDriveRouteDepotRight(SamwiseAutoDrive parent){
-        this.parent = parent;
-
-        this.robot = parent.robot;
-        this.md = parent.md;
-
-        this.telemetry = parent.telemetry;
-    }
+//@Disabled
+public class SamwiseDriveRouteDepotRight extends SamwiseDriveRouteTest {
 
     @Override
-    protected boolean isOpModeActive(){
-        return parent.opModeIsActive();
-    }
-
-    @Override
-    public void runOpMode()
+    protected void drive()
     {
-        /**
-         * call parent to start:
-         * 1. init
-         * 2. waitforStart
-         * 3. start drive
-         */
-        super.runOpMode();
-    }
-
-    protected void drive() {
-
-        //common drive defined by the parent
-        //telemetryNow(route, "starting parent common drive ...");
-        System.out.println("==>Driving route "+route);
-
-        super.drive();
-
-        // specific drive for this route
-
-        this.robot.turnDrive(this, -29, 3);
-
-        this.robot.encoderDrive(this, 30,30, 4);
-
-        this.robot.turnDrive(this, 42.6684716, 3);
-
-        this.robot.encoderDrive(this, 30, 30, 4);
-
-        this.robot.turnDrive(this, -147.75, 3);
-
-        md.move(1);
-
-        this.robot.encoderDrive(this, 66, 66,5);
+        ISamwiseDriveRoute route=SamwiseDriveRouteFactory.createDepotRight(this);
+        route.drive();
     }
 
 }
