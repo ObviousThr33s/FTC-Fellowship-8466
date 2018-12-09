@@ -26,7 +26,7 @@ public class SamwiseVision extends Vision {
     // private GoldPosition goldPos = GoldPosition.UNKNOWN;
     private boolean crater = false;
 
-    //private static final long TIMEOUT = 4000;
+    private static final long TIMEOUT = 3000;
     private static final String VUFORIA_KEY = "Ae3YbWD/////AAABmUVFK6zEn0lFpmdsClff/lgOdFCD2VjMx7JZ6kx9s2KEMbcPTgOP3z1oUQl8LdCe75uZNfPs11Z3whBz260+kjUB+zLhpxGI/q5kbCvbqkhkh9VeK8PDZm/MP6z3xJPFWt0j7QCBsvakMFaBeymZLhpXD10IUcDD3XGM8TlKtJytMgnqB2HmLCqR1/eNjCncoRH/iGlLeB9SvsCOYKwRYemcH3/F75Hrg7jJcl9euneQ5DM7lV3upEZnw12UdlmRZr8FUJo/9bdN0ndl33HCxZT63fvMqaBVtuntufQFL8c4fImcckfcUCiRTcoIqaQq3Htl2LWgQC5OPHeuJ+HrxxR/FvekqUbltzuZM2Nxm0lM";
 
     /**
@@ -113,9 +113,9 @@ public class SamwiseVision extends Vision {
         // the last time that call was made.
         List<Recognition> updatedRecognitions = null;
 
-        //long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         List<Recognition> samples = null;
-        while ((samples == null || samples.size() != 2)) //&& (System.currentTimeMillis()-startTime) < TIMEOUT )
+        while ((samples == null || samples.size() != 2) && (System.currentTimeMillis()-startTime) < TIMEOUT )
         {
             updatedRecognitions = tfod.getUpdatedRecognitions();
 
@@ -126,9 +126,14 @@ public class SamwiseVision extends Vision {
                 samples = getSamples(updatedRecognitions); // getNearestMinerals(updatedRecognitions, camRotate);
             }
             //idle();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
-        if (samples == null) {
+        if (samples == null || samples.size() != 2) {
             return GoldPosition.UNKNOWN;
         }
 
