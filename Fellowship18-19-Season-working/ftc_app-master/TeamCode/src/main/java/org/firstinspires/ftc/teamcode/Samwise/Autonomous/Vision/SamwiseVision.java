@@ -19,9 +19,11 @@ public class SamwiseVision extends Vision {
     /**
      * on screen distance btwn samples and camera. Must be calibrated!!!
      */
-    private final float sampleDistance = 85;
-    private final double ratio = 1.6;
-    private final double confidence = 0.75;
+    private final float sampleDistanceNear = 35;
+    private final float sampleDistanceFar = 105;
+
+    private final double ratio = .25;
+    private final double confidence = 0.65;
 
     // private GoldPosition goldPos = GoldPosition.UNKNOWN;
     private boolean crater = false;
@@ -86,15 +88,15 @@ public class SamwiseVision extends Vision {
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
 
-    public void activate(){
+    public void activate() {
         tfod.activate();
     }
 
-    public void deactivate(){
+    public void deactivate() {
         tfod.deactivate();
     }
 
-    public void shutdown(){
+    public void shutdown() {
         tfod.shutdown();
     }
 
@@ -115,15 +117,14 @@ public class SamwiseVision extends Vision {
 
         long startTime = System.currentTimeMillis();
         List<Recognition> samples = null;
-        while ((samples == null || samples.size() != 2) && (System.currentTimeMillis()-startTime) < TIMEOUT )
-        {
+        while ((samples == null || samples.size() != 2) && (System.currentTimeMillis() - startTime) < TIMEOUT) {
             updatedRecognitions = tfod.getUpdatedRecognitions();
 
-            System.out.println("==> minerals found :"+updatedRecognitions);
+            System.out.println("==> minerals found :" + updatedRecognitions);
 
             // ONLY the middle and right side minerals shown in the camera view
             if (updatedRecognitions != null && updatedRecognitions.size() >= 2) {
-                samples = getSamples(updatedRecognitions); // getNearestMinerals(updatedRecognitions, camRotate);
+                samples = getSamples(updatedRecognitions);
             }
             //idle();
             try {
@@ -137,11 +138,11 @@ public class SamwiseVision extends Vision {
             return GoldPosition.UNKNOWN;
         }
 
-        /** this detection is not reliable
-        if (updatedRecognitions.size()>2) {
+        /* this detection is not reliable
+         if (updatedRecognitions.size()>2) {
             // This is very very likely the crater side
             this.crater = true;
-        }**/
+         }*/
 
         //Sort samples from right to left
         Collections.sort(samples, new SortByBottom());
@@ -189,7 +190,7 @@ public class SamwiseVision extends Vision {
     }
 
     /**
-     * Sort by getRight()
+     * Sort by getLeft()
      */
     class SortByLeft implements Comparator<Recognition> {
 
@@ -207,6 +208,24 @@ public class SamwiseVision extends Vision {
     }
 
     /**
+     * Sort by getRight()
+     */
+    class SortByRight implements Comparator<Recognition> {
+
+        // Used for sorting in ascending order of
+        // roll number
+        public int compare(Recognition a, Recognition b) {
+            float diff = a.getRight() - b.getRight();
+            if (diff < 0) {
+                return 1;
+            } else if (diff > 0) {
+                return -1;
+            }
+            return 0;
+        }
+    }
+
+    /**
      * return nearest two minerals.
      * Assumption: ONLY 2 sample minerals shows in the view
      *
@@ -217,23 +236,52 @@ public class SamwiseVision extends Vision {
 
         System.out.println("==> --- before sorting --- size: " + recognitions.size());
         for (Recognition recog : recognitions) {
-            System.out.println("==>"+recog);
+            System.out.println("==>" + recog);
         }
 
         Collections.sort(recognitions, new SortByLeft());
 
         System.out.println("==> --- after sorting --- size: " + recognitions.size());
-        List<Recognition> samples = new ArrayList<Recognition>();
         for (Recognition recog : recognitions) {
-            System.out.println("==>"+recog);
-
-            // ONLY add to samples when the mineral is within the preset distance
-            if (recog.getLeft() < sampleDistance * ratio &&
-                    recog.getLeft() > sampleDistance / ratio) {
-                samples.add(recog);
-                System.out.println("==>==> This is added to samples : " + recog);
-            }
+            System.out.println("==>" + recog);
         }
+        /**
+         * Consider ONLY first two minerals in the list
+         */
+        float firstBoxSize = recognitions.get(0).getRight() - recognitions.get(0).getLeft();
+        float secondBoxSize = recognitions.get(1).getRight() - recognitions.get(1).getLeft();
+
+        /**
+         * ONLY add to samples when the two minerals:
+         * 1. are similar in size
+         * 2. are not too close together (eliminate double images)
+         * 3. are within the accepted distance (excluded the crater ones)
+         */
+        double sizeRatio = secondBoxSize / firstBoxSize;
+        if (sizeRatio > 1 + ratio || sizeRatio < 1 - ratio) {
+            System.out.println("==> the two objects are too different in size. Their ratio = " + sizeRatio);
+            return null;
+        }
+
+        double overlapRatio = recognitions.get(0).getTop() / recognitions.get(1).getTop();
+        if (overlapRatio < 1.5 || overlapRatio > 0.7) {
+            System.out.println("==> the two objects are too close to each other. Their overlap ratio = " + overlapRatio);
+            return null;
+        }
+
+        if (recognitions.get(0).getLeft() > sampleDistanceFar ||
+                recognitions.get(0).getLeft() < sampleDistanceNear ||
+                recognitions.get(1).getLeft() > sampleDistanceFar ||
+                recognitions.get(1).getLeft() < sampleDistanceNear){
+            System.out.println("==> the two objects are too close or too far from the sample distance.");
+            return null;
+        }
+
+
+        List<Recognition> samples = new ArrayList<Recognition>();
+        samples.add(recognitions.get(0));
+        samples.add(recognitions.get(1));
+        //System.out.println("==>==> This is added to samples : " + recog);
 
         return samples; //recognitions.subList(0,2);
 

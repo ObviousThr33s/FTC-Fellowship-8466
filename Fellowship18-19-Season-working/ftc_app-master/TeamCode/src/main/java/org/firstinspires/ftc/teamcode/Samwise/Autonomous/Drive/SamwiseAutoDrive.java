@@ -46,7 +46,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //Find gold mineral position and identify crater or depot
+        //Find gold mineral position
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
         //Activate object detector to get gold position, then shut it down
         if (opModeIsActive()) {
@@ -55,7 +55,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
             position = vis.getGoldPosition();
 
             System.out.println("==>The Gold Position: " + position);
-            System.out.println("==>Is this crater: " + vis.isCrater());
+            // System.out.println("==>Is this crater: " + vis.isCrater());
             //telemetry.addData("Gold Position:", position);
             //telemetry.update();
             vis.deactivate();
