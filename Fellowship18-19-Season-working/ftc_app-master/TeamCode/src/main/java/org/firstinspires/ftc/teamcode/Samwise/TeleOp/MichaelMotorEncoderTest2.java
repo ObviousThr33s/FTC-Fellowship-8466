@@ -45,11 +45,12 @@ public class MichaelMotorEncoderTest2 extends OpMode {
         testMotorEncoder2.setTargetPosition((int)phi); */
 
             double theta = gamepad1.left_stick_y * 100;
-            double phi = Math.toDegrees(Math.acos((H + L1 * Math.cos(Math.toRadians(180 - theta))) / L2) - theta + 180);
-
-            testMotorEncoder1.setTargetPosition((int) theta);    //Joint 2
-            testMotorEncoder2.setTargetPosition((int) 750);      //Joint 3
-            testMotorEncoder3.setTargetPosition((int)750);  //Joint 1
+            //double phi = Math.toDegrees(Math.acos((H + L1 * Math.cos(Math.toRadians(180 - theta))) / L2) - theta + 180);
+            double phi = (Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180);
+            float TurnTable = gamepad1.left_stick_x * 500;
+            testMotorEncoder1.setTargetPosition((int) theta);    //Joint 2 (first vertical joint)
+            testMotorEncoder2.setTargetPosition((int) phi);      //Joint 3 (second vertical joint)
+            testMotorEncoder3.setTargetPosition((int)TurnTable);  //Joint 1 (turn table)
             testMotorEncoder1.setPower(0.8);
             testMotorEncoder1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             testMotorEncoder2.setPower(0.8);
