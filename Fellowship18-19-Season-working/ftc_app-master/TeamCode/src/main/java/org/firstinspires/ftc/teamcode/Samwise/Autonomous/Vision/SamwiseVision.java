@@ -19,8 +19,8 @@ public class SamwiseVision extends Vision {
     /**
      * on screen distance btwn samples and camera. Must be calibrated!!!
      */
-    private final float sampleDistanceNear = 35;
-    private final float sampleDistanceFar = 105;
+    private final float sampleDistanceNear = 0;
+    private final float sampleDistanceFar = 100;
 
     private final double ratio = .25;
     private final double confidence = 0.65;
@@ -264,7 +264,7 @@ public class SamwiseVision extends Vision {
         }
 
         double overlapRatio = recognitions.get(0).getTop() / recognitions.get(1).getTop();
-        if (overlapRatio < 1.5 || overlapRatio > 0.7) {
+        if (overlapRatio < 1.5 && overlapRatio > 0.7) {
             System.out.println("==> the two objects are too close to each other. Their overlap ratio = " + overlapRatio);
             return null;
         }

@@ -55,9 +55,12 @@ public class SamwiseAutoDrive extends LinearOpMode {
             position = vis.getGoldPosition();
 
             System.out.println("==>The Gold Position: " + position);
+
+            if(position == SamwiseVision.GoldPosition.UNKNOWN){
+                // it is more likely to be UNKNOWN when two silver minerals in the view.
+                position = SamwiseVision.GoldPosition.LEFT;
+            }
             // System.out.println("==>Is this crater: " + vis.isCrater());
-            //telemetry.addData("Gold Position:", position);
-            //telemetry.update();
             vis.deactivate();
             vis.shutdown();
         }

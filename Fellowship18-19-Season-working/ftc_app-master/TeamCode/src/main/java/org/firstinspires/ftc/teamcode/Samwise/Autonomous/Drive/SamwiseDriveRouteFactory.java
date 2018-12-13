@@ -33,11 +33,11 @@ public class SamwiseDriveRouteFactory
                 telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -49, -49, 20);
+                driveTrain.encoderDrive(samwiseDrive, -45, -45, 20);
                 telemetry.addData(route, "finish fifth drive");
                 //telemetry.update();
 
-                driveTrain.turnDrive(samwiseDrive, 52, 3);
+                driveTrain.turnDrive(samwiseDrive, 57, 3);
                 telemetry.addData(route, "finish sixth turn");
                 //telemetry.update();
 
@@ -47,7 +47,7 @@ public class SamwiseDriveRouteFactory
 
                 md.move(1);
 
-                driveTrain.encoderDrive(samwiseDrive, 70, 70, 20);
+                driveTrain.encoderDrive(samwiseDrive, 72, 72, 20);
                 telemetry.addData(route, "finish eighth drive");
                 telemetry.update();
             }
