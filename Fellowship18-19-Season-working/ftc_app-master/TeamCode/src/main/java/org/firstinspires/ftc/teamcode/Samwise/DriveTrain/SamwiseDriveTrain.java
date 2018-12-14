@@ -20,7 +20,7 @@ public class SamwiseDriveTrain extends DriveTrain
     static final double DRIVE_SPEED = 0.6;
     static final double TURN_SPEED = 0.5;
     static final double INCHES_PER_DEGREE = 0.1640556;
-    private ElapsedTime runtime = new ElapsedTime();
+    protected ElapsedTime runtime = new ElapsedTime();
 
     public SamwiseDriveTrain()
     {
