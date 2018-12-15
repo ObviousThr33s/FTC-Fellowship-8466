@@ -21,17 +21,18 @@ public class SamwiseHangerHardware {
         telemetry.addData("Mode", "Boron-Oxygen-Oxygen-Phosphorus Beryllium-Phosphorus init time");
         telemetry.update();
 
-        hangerservo1.setPosition(10);
+        //hangerservo1.setPosition(10);
 
         hangermotor1.setDirection(DcMotor.Direction.REVERSE);
 
-        hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        hangermotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hangermotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        hangermotor1.setTargetPosition(0);
+        //hangermotor1.setTargetPosition(0);
 
-        hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        hangermotor1.setPower(0.25);
+        //hangermotor1.setPower(1);
     }
 
     public void unHook() {
@@ -43,27 +44,32 @@ public class SamwiseHangerHardware {
         telemetry.addData("Mode", "hook 2");
         hangerservo1.setPosition(0);
     }
+
+    public void move(double power) {
+        this.hangermotor1.setPower(power);
+    }
+
     public void movedown() {
         telemetry.addData("Mode", "slide 1");
 
-        hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        hangermotor1.setTargetPosition(0);
+        //hangermotor1.setTargetPosition(0);
 
-        hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        hangermotor1.setPower(0.25);
+        hangermotor1.setPower(1);
     }
     public void moveup() {
 
         telemetry.addData("Mode", "slide 1");
 
-        hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        hangermotor1.setTargetPosition(10);
+        //hangermotor1.setTargetPosition(10);
 
-        hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        hangermotor1.setPower(-0.25);
+        hangermotor1.setPower(-1);
     }
 }

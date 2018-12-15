@@ -37,30 +37,40 @@ public class SamwiseHangerTeleOp extends OpMode {
 
         //if the a button is pressed then is moves the hanger arm
         if(uopressed) {
-            System.out.println("==> Hanger moving down ...");
-            telemetry.addData("Mode", "Moving...");
-            movieboi.moveup();
+            System.out.println("==> Hanger moving up ...");
+            telemetry.addData("Mode", "Moving up...");
+            movieboi.move(1);
             telemetry.addData("Mode", "Stopped");
+            telemetry.update();
+            return;
+        }
+        else if(downpressed) {
+            System.out.println("==> Hanger moving down ...");
+            telemetry.addData("Mode", "moving down ");
+            movieboi.move(-1);
+            telemetry.addLine("stopped");
+            telemetry.update();
+            return;
+        }
+        else {
+            movieboi.move(0);
         }
 
-        if(downpressed) {
-            System.out.println("==> Hanger unhooking ...");
-            telemetry.addData("Mode", "Unhooking");
-            movieboi.movedown();
-            telemetry.addLine("Unhooked");
-        }
         if(Lpressed) {
             System.out.println("==> Hanger unhooking ...");
             telemetry.addData("Mode", "Unhooking");
             movieboi.unHook();
             telemetry.addLine("Unhooked");
+            telemetry.update();
+            return;
         }
-        if(Rpressed) {
-            System.out.println("==> Hanger unhooking ...");
-            telemetry.addData("Mode", "Unhooking");
+        else if(Rpressed) {
+            System.out.println("==> Hanger hooking ...");
+            telemetry.addData("Mode", "hooking");
             movieboi.Hook();
-            telemetry.addLine("Unhooked");
+            telemetry.addLine("hooked");
+            telemetry.update();
+            return;
         }
-        telemetry.update();
     }
 }

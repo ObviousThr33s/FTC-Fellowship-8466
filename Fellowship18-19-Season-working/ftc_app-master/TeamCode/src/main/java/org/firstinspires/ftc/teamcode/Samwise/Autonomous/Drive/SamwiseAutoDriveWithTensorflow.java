@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -52,7 +53,7 @@ import java.util.List;
 //}
 
 @Autonomous(name = "Samwise: Auto Drive with Tensorflow", group = "Samwise")
-//@Disabled
+@Disabled
 public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
 {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
