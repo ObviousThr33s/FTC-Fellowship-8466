@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp (name = "EncoderTestOfTheMichael8888")
+@TeleOp (name = "EncoderTestOfTheMichael")
 public class MichaelMotorEncoderTest2 extends OpMode {
 
     private DcMotor testMotorEncoder1 = null;
@@ -51,7 +51,6 @@ public class MichaelMotorEncoderTest2 extends OpMode {
             if (gamepad1.x) {
 
             }
-        //todo: convert encoder count to degree
             int testMotor1Pos = testMotorEncoder1.getCurrentPosition();
             int testMotor2Pos = testMotorEncoder2.getCurrentPosition();
             int testMotor3Pos = testMotorEncoder3.getCurrentPosition();
