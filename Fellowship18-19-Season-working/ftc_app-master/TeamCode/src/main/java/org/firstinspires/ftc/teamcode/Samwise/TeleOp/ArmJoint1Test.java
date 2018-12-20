@@ -27,7 +27,8 @@ public class ArmJoint1Test extends OpMode {
     }
     public void loop() {
 
-        float ArmJoint1 = gamepad1.left_stick_x * SmallDegreeToTicks;
+        float ArmJoint1 = gamepad1.left_stick_x * SmallDegreeToTicks
+                ;
         Joint1Motor.setTargetPosition((int)ArmJoint1);
 
         Joint1Motor.setPower(0.8);
