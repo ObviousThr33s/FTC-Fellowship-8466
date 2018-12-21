@@ -33,7 +33,7 @@ public class SamwiseHangerTeleOp extends OpMode {
         downpressed = gamepad1.dpad_down;
         uopressed = gamepad1.dpad_up;
         Lpressed = gamepad1.left_bumper; //switched to bumper controls
-        Rpressed = gamepad1.right_bumper; //switched to bumper controls
+        Rpressed = gamepad1.right_bumper;
 
         //if the a button is pressed then is moves the hanger arm
         if(uopressed) {

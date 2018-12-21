@@ -38,7 +38,7 @@ public class SamwiseHangerHardware {
     public void unHook() {
 
         telemetry.addData("Mode", "hook 2");
-        hangerservo1.setPosition(10);
+        hangerservo1.setPosition(0.5);
     }
     public void Hook() {
         telemetry.addData("Mode", "hook 2");

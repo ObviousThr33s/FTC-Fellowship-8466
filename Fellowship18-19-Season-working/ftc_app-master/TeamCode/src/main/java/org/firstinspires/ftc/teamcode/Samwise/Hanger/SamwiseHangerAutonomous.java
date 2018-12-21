@@ -2,50 +2,38 @@ package org.firstinspires.ftc.teamcode.Samwise.Hanger;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name="SamwiseHangerHardware", group="Exercises")
+@Autonomous(name = "HangerAuto", group = "Exercises")
 public class SamwiseHangerAutonomous extends LinearOpMode {
 
     public DcMotor hangermotor1 = null;
 
     public Servo hangerservo1 = null;
 
-    public void init(HardwareMap ahwMap) {
-        hangermotor1 = ahwMap.dcMotor.get("hangermotor_1");
-        hangerservo1 = ahwMap.servo.get("hangerservo_1");
-    }
-
     SamwiseHangerHardware movieboi;
 
+    public void init(HardwareMap ahwMap) {
+        movieboi = new SamwiseHangerHardware(hardwareMap, telemetry);
+    }
+
+    @Override
     public void runOpMode() {
+        init();
 
-        hangermotor1.setDirection(DcMotor.Direction.REVERSE);
 
-        hangerservo1.setPosition(0.0);
+        waitForStart();
 
-        hangermotor1.setPower(0.0);
-
-        telemetry.addData("Mode", "*windows startup noise* Ready to Start");
-        telemetry.update();
-
-        waitForStart(); {
-
-            telemetry.addData("Mode", "Boop bop Starting");
+            telemetry.addData("movingdown", -1);
             telemetry.update();
+        movieboi.move(-1);
 
-            hangermotor1.setPower(0.00000000025);
-
-            sleep(1000000000);
-
-            hangermotor1.setPower(0.0);
-
-            hangerservo1.setPosition(1);
-
-            telemetry.addData("Mode", "Beep beep Done");
+            telemetry.addData("unhooking", "yeet");
             telemetry.update();
-        }
+        movieboi.unHook();
+
     }
 }
