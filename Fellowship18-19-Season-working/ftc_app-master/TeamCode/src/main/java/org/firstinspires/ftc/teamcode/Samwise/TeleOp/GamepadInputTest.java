@@ -2,10 +2,14 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "Test Gamepad Input")
 public class GamepadInputTest extends LinearOpMode
 {
+
+    private ElapsedTime runtime = new ElapsedTime();
+
     @Override
     public void runOpMode() throws InterruptedException
     {
@@ -74,10 +78,13 @@ public class GamepadInputTest extends LinearOpMode
         {
             System.out.println("gamepad1.guide");
         }
+
+        runtime.reset();
         if (gamepad1.back)
         {
             System.out.println("gamepad1.back");
         }
+//        System.out.println("Runtime: "+runtime.toString());
 
         if (gamepad1.left_trigger>0 || gamepad1.left_trigger<0)
         {

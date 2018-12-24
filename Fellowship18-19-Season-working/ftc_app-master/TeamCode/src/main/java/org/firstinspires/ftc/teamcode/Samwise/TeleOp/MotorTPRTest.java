@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Autonomous(name="test arm motor CPR", group="Exercises")
-public class MotorCPRTest extends LinearOpMode
+public class MotorTPRTest extends LinearOpMode
 {
     private DcMotor testMotorEncoder1 = null;
     private DcMotor testMotorEncoder2 = null;
@@ -15,9 +15,9 @@ public class MotorCPRTest extends LinearOpMode
     @Override
     public void runOpMode() throws InterruptedException
     {
-        testMotorEncoder1 = hardwareMap.dcMotor.get("testMotor1");
-        testMotorEncoder2 = hardwareMap.dcMotor.get("testMotor2");
-        testMotorEncoder3 = hardwareMap.dcMotor.get("testMotor3");
+        testMotorEncoder1 = hardwareMap.dcMotor.get("J1");
+        testMotorEncoder2 = hardwareMap.dcMotor.get("J2");
+        testMotorEncoder3 = hardwareMap.dcMotor.get("J3");
         testMotorEncoder3.setDirection(DcMotorSimple.Direction.REVERSE);
         testMotorEncoder1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         testMotorEncoder2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
