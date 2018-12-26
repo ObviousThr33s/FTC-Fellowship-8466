@@ -19,8 +19,8 @@ public class SamwiseArm
     DcMotor motorJ3 = null;
     private Servo servoWrist = null;
     //Control collecting or depositing of minerals
-    private CRServo servoClaw1 = null;
-    private CRServo servoClaw2 = null;
+    private CRServo servo = null;
+    //private CRServo servoClaw2 = null;
     //true if using manual control of J2/J3; false if using plane of motion math
     boolean isManual = false;
     boolean isCollectionPlane = false;
@@ -77,8 +77,8 @@ public class SamwiseArm
         motorJ3 = hwm.dcMotor.get("J3");
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //servoWrist = hwm.servo.get("Wrist");
-        servoClaw1 = hwm.crservo.get("ServoClaw1");
-        servoClaw2 = hwm.crservo.get("ServoClaw2");
+        servo = hwm.crservo.get("servo");
+        //servoClaw2 = hwm.crservo.get("ServoClaw2");
 
         //Initial Collection Position Math
         double a      = Math.sqrt(Math.pow(HEIGHT_PLANE_OF_MOTION, 2) + Math.pow(INITIAL_COL_ARM_L3, 2));
@@ -228,50 +228,40 @@ public class SamwiseArm
 
     public void servoTesting()
     {
-        servoClaw1.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoClaw2.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoClaw1.setPower(1);
-        servoClaw2.setPower(1);
-        System.err.println("servo class: "+servoClaw1.getClass());
-        try
-        {
-            Thread.sleep(250);
-            Thread.yield();;
-        }
-        catch (InterruptedException ie)
-        {
-            ;
-        }
+        servo.setPower(.8);
     }
 
     public void servoStop()
     {
-        servoClaw1.setPower(0);
-        servoClaw2.setPower(0);
+        servo.setPower(0);
     }
 
     /**
      * Spin the two claw servos inward to drop minerals
      */
+
+    //-0.8 is the greatest speed
     public void depositMinerals()
     {
-        //TODO
+        servo.setPower(-0.5);
     }
 
     /**
      * Spin the two claw servos outward to collect minerals
      */
+
+    //0.8 is the greatest speed
     public void collectMinerals()
     {
-        //TODO
+        servo.setPower(0.5);
     }
 
     /**
      * Stop spinning of the claw servos
      */
-    public void stopClaws()
+    public void stopServo()
     {
-        //TODO
+        servo.setPower(0);
     }
 
     /***********************************************************************************************

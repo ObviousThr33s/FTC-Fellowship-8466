@@ -19,6 +19,8 @@ public class LaurenTest extends OpMode
     @Override
     public void loop()
     {
+        telemetry.addData("Left trigger", gamepad1.left_trigger);
+        telemetry.addData("Right trigger", gamepad1.right_trigger);
         telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
         telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
         telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
@@ -78,32 +80,36 @@ public class LaurenTest extends OpMode
             armStuff.goldDropPoint();
         }
 
-//        if (gamepad1.b)
-//        {
-//            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10  && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
-//            {
-//                armStuff.toCollectionPlane();
-//            }
-//            else
-//            {
-//                armStuff.toPreviousCollectionPosition();
-//            }
-//        }
-
-//        if (gamepad1.a)
-//        {
-//            armStuff.toInitialPosition();
-//        }
+        if (gamepad1.b)
+        {
+            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10  && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+            {
+                armStuff.toCollectionPlane();
+            }
+            else
+            {
+                armStuff.toPreviousCollectionPosition();
+            }
+        }
 
         if (gamepad1.a)
         {
-            telemetry.addData("Servo Driving", "reached");
-            armStuff.servoTesting();
+            armStuff.toInitialPosition();
         }
-        if (gamepad1.b)
+
+        if (gamepad1.left_trigger > 0);
+        {
+            armStuff.collectMinerals();
+        }
+
+        if (gamepad1.right_trigger > 0);
+        {
+            armStuff.depositMinerals();
+        }
+
+        if (gamepad1.left_trigger == 0 || gamepad1.right_trigger == 0)
         {
             armStuff.servoStop();
-            telemetry.addData("Servo", "Stopped");
         }
     }
 
