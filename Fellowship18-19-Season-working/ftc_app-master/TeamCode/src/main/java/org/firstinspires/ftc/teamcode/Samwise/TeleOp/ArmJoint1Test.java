@@ -19,7 +19,7 @@ public class ArmJoint1Test extends OpMode {
     private int BigToSmallRatio = MaxOrMinDegrees * J1GearRatio;
     private int SmallDegreeToTicks = BigToSmallRatio * EncoderToDegrees;
     public void init() {
-        Joint1Motor = hardwareMap.dcMotor.get("joint1motor");
+        Joint1Motor = hardwareMap.dcMotor.get("J1");
         Joint1Motor.setPower(0);
         Joint1Motor.setDirection(DcMotor.Direction.REVERSE);
         Joint1Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -27,10 +27,8 @@ public class ArmJoint1Test extends OpMode {
     }
     public void loop() {
 
-        float ArmJoint1 = gamepad1.left_stick_x * SmallDegreeToTicks
-                ;
+        float ArmJoint1 = gamepad1.left_stick_x * SmallDegreeToTicks;
         Joint1Motor.setTargetPosition((int)ArmJoint1);
-
         Joint1Motor.setPower(0.8);
         Joint1Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
