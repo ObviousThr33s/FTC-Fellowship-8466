@@ -20,7 +20,7 @@ public class SamwiseVision extends Vision {
      * on screen distance btwn samples and camera. Must be calibrated!!!
      */
     private final float sampleDistanceNear = 0;
-    private final float sampleDistanceFar = 100;
+    private final float sampleDistanceFar = 120;
 
     private final double ratio = .25;
     private final double confidence = 0.65;
@@ -117,6 +117,10 @@ public class SamwiseVision extends Vision {
 
         long startTime = System.currentTimeMillis();
         List<Recognition> samples = null;
+
+        //find the reference object :
+
+
         while ((samples == null || samples.size() != 2) && (System.currentTimeMillis() - startTime) < TIMEOUT) {
             updatedRecognitions = tfod.getUpdatedRecognitions();
 
@@ -272,7 +276,7 @@ public class SamwiseVision extends Vision {
         if (recognitions.get(0).getLeft() > sampleDistanceFar ||
                 recognitions.get(0).getLeft() < sampleDistanceNear ||
                 recognitions.get(1).getLeft() > sampleDistanceFar ||
-                recognitions.get(1).getLeft() < sampleDistanceNear){
+                recognitions.get(1).getLeft() < sampleDistanceNear) {
             System.out.println("==> the two objects are too close or too far from the sample distance.");
             return null;
         }
@@ -286,4 +290,87 @@ public class SamwiseVision extends Vision {
         return samples; //recognitions.subList(0,2);
 
     }
+
+    public Recognition getReference() {
+
+
+        // Can not continue if tfod is null
+        if (tfod == null) {
+            return null;
+        }
+
+        // getUpdatedRecognitions() will return null if no new information is available since
+        // the last time that call was made.
+        List<Recognition> recognitions = null;
+
+        long startTime = System.currentTimeMillis();
+
+        //find the reference object :
+        while ((recognitions == null || recognitions.size()<2) && (System.currentTimeMillis() - startTime) < TIMEOUT) {
+
+            recognitions = tfod.getUpdatedRecognitions();
+
+            //System.out.println("==> minerals found :" + recognitions);
+
+            if (recognitions != null && recognitions.size() == 1) {
+                if (recognitions.get(0).getLeft() > sampleDistanceFar ||
+                        recognitions.get(0).getLeft() < sampleDistanceNear) {
+                    System.out.println("==> the two objects are too close or too far from the sample distance.");
+                    //recognitions = null; //restart
+                    continue;
+                }
+                System.out.println("==> only one mineral found");
+                return recognitions.get(0);
+            }
+        }
+
+
+        Collections.sort(recognitions, new SortByLeft());
+
+        System.out.println("==> --- reference after sorting --- size: " + recognitions.size());
+        for (Recognition recog : recognitions) {
+            System.out.println("==>" + recog);
+        }
+
+        /**
+         * Consider ONLY first two minerals in the list
+         */
+        float firstBoxSize = recognitions.get(0).getRight() - recognitions.get(0).getLeft();
+        float secondBoxSize = recognitions.get(1).getRight() - recognitions.get(1).getLeft();
+
+        /**
+         * ONLY add to samples when the two minerals:
+         * 1. are similar in size
+         * 2. are not too close together (eliminate double images)
+         * 3. are within the accepted distance (excluded the crater ones)
+         */
+        double sizeRatio = secondBoxSize / firstBoxSize;
+        if (sizeRatio > 1 + ratio || sizeRatio < 1 - ratio) {
+            System.out.println("==> the two objects are too different in size. Their ratio = " + sizeRatio);
+            //continue;
+        }
+
+        double overlapRatio = recognitions.get(0).getTop() / recognitions.get(1).getTop();
+        if (overlapRatio < 1.5 && overlapRatio > 0.7) {
+            System.out.println("==> the two objects are too close to each other. Their overlap ratio = " + overlapRatio);
+            //continue;
+        }
+
+        if (recognitions.get(0).getLeft() > sampleDistanceFar ||
+                recognitions.get(0).getLeft() < sampleDistanceNear ||
+                recognitions.get(1).getLeft() > sampleDistanceFar ||
+                recognitions.get(1).getLeft() < sampleDistanceNear) {
+            System.out.println("==> the two objects are too close or too far from the sample distance.");
+            //continue;
+        }
+
+
+        if (recognitions.get(0).getTop() < recognitions.get(1).getTop()) {
+            return recognitions.get(1);
+        } else {
+            return recognitions.get(0);
+        }
+
+    }
+
 }
