@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -12,42 +14,58 @@ public class SamwiseArm
     //Control retraction and extension of the arm
     //AndyMark Neverest Classic 40: 1120 cpr (https://www.andymark.com/products/neverest-classic-40-gearmotor)
     //AndyMark Neverest Classic 20: 560 cpr (https://www.servocity.com/neverest-20-gear-motor)
-    private DcMotor motorJ1 = null;
-    private DcMotor motorJ2 = null;
-    private DcMotor motorJ3 = null;
+    DcMotor motorJ1 = null;
+    DcMotor motorJ2 = null;
+    DcMotor motorJ3 = null;
     private Servo servoWrist = null;
     //Control collecting or depositing of minerals
-    private Servo servoClaw1 = null;
-    private Servo servoClaw2 = null;
+    private CRServo servoClaw1 = null;
+    private CRServo servoClaw2 = null;
     //true if using manual control of J2/J3; false if using plane of motion math
     boolean isManual = false;
     boolean isCollectionPlane = false;
 
-    private static final int HEIGHT_PLANE_OF_MOTION = -6; //height of plane of motion
-    private static final double ARM_LENGTH_1 = 24.09; //length between motorJoint1 and motorJoint2
-    private static final double ARM_LENGTH_2 = 27.75; //length between motorJoint2 and servoWrist
-    private static final double MANUAL_POWER_J1 = 0.2;
-    private static final double MANUAL_POWER_J2 = 0.2;
-    private static final double MANUAL_POWER_J3 = 0.2;
-    private static final double AUTO_POWER_J1 = 0.2;
-    private static final double AUTO_POWER_J2 = 0.2;
-    private static final double AUTO_POWER_J3 = 0.2;
+    static final int HEIGHT_PLANE_OF_MOTION = 6; //height of plane of motion
+    static final double ARM_L1 = 24.09; //length between motorJoint1 and motorJoint2
+    static final double ARM_L2 = 27.75; //length between motorJoint2 and servoWrist
+    static final int TICKS_PER_REVOLUTION_J1 = 1680;
+    static final int TICKS_PER_REVOLUTION_J2 = 560;
+    static final int TICKS_PER_REVOLUTION_J3 = 560;
+    static final int TICKS_PER_DEGREE_J1 = TICKS_PER_REVOLUTION_J1/360;
+    static final int TICKS_PER_DEGREE_J2 = TICKS_PER_REVOLUTION_J2/360;
+    static final int TICKS_PER_DEGREE_J3 = TICKS_PER_REVOLUTION_J3/360;
+    static final double MANUAL_POWER_J1 = 0.2;
+    static final double MANUAL_POWER_J2 = 0.2;
+    static final double MANUAL_POWER_J3 = 0.2;
+    static final double AUTO_POWER_J1 = 0.2;
+    static final double AUTO_POWER_J2 = 0.2;
+    static final double AUTO_POWER_J3 = 0.2;
+
     //TODO: Change all these numbers
-    private static final int INITIAL_COLLECTION_POSITION_J2 = 90;
-    private static final int INITIAL_COLLECTION_POSITION_J3 = 130;
-    private static final int GOLD_DROP_J1 = 20;
-    private static final int GOLD_DROP_J2 = 270;
-    private static final int GOLD_DROP_J3 = 90;
-    private static final int SILVER_DROP_J1 = -20;
-    private static final int SILVER_DROP_J2 = 270;
-    private static final int SILVER_DROP_J3 = 90;
-    public int previousPositionJ1 = 0;
-    public int previousPositionJ2 = INITIAL_COLLECTION_POSITION_J2;
-    public int previousPositionJ3 = INITIAL_COLLECTION_POSITION_J3;
+    static final double INITIAL_COL_ARM_L3 = 2 * (ARM_L1 + ARM_L2) / 3;
+    static final int GOLD_DROP_J1 = 20;
+    static final int GOLD_DROP_J2 = 270;
+    static final int GOLD_DROP_J3 = 90;
+    static final int SILVER_DROP_J1 = -20;
+    static final int SILVER_DROP_J2 = 270;
+    static final int SILVER_DROP_J3 = 90;
+    static final int INITIAL_DEGREES_J2 = 10;
+    static final int INITIAL_DEGREES_J3 = 10;
+    static final int INITIAL_TICKS_J3 = INITIAL_DEGREES_J3 * TICKS_PER_DEGREE_J3;
+    static final int INITIAL_TICKS_J2 = INITIAL_DEGREES_J2 * TICKS_PER_DEGREE_J2;
+
+    double initialCollectionPosJ2;
+    double initialCollectionPosJ3;
+    int previousPositionJ1 = 0;
+    double previousPositionJ2 = initialCollectionPosJ2;
+    double previousPositionJ3 = initialCollectionPosJ3;
+    double maxDegreesJ2;
+    static double maxTicksJ2;
 
     //TODO: need to find out and assi
     private int collection_minimum_position = 0;
-    private int collection_maximum_position = 0;
+    private static final double collection_maximum_position_J2 = 0;
+    private static final double collection_maximum_position_J3 = 0;
 
     public SamwiseArm(HardwareMap hwm)
     {
@@ -59,8 +77,23 @@ public class SamwiseArm
         motorJ3 = hwm.dcMotor.get("J3");
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //servoWrist = hwm.servo.get("Wrist");
-        servoClaw1 = hwm.servo.get("ServoClaw1");
-        servoClaw2 = hwm.servo.get("ServoClaw2");
+        servoClaw1 = hwm.crservo.get("ServoClaw1");
+        servoClaw2 = hwm.crservo.get("ServoClaw2");
+
+        //Initial Collection Position Math
+        double a      = Math.sqrt(Math.pow(HEIGHT_PLANE_OF_MOTION, 2) + Math.pow(INITIAL_COL_ARM_L3, 2));
+        double angle1 = Math.asin(HEIGHT_PLANE_OF_MOTION / a);
+        double angle2 = Math.acos((Math.pow(ARM_L1, 2) + Math.pow(a, 2) - Math.pow(ARM_L2, 2)) / (2 * ARM_L1 * a));
+        double angle3 = Math.acos((Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.pow(a, 2)) / (2 * ARM_L1 * ARM_L2));
+        double J2_DEGREES = (angle1 + angle2 + 90) - INITIAL_DEGREES_J2;
+        double J3_DEGREES = angle3 - INITIAL_DEGREES_J3;
+        initialCollectionPosJ2 = TICKS_PER_DEGREE_J2 * J2_DEGREES;
+        initialCollectionPosJ3 = TICKS_PER_DEGREE_J3 * J3_DEGREES;
+        previousPositionJ2 = initialCollectionPosJ2;
+        previousPositionJ3 = initialCollectionPosJ3;
+
+        //Max/Min Position Math
+
     }
 
     /************************************************************************************************
@@ -103,8 +136,8 @@ public class SamwiseArm
     public void toCollectionPlane()
     {
         setManual(false);
-        motorJ2.setTargetPosition(INITIAL_COLLECTION_POSITION_J2);
-        motorJ3.setTargetPosition(INITIAL_COLLECTION_POSITION_J3);
+        motorJ2.setTargetPosition((int) initialCollectionPosJ2);
+        motorJ3.setTargetPosition((int) initialCollectionPosJ3);
         motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setPower(AUTO_POWER_J3);
@@ -175,8 +208,8 @@ public class SamwiseArm
     {
         setManual(false);
         motorJ1.setTargetPosition(previousPositionJ1);
-        motorJ2.setTargetPosition(previousPositionJ2);
-        motorJ3.setTargetPosition(previousPositionJ3);
+        motorJ2.setTargetPosition((int)previousPositionJ2);
+        motorJ3.setTargetPosition((int)previousPositionJ3);
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -189,11 +222,58 @@ public class SamwiseArm
         setIsCollectionPlane(true);
     }
 
+    /***********************************************************************************************
+     *                                Collecting/Depositing Minerals                               *
+     ***********************************************************************************************/
+
     public void servoTesting()
     {
-       servoClaw1.setPosition(0.6);
-       servoClaw2.setPosition(0.6);
+        servoClaw1.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoClaw2.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoClaw1.setPower(1);
+        servoClaw2.setPower(1);
+        System.err.println("servo class: "+servoClaw1.getClass());
+        try
+        {
+            Thread.sleep(250);
+            Thread.yield();;
+        }
+        catch (InterruptedException ie)
+        {
+            ;
+        }
     }
+
+    public void servoStop()
+    {
+        servoClaw1.setPower(0);
+        servoClaw2.setPower(0);
+    }
+
+    /**
+     * Spin the two claw servos inward to drop minerals
+     */
+    public void depositMinerals()
+    {
+        //TODO
+    }
+
+    /**
+     * Spin the two claw servos outward to collect minerals
+     */
+    public void collectMinerals()
+    {
+        //TODO
+    }
+
+    /**
+     * Stop spinning of the claw servos
+     */
+    public void stopClaws()
+    {
+        //TODO
+    }
+
     /***********************************************************************************************
      *                                Stay on Plane of Motion                                      *
      ***********************************************************************************************/

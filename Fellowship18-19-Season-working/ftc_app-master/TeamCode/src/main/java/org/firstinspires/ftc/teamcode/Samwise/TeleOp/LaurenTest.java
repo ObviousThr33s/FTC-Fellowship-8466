@@ -78,17 +78,17 @@ public class LaurenTest extends OpMode
             armStuff.goldDropPoint();
         }
 
-        if (gamepad1.b)
-        {
-            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10  && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
-            {
-                armStuff.toCollectionPlane();
-            }
-            else
-            {
-                armStuff.toPreviousCollectionPosition();
-            }
-        }
+//        if (gamepad1.b)
+//        {
+//            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10  && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+//            {
+//                armStuff.toCollectionPlane();
+//            }
+//            else
+//            {
+//                armStuff.toPreviousCollectionPosition();
+//            }
+//        }
 
 //        if (gamepad1.a)
 //        {
@@ -97,9 +97,13 @@ public class LaurenTest extends OpMode
 
         if (gamepad1.a)
         {
-            telemetry.addData("Servo Testing", "reached");
+            telemetry.addData("Servo Driving", "reached");
             armStuff.servoTesting();
-            telemetry.addData("Servo Driving", "done");
+        }
+        if (gamepad1.b)
+        {
+            armStuff.servoStop();
+            telemetry.addData("Servo", "Stopped");
         }
     }
 
