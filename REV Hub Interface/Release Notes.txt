@@ -1,0 +1,55 @@
+The REV Hub Interface (REVHI) is a beta piece of software which allows people to directly connect with their REV Expansion hub and peripherals from their PC.  The goal of this interface is to allow a method for teams to prototype with motors, servos and sensors in a way that is faster and easier than fully setting up their control system. This software is also a good way to isolate problems and identify them as either electrical or software. Lastly you will be able to upgrade your firmware through this interface (firmware may also be updated through the robot controller app).
+
+Please report bugs or questions to support@revrobotics.com
+
+It is our goal to release this software as opensource in the future, but for now if you are interested in contributing to this project please email us. 
+
+Revision History:
+
+Version 1.1
+
+* Firmware version now parses correctly on firmware tab
+* Link to invalid web page on firmware tab removed
+* Firmware tab now checks for a *.bin file of appropriate size before beginning firmware update process to avoid bricking the device
+* Bug where address is set to '2' and incremented for each additional hub daisey-chained from that has been removed. Addresses should be set for daisey-chained devices to avoid conflict
+* Warnings are now written to firmware tab when flashing firmware
+* Firmware select dialog now filters by *.bin by default
+* Installer package added and all REV executables are now signed
+* Binary file hashes are stored in .sha1 file and can be used to verify the integrity of the included firmware versions
+* Firmware tab is now always enabled to allow flashing devices without connecting which will help to recover from a bad firmware download
+* Firmware tab now allows setting address
+* Indicator added showing whether the hub is connected or not
+* Added 2m distance sensor to I2C
+* Replaced 'speed' entry with zero button, changed 'Java speed' to just be 'Speed'
+
+Version 1.0 - Preliminary Release
+
+General Notes
+* Connect hub via USB to your PC and hit connect. When the hub is connected icons will appear on the different tabs.
+* In order to run motors or servos you need to also have a battery connected to the hub.
+* There is up to a 2 second delay after a usb disconnect before the last action stops. Be Careful when driving motors.
+* There is a known bug when querying the IMU, you need to hit the "Poll" button twice
+* Every time you change a tab and go back you will need to hit "poll" or activate things again (we do this to reduce lag due to packet size)
+* For motors - you can either slide the bar or enter a specific number into the box. Be careful as there is no "Stop button" besides moving things back to zero or hitting the e-stop (this will be added later)
+* When you e-stop the software you need to close the program and re-launch it before it will work again (this is due to the way windows handles comm ports)
+* If you can't talk to the hub your PC is likely missing the FTDI drivers needed for the hub, you can download them here http://www.ftdichip.com/FTDrivers.htm
+* In order for the firmware update tool to work sflash.exe needs to be in the same folder as the main exe file.
+
+Featues that are on our dev list
+* Reading/writing of other i2c devices
+* Adding pre-configured sensors and motors
+* PID tuning 
+* Generating configuration files
+* Better start/stop interface
+* Versions for other opperating systems
+
+
+
+
+
+
+
+
+Legal Disclaimer
+
+Please read the accompanied LICENSE file for the licensing of this software.

@@ -11,7 +11,7 @@ public class SamwiseHangerTeleOp extends OpMode {
     SamwiseHanger movieboi;
 
     //these bad bois control the button pressing of the gamepad
-    boolean uopressed, downpressed, Lpressed, Rpressed;
+    boolean uopressed, downpressed, Lpressed, Rpressed, lofgpressed, rightpressed;
 
     //a constructor that takes in hardwaremap and telemetry for later uses
     /*public SamwiseHangerTeleOp(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -30,6 +30,8 @@ public class SamwiseHangerTeleOp extends OpMode {
 
         downpressed = gamepad1.dpad_down;
         uopressed = gamepad1.dpad_up;
+        lofgpressed = gamepad1.dpad_left;
+        rightpressed = gamepad1.dpad_right;
         Lpressed = gamepad1.left_bumper; //switched to bumper controls
         Rpressed = gamepad1.right_bumper;
 
@@ -69,6 +71,12 @@ public class SamwiseHangerTeleOp extends OpMode {
             telemetry.addLine("hooked");
             telemetry.update();
             return;
+        }
+        if(lofgpressed) {
+            movieboi.hangerservo2.setPosition(0.5);
+        }
+        else if(rightpressed) {
+            movieboi.hangerservo2.setPosition(0);
         }
     }
 }
