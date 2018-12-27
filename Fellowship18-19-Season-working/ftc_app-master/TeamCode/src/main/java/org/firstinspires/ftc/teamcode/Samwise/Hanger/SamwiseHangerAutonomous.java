@@ -20,7 +20,7 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
         init(hardwareMap);
 
         waitForStart();
-
+        movieboi.hangerservo2.setPosition(0.5);
         telemetry.addData("movingdown", -1);
         telemetry.update();
         movieboi.encoderDrive(this, 0.6, -20.9, 4);
@@ -33,7 +33,10 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
         System.out.print("===^f to pay respects");
         sleep(2000);
 
+        movieboi.encoderDrive(this, 0.6, 20.9, 4);
+
         movieboi.Hook();
+        movieboi.hangerservo2.setPosition(0);
         sleep(1000);
     }
 
