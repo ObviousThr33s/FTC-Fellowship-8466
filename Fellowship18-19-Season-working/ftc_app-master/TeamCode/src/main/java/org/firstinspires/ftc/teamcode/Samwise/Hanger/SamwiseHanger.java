@@ -18,13 +18,12 @@ public class SamwiseHanger {
     private ElapsedTime runtime = new ElapsedTime();
 
 
-
     public Telemetry telemetry;
 
     public DcMotor hangermotor1 = null;
     public Servo hangerservo1 = null;
 
-    public SamwiseHanger(HardwareMap hw, Telemetry t) {
+    public void init(HardwareMap hw, Telemetry t) {
         hangermotor1 = hw.dcMotor.get("hangermotor1");
         hangerservo1 = hw.servo.get("hangerservo1");
 
@@ -52,6 +51,7 @@ public class SamwiseHanger {
         telemetry.addData("Mode", "hook 2");
         hangerservo1.setPosition(0.5);
     }
+
     public void Hook() {
         telemetry.addData("Mode", "hook 2");
         hangerservo1.setPosition(0);
@@ -72,6 +72,7 @@ public class SamwiseHanger {
 
         hangermotor1.setPower(1);
     }
+
     public void moveup() {
 
         telemetry.addData("Mode", "slide 1");

@@ -3,14 +3,17 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
+import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 
 @Autonomous(name = "SamwiseAutoDrive v1", group = "Samwise")
-//@Disabled
+@Disabled
 public class SamwiseAutoDrive extends LinearOpMode {
 
     // this is set before the robot is initialized
@@ -20,6 +23,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
     SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
     SamwiseVision vis = new SamwiseVision();
     SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
+    SamwiseHanger hanger = new SamwiseHanger();
 
     /**
      * init with and without tensorflow
@@ -33,6 +37,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
          */
         robot.init(hardwareMap);
         md.init(hardwareMap);
+        hanger.init(hardwareMap, telemetry);
 
         if (tf) {
             vis.init(hardwareMap);
@@ -47,7 +52,13 @@ public class SamwiseAutoDrive extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //Find gold mineral position
+        //landing
+        hanger.encoderDrive(this, 0.6, -20.9, 4);
+
+        //Unhooking
+        hanger.unHook();
+        sleep(500); //wait until the hook fully opens
+
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
         //Activate object detector to get gold position, then shut it down
         if (opModeIsActive()) {
@@ -55,11 +66,11 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
             this.adjustPosition();
 
-            position = vis.getGoldPosition();
+            position = vis.getGoldPosition();  //Find gold mineral position
 
             System.out.println("==>The Gold Position: " + position);
 
-            if(position == SamwiseVision.GoldPosition.UNKNOWN){
+            if (position == SamwiseVision.GoldPosition.UNKNOWN) {
                 // it is more likely to be UNKNOWN when two silver minerals in the view.
                 position = SamwiseVision.GoldPosition.LEFT;
             }
@@ -88,25 +99,24 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         Recognition reference = vis.getReference();
 
-        double curPos = (reference.getBottom()+reference.getTop())/2;
+        double curPos = (reference.getBottom() + reference.getTop()) / 2;
         double ratio = idealPos / curPos;
 
         System.out.println("==>Current Ratio: " + ratio);
 
-        while( ratio > 1.03 || ratio < .97 ){
+        while (ratio > 1.03 || ratio < .97) {
             if (ratio > 1) {
                 // turn left
                 System.out.println("==>Current Ratio: " + ratio + ". Turn Left 2 Degrees: ");
-                this.robot.turnDrive(this, 2,2);
-            }
-            else {
+                this.robot.turnDrive(this, 2, 2);
+            } else {
                 // turn right
                 System.out.println("==>Current Ratio: " + ratio + ". Turn Right 2 Degrees.");
-                this.robot.turnDrive(this, -2,2);
+                this.robot.turnDrive(this, -2, 2);
             }
             reference = vis.getReference();
 
-            curPos = (reference.getBottom()+reference.getTop())/2;
+            curPos = (reference.getBottom() + reference.getTop()) / 2;
             ratio = idealPos / curPos;
         }
     }
@@ -142,7 +152,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
                     driveRoute = SamwiseDriveRouteFactory.createDepotRight(this);
                     break;
                 case LEFT: //left
-                    driveRoute =SamwiseDriveRouteFactory.createDepotLeft(this);
+                    driveRoute = SamwiseDriveRouteFactory.createDepotLeft(this);
                     break;
                 case CENTER:  //center
                 default:

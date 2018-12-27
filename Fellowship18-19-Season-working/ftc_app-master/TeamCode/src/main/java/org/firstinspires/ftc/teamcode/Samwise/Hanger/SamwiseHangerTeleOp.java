@@ -23,7 +23,7 @@ public class SamwiseHangerTeleOp extends OpMode {
     public void init() {
         //hw = hardwareMap;
         System.out.println("==> Hanger init ...");
-        movieboi = new SamwiseHanger(hardwareMap, telemetry);
+        movieboi = new SamwiseHanger();
     }
 
     public void loop() {

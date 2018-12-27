@@ -2,9 +2,7 @@ package org.firstinspires.ftc.teamcode.Samwise.Hanger;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "HangerAuto", group = "Exercises")
 public class SamwiseHangerAutonomous extends LinearOpMode {
@@ -13,7 +11,8 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
     SamwiseHanger movieboi;
 
     public void init(HardwareMap ahwMap) {
-        movieboi = new SamwiseHanger(hardwareMap, telemetry);
+
+        movieboi = new SamwiseHanger();
     }
 
     @Override
@@ -36,6 +35,6 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
 
         movieboi.Hook();
         sleep(1000);
-}
+    }
 
 }
