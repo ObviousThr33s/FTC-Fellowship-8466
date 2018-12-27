@@ -1,16 +1,14 @@
 package org.firstinspires.ftc.teamcode.Samwise.Hanger;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp(name = "HangerArmTeleOp v2")
 public class SamwiseHangerTeleOp extends OpMode {
 
     //HardwareMap hw;
     //Telemetry t;
-    SamwiseHangerHardware movieboi;
+    SamwiseHanger movieboi;
 
     //these bad bois control the button pressing of the gamepad
     boolean uopressed, downpressed, Lpressed, Rpressed;
@@ -21,11 +19,11 @@ public class SamwiseHangerTeleOp extends OpMode {
         t = telemetry;
     }*/
 
-    //allows for use of the class SamwiseHangerHardware
+    //allows for use of the class SamwiseHanger
     public void init() {
         //hw = hardwareMap;
         System.out.println("==> Hanger init ...");
-        movieboi = new SamwiseHangerHardware(hardwareMap, telemetry);
+        movieboi = new SamwiseHanger(hardwareMap, telemetry);
     }
 
     public void loop() {
