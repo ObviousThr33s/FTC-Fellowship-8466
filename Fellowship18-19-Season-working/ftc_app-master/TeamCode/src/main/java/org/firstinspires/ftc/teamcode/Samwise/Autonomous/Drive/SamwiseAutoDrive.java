@@ -3,9 +3,7 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
@@ -59,6 +57,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
         hanger.unHook();
         sleep(500); //wait until the hook fully opens
 
+        //Lowering the Hanger
+        hanger.encoderDrive(this, 0.6, 20.9, 4);
+
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
         //Activate object detector to get gold position, then shut it down
         if (opModeIsActive()) {
@@ -99,10 +100,14 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         Recognition reference = vis.getReference();
 
+        if(reference == null) {
+            return;
+        }
+
         double curPos = (reference.getBottom() + reference.getTop()) / 2;
         double ratio = idealPos / curPos;
 
-        System.out.println("==>Current Ratio: " + ratio);
+        System.out.println("==>Current Ratio (before correction): " + ratio);
 
         while (ratio > 1.03 || ratio < .97) {
             if (ratio > 1) {
@@ -119,6 +124,8 @@ public class SamwiseAutoDrive extends LinearOpMode {
             curPos = (reference.getBottom() + reference.getTop()) / 2;
             ratio = idealPos / curPos;
         }
+
+        System.out.println("==>Current Ratio (after correction): " + ratio);
     }
 
     /**

@@ -33,7 +33,7 @@ public class SamwiseDriveRouteFactory
                 telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -45, -45, 20);
+                driveTrain.encoderDrive(samwiseDrive, -40, -40, 20);
                 telemetry.addData(route, "finish fifth drive");
                 //telemetry.update();
 
@@ -41,7 +41,7 @@ public class SamwiseDriveRouteFactory
                 telemetry.addData(route, "finish sixth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -49, -49, 20);
+                driveTrain.encoderDrive(samwiseDrive, -55, -55, 20);
                 telemetry.addData(route, "finish seventh drive");
                 //telemetry.update();
 
@@ -69,11 +69,13 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common drive ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.turnDrive(samwiseDrive, 32.429725, 2);
+                driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
+
+                driveTrain.turnDrive(samwiseDrive, 35, 2);
                 telemetry.addData(route, "finish first turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, 28, 28, 3);
+                driveTrain.encoderDrive(samwiseDrive, 27, 27, 3);
                 telemetry.addData(route, "finish second drive");
                 //telemetry.update();
 
@@ -81,21 +83,21 @@ public class SamwiseDriveRouteFactory
                 telemetry.addData(route, "finish third turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -31,-31,3);
+                driveTrain.encoderDrive(samwiseDrive, -28,-28,3);
                 telemetry.addData(route, "finish fourth drive");
                 //telemetry.update();
 
-                driveTrain.turnDrive(samwiseDrive, 35, 3);
+                driveTrain.turnDrive(samwiseDrive, 36, 3);
                 telemetry.addData(route, "finish fifth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -45,-45,5);
+                driveTrain.encoderDrive(samwiseDrive, -46,-46,5);
                 telemetry.addData(route, "finish sixth drive");
                 //telemetry.update();
 
                 md.move(1);
 
-                driveTrain.encoderDrive(samwiseDrive, 64, 64,15);
+                driveTrain.encoderDrive(samwiseDrive, 65, 65,15);
                 telemetry.addData(route, "finish seventh drive");
                 telemetry.update();
             }
@@ -117,27 +119,30 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common drive ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.turnDrive( samwiseDrive,-30.429725, 2);
+                driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
+                //telemetry.addData(route, "finish ")
+
+                driveTrain.turnDrive( samwiseDrive,-35, 2);
                 telemetry.addData(route, "finish first turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, 28, 28, 5);
+                driveTrain.encoderDrive(samwiseDrive, 27, 27, 5);
                 telemetry.addData(route, "finish second drive");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -8, -8, 4);
+                driveTrain.encoderDrive(samwiseDrive, -9, -9, 4);
                 telemetry.addData(route, "finish third drive");
                 //telemetry.update();
 
-                driveTrain.turnDrive(samwiseDrive, -65, 5);
+                driveTrain.turnDrive(samwiseDrive, -56, 5);
                 telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -58,-58,20);
+                driveTrain.encoderDrive(samwiseDrive, -50,-50,20);
                 telemetry.addData(route, "finish fifth drive");
                 //telemetry.update();
 
-                driveTrain.turnDrive(samwiseDrive, 48, 3);
+                driveTrain.turnDrive(samwiseDrive, 46, 3);
                 telemetry.addData(route, "finish sixth turn");
                 //telemetry.update();
 
@@ -194,11 +199,13 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common drive ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.turnDrive(samwiseDrive, 28, 3);
+                driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
 
-                driveTrain.encoderDrive(samwiseDrive,30, 30, 4);
+                driveTrain.turnDrive(samwiseDrive, 33, 3);
 
-                driveTrain.turnDrive(samwiseDrive,-50,3);
+                driveTrain.encoderDrive(samwiseDrive,29, 29, 4);
+
+                driveTrain.turnDrive(samwiseDrive,-55,3);
 
                 driveTrain.encoderDrive(samwiseDrive, 38,38,4);
 
@@ -226,11 +233,13 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common drive ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.turnDrive(samwiseDrive, -29, 3);
+                driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
 
-                driveTrain.encoderDrive(samwiseDrive, 30,30, 4);
+                driveTrain.turnDrive(samwiseDrive, -33, 3);
 
-                driveTrain.turnDrive(samwiseDrive, 42.6684716, 3);
+                driveTrain.encoderDrive(samwiseDrive, 29,29, 4);
+
+                driveTrain.turnDrive(samwiseDrive, 46, 3);
 
                 driveTrain.encoderDrive(samwiseDrive, 30, 30, 4);
 
