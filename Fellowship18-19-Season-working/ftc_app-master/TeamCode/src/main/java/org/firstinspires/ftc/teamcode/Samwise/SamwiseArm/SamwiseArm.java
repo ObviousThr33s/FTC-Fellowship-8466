@@ -103,7 +103,7 @@ public class SamwiseArm
     public boolean getIsCollectionPlane()
     {
         return isCollectionPlane;
-    }
+}
 
     public void setIsCollectionPlane(boolean collectionPlane)
     {
