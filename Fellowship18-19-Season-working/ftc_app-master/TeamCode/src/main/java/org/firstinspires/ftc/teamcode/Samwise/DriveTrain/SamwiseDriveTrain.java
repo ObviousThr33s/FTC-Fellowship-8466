@@ -123,5 +123,6 @@ public class SamwiseDriveTrain extends DriveTrain
         leftDrive.setPower(power);
         rightDrive.setPower(power);
     }
+
 }
 
