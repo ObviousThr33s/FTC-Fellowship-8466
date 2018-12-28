@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -46,6 +47,9 @@ public class MichaelMotorEncoderTest2 extends OpMode {
 
 
     public void init() {
+        if (this.testMotorEncoder4 instanceof DcMotorEx) {
+            ((DcMotorEx) testMotorEncoder4).setVelocity(.5);
+        }
         testMotorEncoder1 = hardwareMap.dcMotor.get("testMotor1");
         testMotorEncoder2 = hardwareMap.dcMotor.get("testMotor2");
         testMotorEncoder3 = hardwareMap.dcMotor.get("testMotor3");
@@ -70,21 +74,25 @@ public class MichaelMotorEncoderTest2 extends OpMode {
 
     public void loop() {
         //print out the current motor postion for verifying initial postion settings
-        int testMotor1Pos = testMotorEncoder1.getCurrentPosition();
-        int testMotor2Pos = testMotorEncoder2.getCurrentPosition();
-        int testMotor3Pos = testMotorEncoder3.getCurrentPosition();
 
-        System.out.println(testMotor1Pos + testMotor2Pos + testMotor3Pos);
+        float VelocityOfArm = gamepad1.left_stick_y;
 
-        float RotationJoint = gamepad1.left_stick_x * SmallDegreeToTicks; // rotation of J1
-        double theta =  gamepad1.left_stick_y * 360 * TickPerDegreeJ2; // rotate degree of J2 if  left_stick_y == 1, the motor shall rotate 360 degree To be verified
-        double phi = (Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180) * TickPerDegreeJ3; //Rotate J3
+        //int testMotor1Pos = testMotorEncoder1.getCurrentPosition();
+        //int testMotor2Pos = testMotorEncoder2.getCurrentPosition();
+        //int testMotor3Pos = testMotorEncoder3.getCurrentPosition();
 
-        testMotorEncoder1.setTargetPosition((int) theta);    //Joint 2 (first vertical joint)
-        testMotorEncoder2.setTargetPosition((int) phi);      //Joint 3 (second vertical joint)
+        //System.out.println(testMotor1Pos + testMotor2Pos + testMotor3Pos);
+
+        float RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
+        //double theta =  gamepad1.left_stick_y * 360 * TickPerDegreeJ2; // rotate degree of J2 if  left_stick_y == 1, the motor shall rotate 360 degree To be verified
+        //double phi = (Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180) * TickPerDegreeJ3; //Rotate J3
+
+        //testMotorEncoder1.setTargetPosition((int) theta);    //Joint 2 (first vertical joint)
+        //testMotorEncoder2.setTargetPosition((int) phi);      //Joint 3 (second vertical joint)
         testMotorEncoder3.setTargetPosition((int)RotationJoint); //Joint 1 (turn table)
 
         // set power according to theta
+        /*
         if (gamepad1.left_stick_y >= 0.9) {
             testMotorEncoder1.setPower(0.9);
             testMotorEncoder2.setPower(0.9);
@@ -101,6 +109,8 @@ public class MichaelMotorEncoderTest2 extends OpMode {
             }
 
         }
+        */
+
 
         testMotorEncoder1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
