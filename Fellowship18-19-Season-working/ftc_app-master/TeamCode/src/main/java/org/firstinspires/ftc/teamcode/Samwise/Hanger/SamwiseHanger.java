@@ -20,19 +20,22 @@ public class SamwiseHanger {
 
     public Telemetry telemetry;
 
-    public DcMotor hangermotor1 = null;
-    public Servo hangerservo1 = null;
-    public Servo hangerservo2 = null;
+    public DcMotor hangermotor1;
+    public Servo   hangerservo1;
+    public Servo   hangerservo2;
 
-    public void init(HardwareMap hw, Telemetry t) {
-        hangermotor1 = hw.dcMotor.get("hangermotor1");
-        hangerservo1 = hw.servo.get("hangerservo1");
-        hangerservo2 = hw.servo.get("hangerservo2");
+    public SamwiseHanger(HardwareMap hw, Telemetry t, String hm1, String hs1, String hs2){
+        hangermotor1 = hw.dcMotor.get(hm1);
+        hangerservo1 = hw.servo.get(hs1);
+        hangerservo2 = hw.servo.get(hs2);
 
         telemetry = t;
 
-        telemetry.addData("Mode", "Boron-Oxygen-Oxygen-Phosphorus Beryllium-Phosphorus init time");
+        telemetry.addData("info", "Hanger Init");
         telemetry.update();
+    }
+
+    public void init(HardwareMap hw, Telemetry t) {
 
         //hangerservo1.setPosition(10);
 

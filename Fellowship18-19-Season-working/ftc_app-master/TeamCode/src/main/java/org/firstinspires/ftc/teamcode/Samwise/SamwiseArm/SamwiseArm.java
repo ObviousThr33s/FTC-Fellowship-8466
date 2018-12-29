@@ -14,9 +14,9 @@ public class SamwiseArm
     //Control retraction and extension of the arm
     //AndyMark Neverest Classic 40: 1120 cpr (https://www.andymark.com/products/neverest-classic-40-gearmotor)
     //AndyMark Neverest Classic 20: 560 cpr (https://www.servocity.com/neverest-20-gear-motor)
-    DcMotor motorJ1 = null;
-    DcMotor motorJ2 = null;
-    DcMotor motorJ3 = null;
+    DcMotor motorJ1;
+    DcMotor motorJ2;
+    DcMotor motorJ3;
     private Servo servoWrist = null;
     //Control collecting or depositing of minerals
     private CRServo servo = null;

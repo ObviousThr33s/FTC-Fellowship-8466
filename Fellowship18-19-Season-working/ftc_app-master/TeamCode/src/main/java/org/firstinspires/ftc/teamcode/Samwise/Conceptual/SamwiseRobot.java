@@ -1,44 +1,36 @@
 package org.firstinspires.ftc.teamcode.Samwise.Conceptual;
 
-import org.firstinspires.ftc.teamcode.AbstractConceptual.Robot;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
-import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
-import org.firstinspires.ftc.teamcode.AbstractPhysical.Sensors;
-import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
+import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 
-public class SamwiseRobot extends Robot {
+public class SamwiseRobot {
 
-    @Override
-    public MotorsAndServos motorsAndServos() {
-        return null;
+    //Utils
+    HardwareMap hw;
+    Telemetry tel;
 
+    //Subsystems
+    SamwiseArm arm;
+    SamwiseHanger hanger;
+    SamwiseDriveTrain driveTrain;
+
+    public SamwiseRobot(HardwareMap h, Telemetry t){
+        SamwiseArm        arm        = new SamwiseArm(h);
+        SamwiseHanger     hanger     = new SamwiseHanger(h, t, "hangermotor1", "hangerservo1", "hangerservo2");
+        SamwiseDriveTrain driveTrain = new SamwiseDriveTrain();
+
+        driveTrain.init(h);
     }
 
 
-    @Override
-    public Sensors sensors() {
-        return null;
+    public SamwiseArm arm() { return arm; }
+    public SamwiseHanger hanger() {return hanger;}
+    public SamwiseDriveTrain driveTrain() {
+        return driveTrain;
     }
-
-    @Override
-    public DriveTrain driveTrain() {
-        return null;
-    }
-
-    @Override
-    public Vision vision() {
-        return null;
-    }
-    /*
-    //Drive Train Motors
-    public DcMotor leftDrive = null;
-    public DcMotor rightDrive = null;
-
-    public void init(HardwareMap hwm){
-        hm = hwm;
-        leftDrive = hm.get(DcMotor.class, "left_drive");
-        rightDrive = hm.get(DcMotor.class, "right_drive");
-    }
-    */
 }
