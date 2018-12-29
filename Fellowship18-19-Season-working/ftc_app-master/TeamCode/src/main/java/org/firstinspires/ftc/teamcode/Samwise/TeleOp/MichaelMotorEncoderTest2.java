@@ -75,24 +75,22 @@ public class MichaelMotorEncoderTest2 extends OpMode {
     public void loop() {
         //print out the current motor postion for verifying initial postion settings
 
-        float VelocityOfArm = gamepad1.left_stick_y;
+        int testMotor1Pos = testMotorEncoder1.getCurrentPosition();
+        int testMotor2Pos = testMotorEncoder2.getCurrentPosition();
+        int testMotor3Pos = testMotorEncoder3.getCurrentPosition();
 
-        //int testMotor1Pos = testMotorEncoder1.getCurrentPosition();
-        //int testMotor2Pos = testMotorEncoder2.getCurrentPosition();
-        //int testMotor3Pos = testMotorEncoder3.getCurrentPosition();
-
-        //System.out.println(testMotor1Pos + testMotor2Pos + testMotor3Pos);
+        System.out.println(testMotor1Pos + testMotor2Pos + testMotor3Pos);
 
         float RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
-        //double theta =  gamepad1.left_stick_y * 360 * TickPerDegreeJ2; // rotate degree of J2 if  left_stick_y == 1, the motor shall rotate 360 degree To be verified
-        //double phi = (Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180) * TickPerDegreeJ3; //Rotate J3
+        double theta =  gamepad1.left_stick_y * 360 * TickPerDegreeJ2; // rotate degree of J2 if  left_stick_y == 1, the motor shall rotate 360 degree To be verified
+        double phi = (Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180) * TickPerDegreeJ3; //Rotate J3
 
-        //testMotorEncoder1.setTargetPosition((int) theta);    //Joint 2 (first vertical joint)
-        //testMotorEncoder2.setTargetPosition((int) phi);      //Joint 3 (second vertical joint)
+        testMotorEncoder1.setTargetPosition((int) theta);    //Joint 2 (first vertical joint)
+        testMotorEncoder2.setTargetPosition((int) phi);      //Joint 3 (second vertical joint)
         testMotorEncoder3.setTargetPosition((int)RotationJoint); //Joint 1 (turn table)
 
         // set power according to theta
-        /*
+
         if (gamepad1.left_stick_y >= 0.9) {
             testMotorEncoder1.setPower(0.9);
             testMotorEncoder2.setPower(0.9);
@@ -109,7 +107,6 @@ public class MichaelMotorEncoderTest2 extends OpMode {
             }
 
         }
-        */
 
 
         testMotorEncoder1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
