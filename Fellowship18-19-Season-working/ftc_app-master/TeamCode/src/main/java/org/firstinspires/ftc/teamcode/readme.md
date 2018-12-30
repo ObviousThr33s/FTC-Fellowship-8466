@@ -119,3 +119,9 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 5)  Add:    include ':Team0417' to the "/settings.gradle" file.
     
 6)  Open up Android Studios and clean out any old files by using the menu to "Build/Clean Project""
+
+
+---------------------
+How to set up wireless ADB
+
+https://blog.jcole.us/2017/04/13/wireless-programming-for-ftc-robots/
