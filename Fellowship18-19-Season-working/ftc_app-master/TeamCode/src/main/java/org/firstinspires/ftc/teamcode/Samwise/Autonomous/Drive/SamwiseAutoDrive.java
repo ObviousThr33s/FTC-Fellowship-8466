@@ -50,14 +50,14 @@ public class SamwiseAutoDrive extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //landing
+        //landing the Robot
         hanger.encoderDrive(this, 0.6, -20.9, 4);
 
         //Unhooking
         hanger.unHook();
         sleep(500); //wait until the hook fully opens
 
-        //Lowering the Hanger
+        //Lowering the Slide
         hanger.encoderDrive(this, 0.6, 20.9, 4);
 
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
@@ -97,19 +97,20 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         //ideal right most mineral middle point position
         final double idealPos = 689;
+        double ratio;
 
-        Recognition reference = vis.getReference();
+         do {
+             Recognition reference = vis.getReference();
 
-        if(reference == null) {
-            return;
-        }
+             if(reference == null) {
+                 return;
+             }
 
-        double curPos = (reference.getBottom() + reference.getTop()) / 2;
-        double ratio = idealPos / curPos;
+             double curPos = (reference.getBottom() + reference.getTop()) / 2;
+             ratio = idealPos / curPos;
 
-        System.out.println("==>Current Ratio (before correction): " + ratio);
+             System.out.println("==>Current Ratio (before correction): " + ratio);
 
-        while (ratio > 1.03 || ratio < .97) {
             if (ratio > 1) {
                 // turn left
                 System.out.println("==>Current Ratio: " + ratio + ". Turn Left 2 Degrees: ");
@@ -119,11 +120,8 @@ public class SamwiseAutoDrive extends LinearOpMode {
                 System.out.println("==>Current Ratio: " + ratio + ". Turn Right 2 Degrees.");
                 this.robot.turnDrive(this, -2, 2);
             }
-            reference = vis.getReference();
-
-            curPos = (reference.getBottom() + reference.getTop()) / 2;
-            ratio = idealPos / curPos;
         }
+        while (ratio > 1.03 || ratio < .97);
 
         System.out.println("==>Current Ratio (after correction): " + ratio);
     }
@@ -144,14 +142,14 @@ public class SamwiseAutoDrive extends LinearOpMode {
         if (isCrater) {
             switch (position) {
                 case RIGHT: //right
-                    driveRoute = SamwiseDriveRouteFactory.createCraterRight(this);
+                    driveRoute = SamwiseDriveRouteFactory.createCraterRight2(this);
                     break;
                 case LEFT: //left
-                    driveRoute = SamwiseDriveRouteFactory.createCraterLeft(this);
+                    driveRoute = SamwiseDriveRouteFactory.createCraterLeft2(this);
                     break;
                 case CENTER:  //center
                 default:
-                    driveRoute = SamwiseDriveRouteFactory.createCraterCenter(this);
+                    driveRoute = SamwiseDriveRouteFactory.createCraterCenter2(this);
             }
         } else {
             switch (position) {
