@@ -35,24 +35,13 @@ public class SamwiseHanger {
         telemetry.update();
     }
 
-    public void init(HardwareMap hw, Telemetry t) {
-
-        //hangerservo1.setPosition(10);
-
+    public void init() {
         hangermotor1.setDirection(DcMotor.Direction.REVERSE);
-
         hangermotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         hangermotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //hangermotor1.setTargetPosition(0);
-
-        //hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        //hangermotor1.setPower(1);
     }
 
     public void unHook() {
-
         telemetry.addData("Mode", "hook 2");
         hangerservo1.setPosition(0.5);
     }
@@ -69,26 +58,11 @@ public class SamwiseHanger {
 
     public void movedown() {
         telemetry.addData("Mode", "slide 1");
-
-        //hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //hangermotor1.setTargetPosition(0);
-
-        //hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         hangermotor1.setPower(1);
     }
 
     public void moveup() {
-
         telemetry.addData("Mode", "slide 1");
-
-        //hangermotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //hangermotor1.setTargetPosition(10);
-
-        //hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         hangermotor1.setPower(-1);
     }
 

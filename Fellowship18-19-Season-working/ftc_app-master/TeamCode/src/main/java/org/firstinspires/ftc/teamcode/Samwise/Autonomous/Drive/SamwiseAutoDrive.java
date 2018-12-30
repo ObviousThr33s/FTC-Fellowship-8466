@@ -37,7 +37,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
          */
         robot.init(hardwareMap);
         md.init(hardwareMap);
-        hanger.init(hardwareMap, telemetry);
+        hanger.init();
 
         if (tf) {
             vis.init(hardwareMap);

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -67,6 +68,10 @@ public class SamwiseArm
     private static final double collection_maximum_position_J2 = 0;
     private static final double collection_maximum_position_J3 = 0;
 
+
+    //Empty constructor for the arm modes
+    public SamwiseArm(){}
+
     public SamwiseArm(HardwareMap hwm)
     {
         //TODO: Find out minimum and maximum position
@@ -93,6 +98,12 @@ public class SamwiseArm
         previousPositionJ3 = initialCollectionPosJ3;
 
         //Max/Min Position Math
+
+
+
+    }
+
+    public void init(){
 
     }
 
@@ -274,7 +285,7 @@ public class SamwiseArm
      * @param speed Positive to expand, negative to retract, and zero to stop/break. The value is between -1 and 1 taken straight
      *              from the gamepad input.
      */
-    public void hoverPlaneOfMotion(float speed)
+    public void hoverPlaneOfMotion(double speed)
     {
         setManual(false);
         //TODO:
