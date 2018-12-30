@@ -53,23 +53,23 @@ public class MichaelMotorEncoderTest2 extends OpMode {
         testMotorEncoder1 = hardwareMap.dcMotor.get("testMotor1");
         testMotorEncoder2 = hardwareMap.dcMotor.get("testMotor2");
         testMotorEncoder3 = hardwareMap.dcMotor.get("testMotor3");
-        testMotorEncoder4 = hardwareMap.dcMotor.get("testMotor4");
+        //testMotorEncoder4 = hardwareMap.dcMotor.get("testMotor4");
         testMotorEncoder1.setPower(0);
         testMotorEncoder2.setPower(0);
         testMotorEncoder3.setPower(0);
-        testMotorEncoder4.setPower(0);
+        //testMotorEncoder4.setPower(0);
         testMotorEncoder1.setDirection(DcMotor.Direction.REVERSE);
         testMotorEncoder2.setDirection(DcMotor.Direction.REVERSE);
         testMotorEncoder3.setDirection(DcMotor.Direction.REVERSE);
-        testMotorEncoder4.setDirection(DcMotor.Direction.REVERSE);
+        //testMotorEncoder4.setDirection(DcMotor.Direction.REVERSE);
         testMotorEncoder1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         testMotorEncoder2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         testMotorEncoder3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        testMotorEncoder4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //testMotorEncoder4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         testMotorEncoder1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         testMotorEncoder2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         testMotorEncoder3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        testMotorEncoder4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //testMotorEncoder4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void loop() {
@@ -82,30 +82,23 @@ public class MichaelMotorEncoderTest2 extends OpMode {
         System.out.println(testMotor1Pos + testMotor2Pos + testMotor3Pos);
 
         float RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
-        double theta =  gamepad1.left_stick_y * 360 * TickPerDegreeJ2; // rotate degree of J2 if  left_stick_y == 1, the motor shall rotate 360 degree To be verified
-        double phi = (Math.acos( (H + Math.cos (180 - theta) * L1) / L2) - theta + 180) * TickPerDegreeJ3; //Rotate J3
-
-        testMotorEncoder1.setTargetPosition((int) theta);    //Joint 2 (first vertical joint)
-        testMotorEncoder2.setTargetPosition((int) phi);      //Joint 3 (second vertical joint)
+        int theta =  180;  // rotate degree of J2 if  left_stick_y == 1, the motor shall rotate 360 degree To be verified
+        double phi = Math.acos((L1 * Math.cos(180-theta)-H)/L2)+180-theta; //Rotate J3
+        double theta2 = theta * TickPerDegreeJ2;
+        double phi2 = phi *TickPerDegreeJ3;
+          //Joint 2 (first vertical joint)
+             //Joint 3 (second vertical joint)
         testMotorEncoder3.setTargetPosition((int)RotationJoint); //Joint 1 (turn table)
 
         // set power according to theta
-
-        if (gamepad1.left_stick_y >= 0.9) {
-            testMotorEncoder1.setPower(0.9);
-            testMotorEncoder2.setPower(0.9);
-        }
-
-        else {
-            if (gamepad1.left_stick_y >= 0.3) {
-                testMotorEncoder1.setPower(0.5);
-                testMotorEncoder2.setPower(0.5);
-            }
-            else {
-                testMotorEncoder1.setPower(0.3);
-                testMotorEncoder2.setPower(0.3);
-            }
-
+        if (gamepad1.left_stick_y < -0.2) {
+            testMotorEncoder1.setTargetPosition((int) theta2);
+            testMotorEncoder2.setTargetPosition((int) phi2);
+            testMotorEncoder1.setPower(gamepad1.left_stick_y);
+            testMotorEncoder2.setPower(gamepad1.left_stick_y);
+        } else {
+            testMotorEncoder1.setPower(0);
+            testMotorEncoder2.setPower(0);
         }
 
 
