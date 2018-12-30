@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 
 
-@Autonomous(name = "SamwiseAutoDriveCrater v2", group = "Samwise")
+@Autonomous(name = "SamwiseAutoDriveCrater2", group = "Samwise")
 //@Disabled
 public class SamwiseAutoDriveCrater extends SamwiseAutoDrive {
 
@@ -26,14 +26,14 @@ public class SamwiseAutoDriveCrater extends SamwiseAutoDrive {
          */
         switch (position) {
             case RIGHT: //right
-                driveRoute = SamwiseDriveRouteFactory.createCraterRight(this);
+                driveRoute = SamwiseDriveRouteFactory.createCraterRight2(this);
                 break;
             case LEFT: //left
-                driveRoute = SamwiseDriveRouteFactory.createCraterLeft(this);
+                driveRoute = SamwiseDriveRouteFactory.createCraterLeft2(this);
                 break;
             case CENTER:  //center
             default:
-                driveRoute = SamwiseDriveRouteFactory.createCraterCenter(this);
+                driveRoute = SamwiseDriveRouteFactory.createCraterCenter2(this);
         }
 
         return driveRoute;
