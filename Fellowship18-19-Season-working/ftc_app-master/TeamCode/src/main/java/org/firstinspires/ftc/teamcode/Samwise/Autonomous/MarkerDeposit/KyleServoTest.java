@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "kyle's Servo Test")
+@TeleOp(name = "kyle's Servo MichaelTestArm")
 public class KyleServoTest extends LinearOpMode {
     SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
     final double testServo1_SPEED = 0.04;

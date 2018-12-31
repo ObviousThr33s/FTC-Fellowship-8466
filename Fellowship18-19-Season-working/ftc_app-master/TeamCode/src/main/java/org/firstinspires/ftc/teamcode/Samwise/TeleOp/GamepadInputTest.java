@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "Test Gamepad Input")
+@TeleOp(name = "MichaelTestArm Gamepad Input")
 public class GamepadInputTest extends LinearOpMode
 {
 
