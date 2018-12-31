@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
+import org.firstinspires.ftc.teamcode.Samwise.Conceptual.SamwiseRobot;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 
@@ -21,10 +22,11 @@ public class SamwiseAutoDrive extends LinearOpMode {
     protected double idealPos = 689;
 
     /* Declare OpMode members. */
+    SamwiseRobot sr = new SamwiseRobot(hardwareMap, telemetry);
     SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
     SamwiseVision vis = new SamwiseVision();
     SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
-    SamwiseHanger hanger = new SamwiseHanger();
+    SamwiseHanger hanger = sr.hanger();
 
     /**
      * init with and without tensorflow
@@ -38,7 +40,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
          */
         robot.init(hardwareMap);
         md.init(hardwareMap);
-        hanger.init(hardwareMap, telemetry);
+        hanger.init();
 
         if (tf) {
             vis.init(hardwareMap);

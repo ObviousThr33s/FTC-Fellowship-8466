@@ -49,7 +49,7 @@ public class SamwiseFlushToLine {
 
 
 
-    public color senseColor(ColorSensor sensor){
+    private color senseColor(ColorSensor sensor){
         RED = sensor.red();
         BLUE = sensor.green();
         GREEN = sensor.blue();

@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Samwise.Conceptual.SamwiseRobot;
+
 @Autonomous(name = "HangerAuto", group = "Exercises")
 public class SamwiseHangerAutonomous extends LinearOpMode {
 
@@ -11,9 +13,9 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
     SamwiseHanger movieboi;
 
     public void init(HardwareMap ahwMap) {
-
-        movieboi = new SamwiseHanger();
-        movieboi.init(hardwareMap, telemetry);
+        SamwiseRobot sr = new SamwiseRobot(hardwareMap, telemetry);
+        movieboi = sr.hanger();
+        movieboi.init();
     }
 
     @Override
