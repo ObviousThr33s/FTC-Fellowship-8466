@@ -29,44 +29,34 @@
 
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
-import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 
-/**
- * This file provides basic Telop driving for a Pushbot robot.
- * The code is structured as an Iterative OpMode
- *
- * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
- * All device access is managed through the HardwarePushbot class.
- *
- * This particular OpMode executes a basic Tank Drive Teleop for a PushBot
- * It raises and lowers the claw using the Gampad Y and A buttons respectively.
- * It also opens and closes the claws slowly using the left and right Bumper buttons.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
+/****************************************************************************************************
+ *                  Teleop Outline:                                                                 *
+ *                  0. Drive to collection spot                                                     *
+ *                  1. Arm initial to initial collection plane                                      *
+ *                  2. Move along collection plane                                                  *
+ *                  3. Collect (arm position and claw spins)                                        *
+ *                  4. Deposit (arm position and claw spins)                                        *
+ *                  5. Back to previous collection plane                                            *
+ *                  6. Repeat 2-5                                                                   *
+ *                  Start of last 30 seconds:                                                       *
+ *                  7. Drive to lander                                                              *
+ *                  8. Aim, hang up, and stay                                                       *
+ ****************************************************************************************************/
 @TeleOp(name="Samwise: Teleop Tank", group="Samwise")
 //@Disabled
 public class SamwiseTeleOp extends OpMode{
 
     /* Declare OpMode members. */
-    SamwiseDriveTrain robot  = new SamwiseDriveTrain(); // use the class created to define a Pushbot's hardware
-                                                        // could also use HardwarePushbotMatrix class.
-    //double          clawOffset  = 0.0 ;               // Servo mid position
-    //final double    CLAW_SPEED  = 0.02 ;              // sets rate to move servo
-
+    public SamwiseArm swArm = null;
 
     @Override
     public void init() {
-        robot.init(hardwareMap);
-        telemetry.addData("info", "init completed");
+        swArm = new SamwiseArm(this.hardwareMap);
     }
 
 
@@ -78,42 +68,34 @@ public class SamwiseTeleOp extends OpMode{
     public void start() {
     }
 
+    /**
+     * This is where our main teleop gamepad input and functions mapping go.
+     */
     @Override
     public void loop() {
-        double left;
-        double right;
+        /************************************** Gamepad #1 Mappings *************************************
+         *                               Samwise Drive Train and Hanging                                *
+         *                       (Please add related function mappings below)                           *
+         ************************************************************************************************/
 
-        // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
-        left = -gamepad1.left_stick_y;
-        right = -gamepad1.right_stick_y;
 
-        robot.leftDrive.setPower(left);
-        robot.rightDrive.setPower(right);
+        /************************************** Gamepad #2 Mappings *************************************
+         *                               Arm(J1, J2, J3) Position Transitions                           *
+         *                       (Please add related function mappings below)                           *
+         ************************************************************************************************/
 
-        // Use gamepad left & right Bumpers to open and close the claw
-        /*if (gamepad1.right_bumper)
-            clawOffset += CLAW_SPEED;
-        else if (gamepad1.left_bumper)
-            clawOffset -= CLAW_SPEED;
 
-        // Move both servos to new position.  Assume servos are mirror image of each other.
-        clawOffset = Range.clip(clawOffset, -0.5, 0.5);
-        robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
-        robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
+        /************************************** Gamepad #2 Mappings *************************************
+         *                               Arm (J2, J3) Plane of Motion                                   *
+         *                       (Please add related function mappings below)                           *
+         ************************************************************************************************/
 
-        // Use gamepad buttons to move the arm up (Y) and down (A)
-        if (gamepad1.y)
-            robot.leftArm.setPower(robot.ARM_UP_POWER);
-        else if (gamepad1.a)
-            robot.leftArm.setPower(robot.ARM_DOWN_POWER);
-        else
-            robot.leftArm.setPower(0.0);
 
-        // Send telemetry message to signify robot running;
-        telemetry.addData("claw",  "Offset = %.2f", clawOffset);
-        */
-        telemetry.addData("left",  "%.2f", left);
-        telemetry.addData("right", "%.2f", right);
+        /************************************** Gamepad #2 Mappings *************************************
+         *                  Claws (J2, J3, J4, J5, J6) Collection & Deposit                             *
+         *                       (Please add related function mappings below)                           *
+         ************************************************************************************************/
+
     }
 
     @Override
