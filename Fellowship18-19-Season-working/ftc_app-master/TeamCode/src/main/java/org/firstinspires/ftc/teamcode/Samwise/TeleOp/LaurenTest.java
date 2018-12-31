@@ -19,9 +19,7 @@ public class LaurenTest extends OpMode
     @Override
     public void loop()
     {
-        telemetry.addData("Left trigger", gamepad1.left_trigger);
-        telemetry.addData("Right trigger", gamepad1.right_trigger);
-        telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
+        //telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
         telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
         telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
         telemetry.update();
@@ -33,41 +31,65 @@ public class LaurenTest extends OpMode
         //move J2 up
         if (gamepad1.dpad_right)
         {
-            if (armStuff.getIsManual()) armStuff.driveJ2(true);
+            if (armStuff.getIsManual())
+            {
+                armStuff.driveJ2(true);
+            }
         }
         else
         {
-            if (armStuff.getIsManual()) armStuff.stopJ2();
+            if (armStuff.getIsManual() && !gamepad1.dpad_right && !gamepad1.dpad_left)
+            {
+                armStuff.stopJ2();
+            }
         }
 
         //move J2 down
         if (gamepad1.dpad_left)
         {
-            if (armStuff.getIsManual()) armStuff.driveJ2(false);
+            if (armStuff.getIsManual())
+            {
+                armStuff.driveJ2(false);
+            }
         }
         else
         {
-            if (armStuff.getIsManual()) armStuff.stopJ2();
+            if (armStuff.getIsManual() && !gamepad1.dpad_right && !gamepad1.dpad_left)
+            {
+                armStuff.stopJ2();
+            }
         }
 
         //move J3 up
         if (gamepad1.dpad_up)
         {
-            if (armStuff.getIsManual()) armStuff.driveJ3(true);
+            if (armStuff.getIsManual())
+            {
+                armStuff.driveJ3(true);
+            }
         }
         else
         {
-            if (armStuff.getIsManual()) armStuff.stopJ3();
+            if (armStuff.getIsManual() && !gamepad1.dpad_up && !gamepad1.dpad_down)
+            {
+                armStuff.stopJ3();
+            }
         }
 
         //move J3 down
         if (gamepad1.dpad_down)
         {
-            if (armStuff.getIsManual()) armStuff.driveJ3(false);
+            if (armStuff.getIsManual())
+            {
+                armStuff.driveJ3(false);
+            }
         }
         else
         {
-            if (armStuff.getIsManual()) armStuff.stopJ3();
+            if (armStuff.getIsManual() && !gamepad1.dpad_up && !gamepad1.dpad_down)
+            {
+                armStuff.stopJ3();
+            }
         }
 
         if (gamepad1.x)
@@ -82,7 +104,7 @@ public class LaurenTest extends OpMode
 
         if (gamepad1.b)
         {
-            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10  && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+            if (/*Math.abs(armStuff.getJ1CurrentPosition()) < 10  && */Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
             {
                 armStuff.toCollectionPlane();
             }
@@ -94,23 +116,26 @@ public class LaurenTest extends OpMode
 
         if (gamepad1.a)
         {
+            System.out.println("A pressed");
+            telemetry.addData("A", " Pressed");
             armStuff.toInitialPosition();
         }
 
-        if (gamepad1.left_trigger > 0);
-        {
-            armStuff.collectMinerals();
-        }
+//        if (gamepad1.left_trigger > 0)
+//        {
+//            armStuff.collectMinerals();
+//        }
+//
+//        if (gamepad1.right_trigger > 0)
+//        {
+//            armStuff.depositMinerals();
+//        }
+//
+//        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0)
+//        {
+//            armStuff.stopServo();
+//        }
 
-        if (gamepad1.right_trigger > 0);
-        {
-            armStuff.depositMinerals();
-        }
-
-        if (gamepad1.left_trigger == 0 || gamepad1.right_trigger == 0)
-        {
-            armStuff.servoStop();
-        }
     }
 
 }
