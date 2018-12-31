@@ -11,6 +11,12 @@ import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 //@Disabled
 public class SamwiseAutoDriveCrater extends SamwiseAutoDrive {
 
+    @Override
+    protected void init(boolean tf) {
+        this.idealPos = 689;
+        super.init(tf);
+    }
+
     /**
      *
      * @param position

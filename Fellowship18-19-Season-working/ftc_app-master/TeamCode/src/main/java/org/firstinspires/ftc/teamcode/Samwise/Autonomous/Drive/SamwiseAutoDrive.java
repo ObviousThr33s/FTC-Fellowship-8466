@@ -11,11 +11,14 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 
 @Autonomous(name = "SamwiseAutoDrive v1", group = "Samwise")
-@Disabled
+//@Disabled
 public class SamwiseAutoDrive extends LinearOpMode {
 
     // this is set before the robot is initialized
     protected boolean isCrater = false;
+
+    //ideal right most mineral middle point position
+    protected double idealPos = 689;
 
     /* Declare OpMode members. */
     SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
@@ -95,8 +98,6 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     private void adjustPosition() {
 
-        //ideal right most mineral middle point position
-        final double idealPos = 689;
         double ratio;
 
          do {

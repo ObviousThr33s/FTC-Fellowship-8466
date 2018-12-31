@@ -125,3 +125,15 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 How to set up wireless ADB
 
 https://blog.jcole.us/2017/04/13/wireless-programming-for-ftc-robots/
+
+1. Connect the robot’s Android device to the PC via USB.
+
+2. Ensure that a file (such as an OpMode) is open and the cursor is in that window5.
+
+3. Click Tools → External Tools → “Enable ADB over TCP/IP” to enable ADB.
+
+4. Disconnect the USB cable from the Android device and ensure the computer is connected to the WiFi Direct network with its WiFi adapter.
+
+5. Ensure the “FTC Robot Controller” app is running on the Android device.
+
+6. Click Tools → External Tools → “Connect to ADB over WiFi Direct” to connect to ADB.
