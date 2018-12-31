@@ -86,16 +86,18 @@ public class SamwiseTeleOp extends OpMode{
 
 
         /************************************** Gamepad #2 Mappings *************************************
-         *                               Arm (J2, J3) Plane of Motion                                   *
-         *                       (Please add related function mappings below)                           *
-         ************************************************************************************************/
-
-
-        /************************************** Gamepad #2 Mappings *************************************
          *                  Claws (J2, J3, J4, J5, J6) Collection & Deposit                             *
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
 
+
+
+        /************************************** Gamepad #2 Mappings *************************************
+         *                               Arm (J2, J3) Plane of Motion                                   *
+         *                       (Please add related function mappings below)                           *
+         ************************************************************************************************/
+
+        
     }
 
     @Override
