@@ -24,18 +24,20 @@ public class SamwiseHanger {
     public Servo   hangerservo1;
     public Servo   hangerservo2;
 
-    public SamwiseHanger(HardwareMap hw, Telemetry t, String hm1, String hs1, String hs2){
-        hangermotor1 = hw.dcMotor.get(hm1);
-        hangerservo1 = hw.servo.get(hs1);
-        hangerservo2 = hw.servo.get(hs2);
+    public SamwiseHanger(){
+
+    }
+
+    public void init(HardwareMap hw, Telemetry t) {
+        hangermotor1 = hw.dcMotor.get("hangermotor1");
+        hangerservo1 = hw.servo.get("hangerservo1");
+        hangerservo2 = hw.servo.get("hangerservo2");
 
         telemetry = t;
 
-        telemetry.addData("info", "Hanger Init");
-        telemetry.update();
-    }
+        //telemetry.addData("info", "Hanger Init");
+        //telemetry.update();
 
-    public void init() {
         hangermotor1.setDirection(DcMotor.Direction.REVERSE);
         hangermotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         hangermotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

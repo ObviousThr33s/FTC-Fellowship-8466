@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Samwise.DriveTrain;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -94,7 +95,7 @@ public class SamwiseDriveTrain extends DriveTrain
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opMode.opModeIsActive() && (runtime.seconds() < timeoutS) && (leftDrive.isBusy() && rightDrive.isBusy()))
             {
-
+                opMode.idle();
             }
 
             // Stop all motion;
@@ -122,6 +123,37 @@ public class SamwiseDriveTrain extends DriveTrain
     {
         leftDrive.setPower(power);
         rightDrive.setPower(power);
+    }
+
+    public void drive(LinearOpMode opMode, DigitalChannel side, DigitalChannel front, double timeout){
+
+        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        // reset the timeout time and start motion.
+        runtime.reset();
+        drive(Math.abs(DRIVE_SPEED));
+
+
+        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && side.getState() && front.getState())
+        {
+            // robot keeps driving until side or front touch sensor is pressed
+            opMode.idle();
+        }
+
+        // Stop all motion;
+        drive(0);
+
+        if(!front.getState() || (runtime.seconds() >= timeout) || !opMode.opModeIsActive()){
+            return; // stop
+        }
+
+        if(side.getState()){
+            // turn robot 2 degrees
+            turnDrive(opMode, 2, 2);
+            drive(opMode, side, front, timeout); // recursive call till front touch sensor is hit
+        }
+
     }
 }
 
