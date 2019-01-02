@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /*
@@ -17,21 +19,25 @@ public class SamwiseArm
     DcMotor motorJ3 = null;
     //private Servo servoWrist = null;
     //Control collecting or depositing of minerals
-    //private CRServo servoClaw1 = null;
-    //private CRServo servoClaw2 = null;
+    private CRServo servoClaw1 = null;
+    private CRServo servoClaw2 = null;
+
     //true if using manual control of J2/J3; false if using plane of motion math
     boolean isManual = false;
+    //true if positioning in collection plane. Help save position before deposit so as to come back after
     boolean isCollectionPlane = false;
 
     static final int HEIGHT_PLANE_OF_MOTION = 6; //height of plane of motion
     static final double ARM_L1 = 24.09; //length between motorJoint1 and motorJoint2
     static final double ARM_L2 = 27.75; //length between motorJoint2 and servoWrist
+
     static final int TICKS_PER_REVOLUTION_J1 = 1680;
     static final int TICKS_PER_REVOLUTION_J2 = 1440;
     static final int TICKS_PER_REVOLUTION_J3 = 1440;
     static final int TICKS_PER_DEGREE_J1 = TICKS_PER_REVOLUTION_J1 / 360;
-    static final int TICKS_PER_DEGREE_J2 = TICKS_PER_REVOLUTION_J2 / 360;
-    static final int TICKS_PER_DEGREE_J3 = TICKS_PER_REVOLUTION_J3 / 360;
+    static final int TICKS_PER_DEGREE_J2 = (TICKS_PER_REVOLUTION_J2 / 360) * 4;
+    static final int TICKS_PER_DEGREE_J3 = (TICKS_PER_REVOLUTION_J3 / 360) * 2;
+
     static final double MANUAL_POWER_J1 = 0.4;
     static final double MANUAL_POWER_J2 = 0.05;
     static final double MANUAL_POWER_J3 = 0.05;
@@ -47,6 +53,7 @@ public class SamwiseArm
     static final int SILVER_DROP_J1 = -20;
     static final int SILVER_DROP_J2 = 270;
     static final int SILVER_DROP_J3 = 90;
+
     static final int INITIAL_DEGREES_J2 = 10;
     static final int INITIAL_DEGREES_J3 = 10;
     static final int SAMPLING_J2 = 90;
@@ -56,9 +63,11 @@ public class SamwiseArm
 
     double initialCollectionPosJ2;
     double initialCollectionPosJ3;
+
     int previousPositionJ1 = 0;
     double previousPositionJ2 = initialCollectionPosJ2;
     double previousPositionJ3 = initialCollectionPosJ3;
+
     double maxDegreesJ2;
     static double maxTicksJ2;
 
@@ -68,11 +77,11 @@ public class SamwiseArm
     private static final double collection_maximum_position_J3 = 0;
 
     //Empty constructor for the arm modes
-    public SamwiseArm(){}
+    public SamwiseArm() {}
 
     public SamwiseArm(HardwareMap hwm)
     {
-        //TODO: Find out minimum and maximum position
+        //TODO: Find out minimum and maximum position from initial position (ticks count==0)
         //        motorJ1 = hwm.dcMotor.get("J1");
         //        motorJ1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorJ2 = hwm.dcMotor.get("J2");
@@ -80,25 +89,21 @@ public class SamwiseArm
         motorJ3 = hwm.dcMotor.get("J3");
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //servoWrist = hwm.servo.get("Wrist");
-        //        servoClaw1 = hwm.crservo.get("ServoClaw1");
-        //        servoClaw2 = hwm.crservo.get("ServoClaw2");
+                servoClaw1 = hwm.crservo.get("ServoClaw1");
+                servoClaw2 = hwm.crservo.get("ServoClaw2");
 
         //Initial Collection Position Math
         double a          = Math.sqrt(Math.pow(HEIGHT_PLANE_OF_MOTION, 2) + Math.pow(INITIAL_COL_ARM_L3, 2));
         double angle1     = Math.asin(HEIGHT_PLANE_OF_MOTION / a);
         double angle2     = Math.acos((Math.pow(ARM_L1, 2) + Math.pow(a, 2) - Math.pow(ARM_L2, 2)) / (2 * ARM_L1 * a));
         double angle3     = Math.acos((Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.pow(a, 2)) / (2 * ARM_L1 * ARM_L2));
-        double J2_DEGREES = (angle1 + angle2 + 90) - INITIAL_DEGREES_J2;
-        double J3_DEGREES = angle3 - INITIAL_DEGREES_J3;
-        initialCollectionPosJ2 = TICKS_PER_DEGREE_J2 * J2_DEGREES;
-        initialCollectionPosJ3 = TICKS_PER_DEGREE_J3 * J3_DEGREES;
+        double j2_degrees = (angle1 + angle2 + 90) - INITIAL_DEGREES_J2;
+        double j3_degrees = angle3 - INITIAL_DEGREES_J3;
+        initialCollectionPosJ2 = TICKS_PER_DEGREE_J2 * j2_degrees;
+        initialCollectionPosJ3 = TICKS_PER_DEGREE_J3 * j3_degrees;
         previousPositionJ2 = initialCollectionPosJ2;
         previousPositionJ3 = initialCollectionPosJ3;
 
-        if (motorJ2 instanceof DcMotorEx)
-        {
-            System.out.println("J2 motor class: " + motorJ2.getClass());
-        }
         //        motorJ2.setTargetPosition(20);
         //        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //        motorJ2.setPower(0.05);
@@ -107,75 +112,69 @@ public class SamwiseArm
         //        }
         //Max/Min Position Math
 
+        System.out.println("initial collection J2: "+this.initialCollectionPosJ2);
+        System.out.println("initial collection J3: "+this.initialCollectionPosJ3);
+
     }
 
     /************************************************************************************************
      *                                Transition to Positions                                       *
      ************************************************************************************************/
 
-    public boolean getIsCollectionPlane()
+
+    private void toPosition(int targetJ2Position, int targetJ3Position)
     {
-        return isCollectionPlane;
+        motorJ2.setTargetPosition(targetJ2Position);
+        motorJ3.setTargetPosition(targetJ3Position);
+        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ2.setPower(AUTO_POWER_J2);
+        motorJ3.setPower(AUTO_POWER_J3);
+        while (motorJ2.isBusy() || motorJ3.isBusy())
+        {
+        }
     }
 
-    public void setIsCollectionPlane(boolean collectionPlane)
+    private void toPositionWithJ1(/*int targetJ1Position,*/ int targetJ2Position, int targetJ3Position)
     {
-        isCollectionPlane = collectionPlane;
+        //motorJ1.setTargetPosition(targetJ1Position);
+        motorJ2.setTargetPosition(targetJ2Position);
+        motorJ3.setTargetPosition(targetJ3Position);
+        //motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION
+        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //motorJ1.setPower(AUTO_POWER_J1)
+        motorJ2.setPower(AUTO_POWER_J2);
+        motorJ3.setPower(AUTO_POWER_J3);
+        while (/*motorJ1.isBusy() ||*/motorJ2.isBusy() || motorJ3.isBusy())
+        {
+        }
     }
-
-    public double getInitialCollectionPosJ2()
-    {
-        return initialCollectionPosJ2;
-    }
-
-    public double getInitialCollectionPosJ3()
-    {
-        return initialCollectionPosJ3;
-    }
-
     /**
      * Transition from any other positions to initial position
      */
-
-
     public void toInitialPosition()
     {
         System.out.println("Going To Initial Position");
         setManual(false);
         setIsCollectionPlane(false);
-        motorJ2.setTargetPosition(0);
-        motorJ3.setTargetPosition(0);
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setPower(AUTO_POWER_J2);
-        motorJ3.setPower(AUTO_POWER_J3);
-        while (motorJ2.isBusy() || motorJ3.isBusy())
-        {
-        }
+        toPosition(0,0);
         System.out.println("Reached Initial Position");
     }
 
     /**
-     * Transition from initial or deposit to collection position
+     * Transition from other positions to initial collection position
      */
     public void toCollectionPlane()
     {
         System.out.println("toCollectionPlane");
         setManual(false);
-        motorJ2.setTargetPosition((int) initialCollectionPosJ2);
-        motorJ3.setTargetPosition((int) initialCollectionPosJ3);
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ3.setPower(AUTO_POWER_J3);
-        motorJ2.setPower(AUTO_POWER_J2);
-        while (motorJ2.isBusy() || motorJ3.isBusy())
-        {
-        }
+        toPosition((int) initialCollectionPosJ2, (int) initialCollectionPosJ3);
         setIsCollectionPlane(true);
     }
 
     /**
-     * Transition from collection to deposit position
+     * Transition from other positions to gold deposit position
      */
     public void goldDropPoint()
     {
@@ -186,21 +185,12 @@ public class SamwiseArm
             savePreviousPosition();
             setIsCollectionPlane(false);
         }
-        //motorJ1.setTargetPosition(GOLD_DROP_J1);
-        motorJ2.setTargetPosition(GOLD_DROP_J2);
-        motorJ3.setTargetPosition(GOLD_DROP_J3);
-        //motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //motorJ1.setPower(AUTO_POWER_J1);
-        motorJ2.setPower(AUTO_POWER_J2);
-        motorJ3.setPower(AUTO_POWER_J3);
-        while (/*motorJ1.isBusy() ||*/ motorJ2.isBusy() || motorJ3.isBusy())
-        {
-        }
-        //TODO: Add depositing method
+        toPositionWithJ1(/*GOLD_DROP_J1,*/ GOLD_DROP_J2, GOLD_DROP_J3);
     }
 
+    /**
+     * Transition from other positions to silver deposit position
+     */
     public void silverDropPoint()
     {
         System.out.println("silverDropPoint");
@@ -210,21 +200,12 @@ public class SamwiseArm
             savePreviousPosition();
             setIsCollectionPlane(false);
         }
-        //motorJ1.setTargetPosition(SILVER_DROP_J1);
-        motorJ2.setTargetPosition(SILVER_DROP_J2);
-        motorJ3.setTargetPosition(SILVER_DROP_J3);
-        //motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //motorJ1.setPower(AUTO_POWER_J1);
-        motorJ2.setPower(AUTO_POWER_J2);
-        motorJ3.setPower(AUTO_POWER_J3);
-        while (/*motorJ1.isBusy() || */motorJ2.isBusy() || motorJ3.isBusy())
-        {
-        }
-        //TODO: Add depositing method
+        toPositionWithJ1(/*SILVER_DROP_J1,*/ SILVER_DROP_J2, SILVER_DROP_J3);
     }
 
+    /**
+     * Save previous position in order to come back later
+     */
     public void savePreviousPosition()
     {
         //previousPositionJ1 = getJ1CurrentPosition();
@@ -232,37 +213,21 @@ public class SamwiseArm
         previousPositionJ3 = getJ3CurrentPosition();
     }
 
+    /**
+     * Go back to previously saved position
+     */
     public void toPreviousCollectionPosition()
     {
         System.out.println("toPreviousCollectionPosition");
         setManual(false);
-        //motorJ1.setTargetPosition(previousPositionJ1);
-        motorJ2.setTargetPosition((int) previousPositionJ2);
-        motorJ3.setTargetPosition((int) previousPositionJ3);
-        //motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ3.setPower(AUTO_POWER_J3);
-        motorJ2.setPower(AUTO_POWER_J2);
-        //motorJ1.setPower(AUTO_POWER_J1);
-        while (/*motorJ1.isBusy() || */motorJ2.isBusy() || motorJ3.isBusy())
-        {
-        }
+        toPositionWithJ1(/*previousPositionJ1,*/ (int)previousPositionJ2, (int)previousPositionJ3);
         setIsCollectionPlane(true);
     }
 
     public void samplePosition()
     {
         System.out.println("samplePosition");
-        motorJ2.setTargetPosition(SAMPLING_J2);
-        motorJ3.setTargetPosition(SAMPLING_J3);
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setPower(AUTO_POWER_J2);
-        motorJ3.setPower(AUTO_POWER_J3);
-        while (motorJ2.isBusy() || motorJ3.isBusy())
-        {
-        }
+        toPosition(SAMPLING_J2, SAMPLING_J3);
     }
 
     /***********************************************************************************************
@@ -274,35 +239,35 @@ public class SamwiseArm
      */
 
     //-0.8 is the greatest speed
-    //    public void collectMinerals()
-    //    {
-    //        servoClaw1.setDirection(DcMotorSimple.Direction.FORWARD);
-    //        servoClaw1.setPower(0.7);
-    //        servoClaw2.setDirection(DcMotorSimple.Direction.REVERSE);
-    //        servoClaw2.setPower(0.7);
-    //    }
+        public void collectMinerals()
+        {
+            servoClaw1.setDirection(DcMotorSimple.Direction.FORWARD);
+            servoClaw1.setPower(0.7);
+            servoClaw2.setDirection(DcMotorSimple.Direction.REVERSE);
+            servoClaw2.setPower(0.7);
+        }
 
     /**
      * Spin the two claw servos outward to collect minerals
      */
 
     //0.8 is the greatest speed
-    //    public void depositMinerals()
-    //    {
-    //        servoClaw1.setDirection(DcMotorSimple.Direction.REVERSE);
-    //        servoClaw1.setPower(0.7);
-    //        servoClaw2.setDirection(DcMotorSimple.Direction.FORWARD);
-    //        servoClaw2.setPower(0.7);
-    //    }
+        public void depositMinerals()
+        {
+            servoClaw1.setDirection(DcMotorSimple.Direction.REVERSE);
+            servoClaw1.setPower(0.7);
+            servoClaw2.setDirection(DcMotorSimple.Direction.FORWARD);
+            servoClaw2.setPower(0.7);
+        }
 
     /**
      * Stop spinning of the claw servos
      */
-    //    public void stopServo()
-    //    {
-    //        servoClaw1.setPower(0);
-    //        servoClaw2.setPower(0);
-    //    }
+        public void stopServo()
+        {
+            servoClaw1.setPower(0);
+            servoClaw2.setPower(0);
+        }
 
     /***********************************************************************************************
      *                                Stay on Plane of Motion                                      *
@@ -341,8 +306,6 @@ public class SamwiseArm
         if (isUp)
         {
             motorJ2.setPower(-MANUAL_POWER_J2);
-            //motorJ2.setDirection(motorJ2.getDirection() == DcMotorSimple.Direction.REVERSE ? DcMotorSimple.Direction.FORWARD : DcMotorSimple.Direction.REVERSE);
-
         }
         else
         {
@@ -363,7 +326,6 @@ public class SamwiseArm
         if (isUp)
         {
             motorJ3.setPower(-MANUAL_POWER_J3);
-            //            motorJ3.setDirection(motorJ3.getDirection() == DcMotorSimple.Direction.REVERSE ? DcMotorSimple.Direction.FORWARD : DcMotorSimple.Direction.REVERSE);
         }
         else
         {
@@ -377,10 +339,20 @@ public class SamwiseArm
         motorJ3.setPower(0);
     }
 
+    /****************************************************************************************************
+     *                                Others                                                            *
+     ****************************************************************************************************/
+
+    public void setIsCollectionPlane(boolean collectionPlane)
+    {
+        isCollectionPlane = collectionPlane;
+    }
+
     //    public int getJ1CurrentPosition()
     //    {
     //        return motorJ1.getCurrentPosition();
     //    }
+
 
     public int getJ2CurrentPosition()
     {
