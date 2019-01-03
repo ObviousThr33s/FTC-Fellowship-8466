@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -56,10 +55,23 @@ public class SamwiseArm
 
     static final int INITIAL_DEGREES_J2 = 10;
     static final int INITIAL_DEGREES_J3 = 10;
-    static final int SAMPLING_J2 = 90;
-    static final int SAMPLING_J3 = 100;
     static final int INITIAL_TICKS_J3 = INITIAL_DEGREES_J3 * TICKS_PER_DEGREE_J3;
     static final int INITIAL_TICKS_J2 = INITIAL_DEGREES_J2 * TICKS_PER_DEGREE_J2;
+
+    static final int SAMPLING_RIGHT_J1 = -20;
+    static final int SAMPLING_CENTER_J1 = 0;
+    static final int SAMPLING_LEFT_J1 = 20;
+    static final int SAMPLING_CENTER_J2 = 90;
+    static final int SAMPLING_CENTER_J3 = 100;
+    static final int SAMPLING_LEFT_RIGHT_J2 = 100;
+    static final int SAMPLING_LEFT_RIGHT_J3 = 110;
+    static final int SAMPLING_J1_CRATER = 40;
+    static final int SAMPLING_J2_CRATER = 100;
+    static final int SAMPLING_J3_CRATER = 200;
+    static final int SAMPLING_J1_DEPOT = 40;
+    static final int SAMPLING_J2_DEPOT = 100;
+    static final int SAMPLING_J3_DEPOT = 300;
+
 
     double initialCollectionPosJ2;
     double initialCollectionPosJ3;
@@ -224,12 +236,37 @@ public class SamwiseArm
         setIsCollectionPlane(true);
     }
 
-    public void samplePosition()
+    /************************************************************************************************
+     *                                Transition to Positions                                       *
+     ************************************************************************************************/
+
+    public void toSamplePositionRight()
     {
-        System.out.println("samplePosition");
-        toPosition(SAMPLING_J2, SAMPLING_J3);
+        System.out.println("toSamplePositionRight");
+        toPositionWithJ1(/*SAMPLING_RIGHT_J1,*/SAMPLING_LEFT_RIGHT_J2, SAMPLING_LEFT_RIGHT_J3);
     }
 
+    public void toSamplePositionLeft()
+    {
+        System.out.println("toSamplePositionLeft");
+        toPositionWithJ1(/*SAMPLING_LEFT_J1,*/SAMPLING_CENTER_J2, SAMPLING_CENTER_J3);
+    }
+
+    public void toSamplePositionCenter()
+    {
+        System.out.println("toSamplePositionCenter");
+        toPositionWithJ1(/*SAMPLING_CENTER_J1,*/SAMPLING_LEFT_RIGHT_J2, SAMPLING_LEFT_RIGHT_J3);
+    }
+
+    public void goldSampleDropDepot()
+    {
+        toPositionWithJ1(/*SAMPLE_J1_DEPOT,*/ SAMPLING_J2_DEPOT, SAMPLING_J3_DEPOT);
+    }
+
+    public void goldSampleDropCrater()
+    {
+        toPositionWithJ1(/*SAMPLE_J1_CRATER,*/ SAMPLING_J2_CRATER, SAMPLING_J3_CRATER);
+    }
     /***********************************************************************************************
      *                                Collecting/Depositing Minerals                               *
      ***********************************************************************************************/
@@ -241,6 +278,7 @@ public class SamwiseArm
     //-0.8 is the greatest speed
         public void collectMinerals()
         {
+            //TODO: 1. Save position; 2. lower J2, J3 in order to collect
             servoClaw1.setDirection(DcMotorSimple.Direction.FORWARD);
             servoClaw1.setPower(0.7);
             servoClaw2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -254,6 +292,7 @@ public class SamwiseArm
     //0.8 is the greatest speed
         public void depositMinerals()
         {
+            //TODO: may or may not need to save position and change J2, J3 in order to drop
             servoClaw1.setDirection(DcMotorSimple.Direction.REVERSE);
             servoClaw1.setPower(0.7);
             servoClaw2.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -265,6 +304,7 @@ public class SamwiseArm
      */
         public void stopServo()
         {
+            //TODO: back to previous position
             servoClaw1.setPower(0);
             servoClaw2.setPower(0);
         }
