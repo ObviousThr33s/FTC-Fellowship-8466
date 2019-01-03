@@ -394,17 +394,17 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common drive ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
+                driveTrain.encoderDrive(samwiseDrive, 2, 5);
 
-                driveTrain.turnDrive(samwiseDrive, -27, 3);
+                driveTrain.turnDrive(samwiseDrive, -28, 3);
 
-                driveTrain.encoderDrive(samwiseDrive, 24,29, 4);
+                driveTrain.encoderDrive(samwiseDrive,28, 4);
 
                 driveTrain.turnDrive(samwiseDrive, 49, 3);
 
-                driveTrain.encoderDrive(samwiseDrive, 30, 30, 4);
+                driveTrain.encoderDrive(samwiseDrive, 29, 4);
 
-                driveTrain.turnDrive(samwiseDrive, -145, 3);
+                driveTrain.turnDrive(samwiseDrive, -143, 3);
 
                 md.move(1);
 

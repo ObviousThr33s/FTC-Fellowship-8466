@@ -9,8 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
 
-public class SamwiseDriveTrain extends DriveTrain
-{
+public class SamwiseDriveTrain extends DriveTrain {
 
     public DcMotor leftDrive = null;
     public DcMotor rightDrive = null;
@@ -23,13 +22,11 @@ public class SamwiseDriveTrain extends DriveTrain
     static final double INCHES_PER_DEGREE = 0.1640556;
     protected ElapsedTime runtime = new ElapsedTime();
 
-    public SamwiseDriveTrain()
-    {
+    public SamwiseDriveTrain() {
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap hwm)
-    {
+    public void init(HardwareMap hwm) {
 
         // Define and Initialize MotorsAndServos
         leftDrive = hwm.get(DcMotor.class, "left_drive");
@@ -64,14 +61,12 @@ public class SamwiseDriveTrain extends DriveTrain
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
      */
-    public void encoderDrive(LinearOpMode opMode, double speed, double leftInches, double rightInches, double timeoutS)
-    {
+    public void encoderDrive(LinearOpMode opMode, double speed, double leftInches, double rightInches, double timeoutS) {
         int newLeftTarget;
         int newRightTarget;
 
         // Ensure that the opmode is still active
-        if (opMode.opModeIsActive())
-        {
+        if (opMode.opModeIsActive()) {
             // Determine new target position, and pass to motor controller
             newLeftTarget = leftDrive.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
             newRightTarget = rightDrive.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
@@ -93,8 +88,7 @@ public class SamwiseDriveTrain extends DriveTrain
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opMode.opModeIsActive() && (runtime.seconds() < timeoutS) && (leftDrive.isBusy() && rightDrive.isBusy()))
-            {
+            while (opMode.opModeIsActive() && (runtime.seconds() < timeoutS) && (leftDrive.isBusy() && rightDrive.isBusy())) {
                 opMode.idle();
             }
 
@@ -106,26 +100,30 @@ public class SamwiseDriveTrain extends DriveTrain
         }
     }
 
-    public void encoderDrive(LinearOpMode opMode, double leftInches, double rightInches, double timeoutS)
-    {
+    public void encoderDrive(LinearOpMode opMode, double inches, double timeoutS) {
+        System.out.println("==> driving robot " + inches + " inches...");
+        encoderDrive(opMode, DRIVE_SPEED, inches, inches, timeoutS);
+    }
+
+
+    public void encoderDrive(LinearOpMode opMode, double leftInches, double rightInches, double timeoutS) {
+        System.out.println("==> driving robot " + leftInches + " inches...");
         encoderDrive(opMode, DRIVE_SPEED, leftInches, rightInches, timeoutS);
     }
 
-    public void turnDrive(LinearOpMode opMode, double degrees, double timeout)
-    {
+    public void turnDrive(LinearOpMode opMode, double degrees, double timeout) {
         double inches = INCHES_PER_DEGREE * degrees;
-
+        System.out.println("==> turning robot " + degrees + " degrees...");
         encoderDrive(opMode, TURN_SPEED, inches, -inches, timeout);
     }
 
     @Override
-    public void drive(double power)
-    {
+    public void drive(double power) {
         leftDrive.setPower(power);
         rightDrive.setPower(power);
     }
 
-    public void drive(LinearOpMode opMode, DigitalChannel side, DigitalChannel front, double timeout){
+    public void drive(LinearOpMode opMode, DigitalChannel side, DigitalChannel front, double timeout) {
 
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -133,10 +131,9 @@ public class SamwiseDriveTrain extends DriveTrain
         // reset the timeout time and start motion.
         runtime.reset();
         drive(Math.abs(DRIVE_SPEED));
+        System.out.println("==> drive with side and front touch sensors ... ");
 
-
-        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && side.getState() && front.getState())
-        {
+        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && side.getState() && front.getState()) {
             // robot keeps driving until side or front touch sensor is pressed
             opMode.idle();
         }
@@ -144,13 +141,16 @@ public class SamwiseDriveTrain extends DriveTrain
         // Stop all motion;
         drive(0);
 
-        if(!front.getState() || (runtime.seconds() >= timeout) || !opMode.opModeIsActive()){
+        if (!front.getState() || (runtime.seconds() >= timeout) || !opMode.opModeIsActive()) {
+            System.out.println("==> front touch sensor is pressed. Stopping...");
             return; // stop
         }
 
-        if(side.getState()){
-            // turn robot 2 degrees
-            turnDrive(opMode, 2, 2);
+        if (!side.getState()) {
+            // side sensor is pressed. turning robot ....
+            System.out.println("==> side sensor is pressed. turning robot ....");
+            turnDrive(opMode, -8, 2);
+
             drive(opMode, side, front, timeout); // recursive call till front touch sensor is hit
         }
 
