@@ -32,13 +32,16 @@ public class SamwiseAutoDriveCrater extends SamwiseAutoDrive {
          */
         switch (position) {
             case RIGHT: //right
+                //sampleAndDeposit.sampleAndDepositCraterRight();
                 driveRoute = SamwiseDriveRouteFactory.createCraterRight2(this);
                 break;
             case LEFT: //left
+                //sampleAndDeposit.sampleAndDepositCraterLeft();
                 driveRoute = SamwiseDriveRouteFactory.createCraterLeft2(this);
                 break;
             case CENTER:  //center
             default:
+                //sampleAndDeposit.sampleAndDepositCraterCenter();
                 driveRoute = SamwiseDriveRouteFactory.createCraterCenter2(this);
         }
 

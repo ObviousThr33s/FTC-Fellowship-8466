@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
@@ -28,6 +29,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
     SamwiseVision vis = new SamwiseVision();
     SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
     SamwiseHanger hanger = new SamwiseHanger();//sr.hanger();
+   // SampleAndDeposit sampleAndDeposit = null;
 
     DigitalChannel digitalTouchSide;  // side touch sensor
     DigitalChannel digitalTouchFront;  // front touch sensor
@@ -46,6 +48,8 @@ public class SamwiseAutoDrive extends LinearOpMode {
         robot.init(hardwareMap);
         md.init(hardwareMap);
         hanger.init(hardwareMap, telemetry);
+
+        //sampleAndDeposit = new SampleAndDeposit(hardwareMap);
 
         // get a reference to our digitalTouch object.
         digitalTouchSide = hardwareMap.get(DigitalChannel.class, "touch_side");
@@ -85,6 +89,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         hanger.encoderDrive(this, 0.6, 20.9, 4);
 
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
+
         //Activate object detector to get gold position, then shut it down
         if (opModeIsActive()) {
             vis.activate();

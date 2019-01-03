@@ -14,12 +14,12 @@ public class SampleAndDepositTestDepot extends LinearOpMode
     @Override
     public void runOpMode() throws InterruptedException
     {
-        armStuff.samplePosition();
+        armStuff.toSamplePositionRight();
 
         while (runTime.seconds() < timeoutS)
-            //        {
-            //            armStuff.collectMinerals();
-            //        }
+                    {
+                        armStuff.collectMinerals();
+                    }
             armStuff.silverDropPoint();
 
         while (runTime.seconds() < timeoutS)
