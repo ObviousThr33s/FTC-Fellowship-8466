@@ -71,6 +71,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+            //Unhinging Robot
+        hanger.encoderDrive(this,0.5,0.6,0.5);
+
         //landing the Robot
         hanger.encoderDrive(this, 0.6, -20.9, 4);
 
