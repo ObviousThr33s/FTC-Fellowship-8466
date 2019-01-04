@@ -21,8 +21,7 @@ public class SamwiseRobot {
 
     public SamwiseRobot(HardwareMap h, Telemetry t){
         SamwiseArm        arm        = new SamwiseArm(h);
-        //SamwiseHanger     hanger     = new SamwiseHanger(h, t, "hangermotor1", "hangerservo1", "hangerservo2");
-        SamwiseHanger     hanger     = new SamwiseHanger();
+        SamwiseHanger     hanger     = new SamwiseHanger(h, t, "hangermotor1", "hangerservo1", "hangerservo2");
         SamwiseDriveTrain driveTrain = new SamwiseDriveTrain();
 
         driveTrain.init(h);
