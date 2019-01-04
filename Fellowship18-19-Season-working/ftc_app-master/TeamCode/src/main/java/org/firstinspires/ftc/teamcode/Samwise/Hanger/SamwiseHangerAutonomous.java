@@ -15,7 +15,7 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
     public void init(HardwareMap ahwMap) {
         SamwiseRobot sr = new SamwiseRobot(hardwareMap, telemetry);
         movieboi = sr.hanger();
-        movieboi.init();
+        movieboi.init(ahwMap, telemetry);
     }
 
     @Override

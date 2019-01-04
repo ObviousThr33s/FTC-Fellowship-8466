@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
@@ -22,11 +24,16 @@ public class SamwiseAutoDrive extends LinearOpMode {
     protected double idealPos = 689;
 
     /* Declare OpMode members. */
-    SamwiseRobot sr = new SamwiseRobot(hardwareMap, telemetry);
+    //SamwiseRobot sr = new SamwiseRobot(hardwareMap, telemetry);
     SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
     SamwiseVision vis = new SamwiseVision();
     SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
-    SamwiseHanger hanger = sr.hanger();
+    SamwiseHanger hanger = new SamwiseHanger();//sr.hanger();
+   // SampleAndDeposit sampleAndDeposit = null;
+
+    DigitalChannel digitalTouchSide;  // side touch sensor
+    DigitalChannel digitalTouchFront;  // front touch sensor
+
 
     /**
      * init with and without tensorflow
@@ -40,11 +47,24 @@ public class SamwiseAutoDrive extends LinearOpMode {
          */
         robot.init(hardwareMap);
         md.init(hardwareMap);
-        hanger.init();
+        hanger.init(hardwareMap, telemetry);
+
+        //sampleAndDeposit = new SampleAndDeposit(hardwareMap);
+
+        // get a reference to our digitalTouch object.
+        digitalTouchSide = hardwareMap.get(DigitalChannel.class, "touch_side");
+        // set the digital channel to input.
+        digitalTouchSide.setMode(DigitalChannel.Mode.INPUT);
+
+        digitalTouchFront = hardwareMap.get(DigitalChannel.class, "touch_front");
+        // set the digital channel to input.
+        digitalTouchFront.setMode(DigitalChannel.Mode.INPUT);
+
 
         if (tf) {
             vis.init(hardwareMap);
         }
+
     }
 
 
@@ -54,6 +74,11 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
+            //Unhinging Robot
+        //hanger.encoderDrive(this,1,0.9,1);
+        hanger.hangermotor1.setPower(1);
+        sleep(200);
 
         //landing the Robot
         hanger.encoderDrive(this, 0.6, -20.9, 4);
@@ -66,6 +91,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         hanger.encoderDrive(this, 0.6, 20.9, 4);
 
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
+
         //Activate object detector to get gold position, then shut it down
         if (opModeIsActive()) {
             vis.activate();
