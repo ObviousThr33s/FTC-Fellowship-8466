@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
@@ -384,7 +382,6 @@ public class SamwiseDriveRouteFactory
             String               route      = "Depot Right";
             SamwiseDriveTrain    driveTrain = samwiseDrive.robot;
             SamwiseMarkerDeposit md         = samwiseDrive.md;
-            //DigitalChannel dc = samwiseDrive.digitalTouch;
             Telemetry            telemetry  = samwiseDrive.telemetry;
 
             @Override
@@ -394,23 +391,21 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common drive ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive, 2, 5);
+                driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
 
-                driveTrain.turnDrive(samwiseDrive, -28, 3);
+                driveTrain.turnDrive(samwiseDrive, -27, 3);
 
-                driveTrain.encoderDrive(samwiseDrive,28, 4);
+                driveTrain.encoderDrive(samwiseDrive, 24,29, 4);
 
-                driveTrain.turnDrive(samwiseDrive, 49, 3);
+                driveTrain.turnDrive(samwiseDrive, 52, 3);
 
-                driveTrain.encoderDrive(samwiseDrive, 29, 4);
+                driveTrain.encoderDrive(samwiseDrive, 30, 30, 4);
 
-                driveTrain.turnDrive(samwiseDrive, -143, 3);
+                driveTrain.turnDrive(samwiseDrive, -147.75, 3);
 
                 md.move(1);
 
-                // make this wall drive using touch sensor
-                //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
-                driveTrain.drive(samwiseDrive, samwiseDrive.digitalTouchSide, samwiseDrive.digitalTouchFront, 6);
+                driveTrain.encoderDrive(samwiseDrive, 66, 66,5);
             }
         };
     }

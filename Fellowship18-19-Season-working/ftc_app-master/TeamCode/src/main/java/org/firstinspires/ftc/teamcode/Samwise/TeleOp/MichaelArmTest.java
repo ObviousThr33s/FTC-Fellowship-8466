@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp (name = "Michaels Armmmm testtttt")
-public class ArmTest3 extends OpMode{
+public class MichaelArmTest extends OpMode{
 
     private DcMotor ArmMotor1 = null;
     private DcMotor ArmMotor2 = null;
@@ -18,16 +18,16 @@ public class ArmTest3 extends OpMode{
     private int TickPerDegreeJ1 = EncoderCountJ1/360;
     private int BigToSmallRatio = MaxOrMinDegrees * J1GearRatio;
     private int SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
-    static final double EncoderCountJ2 = 1120.0; //number of ticks per motor round
-    static final double EncoderCountJ3 = 1120.0; //number of ticks per motor round
+    static final int EncoderCountJ2 = 1120; //number of ticks per motor round
+    static final int EncoderCountJ3 = 1120; //number of ticks per motor round
     static final int HeightOfPlane = 2; //height of plane of motion
     static final int LengthJ2toJ3 = 6; //distance between J2 and J3
     static final int LengthJ3toJ4 = 6; //distance between J3 and J4
     private int H = HeightOfPlane;
     private int L1 = LengthJ2toJ3; //length between J2 and J3
     private int L2 = LengthJ3toJ4; //length between J3 and J4
-    private double TickPerDegreeJ3 = EncoderCountJ3/360.0;
-    private double TickPerDegreeJ2 = EncoderCountJ2/360.0;
+    private float TickPerDegreeJ3 = EncoderCountJ3/360;
+    private float TickPerDegreeJ2 = EncoderCountJ2/360;
 
     public void init() {
         ArmMotor1 = hardwareMap.dcMotor.get("ArmMotor1");
@@ -44,16 +44,9 @@ public class ArmTest3 extends OpMode{
         ArmMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     public void loop() {
-        double J2TargetPos = (gamepad1.left_stick_y * 45 + 135) * TickPerDegreeJ2;
-
-
-
-
-        //J1
         float RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
         ArmMotor1.setTargetPosition((int)RotationJoint); //Joint 1 (turn table)
-        ArmMotor1.setPower(0.8);
-        ArmMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        float ArmVelocity = gamepad1.left_stick_y;
 
     }
     public void stop() {

@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Michael's Servo test")
+@TeleOp(name = "Michael's Servo MichaelTestArm")
 public class MichaelServoTestCodeTeleop extends LinearOpMode {
     MichaelServoTestCodeHardware testTeleOp = new MichaelServoTestCodeHardware();
     double testServo1Pos = testTeleOp.testServo1_HOME;

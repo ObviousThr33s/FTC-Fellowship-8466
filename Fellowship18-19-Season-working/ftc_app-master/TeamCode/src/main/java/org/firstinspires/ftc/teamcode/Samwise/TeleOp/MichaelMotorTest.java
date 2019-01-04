@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "Michael's motor test")
 
-public class ArmTest2 extends OpMode {
+public class MichaelMotorTest extends OpMode {
     public DcMotor ArmJ1 = null;
 
     public void init(){
