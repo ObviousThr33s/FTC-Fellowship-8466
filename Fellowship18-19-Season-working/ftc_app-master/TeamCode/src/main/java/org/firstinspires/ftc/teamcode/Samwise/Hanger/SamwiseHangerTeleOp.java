@@ -75,11 +75,11 @@ public class SamwiseHangerTeleOp extends OpMode {
             telemetry.update();
             return;
         }
-        if(lofgpressed) {
+        /*if(lofgpressed) {
             movieboi.hangerservo2.setPosition(0.5);
         }
         else if(rightpressed) {
             movieboi.hangerservo2.setPosition(0);
-        }
+        }*/
     }
 }
