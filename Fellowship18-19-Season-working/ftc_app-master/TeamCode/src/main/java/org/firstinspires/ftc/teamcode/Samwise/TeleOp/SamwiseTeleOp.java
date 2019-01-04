@@ -83,7 +83,92 @@ public class SamwiseTeleOp extends OpMode{
          *                               Arm(J1, J2, J3) Position Transitions                           *
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
+        // Manual drive
+        if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left)
+        {
+            swArm.setManual(true);
+        }
+        //move J2 up
+        if (gamepad1.dpad_right)
+        {
+            swArm.driveJ2(true);
+        }
+        else
+        {
+            if (swArm.getIsManual() && !gamepad1.dpad_left)
+            {
+                swArm.stopJ2();
+            }
+        }
 
+        //move J2 down
+        if (gamepad1.dpad_left)
+        {
+            swArm.driveJ2(false);
+        }
+        else
+        {
+            if (swArm.getIsManual() && !gamepad1.dpad_right)
+            {
+                swArm.stopJ2();
+            }
+        }
+
+        //move J3 up
+        if (gamepad1.dpad_up)
+        {
+            swArm.driveJ3(true);
+        }
+        else
+        {
+            if (swArm.getIsManual() && !gamepad1.dpad_down)
+            {
+                swArm.stopJ3();
+            }
+        }
+
+        //move J3 down
+        if (gamepad1.dpad_down)
+        {
+            swArm.driveJ3(false);
+        }
+        else
+        {
+            if (swArm.getIsManual() && !gamepad1.dpad_up)
+            {
+                swArm.stopJ3();
+            }
+        }
+
+        // to deposit position
+        if (gamepad1.x)
+        {
+            swArm.silverDropPoint();
+        }
+
+        if (gamepad1.y)
+        {
+            swArm.goldDropPoint();
+        }
+
+        // to collection position
+        if (gamepad1.b)
+        {
+            if (/*Math.abs(armStuff.getJ1CurrentPosition()) < 10  && */Math.abs(swArm.getJ2CurrentPosition()) < 10 && Math.abs(swArm.getJ3CurrentPosition()) < 10)
+            {
+                swArm.toCollectionPlane();
+            }
+            else
+            {
+                swArm.toPreviousCollectionPosition();
+            }
+        }
+
+        // to initial position
+        if (gamepad1.a)
+        {
+            swArm.toInitialPosition();
+        }
 
         /************************************** Gamepad #2 Mappings *************************************
          *                               Arm (J2, J3) Plane of Motion                                   *
@@ -95,6 +180,23 @@ public class SamwiseTeleOp extends OpMode{
          *                  Claws (J2, J3, J4, J5, J6) Collection & Deposit                             *
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
+
+        //collection and deposit
+        if (gamepad1.left_trigger > 0)
+        {
+            swArm.collectMinerals();
+        }
+
+        if (gamepad1.right_trigger > 0)
+        {
+            swArm.depositMinerals();
+        }
+
+        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0)
+        {
+            swArm.stopServo();
+        }
+
 
     }
 
