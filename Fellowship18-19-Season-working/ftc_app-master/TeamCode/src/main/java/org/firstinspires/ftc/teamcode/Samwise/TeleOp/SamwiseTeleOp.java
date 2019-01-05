@@ -32,6 +32,10 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
+import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.DriveTrainTeleop;
+import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
+import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHangerTeleOp;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 
 /****************************************************************************************************
@@ -53,10 +57,14 @@ public class SamwiseTeleOp extends OpMode{
 
     /* Declare OpMode members. */
     public SamwiseArm swArm = null;
+    public SamwiseHangerTeleOp swHang;
+    public DriveTrainTeleop swDTrain;
 
     @Override
     public void init() {
         swArm = new SamwiseArm(this.hardwareMap);
+        swHang = new SamwiseHangerTeleOp();
+        swDTrain = new DriveTrainTeleop();
     }
 
 
@@ -77,6 +85,9 @@ public class SamwiseTeleOp extends OpMode{
          *                               Samwise Drive Train and Hanging                                *
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
+        swHang.loop();
+        swDTrain.loop();
+
 
 
         /************************************** Gamepad #2 Mappings *************************************
