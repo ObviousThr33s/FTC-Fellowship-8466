@@ -9,7 +9,7 @@ public class TheUltimateMichaelTestClass extends OpMode {
     public DcMotor MotorNo1 = null;
     public DcMotor MotorNo2 = null;
     int Motor2Pos;
-     public void init() {
+    public void init() {
          MotorNo1 = hardwareMap.dcMotor.get("motor1");
          MotorNo2 = hardwareMap.dcMotor.get("motor2");
          MotorNo1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -19,13 +19,13 @@ public class TheUltimateMichaelTestClass extends OpMode {
          MotorNo1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
          MotorNo2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
      }
-     public void loop() {
+    public void loop() {
          float Motor1Pos = gamepad1.left_stick_y *3000;
-         MotorNo1.setTargetPosition((int)Motor1Pos);
+         MotorNo1.setTargetPosition((int)1120);
 
          Motor2Pos = MotorNo1.getCurrentPosition();
          System.out.println("===>"+Motor2Pos);
-         MotorNo2.setTargetPosition(Motor2Pos);
+         MotorNo2.setTargetPosition(1120);
          System.out.println("===>" +Motor1Pos);
          System.out.println("===>"+Motor2Pos);
          MotorNo1.setPower(0.3);
