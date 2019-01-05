@@ -15,16 +15,17 @@ public class MichaelMotorEncoderTest2 extends OpMode {
     private DcMotor testMotorEncoder2 = null;
     private DcMotor testMotorEncoder3 = null;
     private DcMotor testMotorEncoder4 = null;
+    private DcMotorEx testMotorEncoder5 = null;
 
     //for J1
-    static final int BigGearCount = 120;
-    static final int SmallGearCount = 24;
-    static final int EncoderCountJ1 = 1680;
-    static final int MaxOrMinDegrees = 45;
-    private int J1GearRatio = BigGearCount / SmallGearCount;
-    private int TickPerDegreeJ1 = EncoderCountJ1 / 360;
-    private int BigToSmallRatio = MaxOrMinDegrees * J1GearRatio;
-    private int SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
+    static final double BigGearCount = 120.0;
+    static final double SmallGearCount = 24.0;
+    static final double EncoderCountJ1 = 1680.0;
+    static final double MaxOrMinDegrees = 45.0;
+    private double J1GearRatio = BigGearCount / SmallGearCount;
+    private double TickPerDegreeJ1 = EncoderCountJ1 / 360;
+    private double BigToSmallRatio = MaxOrMinDegrees * J1GearRatio;
+    private double SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
 
 
     //for J2 and J3
@@ -36,8 +37,8 @@ public class MichaelMotorEncoderTest2 extends OpMode {
     static final double LengthJ3toJ4 = 6.0; //distance between J3 and J4
 
     private double H = HeightOfPlane;
-    private double L1 = LengthJ2toJ3; //length between J2 and J3
-    private double L2 = LengthJ3toJ4; //length between J3 and J4
+    private double L1 = LengthJ2toJ3; //distance between J2 and J3
+    private double L2 = LengthJ3toJ4; //distance between J3 and J4
     private double TickPerDegreeJ3 = EncoderCountJ3 / 360.0;
     private double TickPerDegreeJ2 = EncoderCountJ2 / 360.0;
 
@@ -169,7 +170,7 @@ public class MichaelMotorEncoderTest2 extends OpMode {
 
         System.out.println(testMotor1Pos + testMotor2Pos + testMotor3Pos);
 
-        float RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
+        double RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
 
         testMotorEncoder3.setTargetPosition((int) RotationJoint); //Joint 1 (turn table)
         testMotorEncoder3.setPower(0.8);

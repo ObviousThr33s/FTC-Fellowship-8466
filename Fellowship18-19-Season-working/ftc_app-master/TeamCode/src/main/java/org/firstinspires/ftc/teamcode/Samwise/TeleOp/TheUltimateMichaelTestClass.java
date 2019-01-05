@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp (name = "Test1")
-public class TheUltimateTestClass extends OpMode {
+public class TheUltimateMichaelTestClass extends OpMode {
     public DcMotor MotorNo1 = null;
     public DcMotor MotorNo2 = null;
     int Motor2Pos;
@@ -24,15 +24,15 @@ public class TheUltimateTestClass extends OpMode {
          MotorNo1.setTargetPosition((int)Motor1Pos);
 
          Motor2Pos = MotorNo1.getCurrentPosition();
+         System.out.println("===>"+Motor2Pos);
          MotorNo2.setTargetPosition(Motor2Pos);
          System.out.println("===>" +Motor1Pos);
          System.out.println("===>"+Motor2Pos);
-         MotorNo1.setPower(0.8);
-         MotorNo2.setPower(0.8);
+         MotorNo1.setPower(0.3);
+         MotorNo2.setPower(0.3);
 
          MotorNo1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
          MotorNo2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
 
      }
 }

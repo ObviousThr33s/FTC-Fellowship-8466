@@ -28,7 +28,8 @@ public class ArmTest3 extends OpMode{
     private int L2 = LengthJ3toJ4; //length between J3 and J4
     private double TickPerDegreeJ3 = EncoderCountJ3/360.0;
     private double TickPerDegreeJ2 = EncoderCountJ2/360.0;
-
+    double J2MaxPos = 180.0 * TickPerDegreeJ2;
+    double J2MinPos = 90.0*TickPerDegreeJ2;
     public void init() {
         ArmMotor1 = hardwareMap.dcMotor.get("ArmMotor1");
         ArmMotor2 = hardwareMap.dcMotor.get("ArmMotor2");
@@ -44,11 +45,31 @@ public class ArmTest3 extends OpMode{
         ArmMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     public void loop() {
-        double J2TargetPos = (gamepad1.left_stick_y * 45 + 135) * TickPerDegreeJ2;
+        if (gamepad1.left_stick_y <= -0.1) { //push forward
+                ArmMotor2.setTargetPosition((int)J2MaxPos);
+        }
+        if (gamepad1.left_stick_y >= 0.1) { //backwards
+            ArmMotor2.setTargetPosition((int)J2MinPos);
 
+        }
+        ArmMotor2.setPower(gamepad1.left_stick_y);
+        ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        double J2CurrentPos_deg;
+        double J3TargetPos_deg;
+        double J3TargetPos_Ticks;
+        double a, b, c, c_1, d;
+        J2CurrentPos_deg = (ArmMotor2.getCurrentPosition() / TickPerDegreeJ2);
+        a = Math.cos(Math.toRadians(180.0 - J2CurrentPos_deg));
+        b = (L1 * a - H) / L2;
+        c = Math.acos(b);
+        c_1 = Math.toDegrees(c);
+        d = c_1 + 180.0 - J2CurrentPos_deg;
+        J3TargetPos_deg = d;
+        J3TargetPos_Ticks = J3TargetPos_deg * TickPerDegreeJ3;
 
-
-
+        ArmMotor3.setTargetPosition((int)J3TargetPos_Ticks);
+        ArmMotor3.setPower(0.7); //test Power LAtEr
+        ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //J1
         float RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
         ArmMotor1.setTargetPosition((int)RotationJoint); //Joint 1 (turn table)
@@ -57,6 +78,6 @@ public class ArmTest3 extends OpMode{
 
     }
     public void stop() {
-
+        //no u
     }
 }
