@@ -78,17 +78,17 @@ public class SamwiseAutoDrive extends LinearOpMode {
             //Unhinging Robot
         //hanger.encoderDrive(this,1,0.9,1);
         hanger.hangermotor1.setPower(1);
-        sleep(200);
+        sleep(5);
 
         //landing the Robot
-        hanger.encoderDrive(this, 0.6, -20.9, 4);
+        hanger.encoderDrive(this, 0.6, -23.5, 4);
 
         //Unhooking
         hanger.unHook();
-        sleep(500); //wait until the hook fully opens
+        sleep(1000); //wait until the hook fully opens
 
         //Lowering the Slide
-        hanger.encoderDrive(this, 0.6, 20.9, 4);
+        hanger.encoderDrive(this, 0.6, 21, 4);
 
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
 

@@ -107,7 +107,7 @@ public class SamwiseDriveTrain extends DriveTrain {
 
 
     public void encoderDrive(LinearOpMode opMode, double leftInches, double rightInches, double timeoutS) {
-        System.out.println("==> driving robot " + leftInches + " inches...");
+        //System.out.println("==> driving robot " + leftInches + " inches...");
         encoderDrive(opMode, DRIVE_SPEED, leftInches, rightInches, timeoutS);
     }
 

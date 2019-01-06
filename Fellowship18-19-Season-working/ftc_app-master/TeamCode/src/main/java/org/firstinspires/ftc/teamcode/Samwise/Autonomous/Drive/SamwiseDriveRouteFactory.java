@@ -333,13 +333,14 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common drive ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive, 60,60,5);
+                driveTrain.encoderDrive(samwiseDrive, 58,5);
 
                 driveTrain.turnDrive(samwiseDrive,-124,3);
 
                 md.move(1);
 
-                driveTrain.encoderDrive(samwiseDrive, 70,70,5);
+                //driveTrain.encoderDrive(samwiseDrive, 80,5);
+                driveTrain.drive(samwiseDrive, samwiseDrive.digitalTouchSide, samwiseDrive.digitalTouchFront, 6);
             }
         };
     }
@@ -373,7 +374,8 @@ public class SamwiseDriveRouteFactory
 
                 md.move(1);
 
-                driveTrain.encoderDrive(samwiseDrive,73,73, 5);
+                //driveTrain.encoderDrive(samwiseDrive,73,73, 5);
+                driveTrain.drive(samwiseDrive, samwiseDrive.digitalTouchSide, samwiseDrive.digitalTouchFront, 6);
             }
         };
     }
@@ -398,13 +400,13 @@ public class SamwiseDriveRouteFactory
 
                 driveTrain.turnDrive(samwiseDrive, -28, 3);
 
-                driveTrain.encoderDrive(samwiseDrive,28, 4);
+                driveTrain.encoderDrive(samwiseDrive,43, 4);
 
-                driveTrain.turnDrive(samwiseDrive, 49, 3);
+                driveTrain.turnDrive(samwiseDrive, -100, 3);
 
-                driveTrain.encoderDrive(samwiseDrive, 29, 4);
+                driveTrain.encoderDrive(samwiseDrive, -27, 4);
 
-                driveTrain.turnDrive(samwiseDrive, -143, 3);
+                driveTrain.turnDrive(samwiseDrive, 15, 3);
 
                 md.move(1);
 
