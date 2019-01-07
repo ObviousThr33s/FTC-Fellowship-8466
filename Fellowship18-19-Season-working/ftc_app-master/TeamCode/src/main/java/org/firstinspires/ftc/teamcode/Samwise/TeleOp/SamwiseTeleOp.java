@@ -94,7 +94,7 @@ public class SamwiseTeleOp extends OpMode{
          *                               Arm(J1, J2, J3) Position Transitions                           *
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
-        // Manual drive
+        // Manual driveToCrater
         if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left)
         {
             swArm.setManual(true);

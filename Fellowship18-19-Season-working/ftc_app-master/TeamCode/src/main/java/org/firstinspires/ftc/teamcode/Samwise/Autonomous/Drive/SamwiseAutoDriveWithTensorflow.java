@@ -22,13 +22,13 @@ import java.util.List;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
- * It uses the common Pushbot hardware class to define the drive on the robot.
+ * It uses the common Pushbot hardware class to define the driveToCrater on the robot.
  * The code is structured as a LinearOpMode
  * <p>
  * The code REQUIRES that you DO have encoders on the wheels,
  * otherwise you would use: PushbotAutoDriveByTime;
  * <p>
- * This code ALSO requires that the drive Motors have been configured such that a positive
+ * This code ALSO requires that the driveToCrater Motors have been configured such that a positive
  * power command moves them forwards, and causes the encoders to count UP.
  * <p>
  * The desired path in this example is:
@@ -88,7 +88,7 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
     {
 
         /*
-         * Initialize the drive system variables.
+         * Initialize the driveToCrater system variables.
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
@@ -126,7 +126,7 @@ public class SamwiseAutoDriveWithTensorflow extends LinearOpMode
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //TODO: Remove this test drive
+        //TODO: Remove this test driveToCrater
         encoderDrive(DRIVE_SPEED, 10, 10, 1);  // S2: Turn Right 12 Inches with 4 Sec timeout
         encoderDrive(TURN_SPEED, -1.5, 1.5, 1);
         encoderDrive(DRIVE_SPEED, 10, 10, 1);

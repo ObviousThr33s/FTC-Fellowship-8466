@@ -96,7 +96,7 @@ public class DriveIMUVelocityTurns extends LinearOpMode
         }
         waitForStart();
 
-        // drive until end of period.
+        // driveToCrater until end of period.
 
         while (opModeIsActive())
         {

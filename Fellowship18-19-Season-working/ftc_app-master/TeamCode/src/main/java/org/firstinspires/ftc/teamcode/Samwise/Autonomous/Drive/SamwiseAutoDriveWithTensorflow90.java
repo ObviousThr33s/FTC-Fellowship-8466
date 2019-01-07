@@ -93,15 +93,15 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
         //SamwiseAutoDriveWithTensorflow90 driveRoute = samplingRoute(position, isCrater);
 
         /**
-         * drive the specific route
+         * driveToCrater the specific route
          */
-        //driveRoute.drive();
+        //driveRoute.driveToCrater();
 
         telemetryNow("Autonomous", "Completed");
     }
 
     /**
-     * select sampling drive route
+     * select sampling driveToCrater route
      * @param position
      * @param isCrater
      * @return
@@ -150,7 +150,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
      */
     protected void init(boolean tf) {
         /*
-         * Initialize the drive system variables.
+         * Initialize the driveToCrater system variables.
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
@@ -286,7 +286,7 @@ public class SamwiseAutoDriveWithTensorflow90 extends LinearOpMode
     }
 
     /**
-     * Common drive for all routes:
+     * Common driveToCrater for all routes:
      * 1. Landing
      * 2. Orientation identification
      * 3. Gold mineral identification

@@ -24,7 +24,7 @@ public class LaurenTest extends OpMode
         telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
         telemetry.update();
 
-        // Manual drive
+        // Manual driveToCrater
         if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left)
         {
             armStuff.setManual(true);

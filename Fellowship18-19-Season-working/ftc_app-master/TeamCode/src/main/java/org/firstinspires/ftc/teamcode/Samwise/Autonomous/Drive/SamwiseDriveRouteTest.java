@@ -9,7 +9,7 @@ public abstract class SamwiseDriveRouteTest extends SamwiseAutoDrive
          * call parent to start:
          * 1. init
          * 2. waitforStart
-         * 3. start drive
+         * 3. start driveToCrater
          */
         init(false);
 

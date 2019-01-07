@@ -4,7 +4,7 @@
 // REV Hub's built in IMU in place of a gyro. Also uses gamepad1 buttons to
 // simulate touch sensor press and supports left as well as right turn.
 //
-// Also uses IMU to drive in a straight line when not avoiding an obstacle.
+// Also uses IMU to driveToCrater in a straight line when not avoiding an obstacle.
 
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
@@ -39,7 +39,7 @@ public class DriveIMUTurns extends LinearOpMode
 
         waitForStart();
 
-        // drive until end of period.
+        // driveToCrater until end of period.
 
         while (opModeIsActive())
         {

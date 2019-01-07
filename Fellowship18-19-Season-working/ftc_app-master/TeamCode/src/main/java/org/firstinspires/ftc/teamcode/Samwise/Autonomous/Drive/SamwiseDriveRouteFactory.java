@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
@@ -19,16 +17,16 @@ public class SamwiseDriveRouteFactory
             @Override
             public void drive()
             {
-                //common drive defined by the parent
-                //telemetryNow(route, "starting parent common drive ...");
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route " + route);
 
                 driveTrain.encoderDrive(samwiseDrive, 22, 22, 5);
-                //telemetry.addData(route, "finish second drive");
+                //telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -8, -7, 4);
-                //telemetry.addData(route, "finish third drive");
+                //telemetry.addData(route, "finish third driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, -90, 5);
@@ -36,7 +34,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -40, -40, 20);
-                telemetry.addData(route, "finish fifth drive");
+                telemetry.addData(route, "finish fifth driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, 57, 3);
@@ -44,13 +42,13 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -55, -55, 20);
-                telemetry.addData(route, "finish seventh drive");
+                telemetry.addData(route, "finish seventh driveToCrater");
                 //telemetry.update();
 
                 md.move(1);
 
                 driveTrain.encoderDrive(samwiseDrive, 72, 72, 20);
-                telemetry.addData(route, "finish eighth drive");
+                telemetry.addData(route, "finish eighth driveToCrater");
                 telemetry.update();
             }
         };
@@ -67,16 +65,16 @@ public class SamwiseDriveRouteFactory
             @Override
             public void drive()
             {
-                //common drive defined by the parent
-                //telemetryNow(route, "starting parent common drive ...");
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route " + route);
 
                 driveTrain.encoderDrive(samwiseDrive, 28, 28, 5);
-                //telemetry.addData(route, "finish second drive");
+                //telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
                 /*driveTrain.encoderDrive(samwiseDrive, -8, -7, 4);
-                //telemetry.addData(route, "finish third drive");
+                //telemetry.addData(route, "finish third driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, -90, 5);
@@ -84,7 +82,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -40, -40, 20);
-                telemetry.addData(route, "finish fifth drive");
+                telemetry.addData(route, "finish fifth driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, 57, 3);
@@ -92,13 +90,13 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -55, -55, 20);
-                telemetry.addData(route, "finish seventh drive");
+                telemetry.addData(route, "finish seventh driveToCrater");
                 //telemetry.update();
 
                 md.move(1);
 
                 driveTrain.encoderDrive(samwiseDrive, 72, 72, 20);
-                telemetry.addData(route, "finish eighth drive");
+                telemetry.addData(route, "finish eighth driveToCrater");
                 telemetry.update();*/
             }
         };
@@ -115,8 +113,8 @@ public class SamwiseDriveRouteFactory
             @Override
             public void drive()
             {
-                //common drive defined by the parent
-                //telemetryNow(route, "starting parent common drive ...");
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
                 driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
@@ -126,7 +124,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, 27, 27, 3);
-                telemetry.addData(route, "finish second drive");
+                telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, -120, 3);
@@ -134,7 +132,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -28,-28,3);
-                telemetry.addData(route, "finish fourth drive");
+                telemetry.addData(route, "finish fourth driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, 36, 3);
@@ -142,13 +140,13 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -46,-46,5);
-                telemetry.addData(route, "finish sixth drive");
+                telemetry.addData(route, "finish sixth driveToCrater");
                 //telemetry.update();
 
                 md.move(1);
 
                 driveTrain.encoderDrive(samwiseDrive, 65, 65,15);
-                telemetry.addData(route, "finish seventh drive");
+                telemetry.addData(route, "finish seventh driveToCrater");
                 telemetry.update();
             }
         };
@@ -165,8 +163,8 @@ public class SamwiseDriveRouteFactory
             @Override
             public void drive()
             {
-                //common drive defined by the parent
-                //telemetryNow(route, "starting parent common drive ...");
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
                 driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
@@ -176,7 +174,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, 27, 27, 3);
-                telemetry.addData(route, "finish second drive");
+                telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, -46, 3);
@@ -184,7 +182,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, 7.5,7.5,3);
-                telemetry.addData(route, "finish fourth drive");
+                telemetry.addData(route, "finish fourth driveToCrater");
                 //telemetry.update();
 
                 /*driveTrain.turnDrive(samwiseDrive, 36, 3);
@@ -192,13 +190,13 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -46,-46,5);
-                telemetry.addData(route, "finish sixth drive");
+                telemetry.addData(route, "finish sixth driveToCrater");
                 //telemetry.update();
 
                 md.move(1);
 
                 driveTrain.encoderDrive(samwiseDrive, 65, 65,15);
-                telemetry.addData(route, "finish seventh drive");
+                telemetry.addData(route, "finish seventh driveToCrater");
                 telemetry.update();*/
             }
         };
@@ -215,8 +213,8 @@ public class SamwiseDriveRouteFactory
             @Override
             public void drive()
             {
-                //common drive defined by the parent
-                //telemetryNow(route, "starting parent common drive ...");
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
                 driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
@@ -227,11 +225,11 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, 27, 27, 5);
-                telemetry.addData(route, "finish second drive");
+                telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -9, -9, 4);
-                telemetry.addData(route, "finish third drive");
+                telemetry.addData(route, "finish third driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, -56, 5);
@@ -239,7 +237,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -50,-50,20);
-                telemetry.addData(route, "finish fifth drive");
+                telemetry.addData(route, "finish fifth driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, 46, 3);
@@ -247,13 +245,13 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -48,-48, 20);
-                telemetry.addData(route, "finish seventh drive");
+                telemetry.addData(route, "finish seventh driveToCrater");
                 //telemetry.update();
 
                 md.move(1);
 
                 driveTrain.encoderDrive(samwiseDrive, 69, 69,20);
-                telemetry.addData(route, "finish eighth drive");
+                telemetry.addData(route, "finish eighth driveToCrater");
                 telemetry.update();
             }
         };
@@ -270,8 +268,8 @@ public class SamwiseDriveRouteFactory
             @Override
             public void drive()
             {
-                //common drive defined by the parent
-                //telemetryNow(route, "starting parent common drive ...");
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
                 driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
@@ -282,7 +280,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, 27, 27, 5);
-                telemetry.addData(route, "finish second drive");
+                telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, 46, 5);
@@ -290,7 +288,7 @@ public class SamwiseDriveRouteFactory
                 driveTrain.encoderDrive(samwiseDrive, 7.5, 7.5, 4);
 
                 /*driveTrain.encoderDrive(samwiseDrive, -9, -9, 4);
-                telemetry.addData(route, "finish third drive");
+                telemetry.addData(route, "finish third driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, -56, 5);
@@ -298,7 +296,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -50,-50,20);
-                telemetry.addData(route, "finish fifth drive");
+                telemetry.addData(route, "finish fifth driveToCrater");
                 //telemetry.update();
 
                 driveTrain.turnDrive(samwiseDrive, 46, 3);
@@ -306,13 +304,13 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 driveTrain.encoderDrive(samwiseDrive, -48,-48, 20);
-                telemetry.addData(route, "finish seventh drive");
+                telemetry.addData(route, "finish seventh driveToCrater");
                 //telemetry.update();
 
                 md.move(1);
 
                 driveTrain.encoderDrive(samwiseDrive, 69, 69,20);
-                telemetry.addData(route, "finish eighth drive");
+                telemetry.addData(route, "finish eighth driveToCrater");
                 telemetry.update();*/
             }
         };
@@ -329,8 +327,8 @@ public class SamwiseDriveRouteFactory
             @Override
             public void drive()
             {
-                //common drive defined by the parent
-                //telemetryNow(route, "starting parent common drive ...");
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
                 driveTrain.encoderDrive(samwiseDrive, 58,5);
@@ -340,7 +338,7 @@ public class SamwiseDriveRouteFactory
                 md.move(1);
 
                 //driveTrain.encoderDrive(samwiseDrive, 80,5);
-                driveTrain.drive(samwiseDrive, samwiseDrive.digitalTouchSide, samwiseDrive.digitalTouchFront, 6);
+                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 6);
             }
         };
     }
@@ -356,8 +354,8 @@ public class SamwiseDriveRouteFactory
             @Override
             public void drive()
             {
-                //common drive defined by the parent
-                //telemetryNow(route, "starting parent common drive ...");
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
                 driveTrain.encoderDrive(samwiseDrive, 2, 2, 5);
@@ -375,10 +373,11 @@ public class SamwiseDriveRouteFactory
                 md.move(1);
 
                 //driveTrain.encoderDrive(samwiseDrive,73,73, 5);
-                driveTrain.drive(samwiseDrive, samwiseDrive.digitalTouchSide, samwiseDrive.digitalTouchFront, 6);
+                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 6);
             }
         };
     }
+
 
     public static ISamwiseDriveRoute createDepotRight(final SamwiseAutoDrive samwiseDrive)
     {
@@ -392,13 +391,60 @@ public class SamwiseDriveRouteFactory
             @Override
             public void drive()
             {
-                //common drive defined by the parent
-                //telemetryNow(route, "starting parent common drive ...");
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive, 2, 5);
+                driveTrain.encoderDrive(samwiseDrive, 2.5, 4);
 
-                driveTrain.turnDrive(samwiseDrive, -28, 3);
+                driveTrain.turnDrive(samwiseDrive, -35, 3);
+
+                driveTrain.encoderDrive(samwiseDrive,41, 4);
+
+                driveTrain.turnDrive(samwiseDrive, -101, 3);
+                //driveTrain.turn(samwiseDrive, samwiseDrive.touchBackSide, true, 5);
+
+                driveTrain.driveToDepot(samwiseDrive, samwiseDrive.touchBackSide, false, samwiseDrive.color, 6);
+
+                //driveTrain.encoderDrive(samwiseDrive, -16, 4);
+
+                //driveTrain.turnDrive(samwiseDrive, 15, 3);
+
+                md.move(1);
+
+                driveTrain.turnDrive(samwiseDrive, 12, 3);
+
+                // make this wall driveToCrater using touch sensor
+                //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
+                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 7);
+            }
+        };
+    }
+
+
+    /**
+     * A general route for all depot positions
+     * @param samwiseDrive
+     * @return
+     */
+    public static ISamwiseDriveRoute createDepot(final SamwiseAutoDrive samwiseDrive)
+    {
+        return new ISamwiseDriveRoute() {
+            String               route      = "Depot Left";
+            SamwiseDriveTrain    driveTrain = samwiseDrive.robot;
+            SamwiseMarkerDeposit md         = samwiseDrive.md;
+            Telemetry            telemetry  = samwiseDrive.telemetry;
+
+            @Override
+            public void drive()
+            {
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
+                System.out.println("==>Driving route "+route);
+
+                driveTrain.encoderDrive(samwiseDrive, 3, 4);
+
+                driveTrain.turnDrive(samwiseDrive, -35, 3);
 
                 driveTrain.encoderDrive(samwiseDrive,43, 4);
 
@@ -410,9 +456,9 @@ public class SamwiseDriveRouteFactory
 
                 md.move(1);
 
-                // make this wall drive using touch sensor
+                // make this wall driveToCrater using touch sensor
                 //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
-                driveTrain.drive(samwiseDrive, samwiseDrive.digitalTouchSide, samwiseDrive.digitalTouchFront, 6);
+                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 6);
             }
         };
     }

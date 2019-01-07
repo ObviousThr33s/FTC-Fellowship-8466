@@ -1,20 +1,20 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
-import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseColor;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 
-@Autonomous(name = "SamwiseAutoDrive v1", group = "Samwise")
-@Disabled
-public class SamwiseAutoDrive extends LinearOpMode {
+@Autonomous(name = "SamwiseAutoDriveTest v1", group = "Samwise")
+//@Disabled
+public class SamwiseAutoDriveTest extends LinearOpMode {
 
     // this is set before the robot is initialized
     protected boolean isCrater = false;
@@ -28,7 +28,6 @@ public class SamwiseAutoDrive extends LinearOpMode {
     SamwiseVision vis = new SamwiseVision();
     SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
     SamwiseHanger hanger = new SamwiseHanger();//sr.hanger();
-    SamwiseColor color = new SamwiseColor();
    // SampleAndDeposit sampleAndDeposit = null;
 
     DigitalChannel touchFrontSide;  // side touch sensor
@@ -65,7 +64,6 @@ public class SamwiseAutoDrive extends LinearOpMode {
         // set the digital channel to input.
         touchFront.setMode(DigitalChannel.Mode.INPUT);
 
-        color.init(hardwareMap, telemetry);
 
         if (tf) {
             vis.init(hardwareMap);
@@ -76,56 +74,39 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        this.init(true);
+        this.init(false);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-            //Unhinging Robot
-        //hanger.encoderDrive(this,1,0.9,1);
-        hanger.hangermotor1.setPower(1);
-        sleep(5);
+        robot.leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        //landing the Robot
-        hanger.encoderDrive(this, 0.6, -24.5, 4);
+        //this.robot.turnleft(.8);
 
-        //Unhooking
-        hanger.unHook();
-        sleep(1000); //wait until the hook fully opens
+        robot.leftDrive.setPower(-.6);
+        robot.rightDrive.setPower(.9);
 
-        //Lowering the Slide
-        hanger.encoderDrive(this, 0.6, 21, 4);
+        ElapsedTime runtime = new ElapsedTime();
 
-        SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
+        System.out.println("==> turning the robot till the side touch sensor is pressed ... ");
 
-        //Activate object detector to get gold position, then shut it down
-        if (opModeIsActive()) {
-            vis.activate();
-
-            this.adjustPosition();
-
-            position = vis.getGoldPosition();  //Find gold mineral position
-
-            System.out.println("==>The Gold Position: " + position);
-
-            if (position == SamwiseVision.GoldPosition.UNKNOWN) {
-                // it is more likely to be UNKNOWN when two silver minerals in the view.
-                position = SamwiseVision.GoldPosition.LEFT;
-            }
-            // System.out.println("==>Is this crater: " + vis.isCrater());
-            vis.deactivate();
-            vis.shutdown();
+        while (opModeIsActive() && (runtime.seconds() < 2) && this.touchBackSide.getState()) {
+            // robot keeps driving until side  is pressed
+            idle();
         }
+
+        //sleep(2000);
 
         //System.out.println("This is the " + (isCrater ? "Crater" : "Depot"));
 
         //Sampling
-        ISamwiseDriveRoute driveRoute = samplingRoute(position);
+        //ISamwiseDriveRoute driveRoute = samplingRoute(position);
 
         /**
          * driveToCrater the specific route
          */
-        driveRoute.drive();
+        //driveRoute.driveToCrater();
 
         // telemetryNow("Autonomous", "Completed");
     }
@@ -161,46 +142,6 @@ public class SamwiseAutoDrive extends LinearOpMode {
         System.out.println("==>Current Ratio (after correction): " + ratio);
     }
 
-    /**
-     * select sampling driveToCrater route
-     *
-     * @param position
-     * @return
-     */
-    protected ISamwiseDriveRoute samplingRoute(SamwiseVision.GoldPosition position) {
-
-        ISamwiseDriveRoute driveRoute = null;
-
-        /**
-         * todo: externalize the routes
-         */
-        if (isCrater) {
-            switch (position) {
-                case RIGHT: //right
-                    driveRoute = SamwiseDriveRouteFactory.createCraterRight2(this);
-                    break;
-                case LEFT: //left
-                    driveRoute = SamwiseDriveRouteFactory.createCraterLeft2(this);
-                    break;
-                case CENTER:  //center
-                default:
-                    driveRoute = SamwiseDriveRouteFactory.createCraterCenter2(this);
-            }
-        } else {
-            switch (position) {
-                case RIGHT: //right
-                    driveRoute = SamwiseDriveRouteFactory.createDepotRight(this);
-                    break;
-                case LEFT: //left
-                    driveRoute = SamwiseDriveRouteFactory.createDepotLeft(this);
-                    break;
-                case CENTER:  //center
-                default:
-                    driveRoute = SamwiseDriveRouteFactory.createDepotCenter(this);
-            }
-        }
-        return driveRoute;
-    }
 
 }
 
