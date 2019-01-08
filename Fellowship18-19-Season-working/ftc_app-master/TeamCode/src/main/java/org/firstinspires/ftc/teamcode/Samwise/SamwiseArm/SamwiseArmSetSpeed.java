@@ -21,7 +21,7 @@ public class SamwiseArmSetSpeed extends SamwiseArm
     private static final double ZERO_GATE = 0.01;
     // minimum horizontal distance between J2 and J4, in inches
     private static final double MINIMUM_L3 = 20;
-    private static final double MAXIMUM_L3 = 20;
+    private static final double MAXIMUM_L3 = 50;
     // vertical distance from between J2 and J4
     private double pomHeight = -1;
     // minimum ticks at set plane of motion height
@@ -50,7 +50,7 @@ public class SamwiseArmSetSpeed extends SamwiseArm
             //fix J3 position according to J2 position in order stay on the  plane.
             super.motorJ2.setPower(0);
             double J3Degrees = this.calculateJ3Degrees(getJ2CurrentPosition() / TICKS_PER_DEGREE_J2 + INITIAL_DEGREES_J2);
-            super.motorJ3.setTargetPosition(((int) J3Degrees - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
+            super.motorJ3.setTargetPosition((int) ((J3Degrees - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3));
             this.pomHeight = -1;
             this.loop = 0;
             return;
@@ -75,12 +75,12 @@ public class SamwiseArmSetSpeed extends SamwiseArm
             System.out.println("New plane of motion height: " + this.pomHeight);
             //minimum
             List minList = this.calculateJ2J3Degrees(MINIMUM_L3);
-            this.minimum_ticks_J2 = (int) ((Double) minList.get(0)).doubleValue() + TICKS_PER_DEGREE_J2;
-            this.minimum_ticks_J3 = (int) ((Double) minList.get(1)).doubleValue() + TICKS_PER_DEGREE_J3;
+            this.minimum_ticks_J2 = (int) (((Double) minList.get(0)).doubleValue() + TICKS_PER_DEGREE_J2);
+            this.minimum_ticks_J3 = (int) (((Double) minList.get(1)).doubleValue() + TICKS_PER_DEGREE_J3);
             //maximum
             List maxList = this.calculateJ2J3Degrees(MAXIMUM_L3);
-            this.maximum_ticks_J2 = (int) ((Double) maxList.get(0)).doubleValue() + TICKS_PER_DEGREE_J2;
-            this.maximum_ticks_J3 = (int) ((Double) maxList.get(1)).doubleValue() + TICKS_PER_DEGREE_J3;
+            this.maximum_ticks_J2 = (int) (((Double) maxList.get(0)).doubleValue() + TICKS_PER_DEGREE_J2);
+            this.maximum_ticks_J3 = (int) (((Double) maxList.get(1)).doubleValue() + TICKS_PER_DEGREE_J3);
         }
 
         //Dist from J2 to J4
