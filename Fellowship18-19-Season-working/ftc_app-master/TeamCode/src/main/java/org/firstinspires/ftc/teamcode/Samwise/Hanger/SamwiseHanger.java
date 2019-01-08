@@ -31,7 +31,7 @@ public class SamwiseHanger {
     public void init(HardwareMap hw, Telemetry t) {
         hangermotor1 = hw.dcMotor.get("hangermotor1");
         hangerservo1 = hw.servo.get("hangerservo1");
-        hangerservo2 = hw.servo.get("hangerservo2");
+        //hangerservo2 = hw.servo.get("hangerservo2");
 
         telemetry = t;
 

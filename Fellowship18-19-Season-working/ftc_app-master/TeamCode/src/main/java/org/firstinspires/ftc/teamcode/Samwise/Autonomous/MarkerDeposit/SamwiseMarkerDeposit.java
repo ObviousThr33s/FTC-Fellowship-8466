@@ -9,8 +9,11 @@ import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
 //Version by Kyle
 public class SamwiseMarkerDeposit {
 
+    public static double dropPosition = .16;
+
     public Servo servo9 = null;  /*Probably rename servo to a useful number when
                                 we figure out the hardware map diagram of it*/
+
 
     //public static double servo9_HOME = 0.0;
 
@@ -22,13 +25,16 @@ public class SamwiseMarkerDeposit {
 
         servo9 = ahwmap.servo.get("marker");
 
-        System.out.println("SamwiseMarkerDeposit.init : initialized");
+        System.out.println("==> SamwiseMarkerDeposit.init : initialized");
 
         servo9.setDirection(direction);
+
+        servo9.setPosition(.76);
 
     }
 
     public void move(double d) {
+        System.out.println("==> drop the marker ... move servo to position: "+d);
         servo9.setPosition(d);
     }
 
