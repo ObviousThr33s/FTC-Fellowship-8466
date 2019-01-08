@@ -32,9 +32,7 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.DriveTrainTeleop;
-import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHangerTeleOp;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 
@@ -56,15 +54,15 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 public class SamwiseTeleOp extends OpMode{
 
     /* Declare OpMode members. */
-    public SamwiseArm swArm = null;
     public SamwiseHangerTeleOp swHang;
     public DriveTrainTeleop swDTrain;
+    public SamwiseArm swArm;
 
     @Override
     public void init() {
-        swArm = new SamwiseArm(this.hardwareMap);
         swHang = new SamwiseHangerTeleOp();
         swDTrain = new DriveTrainTeleop();
+        swArm = new SamwiseArm(this.hardwareMap);
     }
 
 
@@ -207,8 +205,6 @@ public class SamwiseTeleOp extends OpMode{
         {
             swArm.stopServo();
         }
-
-
     }
 
     @Override

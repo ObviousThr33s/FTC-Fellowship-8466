@@ -22,7 +22,7 @@ public class GenerateLookupTable
         double maximum_L3 = 0;
         try
         {
-            File fout = new File("LookupTable.txt");
+            File fout = new File("LaurenLookupTable.txt");
             fout.createNewFile();
             FileOutputStream fos = new FileOutputStream(fout);
 
