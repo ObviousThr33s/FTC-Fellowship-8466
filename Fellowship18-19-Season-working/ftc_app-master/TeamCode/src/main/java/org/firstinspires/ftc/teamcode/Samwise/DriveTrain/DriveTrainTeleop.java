@@ -19,8 +19,8 @@ public class DriveTrainTeleop extends OpMode {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
 
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
     }
 
