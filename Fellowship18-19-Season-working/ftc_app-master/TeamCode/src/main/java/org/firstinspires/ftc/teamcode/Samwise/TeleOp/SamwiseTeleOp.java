@@ -57,7 +57,7 @@ public class SamwiseTeleOp extends OpMode {
 
     /* Declare OpMode members. */
     public SamwiseHanger swHang = new SamwiseHanger();
-    ;
+
     //public DriveTrainTeleop swDTrain = new DriveTrainTeleop();
     //public SamwiseArm swArm;
 
