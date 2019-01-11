@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Samwise.Hanger;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import org.firstinspires.ftc.teamcode.Samwise.Conceptual.SamwiseRobot;
 
 @TeleOp(name = "HangerArmTeleOp v2")
@@ -25,8 +24,10 @@ public class SamwiseHangerTeleOp extends OpMode {
     public void init() {
         //hw = hardwareMap;
         System.out.println("==> Hanger init ...");
-        SamwiseRobot sr = new SamwiseRobot(hardwareMap, telemetry);
-        movieboi = sr.hanger();
+        /*SamwiseRobot sr = new SamwiseRobot(hardwareMap, telemetry);
+        movieboi = sr.hanger();*/
+        movieboi = new SamwiseHanger();
+        movieboi.init(hardwareMap, telemetry);
     }
 
     public void loop() {

@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.DriveTrainTeleop;
+import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHangerTeleOp;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 
@@ -54,13 +55,13 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 public class SamwiseTeleOp extends OpMode{
 
     /* Declare OpMode members. */
-    public SamwiseHangerTeleOp swHang;
+    public SamwiseHanger swHang;
     public DriveTrainTeleop swDTrain;
     public SamwiseArm swArm;
 
     @Override
     public void init() {
-        swHang = new SamwiseHangerTeleOp();
+        swHang = new SamwiseHanger();
         swDTrain = new DriveTrainTeleop();
         swArm = new SamwiseArm(this.hardwareMap);
     }
@@ -83,8 +84,52 @@ public class SamwiseTeleOp extends OpMode{
          *                               Samwise Drive Train and Hanging                                *
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
-        swHang.loop();
-        swDTrain.loop();
+
+        //Hanger system
+      //if the a button is pressed then is moves the hanger arm
+            if(gamepad1.dpad_up) {
+                System.out.println("==> Hanger moving up ...");
+                telemetry.addData("Mode", "Moving up...");
+                swHang.move(1);
+                telemetry.addData("Mode", "Stopped");
+                telemetry.update();
+                return;
+            }
+            else if(gamepad1.dpad_down) {
+                System.out.println("==> Hanger moving down ...");
+                telemetry.addData("Mode", "moving down ");
+                swHang.move(-1);
+                telemetry.addLine("stopped");
+                telemetry.update();
+                return;
+            }
+            else {
+                swHang.move(0);
+            }
+
+            if(gamepad1.left_bumper) {
+                System.out.println("==> Hanger unhooking ...");
+                telemetry.addData("Mode", "Unhooking");
+                swHang.unHook();
+                telemetry.addLine("Unhooked");
+                telemetry.update();
+                return;
+            }
+            else if(gamepad1.right_bumper) {
+                System.out.println("==> Hanger hooking ...");
+                telemetry.addData("Mode", "hooking");
+                swHang.Hook();
+                telemetry.addLine("hooked");
+                telemetry.update();
+                return;
+            }
+
+        //Drive Train
+            float leftMotorPower = gamepad1.left_stick_y;
+            float rightMotorPower = gamepad1.right_stick_y;
+
+        swDTrain.leftDrive.setPower(leftMotorPower);
+        swDTrain.rightDrive.setPower(rightMotorPower);
 
 
 
