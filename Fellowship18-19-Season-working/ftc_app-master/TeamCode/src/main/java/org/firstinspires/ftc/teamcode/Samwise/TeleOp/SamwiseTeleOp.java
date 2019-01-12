@@ -63,6 +63,7 @@ public class SamwiseTeleOp extends OpMode {
 
     public DcMotor leftDrive = null;
     public DcMotor rightDrive = null;
+    private double powerlevel = 1.0;
 
     @Override
     public void init() {
@@ -136,11 +137,21 @@ public class SamwiseTeleOp extends OpMode {
         }
 
         //Drive Train
+        if(gamepad1.a) {
+            powerlevel = 0.5;
+        }
+        if(gamepad1.b) {
+            powerlevel = .25;
+        }
+        else if(gamepad1.x) {
+            powerlevel = 1;
+        }
+
         float leftMotorPower = gamepad1.left_stick_y;
         float rightMotorPower = gamepad1.right_stick_y;
 
-        leftDrive.setPower(leftMotorPower);
-        rightDrive.setPower(rightMotorPower);
+        leftDrive.setPower(leftMotorPower*powerlevel);
+        rightDrive.setPower(rightMotorPower*powerlevel);
 
 
 //        /************************************** Gamepad #2 Mappings *************************************
