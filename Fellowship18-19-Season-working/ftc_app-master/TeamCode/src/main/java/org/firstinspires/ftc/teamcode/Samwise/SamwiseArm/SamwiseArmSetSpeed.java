@@ -10,7 +10,7 @@ import java.util.List;
  * TODO: Test carefully to find out the *right* "MAXIMUM_SPEED":
  * 1. Small enough to have more accurate speed and position
  * 2. Big enough so to avoid target reached before next loop
- *
+ * <p>
  * Keep in mind loop interval too.
  */
 public class SamwiseArmSetSpeed extends SamwiseArm
@@ -27,9 +27,13 @@ public class SamwiseArmSetSpeed extends SamwiseArm
     // minimum ticks at set plane of motion height
     private int minimum_ticks_J2 = -1;
     private int minimum_ticks_J3 = -1;
+    private double minimum_degrees_J2 = -1;
+    private double minimum_degrees_J3 = -1;
     // maximum ticks at set plane of motion height
     private int maximum_ticks_J2 = -1;
     private int maximum_ticks_J3 = -1;
+    private double maximum_degrees_J2 = -1;
+    private double maximum_degrees_J3 = -1;
 
     private int loop = 0;
 
@@ -75,23 +79,42 @@ public class SamwiseArmSetSpeed extends SamwiseArm
             System.out.println("New plane of motion height: " + this.pomHeight);
             //minimum
             List minList = this.calculateJ2J3Degrees(MINIMUM_L3);
-            this.minimum_ticks_J2 = (int) (((Double) minList.get(0)).doubleValue() + TICKS_PER_DEGREE_J2);
-            this.minimum_ticks_J3 = (int) (((Double) minList.get(1)).doubleValue() + TICKS_PER_DEGREE_J3);
+            this.minimum_degrees_J2 = (Double) minList.get(0);
+            this.minimum_degrees_J3 = (Double) minList.get(1);
+            this.minimum_ticks_J2 = (int) ((this.minimum_degrees_J2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2);
+            this.minimum_ticks_J3 = (int) ((this.minimum_degrees_J3 - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
             //maximum
             List maxList = this.calculateJ2J3Degrees(MAXIMUM_L3);
-            this.maximum_ticks_J2 = (int) (((Double) maxList.get(0)).doubleValue() + TICKS_PER_DEGREE_J2);
-            this.maximum_ticks_J3 = (int) (((Double) maxList.get(1)).doubleValue() + TICKS_PER_DEGREE_J3);
+            this.maximum_degrees_J2 = (Double) maxList.get(0);
+            this.maximum_degrees_J3 = (Double) maxList.get(1);
+            this.maximum_ticks_J2 = (int) ((this.maximum_degrees_J2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2);
+            this.maximum_ticks_J3 = (int) ((this.maximum_degrees_J3 - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
         }
 
         //Dist from J2 to J4
-        double k_sqrd = (ARM_L1 * ARM_L1) + (ARM_L2 * ARM_L2) - 2 * (ARM_L1 * ARM_L2) * Math.cos(Math.toRadians(J3Deg));
+        double k_sqrd = (ARM_L1 * ARM_L1) + (ARM_L2 * ARM_L2) - 2 * ARM_L1 * ARM_L2 * Math.cos(Math.toRadians(J3Deg));
         double L3     = Math.sqrt(k_sqrd - (this.pomHeight * pomHeight));
 
         // assume we apply distance speed for 1 second, find out angle speeds
-        double L3_next     = speed > 0 ? L3 + MAXIMUM_SPEED * speed : L3 - MAXIMUM_SPEED * speed;
-        List   listDegNext = this.calculateJ2J3Degrees(L3_next);
-        double targetJ2Deg = ((Double) listDegNext.get(0)).doubleValue();
-        double targetJ3Deg = ((Double) listDegNext.get(1)).doubleValue();
+        double L3_next = L3 + MAXIMUM_SPEED * speed;
+        double targetJ2Deg = -1;
+        double targetJ3Deg = -1;
+        if (L3_next < MINIMUM_L3)
+        {
+            targetJ2Deg = this.minimum_degrees_J2;
+            targetJ3Deg = this.minimum_degrees_J3;
+        }
+        else if (L3_next > MAXIMUM_L3)
+        {
+            targetJ2Deg = this.maximum_degrees_J2;
+            targetJ3Deg = this.maximum_degrees_J3;
+        }
+        else
+        {
+            List   listDegNext = this.calculateJ2J3Degrees(L3_next);
+            targetJ2Deg = (Double) listDegNext.get(0);
+            targetJ3Deg = (Double) listDegNext.get(1);
+        }
 
         double diffJ2Deg     = Math.abs(targetJ2Deg - J2Deg);
         double diffJ3Deg     = Math.abs(targetJ3Deg - J3Deg);
@@ -144,8 +167,8 @@ public class SamwiseArmSetSpeed extends SamwiseArm
         double angle_J2_2 = Math.toDegrees(Math.asin(pomHeight / L3));
         double angle_J2_1 = Math.toDegrees(Math.acos((ARM_L1 * ARM_L1 + k_sqrd - ARM_L2 * ARM_L2) / (2 * ARM_L1 * Math.sqrt(k_sqrd))));
         double angle_J2   = angle_J2_1 + angle_J2_2 + 90;
-        result.add(Double.valueOf(angle_J2));
-        result.add(Double.valueOf(angle_J3));
+        result.add(angle_J2);
+        result.add(angle_J3);
 
         return result;
     }
