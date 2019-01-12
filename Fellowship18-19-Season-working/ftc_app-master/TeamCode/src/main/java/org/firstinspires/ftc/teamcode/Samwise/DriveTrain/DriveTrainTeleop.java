@@ -12,6 +12,8 @@ public class DriveTrainTeleop extends OpMode {
     public DcMotor leftDrive = null;
     public DcMotor rightDrive = null;
 
+    private double powerlevel = 1.0;
+
     public void init() {
         leftDrive = hardwareMap.dcMotor.get("left_drive");
         rightDrive = hardwareMap.dcMotor.get("right_drive");
@@ -25,11 +27,20 @@ public class DriveTrainTeleop extends OpMode {
     }
 
     public void loop() {
-       float leftMotorPower = gamepad1.left_stick_y;
-       float rightMotorPower = gamepad1.right_stick_y;
+        if(gamepad1.a) {
+            powerlevel = 0.5;
+        }
+        if(gamepad1.b) {
+            powerlevel = .25;
+        }
+        else if(gamepad1.x) {
+            powerlevel = 1;
+        }
 
-       leftDrive.setPower(leftMotorPower);
-       rightDrive.setPower(rightMotorPower);
+        float leftMotorPower = gamepad1.left_stick_y;
+        float rightMotorPower = gamepad1.right_stick_y;
 
+        leftDrive.setPower(leftMotorPower*powerlevel);
+        rightDrive.setPower(rightMotorPower*powerlevel);
     }
 }
