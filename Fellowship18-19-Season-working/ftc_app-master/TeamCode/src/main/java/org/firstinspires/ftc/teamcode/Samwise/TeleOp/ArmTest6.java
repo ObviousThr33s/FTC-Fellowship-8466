@@ -4,7 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp (name = "Michaels ArM testtttt")
+@TeleOp (name = "Michaels Arm testtttt1")
+
+
+// COPY OF ArmTest3___________________________________________________________
+
+
+
+
 public class ArmTest6 extends OpMode{
 
     private DcMotor ArmMotor1 = null;
@@ -21,21 +28,21 @@ public class ArmTest6 extends OpMode{
     private double SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
 
     //J2, J3 Static
-    static final double EncoderCountJ2 = 1680.0; //number of ticks per motor round
-    static final double EncoderCountJ3 = 1680.0; //number of ticks per motor round
-    static final double HeightOfPlane = 2.0; //height of plane of motion
-    static final double LengthJ2toJ3 = 6.0; //distance between J2 and J3
-    static final double LengthJ3toJ4 = 6.0; //distance between J3 and J4
+    static final double EncoderCountJ2 = 1120.0; //number of ticks per motor round
+    static final double EncoderCountJ3 = 1120.0; //number of ticks per motor round
+    static final double HeightOfPlane = 6.0; //height of plane of motion
+    static final double LengthJ2toJ3 = 24.09; //distance between J2 and J3
+    static final double LengthJ3toJ4 = 27.75; //distance between J3 and J4
 
     private double H = HeightOfPlane;
     private double L1 = LengthJ2toJ3; //length between J2 and J3
     private double L2 = LengthJ3toJ4; //length between J3 and J4
     private double TickPerDegreeJ3 = EncoderCountJ3/360.0;
     private double TickPerDegreeJ2 = EncoderCountJ2/360.0;
-    double J2MaxPos = 180.0 * TickPerDegreeJ2;
-    double J2MinPos = 90.0 * TickPerDegreeJ2;
-    double mininticks = 90.0 * TickPerDegreeJ2;
-    double maxinticks = 180.0 * TickPerDegreeJ2;
+    double J2MaxPos = 90.0 * TickPerDegreeJ2;
+    double J2MinPos = 0.0 * TickPerDegreeJ2;
+    double mininticks = 0.0 * TickPerDegreeJ2;
+    double maxinticks = 90.0 * TickPerDegreeJ2;
 
     double J2Gear1count = 1.0;
     double J2Gear2count = 1.0;
@@ -63,10 +70,9 @@ public class ArmTest6 extends OpMode{
 
 
     }
-
     public void init_loop() {
 
-        double J3MinPos, a, b, c, c_1, d;
+     /*   double J3MinPos, a, b, c, c_1, d;
         a = Math.cos(Math.toRadians(180.0 - J2MaxPos));
         b = (L1 * a - H) / L2;
         c = Math.acos(b);
@@ -81,18 +87,40 @@ public class ArmTest6 extends OpMode{
             ArmMotor3.setPower(0.8);
             ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }*/
+        int motorcurrentpos;
+        if (gamepad1.x) {
+            motorcurrentpos =  ArmMotor2.getCurrentPosition() +40;
+
+
+            ArmMotor2.setTargetPosition(motorcurrentpos);
+            ArmMotor2.setPower(0.1);
+            ;
+
+        }
+        if (gamepad1.b) {
+            motorcurrentpos = ArmMotor2.getCurrentPosition() -40;
+            ArmMotor2.setTargetPosition(motorcurrentpos);
+            ArmMotor2.setPower(0.1);
+
+
+        }
+        ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (gamepad1.y) {
+            ArmMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            ArmMotor2.setPower(0);
         }
     }
     public void loop() {
 
-        init_loop();
+//        init_loop();
         if (gamepad1.left_stick_y <= -0.01) { //push forward
             ArmMotor2.setTargetPosition((int)(J2MaxPos *J2FirsttoLast));
         }
         if (gamepad1.left_stick_y >= 0.01) { //backwards
             ArmMotor2.setTargetPosition((int)(J2MinPos * J2FirsttoLast));
         }
-        ArmMotor2.setPower(0.1);
+        ArmMotor2.setPower(gamepad1.left_stick_y);
         /* double J2CurrentPos_Ticks = ArmMotor2.getCurrentPosition();
         if (J2CurrentPos_Ticks <= mininticks) {
             if (gamepad1.left_stick_y >= 0.02) {
