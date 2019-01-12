@@ -227,7 +227,13 @@ public class MichaelMotorEncoderTest2 extends OpMode {
 
 
         testMotorEncoder3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+        if(gamepad1.b) {
+            testMotorEncoder1.setPower(0);
+            testMotorEncoder2.setPower(0);
+            testMotorEncoder3.setPower(0);
+            testMotorEncoder4.setPower(0);
+            testMotorEncoder5.setPower(0);
+        }
     }
 
     public void stop() {

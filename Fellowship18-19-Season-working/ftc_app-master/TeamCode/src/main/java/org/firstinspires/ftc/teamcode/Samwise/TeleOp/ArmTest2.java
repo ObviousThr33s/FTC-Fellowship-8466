@@ -30,6 +30,9 @@ public class ArmTest2 extends OpMode {
             ArmJ1.setPower(0);
         }
         ArmJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if(gamepad1.b) {
+            ArmJ1.setPower(0);
+        }
     }
 
 

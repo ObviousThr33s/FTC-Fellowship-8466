@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp (name = "Michaels Armmmm testtttt")
+@TeleOp (name = "Michaels ArM testtttt")
 public class ArmTest3 extends OpMode{
 
     private DcMotor ArmMotor1 = null;
@@ -111,13 +111,18 @@ public class ArmTest3 extends OpMode{
         J3TargetPos_Ticks = J3TargetPos_deg * TickPerDegreeJ3;
 
         ArmMotor3.setTargetPosition((int)J3TargetPos_Ticks);
-        ArmMotor3.setPower(0.7); //test Power LAtEr
+        ArmMotor3.setPower(0.1); //test Power LAtEr
         ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //J1
         double RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
         ArmMotor1.setTargetPosition((int)RotationJoint); //Joint 1 (turn table)
-        ArmMotor1.setPower(0.7);
+        ArmMotor1.setPower(0.1);
         ArmMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (gamepad1.b) {
+            ArmMotor1.setPower(0);
+            ArmMotor2.setPower(0);
+            ArmMotor3.setPower(0);
+        }
     }
     public void stop() {
         ArmMotor2.setPower(0);

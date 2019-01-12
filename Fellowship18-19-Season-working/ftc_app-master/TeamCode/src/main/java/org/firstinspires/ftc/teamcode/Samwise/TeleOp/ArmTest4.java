@@ -56,6 +56,11 @@ public class ArmTest4 extends OpMode{
         Motor1_2.setTargetPosition((int)RotationJoint); //Joint 1 (turn table)
         Motor1_2.setPower(0.7);
         Motor1_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (gamepad1.b) {
+            Motor1_2.setPower(0);
+            Motor2_2.setPower(0);
+            Motor3_2.setPower(0);
+        }
     }
     public void stop(){
         Motor1_2.setPower(0);

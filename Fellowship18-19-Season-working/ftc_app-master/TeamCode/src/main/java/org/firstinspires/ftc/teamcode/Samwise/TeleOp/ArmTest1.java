@@ -127,9 +127,12 @@ public class ArmTest1 extends OpMode {
         testMotorEncoder2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         testMotorEncoder3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (gamepad1.b) {
+            testMotorEncoder1.setPower(0);
+            testMotorEncoder2.setPower(0);
+            testMotorEncoder3.setPower(0);
 
-
-
+        }
     }
     public void stop() {
         testMotorEncoder1.setPower(0);
