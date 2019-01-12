@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp (name = "Michaels ArM testtttt")
-public class ArmTest3 extends OpMode{
+public class ArmTest6 extends OpMode{
 
     private DcMotor ArmMotor1 = null;
     private DcMotor ArmMotor2 = null;
@@ -36,6 +36,16 @@ public class ArmTest3 extends OpMode{
     double J2MinPos = 90.0 * TickPerDegreeJ2;
     double mininticks = 90.0 * TickPerDegreeJ2;
     double maxinticks = 180.0 * TickPerDegreeJ2;
+
+    double J2Gear1count = 1.0;
+    double J2Gear2count = 1.0;
+    double J2Gear3count = 1.0;
+
+    double J3Gear1count = 1.0;
+    double J3Gear2count = 1.0;
+
+    double J2FirsttoLast = J2Gear3count/J2Gear1count;
+    double J3FirsttoLast = J3Gear1count/J3Gear2count;
 
     public void init() {
         ArmMotor1 = hardwareMap.dcMotor.get("ArmMotor1");
@@ -77,12 +87,12 @@ public class ArmTest3 extends OpMode{
 
         init_loop();
         if (gamepad1.left_stick_y <= -0.01) { //push forward
-                ArmMotor2.setTargetPosition((int)J2MaxPos);
+            ArmMotor2.setTargetPosition((int)(J2MaxPos *J2FirsttoLast));
         }
         if (gamepad1.left_stick_y >= 0.01) { //backwards
-            ArmMotor2.setTargetPosition((int)J2MinPos);
+            ArmMotor2.setTargetPosition((int)(J2MinPos * J2FirsttoLast));
         }
-        ArmMotor2.setPower(gamepad1.left_stick_y);
+        ArmMotor2.setPower(0.1);
         /* double J2CurrentPos_Ticks = ArmMotor2.getCurrentPosition();
         if (J2CurrentPos_Ticks <= mininticks) {
             if (gamepad1.left_stick_y >= 0.02) {
@@ -109,7 +119,7 @@ public class ArmTest3 extends OpMode{
         J3TargetPos_deg = d;
         J3TargetPos_Ticks = J3TargetPos_deg * TickPerDegreeJ3;
 
-        ArmMotor3.setTargetPosition((int)J3TargetPos_Ticks);
+        ArmMotor3.setTargetPosition((int)(ArmMotor3.getCurrentPosition() * 3 * J3FirsttoLast));
         ArmMotor3.setPower(0.1); //test Power LAtEr
         ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //J1
