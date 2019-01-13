@@ -39,10 +39,10 @@ public class ArmTest6 extends OpMode{
     private double L2 = LengthJ3toJ4; //length between J3 and J4
     private double TickPerDegreeJ3 = EncoderCountJ3/360.0;
     private double TickPerDegreeJ2 = EncoderCountJ2/360.0;
-    double J2MaxPos = 90.0 * TickPerDegreeJ2;
+    double J2MaxPos = 180.0 * TickPerDegreeJ2;
     double J2MinPos = 0.0 * TickPerDegreeJ2;
     double mininticks = 0.0 * TickPerDegreeJ2;
-    double maxinticks = 90.0 * TickPerDegreeJ2;
+    double maxinticks = 180.0 * TickPerDegreeJ2;
 
     double J2Gear1count = 1.0;
     double J2Gear2count = 1.0;
@@ -89,10 +89,9 @@ public class ArmTest6 extends OpMode{
             ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }*/
         int motorcurrentpos;
+        int motor3currentpos;
         if (gamepad1.x) {
             motorcurrentpos =  ArmMotor2.getCurrentPosition() +40;
-
-
             ArmMotor2.setTargetPosition(motorcurrentpos);
             ArmMotor2.setPower(0.1);
             ;
@@ -120,8 +119,8 @@ public class ArmTest6 extends OpMode{
         if (gamepad1.left_stick_y >= 0.01) { //backwards
             ArmMotor2.setTargetPosition((int)(J2MinPos * J2FirsttoLast));
         }
-        ArmMotor2.setPower(gamepad1.left_stick_y);
-        /* double J2CurrentPos_Ticks = ArmMotor2.getCurrentPosition();
+        ArmMotor2.setPower(gamepad1.left_stick_y/1.7);
+        /*double J2CurrentPos_Ticks = ArmMotor2.getCurrentPosition();
         if (J2CurrentPos_Ticks <= mininticks) {
             if (gamepad1.left_stick_y >= 0.02) {
                 ArmMotor2.setPower(0);
@@ -131,8 +130,11 @@ public class ArmTest6 extends OpMode{
             if (gamepad1.left_stick_y <= -0.02) {
                 ArmMotor2.setPower(0);
             }
-        } */
+        }*/
         ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if(gamepad1.left_stick_y ==0) {
+            ArmMotor2.setPower(0);
+        }
         double J2CurrentPos_deg;
 
         double J3TargetPos_deg;
@@ -147,7 +149,7 @@ public class ArmTest6 extends OpMode{
         J3TargetPos_deg = d;
         J3TargetPos_Ticks = J3TargetPos_deg * TickPerDegreeJ3;
 
-        ArmMotor3.setTargetPosition((int)(ArmMotor3.getCurrentPosition() * 3 * J3FirsttoLast));
+        ArmMotor3.setTargetPosition((int)(J3TargetPos_Ticks * 3 * J3FirsttoLast));
         ArmMotor3.setPower(0.1); //test Power LAtEr
         ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //J1
