@@ -6,41 +6,52 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-@TeleOp (name = "DriveTeleOp 1.2.12v")
+@TeleOp (name = "DriveTeleOp 2.2.12v")
 public class DriveTrainTeleop extends OpMode {
 
-    public DcMotor leftDrive = null;
-    public DcMotor rightDrive = null;
+    public DcMotor leftdrive = null;
+    public DcMotor rightdrive = null;
 
     private double powerlevel = 1.0;
 
     public void init() {
-        leftDrive = hardwareMap.dcMotor.get("left_drive");
-        rightDrive = hardwareMap.dcMotor.get("right_drive");
+        leftdrive = hardwareMap.dcMotor.get("left_drive");
+        rightdrive = hardwareMap.dcMotor.get("right_drive");
 
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
+        leftdrive.setPower(0);
+        rightdrive.setPower(0);
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-
+        leftdrive.setDirection(DcMotor.Direction.FORWARD);
+        rightdrive.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public void loop() {
-        if(gamepad1.a) {
-            powerlevel = 0.5;
-        }
         if(gamepad1.b) {
-            powerlevel = .25;
+            powerlevel = 0.5;
+            System.out.println("50% power");
+        }
+        if(gamepad1.a) {
+            powerlevel = .7;
+            System.out.println("70% power");
         }
         else if(gamepad1.x) {
             powerlevel = 1;
+            System.out.println("max power");
         }
 
-        float leftMotorPower = gamepad1.left_stick_y;
-        float rightMotorPower = gamepad1.right_stick_y;
+        if(Math.abs(gamepad1.left_stick_x) <= Math.abs(gamepad1.left_stick_y)) {
+            float MotorPower = gamepad1.left_stick_y;
 
-        leftDrive.setPower(leftMotorPower*powerlevel);
-        rightDrive.setPower(rightMotorPower*powerlevel);
+            leftdrive.setPower(MotorPower * powerlevel);
+            rightdrive.setPower(MotorPower * powerlevel);
+            System.out.println("==> moving ...");
+        }
+        if(Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
+            float TurnMotorPower = gamepad1.left_stick_x;
+
+            leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
+            rightdrive.setPower(TurnMotorPower * powerlevel);
+            System.out.println("==> turning ...");
+        }
     }
 }
