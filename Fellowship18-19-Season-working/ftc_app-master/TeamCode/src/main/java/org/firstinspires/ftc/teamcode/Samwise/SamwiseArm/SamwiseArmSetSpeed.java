@@ -29,11 +29,15 @@ public class SamwiseArmSetSpeed extends SamwiseArm
     private int minimum_ticks_J3 = -1;
     private double minimum_degrees_J2 = -1;
     private double minimum_degrees_J3 = -1;
+    private double max_velociy_at_min_position_J2 = -1;
+    private double max_velociy_at_min_position_J3 = -1;
     // maximum ticks at set plane of motion height
     private int maximum_ticks_J2 = -1;
     private int maximum_ticks_J3 = -1;
     private double maximum_degrees_J2 = -1;
     private double maximum_degrees_J3 = -1;
+    private double max_velociy_at_max_position_J2 = -1;
+    private double max_velociy_at_max_position_J3 = -1;
 
     private int loop = 0;
 
@@ -83,12 +87,24 @@ public class SamwiseArmSetSpeed extends SamwiseArm
             this.minimum_degrees_J3 = (Double) minList.get(1);
             this.minimum_ticks_J2 = (int) ((this.minimum_degrees_J2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2);
             this.minimum_ticks_J3 = (int) ((this.minimum_degrees_J3 - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
+            // maximum ticks speed (when value is 1) at this location
+            double max_speed_L3 =  MAXIMUM_L3 + MAXIMUM_SPEED;
+            minList = this.calculateJ2J3Degrees(max_speed_L3);
+            this.max_velociy_at_min_position_J2 = Math.abs((Double) minList.get(0) - J2Deg) * TICKS_PER_DEGREE_J2;
+            this.max_velociy_at_min_position_J3 = Math.abs((Double) minList.get(1) - J3Deg) * TICKS_PER_DEGREE_J3;
+
             //maximum
             List maxList = this.calculateJ2J3Degrees(MAXIMUM_L3);
             this.maximum_degrees_J2 = (Double) maxList.get(0);
             this.maximum_degrees_J3 = (Double) maxList.get(1);
             this.maximum_ticks_J2 = (int) ((this.maximum_degrees_J2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2);
             this.maximum_ticks_J3 = (int) ((this.maximum_degrees_J3 - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
+            //maximum ticks speed (when value is 1) at this location
+            max_speed_L3 = MAXIMUM_L3 - MAXIMUM_SPEED;
+            maxList = this.calculateJ2J3Degrees(max_speed_L3);
+            this.max_velociy_at_max_position_J2 = Math.abs((Double) maxList.get(0) - J2Deg) * TICKS_PER_DEGREE_J2;
+            this.max_velociy_at_max_position_J3 = Math.abs((Double) maxList.get(1) - J3Deg) * TICKS_PER_DEGREE_J3;
+
         }
 
         //Dist from J2 to J4
@@ -96,7 +112,7 @@ public class SamwiseArmSetSpeed extends SamwiseArm
         double L3     = Math.sqrt(k_sqrd - (this.pomHeight * pomHeight));
 
         // assume we apply distance speed for 1 second, find out angle speeds
-        double L3_next = L3 + MAXIMUM_SPEED * speed;
+        double L3_next     = L3 + MAXIMUM_SPEED * speed;
         double targetJ2Deg = -1;
         double targetJ3Deg = -1;
         if (L3_next < MINIMUM_L3)
@@ -111,15 +127,11 @@ public class SamwiseArmSetSpeed extends SamwiseArm
         }
         else
         {
-            List   listDegNext = this.calculateJ2J3Degrees(L3_next);
+            List listDegNext = this.calculateJ2J3Degrees(L3_next);
             targetJ2Deg = (Double) listDegNext.get(0);
             targetJ3Deg = (Double) listDegNext.get(1);
         }
 
-        double diffJ2Deg     = Math.abs(targetJ2Deg - J2Deg);
-        double diffJ3Deg     = Math.abs(targetJ3Deg - J3Deg);
-        double diffJ2Ticks   = diffJ2Deg * TICKS_PER_DEGREE_J2;
-        double diffJ3Ticks   = diffJ3Deg * TICKS_PER_DEGREE_J3;
         double targetTicksJ2 = (targetJ2Deg - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2;
         double targetTicksJ3 = (targetJ3Deg - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3;
 
@@ -138,10 +150,24 @@ public class SamwiseArmSetSpeed extends SamwiseArm
         System.out.println("J2 position before set velocity: " + super.motorJ2.getCurrentPosition());
         System.out.println("J3 position before set velocity: " + super.motorJ3.getCurrentPosition());
 
-        if (motorJ2 instanceof DcMotorEx && motorJ3 instanceof DcMotorEx)
+        DcMotorEx motorExJ2 = (DcMotorEx) motorJ2;
+        DcMotorEx motorExJ3 = (DcMotorEx)motorJ3;
+        if (L3_next < MINIMUM_L3)
         {
-            ((DcMotorEx) motorJ2).setVelocity(diffJ2Ticks);
-            ((DcMotorEx) motorJ3).setVelocity(diffJ3Ticks);
+            motorExJ2.setVelocity(this.max_velociy_at_min_position_J2 * speed);
+            motorExJ3.setVelocity(this.max_velociy_at_min_position_J3 * speed);
+        }
+        else if (L3_next > MAXIMUM_L3)
+        {
+            motorExJ2.setVelocity(this.max_velociy_at_max_position_J2 * speed);
+            motorExJ3.setVelocity(this.max_velociy_at_max_position_J3 * speed);
+        }
+        else
+        {
+            double diffJ2Ticks = Math.abs(targetJ2Deg - J2Deg) * TICKS_PER_DEGREE_J2;
+            double diffJ3Ticks = Math.abs(targetJ3Deg - J3Deg) * TICKS_PER_DEGREE_J3;
+            motorExJ2.setVelocity(diffJ2Ticks);
+            motorExJ3.setVelocity(diffJ3Ticks);
         }
 
         System.out.println("J2 Target set to: " + super.motorJ2.getTargetPosition());
