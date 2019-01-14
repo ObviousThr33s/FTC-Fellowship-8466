@@ -28,8 +28,8 @@ public class ArmTest6 extends OpMode{
     private double SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
 
     //J2, J3 Static
-    static final double EncoderCountJ2 = 1120.0; //number of ticks per motor round
-    static final double EncoderCountJ3 = 1120.0; //number of ticks per motor round
+    static final double EncoderCountJ2 = 1680.0; //number of ticks per motor round
+    static final double EncoderCountJ3 = 1680.0; //number of ticks per motor round
     static final double HeightOfPlane = 6.0; //height of plane of motion
     static final double LengthJ2toJ3 = 24.09; //distance between J2 and J3
     static final double LengthJ3toJ4 = 27.75; //distance between J3 and J4
@@ -39,10 +39,10 @@ public class ArmTest6 extends OpMode{
     private double L2 = LengthJ3toJ4; //length between J3 and J4
     private double TickPerDegreeJ3 = EncoderCountJ3/360.0;
     private double TickPerDegreeJ2 = EncoderCountJ2/360.0;
-    double J2MaxPos = 180.0 * TickPerDegreeJ2;
+    double J2MaxPos = 90.0 * TickPerDegreeJ2;
     double J2MinPos = 0.0 * TickPerDegreeJ2;
     double mininticks = 0.0 * TickPerDegreeJ2;
-    double maxinticks = 180.0 * TickPerDegreeJ2;
+    double maxinticks = 90.0 * TickPerDegreeJ2;
 
     double J2Gear1count = 1.0;
     double J2Gear2count = 1.0;
@@ -51,8 +51,8 @@ public class ArmTest6 extends OpMode{
     double J3Gear1count = 1.0;
     double J3Gear2count = 1.0;
 
-    double J2FirsttoLast = J2Gear3count/J2Gear1count;
-    double J3FirsttoLast = J3Gear1count/J3Gear2count;
+    double J2FirsttoLast = 4;
+    double J3FirsttoLast = 2;
 
     public void init() {
         ArmMotor1 = hardwareMap.dcMotor.get("ArmMotor1");
@@ -94,21 +94,30 @@ public class ArmTest6 extends OpMode{
             motorcurrentpos =  ArmMotor2.getCurrentPosition() +40;
             ArmMotor2.setTargetPosition(motorcurrentpos);
             ArmMotor2.setPower(0.1);
-            ;
-
         }
         if (gamepad1.b) {
             motorcurrentpos = ArmMotor2.getCurrentPosition() -40;
             ArmMotor2.setTargetPosition(motorcurrentpos);
             ArmMotor2.setPower(0.1);
-
-
         }
         ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if (gamepad1.y) {
             ArmMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            ArmMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            ArmMotor3.setPower(0);
             ArmMotor2.setPower(0);
         }
+        if(gamepad1.dpad_left) {
+            motor3currentpos = ArmMotor3.getCurrentPosition() +40;
+            ArmMotor3.setTargetPosition(motor3currentpos);
+            ArmMotor3.setPower(0.1);
+        }
+        if (gamepad1.dpad_right) {
+            motor3currentpos = ArmMotor3.getCurrentPosition() - 40;
+            ArmMotor3.setTargetPosition(motor3currentpos);
+            ArmMotor3.setPower(0.1);
+        }
+        ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void loop() {
 
