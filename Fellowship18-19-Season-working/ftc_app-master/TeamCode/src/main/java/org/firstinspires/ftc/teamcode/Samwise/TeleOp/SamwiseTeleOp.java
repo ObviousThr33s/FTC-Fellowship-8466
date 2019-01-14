@@ -59,10 +59,10 @@ public class SamwiseTeleOp extends OpMode {
     public SamwiseHanger swHang = new SamwiseHanger();
 
     //public DriveTrainTeleop swDTrain = new DriveTrainTeleop();
-    //public SamwiseArm swArm;
+    public SamwiseArm swArm;
 
-    public DcMotor leftDrive = null;
-    public DcMotor rightDrive = null;
+    public DcMotor leftdrive = null;
+    public DcMotor rightdrive = null;
     private double powerlevel = 1.0;
 
     @Override
@@ -70,15 +70,16 @@ public class SamwiseTeleOp extends OpMode {
         swHang.init(hardwareMap, telemetry);
 
         //swDTrain.init(hardwareMap, telemetry);
-        //swArm = new SamwiseArm(this.hardwareMap);
-        leftDrive = hardwareMap.dcMotor.get("left_drive");
-        rightDrive = hardwareMap.dcMotor.get("right_drive");
+        swArm = new SamwiseArm(this.hardwareMap);
 
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
+        leftdrive = hardwareMap.dcMotor.get("left_drive");
+        rightdrive = hardwareMap.dcMotor.get("right_drive");
 
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftdrive.setPower(0);
+        rightdrive.setPower(0);
+
+        leftdrive.setDirection(DcMotor.Direction.REVERSE);
+        rightdrive.setDirection(DcMotor.Direction.FORWARD);
     }
 
 
@@ -137,140 +138,152 @@ public class SamwiseTeleOp extends OpMode {
         }
 
         //Drive Train
-        if(gamepad1.a) {
-            powerlevel = 0.5;
-        }
         if(gamepad1.b) {
-            powerlevel = .25;
+            powerlevel = 0.5;
+            System.out.println("50% power");
+        }
+        if(gamepad1.a) {
+            powerlevel = .7;
+            System.out.println("70% power");
         }
         else if(gamepad1.x) {
             powerlevel = 1;
+            System.out.println("max power");
         }
 
-        float leftMotorPower = gamepad1.left_stick_y;
-        float rightMotorPower = gamepad1.right_stick_y;
+        if(Math.abs(gamepad1.left_stick_x) <= Math.abs(gamepad1.left_stick_y)) {
+            float MotorPower = gamepad1.left_stick_y;
 
-        leftDrive.setPower(leftMotorPower*powerlevel);
-        rightDrive.setPower(rightMotorPower*powerlevel);
+            leftdrive.setPower(MotorPower * powerlevel);
+            rightdrive.setPower(MotorPower * powerlevel);
+            System.out.println("==> moving ...");
+        }
+        if(Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
+            float TurnMotorPower = gamepad1.left_stick_x;
+
+            leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
+            rightdrive.setPower(TurnMotorPower * powerlevel);
+            System.out.println("==> turning ...");
+        }
 
 
-//        /************************************** Gamepad #2 Mappings *************************************
-//         *                               Arm(J1, J2, J3) Position Transitions                           *
-//         *                       (Please add related function mappings below)                           *
-//         ************************************************************************************************/
-//        // Manual driveToCrater
-//        if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left)
-//        {
-//            swArm.setManual(true);
-//        }
-//        //move J2 up
-//        if (gamepad1.dpad_right)
-//        {
-//            swArm.driveJ2(true);
-//        }
-//        else
-//        {
-//            if (swArm.getIsManual() && !gamepad1.dpad_left)
-//            {
-//                swArm.stopJ2();
-//            }
-//        }
-//
-//        //move J2 down
-//        if (gamepad1.dpad_left)
-//        {
-//            swArm.driveJ2(false);
-//        }
-//        else
-//        {
-//            if (swArm.getIsManual() && !gamepad1.dpad_right)
-//            {
-//                swArm.stopJ2();
-//            }
-//        }
-//
-//        //move J3 up
-//        if (gamepad1.dpad_up)
-//        {
-//            swArm.driveJ3(true);
-//        }
-//        else
-//        {
-//            if (swArm.getIsManual() && !gamepad1.dpad_down)
-//            {
-//                swArm.stopJ3();
-//            }
-//        }
-//
-//        //move J3 down
-//        if (gamepad1.dpad_down)
-//        {
-//            swArm.driveJ3(false);
-//        }
-//        else
-//        {
-//            if (swArm.getIsManual() && !gamepad1.dpad_up)
-//            {
-//                swArm.stopJ3();
-//            }
-//        }
-//
-//        // to deposit position
-//        if (gamepad1.x)
-//        {
-//            swArm.silverDropPoint();
-//        }
-//
-//        if (gamepad1.y)
-//        {
-//            swArm.goldDropPoint();
-//        }
-//
-//        // to collection position
-//        if (gamepad1.b)
-//        {
-//            if (/*Math.abs(armStuff.getJ1CurrentPosition()) < 10  && */Math.abs(swArm.getJ2CurrentPosition()) < 10 && Math.abs(swArm.getJ3CurrentPosition()) < 10)
-//            {
-//                swArm.toCollectionPlane();
-//            }
-//            else
-//            {
-//                swArm.toPreviousCollectionPosition();
-//            }
-//        }
-//
-//        // to initial position
-//        if (gamepad1.a)
-//        {
-//            swArm.toInitialPosition();
-//        }
-//
-//        /************************************** Gamepad #2 Mappings *************************************
-//         *                               Arm (J2, J3) Plane of Motion                                   *
-//         *                       (Please add related function mappings below)                           *
-//         ************************************************************************************************/
-//
-//
-//        /************************************** Gamepad #2 Mappings *************************************
-//         *                  Claws (J2, J3, J4, J5, J6) Collection & Deposit                             *
-//         *                       (Please add related function mappings below)                           *
-//         ************************************************************************************************/
-//
-//        //collection and deposit
-//        if (gamepad1.left_trigger > 0)
-//        {
-//            swArm.collectMinerals();
-//        }
-//
-//        if (gamepad1.right_trigger > 0)
-//        {
-//            swArm.depositMinerals();
-//        }
-//
-//        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0)
-//        {
-//            swArm.stopServo();
-//        }
+        /************************************** Gamepad #2 Mappings *************************************
+         *                               Arm(J1, J2, J3) Position Transitions                           *
+         *                       (Please add related function mappings below)                           *
+         ************************************************************************************************/
+        // Manual driveToCrater
+        if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left)
+        {
+            swArm.setManual(true);
+        }
+        //move J2 up
+        if (gamepad1.dpad_right)
+        {
+            swArm.driveJ2(true);
+        }
+        else
+        {
+            if (swArm.getIsManual() && !gamepad1.dpad_left)
+            {
+                swArm.stopJ2();
+            }
+        }
+
+        //move J2 down
+        if (gamepad1.dpad_left)
+        {
+            swArm.driveJ2(false);
+        }
+        else
+        {
+            if (swArm.getIsManual() && !gamepad1.dpad_right)
+            {
+                swArm.stopJ2();
+            }
+        }
+
+        //move J3 up
+        if (gamepad1.dpad_up)
+        {
+            swArm.driveJ3(true);
+        }
+        else
+        {
+            if (swArm.getIsManual() && !gamepad1.dpad_down)
+            {
+                swArm.stopJ3();
+            }
+        }
+
+        //move J3 down
+        if (gamepad1.dpad_down)
+        {
+            swArm.driveJ3(false);
+        }
+        else
+        {
+            if (swArm.getIsManual() && !gamepad1.dpad_up)
+            {
+                swArm.stopJ3();
+            }
+        }
+
+        // to deposit position
+        if (gamepad1.x)
+        {
+            swArm.silverDropPoint();
+        }
+
+        if (gamepad1.y)
+        {
+            swArm.goldDropPoint();
+        }
+
+        // to collection position
+        if (gamepad1.b)
+        {
+            if (/*Math.abs(armStuff.getJ1CurrentPosition()) < 10  && */Math.abs(swArm.getJ2CurrentPosition()) < 10 && Math.abs(swArm.getJ3CurrentPosition()) < 10)
+            {
+                swArm.toCollectionPlane();
+            }
+            else
+            {
+                swArm.toPreviousCollectionPosition();
+            }
+        }
+
+        // to initial position
+        if (gamepad1.a)
+        {
+            swArm.toInitialPosition();
+        }
+
+        /************************************** Gamepad #2 Mappings *************************************
+         *                               Arm (J2, J3) Plane of Motion                                   *
+         *                       (Please add related function mappings below)                           *
+         ************************************************************************************************/
+
+
+        /************************************** Gamepad #2 Mappings *************************************
+         *                  Claws (J2, J3, J4, J5, J6) Collection & Deposit                             *
+         *                       (Please add related function mappings below)                           *
+         ************************************************************************************************/
+
+        //collection and deposit
+        if (gamepad1.left_trigger > 0)
+        {
+            swArm.collectMinerals();
+        }
+
+        if (gamepad1.right_trigger > 0)
+        {
+            swArm.depositMinerals();
+        }
+
+        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0)
+        {
+            swArm.stopServo();
+        }
     }
 
     @Override
