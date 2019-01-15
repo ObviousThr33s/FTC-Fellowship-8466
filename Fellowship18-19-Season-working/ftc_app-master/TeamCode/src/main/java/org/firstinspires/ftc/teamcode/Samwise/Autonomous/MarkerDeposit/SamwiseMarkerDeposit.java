@@ -42,8 +42,8 @@ public class SamwiseMarkerDeposit {
     public void shake(double d) {
         System.out.println("==> drop and shale off the marker ... : "+d);
         servo9.setPosition(d);
-        servo9.setPosition(d-.1);
-        servo9.setPosition(d+.1);
+        //servo9.setPosition(d-.1);
+        //servo9.setPosition(d+.1);
     }
 
 }

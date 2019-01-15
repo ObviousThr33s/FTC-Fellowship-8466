@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "Depot Center", group = "Samwise")
-//@Disabled
+@Disabled
 public class SamwiseDriveRouteDepotCenter extends SamwiseDriveRouteTest {
 
     @Override

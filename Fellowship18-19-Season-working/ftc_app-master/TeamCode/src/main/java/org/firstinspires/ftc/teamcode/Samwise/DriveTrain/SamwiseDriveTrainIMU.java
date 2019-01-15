@@ -45,11 +45,13 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
 
         if (!imuInitialized)
         {
-            RobotLog.v("IMU initialization: ", "failed to initialize.");
+            //RobotLog.v("IMU initialization: ", "failed to initialize.");
+            System.out.println("==> IMU initialization: failed to initialize.");
         }
         else
         {
-            RobotLog.v("Mode", "calibrating...");
+            //RobotLog.v("Mode", "calibrating...");
+            System.out.println("==> IMU initialization: calibrating ...");
             // make sure the imu gyro is calibrated before continuing.
             double startTime = System.currentTimeMillis();
             while (!imu.isGyroCalibrated() && !imu.isAccelerometerCalibrated() && System.currentTimeMillis() - startTime < 5000)
@@ -60,12 +62,13 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
             double nowTime = System.currentTimeMillis();
             if (!imu.isGyroCalibrated() || !imu.isAccelerometerCalibrated())
             {
-                RobotLog.v("IMU Calibration: ", " IMU failed to calibrate in 5 seconds.");
+                //RobotLog.v("IMU Calibration: ", " IMU failed to calibrate in 5 seconds.");
+                System.out.println("==> IMU initialization: IMU failed to calibrate in 5 seconds.");
             }
-            RobotLog.v("Time to calibrate: ", nowTime - startTime + " ms");
-            RobotLog.v("imu calib status", imu.getCalibrationStatus().toString());
-            RobotLog.v("IMU heading: ", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
-            RobotLog.v("Mode", "waiting for start");
+            System.out.println("==>Time to calibrate: " + (nowTime - startTime) + " ms");
+            System.out.println("==>imu calib status" + imu.getCalibrationStatus().toString());
+            System.out.println("==>IMU heading: " + imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
+            System.out.println("==>Mode" + "waiting for start");
         }
     }
 
@@ -77,6 +80,12 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
     @Override
     public void turnDrive(LinearOpMode opMode, double degrees, double timeout)
     {
+        System.out.println("==> IMU turns degree "+ degrees);
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // restart imu movement tracking.
         resetAngle();
@@ -102,15 +111,17 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
 
             while (opMode.opModeIsActive() && getAngle() - TURN_ERROR_ALLOWED > degrees)
             {
-                //                System.out.println("IMU Right Turn New Angle: " + currAngle);
-                //                currAngle = getAngle();
+                                System.out.println("==> IMU Right Turn New Angle: " + currAngle);
+                                currAngle = getAngle();
+                                idle();
             }
         }
         else    // left turn.
             while (opMode.opModeIsActive() && getAngle() + TURN_ERROR_ALLOWED < degrees)
             {
-                //                System.out.println("IMU Left Turn New Angle: " + currAngle);
-                //                currAngle = getAngle();
+                                System.out.println("==> IMU Left Turn New Angle: " + currAngle);
+                                currAngle = getAngle();
+                                idle();
             }
 
         // turn the motors off.
@@ -130,8 +141,8 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
         RobotLog.v("Rotate imu feedback degrees: ", deltaAngle);
         RobotLog.v("IMU started: ", resetAngle);
         RobotLog.v("IMU heading: ", currFirstAngle);
-        System.out.println("Rotate requested: " + degrees + "; imu feedback: " + deltaAngle);
-        System.out.println("IMU started: " + resetAngle + "; IMU heading: " + currFirstAngle);
+        System.out.println("==> Rotate requested: " + degrees + "; imu feedback: " + deltaAngle);
+        System.out.println("==> IMU started: " + resetAngle + "; IMU heading: " + currFirstAngle);
 
     }
 

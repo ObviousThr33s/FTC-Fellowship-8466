@@ -16,8 +16,8 @@ public class SamwiseDriveTrain extends DriveTrain {
     static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double DRIVE_SPEED = 0.7;
-    static final double TURN_SPEED = 0.5;
+    static final double DRIVE_SPEED = .8;
+    static final double TURN_SPEED = 1;
     static final double INCHES_PER_DEGREE = 0.1640556;
     protected ElapsedTime runtime = new ElapsedTime();
 
@@ -175,41 +175,6 @@ public class SamwiseDriveTrain extends DriveTrain {
 
     }
 
-    /**
-     * Drive until the touch sensor is pressed
-     *
-     * @param opMode
-     * @param touch
-     * @param timeout
-     */
-    public void turn(LinearOpMode opMode, DigitalChannel touch, boolean right, double timeout) {
-
-        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // reset the timeout time and start motion.
-        runtime.reset();
-        if (right) {
-            //turnright(.8);
-            leftDrive.setPower(-.6);
-            rightDrive.setPower(.9);
-        } else {
-            leftDrive.setPower(0.9);
-            rightDrive.setPower(-0.6);
-        }
-        System.out.println("==> turning the robot till the side touch sensor is pressed ... ");
-
-        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && touch.getState()) {
-            // robot keeps driving until side  is pressed
-            opMode.idle();
-        }
-
-        // Stop all motion;
-        drive(0);
-        System.out.println("==> stopped robot because the side sensor is pressed. ");
-
-    }
-
     public void driveToDepotFromSide(LinearOpMode opMode, DigitalChannel touch, boolean forward, SamwiseColor colorSensor, double timeout) {
 
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -278,6 +243,28 @@ public class SamwiseDriveTrain extends DriveTrain {
 
         System.out.println("==> reached depot because samwise saw the color line : " + colorSensor.senseColor());
         return; // stop
+
+    }
+
+    public void driveToWall(LinearOpMode opMode, DigitalChannel backside, double timeout) {
+
+        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        // reset the timeout time and start motion.
+        runtime.reset();
+        drive(Math.abs(DRIVE_SPEED));
+        System.out.println("==> driveToCrater with frontside and front touch sensors ... ");
+
+        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && backside.getState()) {
+            // robot keeps driving until back touch sensor is pressed
+            opMode.idle();
+        }
+
+        // Stop all motion;
+        drive(0);
+
+        System.out.println("==> front touch sensor is pressed. Stopping...");
 
     }
 
