@@ -16,7 +16,7 @@ public class SamwiseDriveTrain extends DriveTrain {
     static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double DRIVE_SPEED = .8;
+    static final double DRIVE_SPEED = .7;
     static final double TURN_SPEED = 1;
     static final double INCHES_PER_DEGREE = 0.1640556;
     protected ElapsedTime runtime = new ElapsedTime();
@@ -246,7 +246,7 @@ public class SamwiseDriveTrain extends DriveTrain {
 
     }
 
-    public void driveToWall(LinearOpMode opMode, DigitalChannel backside, double timeout) {
+    public void driveToWall(LinearOpMode opMode, DigitalChannel backside, boolean forward, double timeout) {
 
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -254,7 +254,12 @@ public class SamwiseDriveTrain extends DriveTrain {
         // reset the timeout time and start motion.
         runtime.reset();
         drive(Math.abs(DRIVE_SPEED));
-        System.out.println("==> driveToCrater with frontside and front touch sensors ... ");
+        if (forward) {
+            drive(DRIVE_SPEED);
+        } else {
+            drive(-DRIVE_SPEED);
+        }
+        System.out.println("==> driveToCrater with back sensor ... ");
 
         while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && backside.getState()) {
             // robot keeps driving until back touch sensor is pressed
@@ -264,7 +269,7 @@ public class SamwiseDriveTrain extends DriveTrain {
         // Stop all motion;
         drive(0);
 
-        System.out.println("==> front touch sensor is pressed. Stopping...");
+        System.out.println("==> back touch sensor is pressed. Stopping...");
 
     }
 
