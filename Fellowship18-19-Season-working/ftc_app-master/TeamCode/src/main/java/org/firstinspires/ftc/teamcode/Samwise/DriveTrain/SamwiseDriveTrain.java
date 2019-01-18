@@ -183,9 +183,9 @@ public class SamwiseDriveTrain extends DriveTrain {
         // reset the timeout time and start motion.
         runtime.reset();
         if (forward) {
-            drive(.7);
+            drive(.6);
         } else {
-            drive(-.7);
+            drive(-.6);
         }
         System.out.println("==> drive to depot till seeing the blue or red line ... ");
 

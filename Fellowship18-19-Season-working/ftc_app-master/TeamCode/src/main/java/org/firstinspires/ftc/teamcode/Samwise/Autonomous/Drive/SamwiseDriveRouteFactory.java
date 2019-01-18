@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
+import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrainIMU;
 
 public class SamwiseDriveRouteFactory
 {
@@ -10,7 +11,7 @@ public class SamwiseDriveRouteFactory
     {
         return new ISamwiseDriveRoute() {
             String               route      = "Crater Center";
-            SamwiseDriveTrain    driveTrain = samwiseDrive.robot;
+            SamwiseDriveTrainIMU    driveTrain = (SamwiseDriveTrainIMU)samwiseDrive.robot;
             SamwiseMarkerDeposit md         = samwiseDrive.md;
             Telemetry            telemetry  = samwiseDrive.telemetry;
 
@@ -33,14 +34,14 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -43,  20);
+                driveTrain.encoderDrive(samwiseDrive, -43,  5);
                 //driveTrain.driveToWall(samwiseDrive, samwiseDrive.touchBack, false, 7);
 
                 driveTrain.turnDrive(samwiseDrive, 35, 3);
                 //telemetry.addData(route, "finish sixth turn");
                 //telemetry.update();
 
-                driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, false, samwiseDrive.color, 6);
+                driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, false, samwiseDrive.color, 4);
 
                 //driveTrain.encoderDrive(samwiseDrive, -55, -55, 20);
                 //telemetry.addData(route, "finish seventh driveToCrater");
@@ -52,7 +53,7 @@ public class SamwiseDriveRouteFactory
 
                 // make this wall driveToCrater using touch sensor
                 //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
-                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 6);
+                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, 6);
 
                 //driveTrain.encoderDrive(samwiseDrive, 72, 72, 20);
                 //telemetry.addData(route, "finish eighth driveToCrater");
@@ -145,7 +146,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish fifth turn");
                 //telemetry.update();
 
-                driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, false, samwiseDrive.color, 6);
+                driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, false, samwiseDrive.color, 4);
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
@@ -153,7 +154,7 @@ public class SamwiseDriveRouteFactory
 
                 // make this wall driveToCrater using touch sensor
                 //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
-                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 7);
+                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 6);
 
             }
         };
@@ -231,19 +232,19 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish first turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, 25.5, 5);
+                driveTrain.encoderDrive(samwiseDrive, 25.5, 4);
                 //telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -9, 4);
+                driveTrain.encoderDrive(samwiseDrive, -9, 3);
                 //telemetry.addData(route, "finish third driveToCrater");
                 //telemetry.update();
 
-                driveTrain.turnDrive(samwiseDrive, -52, 5);
+                driveTrain.turnDrive(samwiseDrive, -52, 5.5);
                 //telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -51.5,20);
+                driveTrain.encoderDrive(samwiseDrive, -51.5,6);
                 //driveTrain.driveToWall(samwiseDrive, samwiseDrive.touchBack, false,9);
 
                 driveTrain.turnDrive(samwiseDrive, 36, 3);
@@ -340,7 +341,7 @@ public class SamwiseDriveRouteFactory
 
                 driveTrain.encoderDrive(samwiseDrive, 30,5);
 
-                driveTrain.driveToDepotFromCenter(samwiseDrive, .7, samwiseDrive.color, 4);
+                driveTrain.driveToDepotFromCenter(samwiseDrive, .6, samwiseDrive.color, 4);
 
                 driveTrain.turnDrive(samwiseDrive,-124,3);
 

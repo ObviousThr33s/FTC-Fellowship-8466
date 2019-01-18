@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -30,6 +31,8 @@ public class DriveIMUTurns extends LinearOpMode
 {
     SamwiseDriveTrainIMU imuTrain = new SamwiseDriveTrainIMU();
 
+    protected ElapsedTime runtime = new ElapsedTime();
+
     // called when init button is  pressed.
     @Override
     public void runOpMode() throws InterruptedException
@@ -41,9 +44,57 @@ public class DriveIMUTurns extends LinearOpMode
 
         // driveToCrater until end of period.
 
-        while (opModeIsActive())
+        //while (opModeIsActive())
         {
             testDrive();
+            showDeltaAngle();
+        }
+    }
+
+    protected  void showDeltaAngle(){
+
+        System.out.println("==>> reset angles with ZYX ... ");
+        imuTrain.resetAngle(AxesOrder.ZYX);
+        testAngles();
+        System.out.println("==>> done angles with ZYX ... ");
+
+        sleep(2000);
+        System.out.println("==>> reset angles with YZX ... ");
+        imuTrain.resetAngle(AxesOrder.YZX);
+        testAngles();System.out.println("==>> done angles with YZX ... ");
+
+    }
+
+    private void testAngles() {
+        runtime.reset();
+
+        while (opModeIsActive() && runtime.seconds() < 3){
+
+            double zyx = imuTrain.getAngle(AxesOrder.ZYX);
+            double zxy = imuTrain.getAngle(AxesOrder.ZXY);
+            double zxz = imuTrain.getAngle(AxesOrder.ZXZ);
+            double zyz = imuTrain.getAngle(AxesOrder.ZYZ);
+
+            double xyz = imuTrain.getAngle(AxesOrder.XYZ);
+            double xyx = imuTrain.getAngle(AxesOrder.XYX);
+            double xzx = imuTrain.getAngle(AxesOrder.XZX);
+            double xzy = imuTrain.getAngle(AxesOrder.XZY);
+
+            double yxy = imuTrain.getAngle(AxesOrder.YXY);
+            double yxz = imuTrain.getAngle(AxesOrder.YXZ);
+            double yzy = imuTrain.getAngle(AxesOrder.YZY);
+            double yzx = imuTrain.getAngle(AxesOrder.YZX);
+
+            double defaultAx = imuTrain.getAngle(null);
+            System.out.println("==>> reset ZYX: zyx="+zyx+", zxy="+zxy+", zxz="+zxz+", zyz="+zyz
+                    + ", xyz="+xyz +", xyx="+xyx+", xzx="+xzx+", xzy="+xzy
+                    + ", yxy="+yxy+", yxz="+yxz+", yzy="+yzy+ ", yzx="+yzx
+                    + ", defaultAx="+defaultAx);
+
+            System.out.println("==>> YZX delta = " + imuTrain.getAngleDelta(AxesOrder.YZX));
+
+            sleep(50);
+            idle();
         }
     }
 
