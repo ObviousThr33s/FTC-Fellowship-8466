@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
+package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 
-public class ArmTest6 extends OpMode{
+public class FinalPlaneOfMotionArmTest extends OpMode{
 
     private DcMotor ArmMotor1 = null;
     private DcMotor ArmMotor2 = null;
