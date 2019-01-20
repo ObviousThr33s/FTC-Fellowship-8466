@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Samwise.DriveTrain;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -12,17 +13,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
-{
+public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
     double globalAngle, power = 0.35;
     double resetAngle = 0.0;
-    static final int TURN_ERROR_ALLOWED = 5;
+    static final int TURN_ERROR_ALLOWED = 3;
+    double initAngle;
+    private boolean firstTime = true;
 
     @Override
-    public void init(HardwareMap hwm)
-    {
+    public void init(HardwareMap hwm) {
         super.init(hwm);
         super.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         super.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -43,29 +44,27 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
 
         boolean imuInitialized = imu.initialize(parameters);
 
-        if (!imuInitialized)
-        {
-            RobotLog.v("IMU initialization: ", "failed to initialize.");
-        }
-        else
-        {
-            RobotLog.v("Mode", "calibrating...");
+        if (!imuInitialized) {
+            //RobotLog.v("IMU initialization: ", "failed to initialize.");
+            System.out.println("==> IMU initialization: failed to initialize.");
+        } else {
+            //RobotLog.v("Mode", "calibrating...");
+            System.out.println("==> IMU initialization: calibrating ...");
             // make sure the imu gyro is calibrated before continuing.
             double startTime = System.currentTimeMillis();
-            while (!imu.isGyroCalibrated() && !imu.isAccelerometerCalibrated() && System.currentTimeMillis() - startTime < 5000)
-            {
+            while (!imu.isGyroCalibrated() && !imu.isAccelerometerCalibrated() && System.currentTimeMillis() - startTime < 5000) {
                 sleep(50);
                 idle();
             }
             double nowTime = System.currentTimeMillis();
-            if (!imu.isGyroCalibrated() || !imu.isAccelerometerCalibrated())
-            {
-                RobotLog.v("IMU Calibration: ", " IMU failed to calibrate in 5 seconds.");
+            if (!imu.isGyroCalibrated() || !imu.isAccelerometerCalibrated()) {
+                //RobotLog.v("IMU Calibration: ", " IMU failed to calibrate in 5 seconds.");
+                System.out.println("==> IMU initialization: IMU failed to calibrate in 5 seconds.");
             }
-            RobotLog.v("Time to calibrate: ", nowTime - startTime + " ms");
-            RobotLog.v("imu calib status", imu.getCalibrationStatus().toString());
-            RobotLog.v("IMU heading: ", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
-            RobotLog.v("Mode", "waiting for start");
+            System.out.println("==>Time to calibrate: " + (nowTime - startTime) + " ms");
+            System.out.println("==>imu calib status" + imu.getCalibrationStatus().toString());
+            System.out.println("==>IMU heading: " + imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
+            System.out.println("==>Mode" + "waiting for start");
         }
     }
 
@@ -75,54 +74,54 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
      * @param degrees Degrees to turn, - is left + is right
      */
     @Override
-    public void turnDrive(LinearOpMode opMode, double degrees, double timeout)
-    {
+    public void turnDrive(LinearOpMode opMode, double degrees, double timeout) {
+        System.out.println("==> IMU turns degree " + degrees);
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // restart imu movement tracking.
-        resetAngle();
+        resetAngle(AxesOrder.ZYX);
 
         // set power to rotate.
-        if (degrees < 0)
-        {
+        if (degrees < 0) {
             super.leftDrive.setPower(-power);
             super.rightDrive.setPower(power);
 
-        }
-        else if (degrees > 0)
-        {
+        } else if (degrees > 0) {
             super.leftDrive.setPower(power);
             super.rightDrive.setPower(-power);
-        }
-        else return;
+        } else return;
 
         // rotate until turn is completed.
-        double currAngle = getAngle();
-        if (degrees < 0)
-        {
+        double currAngle = getAngle(AxesOrder.ZYX);
+        //if (degrees < 0) {
 
-            while (opMode.opModeIsActive() && getAngle() - TURN_ERROR_ALLOWED > degrees)
-            {
-                //                System.out.println("IMU Right Turn New Angle: " + currAngle);
-                //                currAngle = getAngle();
-            }
+        while (opMode.opModeIsActive() && Math.abs(currAngle - degrees) > TURN_ERROR_ALLOWED) {
+            System.out.println("==> IMU Turn current angle: " + currAngle);
+            currAngle = getAngle(AxesOrder.ZYX);
+            idle();
         }
-        else    // left turn.
-            while (opMode.opModeIsActive() && getAngle() + TURN_ERROR_ALLOWED < degrees)
-            {
-                //                System.out.println("IMU Left Turn New Angle: " + currAngle);
-                //                currAngle = getAngle();
-            }
+            /*
+        } else    // left turn.
+            while (opMode.opModeIsActive() && Math.abs(currAngle - TURN_ERROR_ALLOWED) < degrees) {
+                System.out.println("==> IMU Left Turn New Angle: " + currAngle);
+                currAngle = getAngle(AxesOrder.ZYX);
+                idle();
+            }*/
 
         // turn the motors off.
         super.rightDrive.setPower(0);
         super.leftDrive.setPower(0);
 
-        sleep(1000);
+        sleep(300);
 
         // wait for rotation to stop.
         RobotLog.v("Rotate requested degrees: ", degrees);
         double currFirstAngle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-        double deltaAngle     = currFirstAngle - resetAngle;
+        double deltaAngle = currFirstAngle - resetAngle;
 
         if (deltaAngle < -180) deltaAngle += 360;
         else if (deltaAngle > 180) deltaAngle -= 360;
@@ -130,25 +129,20 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
         RobotLog.v("Rotate imu feedback degrees: ", deltaAngle);
         RobotLog.v("IMU started: ", resetAngle);
         RobotLog.v("IMU heading: ", currFirstAngle);
-        System.out.println("Rotate requested: " + degrees + "; imu feedback: " + deltaAngle);
-        System.out.println("IMU started: " + resetAngle + "; IMU heading: " + currFirstAngle);
+        System.out.println("==> Rotate requested: " + degrees + "; imu feedback: " + deltaAngle);
+        System.out.println("==> IMU started: " + resetAngle + "; IMU heading: " + currFirstAngle);
 
     }
 
-    private void sleep(long milliSeconds)
-    {
-        try
-        {
+    private void sleep(long milliSeconds) {
+        try {
             Thread.sleep(milliSeconds);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
 
-    private final void idle()
-    {
+    private final void idle() {
         // Otherwise, yield back our thread scheduling quantum and give other threads at
         // our priority level a chance to run
         Thread.yield();
@@ -157,11 +151,15 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
     /**
      * Resets the cumulative angle tracking to zero.
      */
-    private void resetAngle()
-    {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    public void resetAngle(AxesOrder axesOrder) {
+        if (axesOrder != null)
+            lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, axesOrder, AngleUnit.DEGREES);
+        else
+            lastAngles = imu.getAngularOrientation();
         resetAngle = lastAngles.firstAngle;
         globalAngle = 0;
+
+        firstTime = true;
     }
 
     /**
@@ -169,15 +167,21 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
      *
      * @return Angle in degrees. + = left, - = right.
      */
-    protected double getAngle()
-    {
+    public double getAngle(AxesOrder axesOrder) {
         // We experimentally determined the Z axis is the axis we want to use for heading angle.
         // We have to process the angle because the imu works in euler angles so the Z axis is
         // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
         // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-        Orientation angles     = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double      deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+        Orientation angles;
+        if (axesOrder != null) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, axesOrder, AngleUnit.DEGREES);
+        } else {
+            angles = imu.getAngularOrientation(); // default is the angle flat with the rev hub
+        }
+
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
         if (deltaAngle < -180) deltaAngle += 360;
         else if (deltaAngle > 180) deltaAngle -= 360;
@@ -187,10 +191,84 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain
         lastAngles = angles;
 
         return globalAngle;
+
+        //System.out.println("==> IMU Gyro angles: " + angles);
+        //return angles.firstAngle;
     }
 
-    public void updateAngleReadings(Telemetry telemetry)
-    {
+    public double getAngleDelta(AxesOrder axesOrder) {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+
+        Orientation angles;
+        if (axesOrder != null) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, axesOrder, AngleUnit.DEGREES);
+        } else {
+            angles = imu.getAngularOrientation(); // default is the angle flat with the rev hub
+        }
+
+        if (this.firstTime) {
+            initAngle = angles.firstAngle;
+            firstTime = false;
+        }
+
+        double deltaAngle = angles.firstAngle - this.initAngle;
+
+        if (deltaAngle < -180) deltaAngle += 360;
+        else if (deltaAngle > 180) deltaAngle -= 360;
+
+        System.out.println("==>> Angle change along axle " + axesOrder.name() + " = " + deltaAngle);
+
+        return deltaAngle;
+    }
+
+    public void driveToCrater(LinearOpMode opMode, DigitalChannel frontside, double timeout) {
+
+        double craterRimAngle = 1.8; // 2 degrees
+        resetAngle(AxesOrder.ZYX);
+
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        // reset the timeout time and start motion.
+        runtime.reset();
+        drive(Math.abs(DRIVE_SPEED));
+        System.out.println("==> IMU driveToCrater along the wall with frontside sensor ... ");
+
+        double deltaAngle = Math.abs(getAngleDelta(AxesOrder.YZX));
+
+        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && frontside.getState()
+                && deltaAngle < craterRimAngle) {
+            // robot keeps driving until side or front touch sensor is pressed
+            deltaAngle = Math.abs(getAngleDelta(AxesOrder.YZX));
+            opMode.idle();
+        }
+
+        // Stop all motion;
+        drive(0);
+
+        if (deltaAngle >= craterRimAngle || (runtime.seconds() >= timeout) || !opMode.opModeIsActive()) {
+            System.out.println("==> robot is tilted on the RIM. Stopping...");
+            return; // stop
+        }
+
+        if (!frontside.getState()) {
+            // side sensor is pressed. turning robot ....
+            System.out.println("==> frontside sensor is pressed. turning robot ....");
+            turnDrive(opMode, -8, 2);
+
+            driveToCrater(opMode, frontside, timeout); // recursive call till front touch sensor is hit
+        }
+
+    }
+
+    public void updateAngleReadings(Telemetry telemetry) {
         telemetry.addData("0 imu angular orientation: ", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
         telemetry.addData("1 imu heading (lastAngle): ", lastAngles.firstAngle);
         telemetry.addData("2 global heading (globalAngle): ", globalAngle);

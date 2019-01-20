@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMa
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseColor;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
+import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrainIMU;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 
 @Autonomous(name = "SamwiseAutoDrive v1", group = "Samwise")
@@ -24,7 +25,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     /* Declare OpMode members. */
     //SamwiseRobot sr = new SamwiseRobot(hardwareMap, telemetry);
-    SamwiseDriveTrain robot = new SamwiseDriveTrain();   // Use a drivetrain's hardware
+    SamwiseDriveTrainIMU robot = new SamwiseDriveTrainIMU();   // Use a drivetrain's hardware
     SamwiseVision vis = new SamwiseVision();
     SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
     SamwiseHanger hanger = new SamwiseHanger();//sr.hanger();
@@ -34,6 +35,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
     DigitalChannel touchFrontSide;  // side touch sensor
     DigitalChannel touchBackSide;  // side touch sensor
     DigitalChannel touchFront;  // front touch sensor
+    DigitalChannel touchBack;  // front touch sensor
 
 
     /**
@@ -64,6 +66,10 @@ public class SamwiseAutoDrive extends LinearOpMode {
         touchFront = hardwareMap.get(DigitalChannel.class, "touch_front");
         // set the digital channel to input.
         touchFront.setMode(DigitalChannel.Mode.INPUT);
+
+        touchBack = hardwareMap.get(DigitalChannel.class, "touch_back");
+        // set the digital channel to input.
+        touchBack.setMode(DigitalChannel.Mode.INPUT);
 
         color.init(hardwareMap, telemetry);
 
@@ -102,7 +108,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         if (opModeIsActive()) {
             vis.activate();
 
-            this.adjustPosition();
+            //this.adjustPosition();
 
             position = vis.getGoldPosition();  //Find gold mineral position
 
@@ -157,7 +163,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
                 this.robot.turnDrive(this, -2, 2);
             }
         }
-        while (ratio > 1.03 || ratio < .97);
+        while (ratio > 1.05 || ratio < .97);
 
         System.out.println("==>Current Ratio (after correction): " + ratio);
     }

@@ -25,7 +25,7 @@ public class SamwiseColor {
 
         color1 = hardwareMap.colorSensor.get("color1");
         //color2 = hardwareMap.colorSensor.get(sensor2);
-        color1.enableLed(false);
+        color1.enableLed(true);
     }
 
     public enum color{
