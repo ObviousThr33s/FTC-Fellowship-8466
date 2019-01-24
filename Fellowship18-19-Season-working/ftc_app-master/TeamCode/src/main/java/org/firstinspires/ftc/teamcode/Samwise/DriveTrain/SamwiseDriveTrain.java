@@ -110,7 +110,7 @@ public class SamwiseDriveTrain extends DriveTrain {
         encoderDrive(opMode, DRIVE_SPEED, leftInches, rightInches, timeoutS);
     }
 
-    public void turnDrive(LinearOpMode opMode, double degrees, double timeout) {
+    public void turn(LinearOpMode opMode, double degrees, double timeout) {
         double inches = INCHES_PER_DEGREE * degrees;
         System.out.println("==> turning robot " + degrees + " degrees...");
         encoderDrive(opMode, TURN_SPEED, inches, -inches, timeout);
@@ -168,7 +168,7 @@ public class SamwiseDriveTrain extends DriveTrain {
         if (!frontside.getState()) {
             // side sensor is pressed. turning robot ....
             System.out.println("==> frontside sensor is pressed. turning robot ....");
-            turnDrive(opMode, -8, 2);
+            turn(opMode, -8, 2);
 
             driveToCrater(opMode, frontside, front, timeout); // recursive call till front touch sensor is hit
         }
@@ -208,9 +208,9 @@ public class SamwiseDriveTrain extends DriveTrain {
             // side sensor is pressed. turning robot ....
             System.out.println("==> side sensor is pressed. turning robot ....");
             if(forward){
-                turnDrive(opMode, -8, 2);
+                this.turn(opMode, -8, 2);
             } else {
-                turnDrive(opMode, 8, 2);
+                this.turn(opMode, 8, 2);
             }
 
             driveToDepotFromSide(opMode, touch, forward, colorSensor, timeout); // recursive call till front touch sensor is hit

@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
-import android.widget.ImageSwitcher;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 
 
-@Autonomous(name = "SamwiseAutoDriveCrater", group = "Samwise")
+@Autonomous(name = "AutoDrive Crater -> stay at crater", group = "Samwise")
 //@Disabled
 public class SamwiseAutoDriveCrater extends SamwiseAutoDrive {
 

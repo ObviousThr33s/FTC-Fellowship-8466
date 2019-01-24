@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
-    double globalAngle, power = 0.35;
+    double globalAngle, power = 1;
     double resetAngle = 0.0;
     static final int TURN_ERROR_ALLOWED = 3;
     double initAngle;
@@ -73,7 +73,7 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
      *
      * @param degrees Degrees to turn, - is left + is right
      */
-    @Override
+    //@Override
     public void turnDrive(LinearOpMode opMode, double degrees, double timeout) {
         System.out.println("==> IMU turns degree " + degrees);
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -152,6 +152,11 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
      * Resets the cumulative angle tracking to zero.
      */
     public void resetAngle(AxesOrder axesOrder) {
+
+        System.out.println("==>> reset Angle ...");
+
+        sleep(300); // wait till the robot is still
+
         if (axesOrder != null)
             lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, axesOrder, AngleUnit.DEGREES);
         else
@@ -225,10 +230,10 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
         return deltaAngle;
     }
 
-    public void driveToCrater(LinearOpMode opMode, DigitalChannel frontside, double timeout) {
+    public void driveToCrater(LinearOpMode opMode, DigitalChannel frontside, boolean rightTurn, double timeout) {
 
         double craterRimAngle = 1.8; // 2 degrees
-        resetAngle(AxesOrder.ZYX);
+        //resetAngle(AxesOrder.ZYX);
 
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -238,7 +243,7 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
 
         // reset the timeout time and start motion.
         runtime.reset();
-        drive(Math.abs(DRIVE_SPEED));
+        drive(.5);
         System.out.println("==> IMU driveToCrater along the wall with frontside sensor ... ");
 
         double deltaAngle = Math.abs(getAngleDelta(AxesOrder.YZX));
@@ -261,9 +266,12 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
         if (!frontside.getState()) {
             // side sensor is pressed. turning robot ....
             System.out.println("==> frontside sensor is pressed. turning robot ....");
-            turnDrive(opMode, -8, 2);
+            if (rightTurn)
+                turnDrive(opMode, -7.1, 2);
+            else
+                turnDrive(opMode, 7.1, 2);
 
-            driveToCrater(opMode, frontside, timeout); // recursive call till front touch sensor is hit
+            driveToCrater(opMode, frontside, rightTurn, timeout); // recursive call till front touch sensor is hit
         }
 
     }

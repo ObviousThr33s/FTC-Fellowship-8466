@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 
 
-@Autonomous(name = "SamwiseAutoDriveCrater2Depot", group = "Samwise")
+@Autonomous(name = "AutoDrive Crater -> Depot -> our crater", group = "Samwise")
 //@Disabled
 public class SamwiseAutoDriveCrater2Depot extends SamwiseAutoDrive {
 
