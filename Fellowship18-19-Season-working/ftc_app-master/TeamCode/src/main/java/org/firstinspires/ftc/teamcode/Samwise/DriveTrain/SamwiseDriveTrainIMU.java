@@ -16,12 +16,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
-    double globalAngle, power = 1;
+    double globalAngle, power = .7;
     double resetAngle = 0.0;
     static final int TURN_ERROR_ALLOWED = 3;
     double initAngle;
     private boolean firstTime = true;
-    double craterRimAngle = 1.4; // 2 degrees
+    double craterRimAngle = 1.6; // 2 degrees
 
     @Override
     public void init(HardwareMap hwm) {
@@ -267,9 +267,9 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
             // side sensor is pressed. turning robot ....
             System.out.println("==> frontside sensor is pressed. turning robot ....");
             if (rightTurn)
-                turnDrive(opMode, -6.9, 2);
+                turnDrive(opMode, -6.1, 2);
             else
-                turnDrive(opMode, 6.9, 2);
+                turnDrive(opMode, 6.1, 2);
 
             driveToCrater(opMode, frontside, rightTurn, timeout); // recursive call till front touch sensor is hit
         }
