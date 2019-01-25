@@ -13,8 +13,7 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
     SamwiseHanger movieboi;
 
     public void init(HardwareMap ahwMap) {
-        SamwiseRobot sr = new SamwiseRobot(hardwareMap, telemetry);
-        movieboi = sr.hanger();
+        movieboi = new SamwiseHanger();
         movieboi.init(ahwMap, telemetry);
     }
 
@@ -24,27 +23,23 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
 
         waitForStart();
         //movieboi.encoderDrive(this, 0.8, -0.6,1);
-        movieboi.hangerservo2.setPosition(0.5);
+        //movieboi.hangerservo2.setPosition(0.5);
         movieboi.hangermotor1.setPower(-1);
         sleep(300);
         movieboi.hangermotor1.setPower(0);
-            telemetry.addData("movingdown", -1);
-            telemetry.update();
+
         movieboi.encoderDrive(this, 0.4, 20.9, 4);
-        System.out.print("===^Lol");
+        System.out.print("unhooking");
 
 
-        telemetry.addData("unhooking", "yeet");
-        telemetry.update();
         movieboi.unHook();
-        System.out.print("===^f to pay respects");
+        System.out.print("rehookinng");
         sleep(2000);
 
         movieboi.encoderDrive(this, 0.6, 20.9, 4);
 
         movieboi.Hook();
-        movieboi.hangerservo2.setPosition(0);
+        //movieboi.hangerservo2.setPosition(0);
         sleep(1000);
     }
-
 }

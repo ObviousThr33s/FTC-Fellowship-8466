@@ -21,6 +21,7 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
     static final int TURN_ERROR_ALLOWED = 3;
     double initAngle;
     private boolean firstTime = true;
+    double craterRimAngle = 1.4; // 2 degrees
 
     @Override
     public void init(HardwareMap hwm) {
@@ -232,7 +233,6 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
 
     public void driveToCrater(LinearOpMode opMode, DigitalChannel frontside, boolean rightTurn, double timeout) {
 
-        double craterRimAngle = 1.8; // 2 degrees
         //resetAngle(AxesOrder.ZYX);
 
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -267,9 +267,9 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
             // side sensor is pressed. turning robot ....
             System.out.println("==> frontside sensor is pressed. turning robot ....");
             if (rightTurn)
-                turnDrive(opMode, -7.1, 2);
+                turnDrive(opMode, -6.9, 2);
             else
-                turnDrive(opMode, 7.1, 2);
+                turnDrive(opMode, 6.9, 2);
 
             driveToCrater(opMode, frontside, rightTurn, timeout); // recursive call till front touch sensor is hit
         }

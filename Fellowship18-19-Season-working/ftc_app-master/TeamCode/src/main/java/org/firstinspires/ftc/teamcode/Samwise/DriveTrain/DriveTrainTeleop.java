@@ -21,8 +21,8 @@ public class DriveTrainTeleop extends OpMode {
         leftdrive.setPower(0);
         rightdrive.setPower(0);
 
-        leftdrive.setDirection(DcMotor.Direction.FORWARD);
-        rightdrive.setDirection(DcMotor.Direction.REVERSE);
+        leftdrive.setDirection(DcMotor.Direction.REVERSE);
+        rightdrive.setDirection(DcMotor.Direction.FORWARD);
     }
 
     public void loop() {
@@ -30,7 +30,7 @@ public class DriveTrainTeleop extends OpMode {
             powerlevel = 0.5;
             System.out.println("50% power");
         }
-        if(gamepad1.a) {
+        else if(gamepad1.a) {
             powerlevel = .7;
             System.out.println("70% power");
         }
@@ -46,11 +46,11 @@ public class DriveTrainTeleop extends OpMode {
             rightdrive.setPower(MotorPower * powerlevel);
             System.out.println("==> moving ...");
         }
-        if(Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
+        else if(Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
             float TurnMotorPower = gamepad1.left_stick_x;
 
-            leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
-            rightdrive.setPower(TurnMotorPower * powerlevel);
+            leftdrive.setPower(TurnMotorPower * powerlevel);
+            rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
             System.out.println("==> turning ...");
         }
     }

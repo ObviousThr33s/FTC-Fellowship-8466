@@ -103,23 +103,8 @@ public class SamwiseTeleOp extends OpMode {
 
         //Hanger system
         //if the a button is pressed then is moves the hanger arm
-        if (gamepad1.dpad_up) {
-            System.out.println("==> Hanger moving up ...");
-            //telemetry.addData("Mode", "Moving up...");
-            swHang.move(1);
-            //telemetry.addData("Mode", "Stopped");
-            //telemetry.update();
-            return;
-        } else if (gamepad1.dpad_down) {
-            System.out.println("==> Hanger moving down ...");
-            //telemetry.addData("Mode", "moving down ");
-            swHang.move(-1);
-            //telemetry.addLine("stopped");
-            //telemetry.update();
-            return;
-        } else {
-            swHang.move(0);
-        }
+
+        swHang.move(gamepad1.right_stick_y * powerlevel);
 
         if (gamepad1.left_bumper) {
             System.out.println("==> Hanger unhooking ...");
@@ -128,7 +113,8 @@ public class SamwiseTeleOp extends OpMode {
             //telemetry.addLine("Unhooked");
             //telemetry.update();
             return;
-        } else if (gamepad1.right_bumper) {
+        }
+        else if (gamepad1.right_bumper) {
             System.out.println("==> Hanger hooking ...");
             //telemetry.addData("Mode", "hooking");
             swHang.Hook();
@@ -142,7 +128,7 @@ public class SamwiseTeleOp extends OpMode {
             powerlevel = 0.5;
             System.out.println("50% power");
         }
-        if(gamepad1.a) {
+        else if(gamepad1.a) {
             powerlevel = .7;
             System.out.println("70% power");
         }
