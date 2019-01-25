@@ -243,12 +243,22 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
 
         // reset the timeout time and start motion.
         runtime.reset();
-        drive(.5);
+        int newLeftTarget = leftDrive.getCurrentPosition() + (int) (200 * COUNTS_PER_INCH);
+        int newRightTarget = rightDrive.getCurrentPosition() + (int) (200 * COUNTS_PER_INCH);
+        leftDrive.setTargetPosition(newLeftTarget);
+        rightDrive.setTargetPosition(newRightTarget);
+
+        // Turn On RUN_TO_POSITION
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        drive(DRIVE_SPEED);
         System.out.println("==> IMU driveToCrater along the wall with frontside sensor ... ");
 
         double deltaAngle = Math.abs(getAngleDelta(AxesOrder.YZX));
 
         while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && frontside.getState()
+                && (leftDrive.isBusy() && rightDrive.isBusy())
                 && deltaAngle < craterRimAngle) {
             // robot keeps driving until side or front touch sensor is pressed
             deltaAngle = Math.abs(getAngleDelta(AxesOrder.YZX));

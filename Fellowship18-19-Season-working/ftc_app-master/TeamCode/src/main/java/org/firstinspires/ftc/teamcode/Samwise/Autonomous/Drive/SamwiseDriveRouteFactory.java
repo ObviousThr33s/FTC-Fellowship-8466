@@ -442,7 +442,7 @@ public class SamwiseDriveRouteFactory
 
                 driveTrain.resetAngle(AxesOrder.ZYX);
 
-                driveTrain.turnDrive(samwiseDrive, -90, 5);
+                driveTrain.turnDrive(samwiseDrive, -80, 5);
 
                 //driveTrain.encoderDrive(samwiseDrive,73,73, 5);
                 driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchfront2, false, 6);
