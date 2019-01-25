@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class SamwiseHanger {
 
     static final double COUNTS_PER_MOTOR_REV = 482;
-    static final double DRIVE_GEAR_REDUCTION = 2.0;
+    static final double DRIVE_GEAR_REDUCTION = 2.0; //2.0
     static final double WHEEL_DIAMETER_INCHES = 4.0;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
     private ElapsedTime runtime = new ElapsedTime();
@@ -22,7 +22,7 @@ public class SamwiseHanger {
 
     public DcMotor hangermotor1;
     public Servo   hangerservo1;
-    public Servo   hangerservo2;
+    public Servo   markerservo1;
 
     public SamwiseHanger(){
 
@@ -31,7 +31,7 @@ public class SamwiseHanger {
     public void init(HardwareMap hw, Telemetry t) {
         hangermotor1 = hw.dcMotor.get("hangermotor1");
         hangerservo1 = hw.servo.get("hangerservo1");
-        //hangerservo2 = hw.servo.get("hangerservo2");
+        markerservo1 = hw.servo.get("marker");
 
         telemetry = t;
 
@@ -44,30 +44,16 @@ public class SamwiseHanger {
     }
 
     public void unHook() {
-        telemetry.addData("Mode", "hook 2");
         hangerservo1.setPosition(0.5);
     }
 
     public void Hook() {
-        telemetry.addData("Mode", "hook 2");
         hangerservo1.setPosition(0);
-        //hangerservo2.setPosition(0);
     }
 
     public void move(double power) {
         this.hangermotor1.setPower(power);
     }
-
-    /*public void movedown() {
-        telemetry.addData("Mode", "slide 1");
-        hangermotor1.setPower(1);
-    }
-
-    public void moveup() {
-        telemetry.addData("Mode", "slide 1");
-        hangermotor1.setPower(-1);
-    }*/
-
 
     public void encoderDrive(LinearOpMode linearopMode, double speed, double inches, double timeoutS) {
 

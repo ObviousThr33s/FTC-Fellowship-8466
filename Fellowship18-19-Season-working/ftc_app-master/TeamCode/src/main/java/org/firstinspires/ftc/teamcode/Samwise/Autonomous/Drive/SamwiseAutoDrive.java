@@ -9,7 +9,6 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.MarkerDeposit.SamwiseMarkerDeposit;
 import org.firstinspires.ftc.teamcode.Samwise.Autonomous.Vision.SamwiseVision;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseColor;
-import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrainIMU;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 
@@ -35,7 +34,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
     DigitalChannel touchFrontSide;  // side touch sensor
     DigitalChannel touchBackSide;  // side touch sensor
     DigitalChannel touchFront;  // front touch sensor
-    DigitalChannel touchBack;  // front touch sensor
+    DigitalChannel touchfront2;  // front touch sensor
 
 
     /**
@@ -63,13 +62,13 @@ public class SamwiseAutoDrive extends LinearOpMode {
         // set the digital channel to input.
         touchBackSide.setMode(DigitalChannel.Mode.INPUT);
 
-        touchFront = hardwareMap.get(DigitalChannel.class, "touch_front");
+        //touchFront = hardwareMap.get(DigitalChannel.class, "touch_front");
         // set the digital channel to input.
-        touchFront.setMode(DigitalChannel.Mode.INPUT);
+        //touchFront.setMode(DigitalChannel.Mode.INPUT);
 
-        touchBack = hardwareMap.get(DigitalChannel.class, "touch_back");
+        touchfront2 = hardwareMap.get(DigitalChannel.class, "touch_front2");
         // set the digital channel to input.
-        touchBack.setMode(DigitalChannel.Mode.INPUT);
+        touchfront2.setMode(DigitalChannel.Mode.INPUT);
 
         color.init(hardwareMap, telemetry);
 
@@ -90,17 +89,17 @@ public class SamwiseAutoDrive extends LinearOpMode {
             //Unhinging Robot
         //hanger.encoderDrive(this,1,0.9,1);
         hanger.hangermotor1.setPower(1);
-        sleep(5);
+        sleep(150);
 
         //landing the Robot
-        hanger.encoderDrive(this, 0.6, -24.5, 4);
+        hanger.encoderDrive(this, 0.6, -51, 4);
 
         //Unhooking
         hanger.unHook();
         sleep(1000); //wait until the hook fully opens
 
         //Lowering the Slide
-        hanger.encoderDrive(this, 0.6, 21, 4);
+        hanger.encoderDrive(this, 0.6, 48, 4);
 
         SamwiseVision.GoldPosition position = SamwiseVision.GoldPosition.UNKNOWN;
 

@@ -130,11 +130,11 @@ public class SamwiseAutoDriveTest extends LinearOpMode {
             if (ratio > 1) {
                 // turn left
                 System.out.println("==>Current Ratio: " + ratio + ". Turn Left 2 Degrees: ");
-                this.robot.turnDrive(this, 2, 2);
+                this.robot.turn(this, 2, 2);
             } else {
                 // turn right
                 System.out.println("==>Current Ratio: " + ratio + ". Turn Right 2 Degrees.");
-                this.robot.turnDrive(this, -2, 2);
+                this.robot.turn(this, -2, 2);
             }
         }
         while (ratio > 1.03 || ratio < .97);
