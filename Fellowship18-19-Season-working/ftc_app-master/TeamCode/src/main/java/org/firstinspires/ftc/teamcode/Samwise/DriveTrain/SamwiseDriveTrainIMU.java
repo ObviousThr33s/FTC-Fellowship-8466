@@ -21,7 +21,7 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
     static final int TURN_ERROR_ALLOWED = 3;
     double initAngle;
     private boolean firstTime = true;
-    double craterRimAngle = 1.4; // 2 degrees
+    double craterRimAngle = 1.6; // 2 degrees
 
     @Override
     public void init(HardwareMap hwm) {
@@ -243,12 +243,22 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
 
         // reset the timeout time and start motion.
         runtime.reset();
-        drive(.5);
+        int newLeftTarget = leftDrive.getCurrentPosition() + (int) (200 * COUNTS_PER_INCH);
+        int newRightTarget = rightDrive.getCurrentPosition() + (int) (200 * COUNTS_PER_INCH);
+        leftDrive.setTargetPosition(newLeftTarget);
+        rightDrive.setTargetPosition(newRightTarget);
+
+        // Turn On RUN_TO_POSITION
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        drive(DRIVE_SPEED);
         System.out.println("==> IMU driveToCrater along the wall with frontside sensor ... ");
 
         double deltaAngle = Math.abs(getAngleDelta(AxesOrder.YZX));
 
         while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && frontside.getState()
+                && (leftDrive.isBusy() && rightDrive.isBusy())
                 && deltaAngle < craterRimAngle) {
             // robot keeps driving until side or front touch sensor is pressed
             deltaAngle = Math.abs(getAngleDelta(AxesOrder.YZX));
@@ -267,9 +277,9 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
             // side sensor is pressed. turning robot ....
             System.out.println("==> frontside sensor is pressed. turning robot ....");
             if (rightTurn)
-                turnDrive(opMode, -6.9, 2);
+                turnDrive(opMode, -6.1, 2);
             else
-                turnDrive(opMode, 6.9, 2);
+                turnDrive(opMode, 6.1, 2);
 
             driveToCrater(opMode, frontside, rightTurn, timeout); // recursive call till front touch sensor is hit
         }

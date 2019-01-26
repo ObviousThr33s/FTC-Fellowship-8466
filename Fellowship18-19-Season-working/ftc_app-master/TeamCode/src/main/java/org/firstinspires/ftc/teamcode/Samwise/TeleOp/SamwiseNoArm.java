@@ -79,23 +79,26 @@ public class SamwiseNoArm extends OpMode {
 
         //Hanger system
         //if the a button is pressed then is moves the hanger arm
-        swHang.move(gamepad1.right_stick_y * powerlevel);
+        swHang.move(gamepad1.right_stick_y);
 
         if (gamepad1.left_bumper) {
             System.out.println("==> Hanger unhooking ...");
             //telemetry.addData("Mode", "Unhooking");
             swHang.unHook();
-            //telemetry.addLine("Unhooked");
-            //telemetry.update();
             return;
         }
         else if (gamepad1.right_bumper) {
             System.out.println("==> Hanger hooking ...");
             //telemetry.addData("Mode", "hooking");
             swHang.Hook();
-            //telemetry.addLine("hooked");
-            //telemetry.update();
             return;
+        }
+
+        if(gamepad1.dpad_down) {
+            swHang.markerservo1.setPosition(.76);
+        }
+        if(gamepad1.y) {
+            swHang.markerservo1.setPosition(.76);
         }
 
         //Drive Train
@@ -104,14 +107,14 @@ public class SamwiseNoArm extends OpMode {
 
             leftdrive.setPower(MotorPower * powerlevel);
             rightdrive.setPower(MotorPower * powerlevel);
-            System.out.println("==> moving ...");
+            //System.out.println("==> moving ...");
         }
         else if(Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
             float TurnMotorPower = gamepad1.left_stick_x;
 
             leftdrive.setPower(TurnMotorPower * powerlevel);
             rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
-            System.out.println("==> turning ...");
+            //System.out.println("==> turning ...");
         }
     }
 

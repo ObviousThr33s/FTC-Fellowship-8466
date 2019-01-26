@@ -129,7 +129,7 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive, 2.5, 5);
+                driveTrain.encoderDriveSpeed(samwiseDrive, 2.5, 4, .5);
 
                 driveTrain.turnDrive(samwiseDrive, 36, 2);
                 //telemetry.addData(route, "finish first turn");
@@ -235,7 +235,7 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive, 2.5, 5);
+                driveTrain.encoderDriveSpeed(samwiseDrive, 2.5, 4, .5);
                 //telemetry.addData(route, "finish ")
 
                 driveTrain.turnDrive( samwiseDrive,-35, 2);
@@ -246,22 +246,26 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -8, 3);
+                //driveTrain.encoderDrive(samwiseDrive, -8, 3);
                 //telemetry.addData(route, "finish third driveToCrater");
                 //telemetry.update();
 
-                driveTrain.turnDrive(samwiseDrive, -52, 5.5);
+                driveTrain.turnDrive(samwiseDrive, 32, 5.5);
                 //telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -55,6);
+                //driveTrain.encoderDrive(samwiseDrive, -55,6);
                 //driveTrain.driveToWall(samwiseDrive, samwiseDrive.touchBack, false,9);
 
-                driveTrain.turnDrive(samwiseDrive, 34, 3);
+                //driveTrain.turnDrive(samwiseDrive, 34, 3);
                 //telemetry.addData(route, "finish sixth turn");
                 //telemetry.update();
 
-                driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, false, samwiseDrive.color, 6);
+                driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchFrontSide, true, samwiseDrive.color, 6);
+
+                driveTrain.encoderDrive(samwiseDrive, 75,6);
+
+                driveTrain.encoderDrive(samwiseDrive, 7, 4);
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
@@ -355,13 +359,21 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive, 30,5);
+                driveTrain.encoderDrive(samwiseDrive, 36,5);
 
-                driveTrain.driveToDepotFromCenter(samwiseDrive, .6, samwiseDrive.color, 4);
+                //driveTrain.turnDrive(samwiseDrive,6,2);
 
-                driveTrain.turnDrive(samwiseDrive,118,6);
+                driveTrain.driveToDepotFromCenter(samwiseDrive, .8, samwiseDrive.color, 4);
+
+                //driveTrain.encoderDrive(samwiseDrive,1,1); //get more into depot
+
+                driveTrain.turnDrive(samwiseDrive,123,6);
+
+                driveTrain.encoderDrive(samwiseDrive, 8,2);
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
+
+                //driveTrain.turnDrive(samwiseDrive,-9.5,1);
 
                 driveTrain.resetAngle(AxesOrder.ZYX);
 
@@ -417,26 +429,26 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive,2.5, 5);
+                driveTrain.encoderDrive(samwiseDrive,3, 3);
 
-                driveTrain.turnDrive(samwiseDrive, 33, 3);
+                driveTrain.turnDrive(samwiseDrive, 39, 3);
 
-                driveTrain.encoderDrive(samwiseDrive,29, 29, 4);
+                driveTrain.encoderDrive(samwiseDrive,33, 4);
 
-                driveTrain.turnDrive(samwiseDrive,-67,4);
+                driveTrain.turnDrive(samwiseDrive,-69,4);
 
                 //driveTrain.encoderDrive(samwiseDrive, 38,38,4);
                 driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchFrontSide, true, samwiseDrive.color, 6);
 
-                driveTrain.encoderDrive(samwiseDrive,-2.5, 3);
+                //driveTrain.encoderDrive(samwiseDrive,-2.5, 3);
 
-                driveTrain.turnDrive(samwiseDrive, -92, 5);
+                driveTrain.turnDrive(samwiseDrive, -106, 5);
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
                 driveTrain.resetAngle(AxesOrder.ZYX);
 
-                driveTrain.turnDrive(samwiseDrive, -108, 5);
+                driveTrain.turnDrive(samwiseDrive, -78, 5);
 
                 //driveTrain.encoderDrive(samwiseDrive,73,73, 5);
                 driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchfront2, false, 6);
@@ -473,7 +485,7 @@ public class SamwiseDriveRouteFactory
 
                 driveTrain.encoderDrive(samwiseDrive,-2.5, 5);
 
-                driveTrain.turnDrive(samwiseDrive, -92, 5);
+                driveTrain.turnDrive(samwiseDrive, -93, 5);
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
@@ -501,23 +513,25 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive, 2.5, 4);
+                driveTrain.encoderDriveSpeed(samwiseDrive, 3, 4, .5);
 
-                driveTrain.turnDrive(samwiseDrive, -35, 3);
+                driveTrain.turnDrive(samwiseDrive, -26.3, 3);
 
-                driveTrain.encoderDrive(samwiseDrive,42.5, 4);
-                driveTrain.encoderDrive(samwiseDrive,-2, 4);
+                driveTrain.encoderDrive(samwiseDrive,44, 4);
+                driveTrain.encoderDrive(samwiseDrive,-3, 4);
+                //driveTrain.encoderDrive(samwiseDrive,-2, 4);
 
-                driveTrain.turnDrive(samwiseDrive, 83, 5);
+                driveTrain.turnDrive(samwiseDrive, 70, 5);
                 //driveTrain.turnDrive(samwiseDrive, -101, 5);
                 //driveTrain.turn(samwiseDrive, samwiseDrive.touchBackSide, true, 5);
+                //driveTrain.encoderDrive(samwiseDrive, 16,2 );
 
-                driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, true, samwiseDrive.color, 3);
+                driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, true, samwiseDrive.color, 4.5);
 
                 //driveTrain.encoderDrive(samwiseDrive, -16, 4);
 
                 //driveTrain.turnDrive(samwiseDrive, 15, 3);
-                driveTrain.turnDrive(samwiseDrive, 72, 3);
+                driveTrain.turnDrive(samwiseDrive, 83, 3);
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
