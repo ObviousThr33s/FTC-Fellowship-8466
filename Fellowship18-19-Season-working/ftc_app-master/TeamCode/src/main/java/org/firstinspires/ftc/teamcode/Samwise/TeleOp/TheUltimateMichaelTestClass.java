@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp (name = "Test1")
+@TeleOp (name = "Test1", group="tests")
 public class TheUltimateMichaelTestClass extends OpMode {
     public DcMotor MotorNo1 = null;
     public DcMotor MotorNo2 = null;

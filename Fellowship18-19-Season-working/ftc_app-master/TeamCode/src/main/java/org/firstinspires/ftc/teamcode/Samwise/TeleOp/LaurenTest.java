@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 
-@TeleOp
+@TeleOp(name="LaurenTest", group="tests")
 public class LaurenTest extends OpMode
 {
     private SamwiseArm armStuff = null;

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp (name = "FinalMichaelArmTest")
+@TeleOp (name = "FinalMichaelArmTest", group="tests")
 public class MichaelMotorEncoderTest2 extends OpMode {
 
     private DcMotor testMotorEncoder1 = null;

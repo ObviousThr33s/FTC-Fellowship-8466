@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp (name = "ArmJoint1Test")
+@TeleOp (name = "ArmJoint1Test", group="tests")
 public class ArmJoint1Test extends OpMode {
     private DcMotor Joint1Motor = null;
     private int SmallGearCount = 24;

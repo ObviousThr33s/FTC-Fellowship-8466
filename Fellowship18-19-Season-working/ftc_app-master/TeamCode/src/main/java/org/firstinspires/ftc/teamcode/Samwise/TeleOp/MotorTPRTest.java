@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@Autonomous(name="test arm motor CPR", group="Exercises")
+@Autonomous(name="test arm motor CPR", group="tests")
 public class MotorTPRTest extends LinearOpMode
 {
     private DcMotor testMotorEncoder1 = null;

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseColor;
 
-@TeleOp(name="ColorSenseAlignmentTest", group="test")
+@TeleOp(name="ColorSenseAlignmentTest", group="tests")
 public class ColorSenseAlignmentTest extends OpMode {
 
     SamwiseColor ftl;
