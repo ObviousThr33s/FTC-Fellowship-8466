@@ -44,14 +44,17 @@ public class SamwiseHanger {
     }
 
     public void unHook() {
+
         hangerservo1.setPosition(0.5);
     }
 
     public void Hook() {
+
         hangerservo1.setPosition(0);
     }
 
     public void move(double power) {
+
         this.hangermotor1.setPower(power);
     }
 

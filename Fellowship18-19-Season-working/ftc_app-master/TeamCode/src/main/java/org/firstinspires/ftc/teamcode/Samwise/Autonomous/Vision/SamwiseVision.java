@@ -20,7 +20,7 @@ public class SamwiseVision extends Vision {
      * on screen distance btwn samples and camera. Must be calibrated!!!
      */
     private final float sampleDistanceNear = 0;
-    private final float sampleDistanceFar = 120;
+    private final float sampleDistanceFar = 160;
 
     private final double ratio = .25;
     private final double confidence = 0.65;

@@ -107,14 +107,14 @@ public class SamwiseNoArm extends OpMode {
 
             leftdrive.setPower(MotorPower * powerlevel);
             rightdrive.setPower(MotorPower * powerlevel);
-            System.out.println("==> moving ...");
+            //System.out.println("==> moving ...");
         }
         else if(Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
             float TurnMotorPower = gamepad1.left_stick_x;
 
             leftdrive.setPower(TurnMotorPower * powerlevel);
             rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
-            System.out.println("==> turning ...");
+            //System.out.println("==> turning ...");
         }
     }
 

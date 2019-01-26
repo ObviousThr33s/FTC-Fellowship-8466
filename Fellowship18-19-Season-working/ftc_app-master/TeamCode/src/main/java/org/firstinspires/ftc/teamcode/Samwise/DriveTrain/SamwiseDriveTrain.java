@@ -14,10 +14,10 @@ public class SamwiseDriveTrain extends DriveTrain {
     public DcMotor rightDrive = null;
     static final double COUNTS_PER_MOTOR_REV = 482;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
-    static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    static final double WHEEL_DIAMETER_INCHES = 2.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double DRIVE_SPEED = .7;
-    static final double TURN_SPEED = .7;
+    static final double DRIVE_SPEED = 1;
+    static final double TURN_SPEED = 1;
     static final double INCHES_PER_DEGREE = 0.1640556;
     protected ElapsedTime runtime = new ElapsedTime();
 
@@ -104,6 +104,11 @@ public class SamwiseDriveTrain extends DriveTrain {
         encoderDrive(opMode, DRIVE_SPEED, inches, inches, timeoutS);
     }
 
+    public void encoderDriveSpeed(LinearOpMode opMode, double inches, double timeoutS, double speed) {
+        System.out.println("==> driving robot " + inches + " inches...");
+        encoderDrive(opMode, speed, inches, inches, timeoutS);
+    }
+
 
     public void encoderDrive(LinearOpMode opMode, double leftInches, double rightInches, double timeoutS) {
         //System.out.println("==> driving robot " + leftInches + " inches...");
@@ -183,9 +188,9 @@ public class SamwiseDriveTrain extends DriveTrain {
         // reset the timeout time and start motion.
         runtime.reset();
         if (forward) {
-            drive(.6);
+            drive(DRIVE_SPEED);
         } else {
-            drive(-.6);
+            drive(-DRIVE_SPEED);
         }
         System.out.println("==> drive to depot till seeing the blue or red line ... ");
 
