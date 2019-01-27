@@ -14,7 +14,7 @@ public class LaurenTest extends OpMode
     public void init()
     {
         armStuff = new SamwiseArm(hardwareMap);
-        armStuff.extendArm();
+        //        armStuff.extendArm();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class LaurenTest extends OpMode
         }
 
         // to deposit position
-        if (gamepad1.x)
+        /* if (gamepad1.x)
         {
             armStuff.silverDropPoint();
         }
@@ -100,20 +100,20 @@ public class LaurenTest extends OpMode
         if (gamepad1.y)
         {
             armStuff.goldDropPoint();
-        }
+        }*/
 
         // to collection position
-        if (gamepad1.b)
-        {
-            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
-            {
-                armStuff.toCollectionPlane();
-            }
-            else
-            {
-                armStuff.toPreviousCollectionPosition();
-            }
-        }
+//        if (gamepad1.b)
+//        {
+//            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+//            {
+//                armStuff.toCollectionPlane();
+//            }
+//            else
+//            {
+//                armStuff.toPreviousCollectionPosition();
+//            }
+//        }
 
 
         // collection and deposit
@@ -135,16 +135,34 @@ public class LaurenTest extends OpMode
         }
 
 
-        if (gamepad2.a)
+        if (gamepad1.a)
         {
-            armStuff.moveJ4Up();
+//            armStuff.moveJ4Up();
+            armStuff.savePreviousPosition();
+            armStuff.toPreviousCollectionPosition();
         }
 
-        if (gamepad2.b)
+        if (gamepad1.b)
         {
             armStuff.moveJ4Down();
         }
-
+        if (gamepad1.right_stick_y > 0.02)
+        {
+            this.armStuff.extendL1();
+        }
+        else
+        {
+            this.armStuff.stopExtendL1();
+        }
+        if (gamepad1.left_stick_y > 0.02)
+        {
+            this.armStuff.extendL2();
+        }
+        else
+        {
+            this.armStuff.stopExtendL2();
+        }
+        this.armStuff.Joint1Movement(gamepad1.right_stick_x);
 
     }
 

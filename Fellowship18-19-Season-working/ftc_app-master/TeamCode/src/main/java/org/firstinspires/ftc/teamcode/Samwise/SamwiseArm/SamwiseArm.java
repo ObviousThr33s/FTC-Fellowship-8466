@@ -5,15 +5,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.sun.tools.javac.util.ForwardingDiagnosticFormatter;
 
 public class SamwiseArm
 {
     //Control retraction and extension of the arm
     //AndyMark Neverest Classic 40: 1120 cpr (https://www.andymark.com/products/neverest-classic-40-gearmotor)
     //AndyMark Neverest Classic 20: 560 cpr (https://www.servocity.com/neverest-20-gear-motor)
-    DcMotor motorJ1 = null; //controls rotation of the arm
-    DcMotor motorJ2 = null; //controls up and down movement of the arm(L1)
-    DcMotor motorJ3 = null; //controls up and down movement of the arm(L2)
+    public DcMotor motorJ1 = null; //controls rotation of the arm
+    public DcMotor motorJ2 = null; //controls up and down movement of the arm(L1)
+    public DcMotor motorJ3 = null; //controls up and down movement of the arm(L2)
     private CRServo servoJ4 = null; //controls the collector's angle
 
     //Control collecting or depositing of minerals
@@ -43,8 +44,8 @@ public class SamwiseArm
     static final double TICKS_PER_DEGREE_J3 = (TICKS_PER_REVOLUTION_J3 / 360.0) * 2;
 
     static final double MANUAL_POWER_J1 = 0.1;
-    static final double MANUAL_POWER_J2 = 0.5;
-    static final double MANUAL_POWER_J3 = 1;
+    static final double MANUAL_POWER_J2 = 0.3;
+    static final double MANUAL_POWER_J3 = 0.3;
     static final double AUTO_POWER_J1 = 0.4;
     static final double AUTO_POWER_J2 = 0.2;
     static final double AUTO_POWER_J3 = 0.2;
@@ -78,6 +79,16 @@ public class SamwiseArm
     static final int SAMPLING_J2_DEPOT = 100;
     static final int SAMPLING_J3_DEPOT = 300;
 
+    //J1 numbers
+/*    static final double BigGearCount = 120.0;
+    static final double SmallGearCount = 24.0;
+    static final double EncoderCountJ1 = 1680.0;
+    static final double MaxOrMinDegrees = 45.0;
+    private double J1GearRatio = BigGearCount/SmallGearCount;
+    private double TickPerDegreeJ1 = EncoderCountJ1/360.0;
+    private double BigToSmallRatio = MaxOrMinDegrees * J1GearRatio;
+    private double SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
+    */
 
     public double initialCollectionPosJ2 = 0;
     public double initialCollectionPosJ3 = 0;
@@ -126,6 +137,7 @@ public class SamwiseArm
         System.out.println("initial collection J3: " + this.initialCollectionPosJ3);
         System.out.println("initial collection degrees J2 " + j2_degrees);
         System.out.println("initial collection degrees J3 " + j3_degrees);
+        motorJ1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     /************************************************************************************************
@@ -286,33 +298,34 @@ public class SamwiseArm
      *                                Arm Extension/Retraction                                      *
      ************************************************************************************************/
 
-    public void testE2Up()
-    {
-        runTime.reset();
-        motorE1.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorE1.setPower(0.8);
-        servoE2.setPower(0.8);
-        while (runTime.milliseconds() < TIMEOUT)
-        {
-        }
-        stopExtendServos();
-    }
-
-    //
-    public void testE2Down()
-    {
-        servoE2.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoE2.setPower(0.8);
-    }
-
     public void extendArm()
     {
+        runTime.reset();
+        while (runTime.milliseconds() < TIMEOUT)
+        {
+            motorE1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motorE1.setDirection(DcMotorSimple.Direction.FORWARD);
+            servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
+            motorE1.setPower(0.2);
+            servoE2.setPower(0.8);
+        }
+        stopExtendServos();
+
+    }
+    public void extendL1() {
         motorE1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorE1.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorE1.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorE1.setPower(0.15);
+    }
+    public void extendL2() {
         servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorE1.setPower(0.2);
-        servoE2.setPower(0.8);
+        servoE2.setPower(0.7);
+    }
+    public void stopExtendL1() {
+        motorE1.setPower(0);
+    }
+    public void stopExtendL2() {
+        servoE2.setPower(0);
     }
 
     public void retractArm()
@@ -332,18 +345,9 @@ public class SamwiseArm
     public void stopExtendServos()
     {
         motorE1.setPower(0);
-        //        servoE2.setPower(0);
+        servoE2.setPower(0);
     }
 
-    public void testServos()
-    {
-        servoJ4.setPower(0.4);
-    }
-
-    public void stopTestServos()
-    {
-        servoJ4.setPower(0);
-    }
     /***********************************************************************************************
      *                                Stay on Plane of Motion                                      *
      ***********************************************************************************************/
@@ -372,7 +376,10 @@ public class SamwiseArm
     {
         return isManual;
     }
-
+    public void Joint1Movement(float J1Position) {
+        motorJ1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorJ1.setPower(J1Position);
+    }
     public void driveJ2(boolean isUp)
     {
         motorJ2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -446,9 +453,9 @@ public class SamwiseArm
     public void depositMinerals()
     {
         servoC1.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoC1.setPower(0.7);
+        servoC1.setPower(0.8);
         servoC2.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoC2.setPower(0.7);
+        servoC2.setPower(0.8);
     }
 
     /**
@@ -460,13 +467,13 @@ public class SamwiseArm
      */
     public void collectMinerals()
     {
-        setCollecting(true);
-        savePreviousPosition();
-        lowerJ4(J4_COLLECTION_HEIGHT);
+//        setCollecting(true);
+//        savePreviousPosition();
+//        lowerJ4(J4_COLLECTION_HEIGHT);
         servoC1.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoC1.setPower(0.7);
+        servoC1.setPower(0.8);
         servoC2.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoC2.setPower(0.7);
+        servoC2.setPower(0.8);
     }
 
     /**
