@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
 //Version by Kyle
 public class SamwiseMarkerDeposit {
 
-    public static double dropPosition = .13;
+    public static double dropPosition = 0;
     public static double initPosition = .76;
 
     public Servo servo9 = null;  /*Probably rename servo to a useful number when
