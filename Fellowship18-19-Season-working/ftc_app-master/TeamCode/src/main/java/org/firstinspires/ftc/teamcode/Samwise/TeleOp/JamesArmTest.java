@@ -19,9 +19,9 @@ public class JamesArmTest extends OpMode{
     @Override
     public void init() {
         sa = new SamwiseArm(hardwareMap);
-        DcMotor j1 = sa.motorJ1;
-        DcMotor j2 = sa.motorJ2;
-        DcMotor j3 = sa.motorJ3;
+        //DcMotor j1 = sa.motorJ1;
+        //DcMotor j2 = sa.motorJ2;
+        //DcMotor j3 = sa.motorJ3;
         sa.hoverPlaneOfMotion(1.0);
     }
 

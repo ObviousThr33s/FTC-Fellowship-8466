@@ -91,6 +91,14 @@ public class MotorTest extends OpMode {
                 currentMotor = 0;
             }
         }
+        if(gamepad1.b){
+            if(currentMotor>=(0)){
+                currentMotor--;
+            }else if(currentMotor == 0){
+                motors[currentMotor].setPower(0);
+                currentMotor = motors.length;
+            }
+        }
 
         if(gamepad1.right_bumper){
             motors[currentMotor].setPower(.5);
