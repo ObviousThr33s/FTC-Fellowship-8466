@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 
+@TeleOp(name = "ArmVelocityTest", group="tests")
 public class ArmVelocityTest extends OpMode {
 
     SamwiseArm arm;

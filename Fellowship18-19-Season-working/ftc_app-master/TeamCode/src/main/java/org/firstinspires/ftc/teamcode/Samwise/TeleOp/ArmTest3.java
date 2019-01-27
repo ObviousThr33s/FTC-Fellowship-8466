@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp (name = "Michaels ArM testtttt")
+@TeleOp (name = "Michaels ArM testtttt", group="tests")
 public class ArmTest3 extends OpMode{
 
     private DcMotor ArmMotor1 = null;
