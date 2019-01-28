@@ -23,11 +23,11 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route " + route);
 
-                driveTrain.encoderDrive(samwiseDrive, 22, 5);
+                driveTrain.encoderDrive(samwiseDrive, 25, 5);
                 //telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -8, 4);
+                driveTrain.encoderDrive(samwiseDrive, -11, 4);
                 //telemetry.addData(route, "finish third driveToCrater");
                 //telemetry.update();
 
