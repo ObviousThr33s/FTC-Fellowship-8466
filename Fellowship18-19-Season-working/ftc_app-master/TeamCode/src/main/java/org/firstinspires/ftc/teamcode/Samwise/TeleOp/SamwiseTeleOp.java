@@ -33,9 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.DriveTrainTeleop;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
-import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHangerTeleOp;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 
 /****************************************************************************************************
@@ -53,24 +51,26 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
  ****************************************************************************************************/
 @TeleOp(name = "Samwise: Teleop Tank", group = "Samwise")
 //@Disabled
-public class SamwiseTeleOp extends OpMode {
+public class SamwiseTeleOp extends OpMode
+{
 
     /* Declare OpMode members. */
     public SamwiseHanger swHang = new SamwiseHanger();
 
     //public DriveTrainTeleop swDTrain = new DriveTrainTeleop();
-    public SamwiseArm swArm;
+    public SamwiseArm armStuff = null;
 
     public DcMotor leftdrive = null;
     public DcMotor rightdrive = null;
     private double powerlevel = 1.0;
 
     @Override
-    public void init() {
+    public void init()
+    {
         swHang.init(hardwareMap, telemetry);
 
         //swDTrain.init(hardwareMap, telemetry);
-        swArm = new SamwiseArm(this.hardwareMap);
+        armStuff = new SamwiseArm(this.hardwareMap);
 
         leftdrive = hardwareMap.dcMotor.get("left_drive");
         rightdrive = hardwareMap.dcMotor.get("right_drive");
@@ -84,18 +84,21 @@ public class SamwiseTeleOp extends OpMode {
 
 
     @Override
-    public void init_loop() {
+    public void init_loop()
+    {
     }
 
     @Override
-    public void start() {
+    public void start()
+    {
     }
 
     /**
      * This is where our main teleop gamepad input and functions mapping go.
      */
     @Override
-    public void loop() {
+    public void loop()
+    {
         /************************************** Gamepad #1 Mappings *************************************
          *                               Samwise Drive Train and Hanging                                *
          *                       (Please add related function mappings below)                           *
@@ -106,48 +109,57 @@ public class SamwiseTeleOp extends OpMode {
 
         swHang.move(gamepad1.right_stick_y);
 
-        if (gamepad1.left_bumper) {
+        if (gamepad1.left_bumper)
+        {
             System.out.println("==> Hanger unhooking ...");
             //telemetry.addData("Mode", "Unhooking");
             swHang.unHook();
             return;
         }
-        else if (gamepad1.right_bumper) {
+        else if (gamepad1.right_bumper)
+        {
             System.out.println("==> Hanger hooking ...");
             //telemetry.addData("Mode", "hooking");
             swHang.Hook();
             return;
         }
 
-        if(gamepad1.dpad_down) {
+        if (gamepad1.dpad_down)
+        {
             swHang.markerservo1.setPosition(.76);
         }
-        if(gamepad1.y) {
+        if (gamepad1.y)
+        {
             swHang.markerservo1.setPosition(.76);
         }
 
         //Drive Train
-        if(gamepad1.b) {
+        if (gamepad1.b)
+        {
             powerlevel = 0.5;
             System.out.println("50% power");
         }
-        else if(gamepad1.a) {
+        else if (gamepad1.a)
+        {
             powerlevel = .7;
             System.out.println("70% power");
         }
-        else if(gamepad1.x) {
+        else if (gamepad1.x)
+        {
             powerlevel = 1;
             System.out.println("max power");
         }
 
-        if(Math.abs(gamepad1.left_stick_x) <= Math.abs(gamepad1.left_stick_y)) {
+        if (Math.abs(gamepad1.left_stick_x) <= Math.abs(gamepad1.left_stick_y))
+        {
             float MotorPower = gamepad1.left_stick_y;
 
             leftdrive.setPower(MotorPower * powerlevel);
             rightdrive.setPower(MotorPower * powerlevel);
             //System.out.println("==> moving ...");
         }
-        if(Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
+        if (Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y))
+        {
             float TurnMotorPower = gamepad1.left_stick_x;
 
             leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
@@ -160,92 +172,68 @@ public class SamwiseTeleOp extends OpMode {
          *                               Arm(J1, J2, J3) Position Transitions                           *
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
-        // Manual driveToCrater
-        if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left)
-        {
-            swArm.setManual(true);
-        }
-        //move J2 up
-        if (gamepad1.dpad_right)
-        {
-            swArm.driveJ2(true);
-        }
-        else
-        {
-            if (swArm.getIsManual() && !gamepad1.dpad_left)
-            {
-                swArm.stopJ2();
-            }
-        }
-
-        //move J2 down
-        if (gamepad1.dpad_left)
-        {
-            swArm.driveJ2(false);
-        }
-        else
-        {
-            if (swArm.getIsManual() && !gamepad1.dpad_right)
-            {
-                swArm.stopJ2();
-            }
-        }
-
-        //move J3 up
-        if (gamepad1.dpad_up)
-        {
-            swArm.driveJ3(true);
-        }
-        else
-        {
-            if (swArm.getIsManual() && !gamepad1.dpad_down)
-            {
-                swArm.stopJ3();
-            }
-        }
-
-        //move J3 down
-        if (gamepad1.dpad_down)
-        {
-            swArm.driveJ3(false);
-        }
-        else
-        {
-            if (swArm.getIsManual() && !gamepad1.dpad_up)
-            {
-                swArm.stopJ3();
-            }
-        }
 
         // to deposit position
-        if (gamepad1.x)
+        /* if (gamepad1.x)
         {
-            swArm.silverDropPoint();
+            armStuff.silverDropPoint();
         }
 
         if (gamepad1.y)
         {
-            swArm.goldDropPoint();
-        }
+            armStuff.goldDropPoint();
+        }*/
 
         // to collection position
-        if (gamepad1.b)
-        {
-            if (/*Math.abs(armStuff.getJ1CurrentPosition()) < 10  && */Math.abs(swArm.getJ2CurrentPosition()) < 10 && Math.abs(swArm.getJ3CurrentPosition()) < 10)
-            {
-                swArm.toCollectionPlane();
-            }
-            else
-            {
-                swArm.toPreviousCollectionPosition();
-            }
-        }
+        //        if (gamepad1.b)
+        //        {
+        //            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+        //            {
+        //                armStuff.toCollectionPlane();
+        //            }
+        //            else
+        //            {
+        //                armStuff.toPreviousCollectionPosition();
+        //            }
+        //        }
 
-        // to initial position
+
         if (gamepad1.a)
         {
-            swArm.toInitialPosition();
+            //            armStuff.moveJ4Up();
+            armStuff.savePreviousPosition();
+            armStuff.toPreviousCollectionPosition();
         }
+
+        if (gamepad1.b)
+        {
+            armStuff.moveJ4Down();
+        }
+        if (gamepad1.right_stick_y > 0.02)
+        {
+            this.armStuff.extendL1();
+        }
+        else
+        {
+            this.armStuff.stopExtendL1();
+        }
+        if (gamepad1.left_stick_y > 0.02)
+        {
+            this.armStuff.extendL2();
+        }
+        else
+        {
+            this.armStuff.stopExtendL2();
+        }
+        if (gamepad1.right_stick_x > 0.05)
+        {
+            this.armStuff.Joint1Movement(0.3);
+        }
+        else
+        {
+            this.armStuff.Joint1Movement(0);
+        }
+
 
         /************************************** Gamepad #2 Mappings *************************************
          *                               Arm (J2, J3) Plane of Motion                                   *
@@ -258,24 +246,87 @@ public class SamwiseTeleOp extends OpMode {
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
 
-        //collection and deposit
+        // Manual driveToCrater
+        if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left)
+        {
+            armStuff.setManual(true);
+        }
+        //move J2 up
+        if (gamepad1.dpad_right)
+        {
+            double J3Position = armStuff.getJ3CurrentPosition();
+            armStuff.toJ3Position(J3Position);
+            armStuff.driveJ2(true);
+        }
+        else
+        {
+            if (armStuff.getIsManual() && !gamepad1.dpad_left)
+            {
+                armStuff.stopJ2();
+            }
+        }
+
+        //move J2 down
+        if (gamepad1.dpad_left)
+        {
+            double J3Position = armStuff.getJ3CurrentPosition();
+            armStuff.toJ3Position(J3Position);
+            armStuff.driveJ2(false);
+        }
+        else
+        {
+            if (armStuff.getIsManual() && !gamepad1.dpad_right)
+            {
+                armStuff.stopJ2();
+            }
+        }
+
+        //move J3 up
+        if (gamepad1.dpad_up)
+        {
+            double J2Position = armStuff.getJ2CurrentPosition();
+            armStuff.toJ2Position(J2Position);
+            armStuff.driveJ3(true);
+        }
+        else
+        {
+            if (armStuff.getIsManual() && !gamepad1.dpad_down)
+            {
+                armStuff.stopJ3();
+            }
+        }
+
+        //move J3 down
+        if (gamepad1.dpad_down)
+        {
+            double J2Position = armStuff.getJ2CurrentPosition();
+            armStuff.toJ2Position(J2Position);
+            armStuff.driveJ3(false);
+        }
+        else
+        {
+            if (armStuff.getIsManual() && !gamepad1.dpad_up)
+            {
+                armStuff.stopJ3();
+            }
+        }
+
+        // collection and deposit
         if (gamepad1.left_trigger > 0)
         {
-            swArm.collectMinerals();
+            armStuff.collectMinerals();
         }
 
         if (gamepad1.right_trigger > 0)
         {
-            swArm.depositMinerals();
+            armStuff.depositMinerals();
         }
 
-        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0)
+
+        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0 && armStuff.getIsCollecting())
         {
-            swArm.stopServo();
+            armStuff.stopServo();
+            armStuff.setCollecting(false);
         }
-    }
-
-    @Override
-    public void stop() {
     }
 }

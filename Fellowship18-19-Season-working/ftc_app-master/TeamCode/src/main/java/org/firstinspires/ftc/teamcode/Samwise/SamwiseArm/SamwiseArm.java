@@ -31,6 +31,8 @@ public class SamwiseArm
 
     boolean isCollecting = false;
 
+    boolean isHoldRequest = false;
+
     static final double HEIGHT_PLANE_OF_MOTION = 6; //height of plane of motion
     static final double ARM_L1 = 24.5; //length between motorJoint1 and motorJoint2
     static final double ARM_L2 = 28.5; //length between motorJoint2 and servoJ4
@@ -43,12 +45,15 @@ public class SamwiseArm
     static final double TICKS_PER_DEGREE_J2 = (TICKS_PER_REVOLUTION_J2 / 360.0) * 4;
     static final double TICKS_PER_DEGREE_J3 = (TICKS_PER_REVOLUTION_J3 / 360.0) * 2;
 
-    static final double MANUAL_POWER_J1 = 0.1;
-    static final double MANUAL_POWER_J2 = 0.3;
-    static final double MANUAL_POWER_J3 = 0.3;
-    static final double AUTO_POWER_J1 = 0.4;
-    static final double AUTO_POWER_J2 = 0.2;
-    static final double AUTO_POWER_J3 = 0.2;
+    static final double MANUAL_POWER_J1 = 0.15;
+    static final double MANUAL_POWER_J2 = 0.15;
+    static final double MANUAL_POWER_J3 = 0.15;
+    static final double AUTO_POWER_J1 = 0.15;
+    static final double AUTO_POWER_J2 = 0.15;
+    static final double AUTO_POWER_J3 = 0.15;
+    static final double HOLD_POWER_J1 = 0.5;
+    static final double HOLD_POWER_J2 = 0.5;
+    static final double HOLD_POWER_J3 = 0.5;
     static final int TIMEOUT = 100;
 
     //TODO: Change all these numbers after testing
@@ -144,7 +149,15 @@ public class SamwiseArm
      *                                Transition to Positions                                       *
      ************************************************************************************************/
 
+    public void setHoldRequest(boolean holdRequest)
+    {
+        isHoldRequest = holdRequest;
+    }
 
+    public boolean getIsHoldRequest()
+    {
+        return isHoldRequest;
+    }
     /**
      * Transition from any other positions to initial position
      */
@@ -178,11 +191,12 @@ public class SamwiseArm
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ1.setPower(AUTO_POWER_J1);
-        motorJ2.setPower(AUTO_POWER_J2);
-        motorJ3.setPower(AUTO_POWER_J3);
+        motorJ1.setPower(HOLD_POWER_J1);
+        motorJ2.setPower(HOLD_POWER_J2);
+        motorJ3.setPower(HOLD_POWER_J3);
         while (motorJ1.isBusy() || motorJ2.isBusy() || motorJ3.isBusy())
         {
+            Thread.yield();
         }
     }
 
@@ -312,19 +326,27 @@ public class SamwiseArm
         stopExtendServos();
 
     }
-    public void extendL1() {
+
+    public void extendL1()
+    {
         motorE1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorE1.setDirection(DcMotorSimple.Direction.REVERSE);
         motorE1.setPower(0.15);
     }
-    public void extendL2() {
+
+    public void extendL2()
+    {
         servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
         servoE2.setPower(0.7);
     }
-    public void stopExtendL1() {
+
+    public void stopExtendL1()
+    {
         motorE1.setPower(0);
     }
-    public void stopExtendL2() {
+
+    public void stopExtendL2()
+    {
         servoE2.setPower(0);
     }
 
@@ -376,10 +398,13 @@ public class SamwiseArm
     {
         return isManual;
     }
-    public void Joint1Movement(float J1Position) {
+
+    public void Joint1Movement(double J1Position)
+    {
         motorJ1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorJ1.setPower(J1Position);
     }
+
     public void driveJ2(boolean isUp)
     {
         motorJ2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -467,9 +492,9 @@ public class SamwiseArm
      */
     public void collectMinerals()
     {
-//        setCollecting(true);
-//        savePreviousPosition();
-//        lowerJ4(J4_COLLECTION_HEIGHT);
+        setCollecting(true);
+        //        savePreviousPosition();
+        //        lowerJ4(J4_COLLECTION_HEIGHT);
         servoC1.setDirection(DcMotorSimple.Direction.FORWARD);
         servoC1.setPower(0.8);
         servoC2.setDirection(DcMotorSimple.Direction.REVERSE);

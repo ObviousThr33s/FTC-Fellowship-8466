@@ -117,16 +117,19 @@ public class LaurenTest extends OpMode
 
 
         // collection and deposit
-        if (gamepad1.left_trigger > 0)
+        while (gamepad1.left_trigger > 0)
         {
+            armStuff.savePreviousPosition();
+            armStuff.toPreviousCollectionPosition();
             armStuff.collectMinerals();
         }
 
-        if (gamepad1.right_trigger > 0)
+        while (gamepad1.right_trigger > 0)
         {
+            armStuff.savePreviousPosition();
+            armStuff.toPreviousCollectionPosition();
             armStuff.depositMinerals();
         }
-
 
         if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0 && armStuff.getIsCollecting())
         {
@@ -137,9 +140,18 @@ public class LaurenTest extends OpMode
 
         if (gamepad1.a)
         {
-//            armStuff.moveJ4Up();
-            armStuff.savePreviousPosition();
+            if (!armStuff.getIsHoldRequest())
+            {
+                armStuff.setHoldRequest(true);
+                //            armStuff.moveJ4Up();
+                armStuff.savePreviousPosition();
+            }
+
             armStuff.toPreviousCollectionPosition();
+        }
+        else
+        {
+            armStuff.setHoldRequest(false);
         }
 
         if (gamepad1.b)
@@ -162,7 +174,14 @@ public class LaurenTest extends OpMode
         {
             this.armStuff.stopExtendL2();
         }
-        this.armStuff.Joint1Movement(gamepad1.right_stick_x);
+        if (gamepad1.right_stick_x > 0.05)
+        {
+            this.armStuff.Joint1Movement(0.3);
+        }
+        else
+        {
+            this.armStuff.Joint1Movement(0);
+        }
 
     }
 
