@@ -3,24 +3,25 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseGenius;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseSmart;
 
-@TeleOp(name="LaurenTest", group="tests")
+@TeleOp(name = "LaurenTest", group = "tests")
 public class LaurenTest extends OpMode
 {
-    private SamwiseArm armStuff = null;
+    private SamwiseSmart armStuff = null;
 
     @Override
     public void init()
     {
-        armStuff = new SamwiseArm(hardwareMap);
+        armStuff = new SamwiseSmart(hardwareMap);
         //        armStuff.extendArm();
     }
 
     @Override
     public void loop()
     {
-        telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
+//        telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
         telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
         telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
         telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
@@ -34,13 +35,12 @@ public class LaurenTest extends OpMode
         //move J2 up
         if (gamepad1.dpad_right)
         {
-            double J3Position = armStuff.getJ3CurrentPosition();
-            armStuff.toJ3Position(J3Position);
-            armStuff.driveJ2(true);
+            armStuff.stopJ3();
+            armStuff.driveJ2(false);
         }
         else
         {
-            if (armStuff.getIsManual() && !gamepad1.dpad_left)
+            if (armStuff.isManual() && !gamepad1.dpad_left)
             {
                 armStuff.stopJ2();
             }
@@ -49,13 +49,12 @@ public class LaurenTest extends OpMode
         //move J2 down
         if (gamepad1.dpad_left)
         {
-            double J3Position = armStuff.getJ3CurrentPosition();
-            armStuff.toJ3Position(J3Position);
-            armStuff.driveJ2(false);
+            armStuff.stopJ3();
+            armStuff.driveJ2(true);
         }
         else
         {
-            if (armStuff.getIsManual() && !gamepad1.dpad_right)
+            if (armStuff.isManual() && !gamepad1.dpad_right)
             {
                 armStuff.stopJ2();
             }
@@ -64,13 +63,12 @@ public class LaurenTest extends OpMode
         //move J3 up
         if (gamepad1.dpad_up)
         {
-            double J2Position = armStuff.getJ2CurrentPosition();
-            armStuff.toJ2Position(J2Position);
+            armStuff.stopJ2();
             armStuff.driveJ3(true);
         }
         else
         {
-            if (armStuff.getIsManual() && !gamepad1.dpad_down)
+            if (armStuff.isManual() && !gamepad1.dpad_down)
             {
                 armStuff.stopJ3();
             }
@@ -79,13 +77,12 @@ public class LaurenTest extends OpMode
         //move J3 down
         if (gamepad1.dpad_down)
         {
-            double J2Position = armStuff.getJ2CurrentPosition();
-            armStuff.toJ2Position(J2Position);
+            armStuff.stopJ2();
             armStuff.driveJ3(false);
         }
         else
         {
-            if (armStuff.getIsManual() && !gamepad1.dpad_up)
+            if (armStuff.isManual() && !gamepad1.dpad_up)
             {
                 armStuff.stopJ3();
             }
@@ -103,35 +100,35 @@ public class LaurenTest extends OpMode
         }*/
 
         // to collection position
-//        if (gamepad1.b)
-//        {
-//            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
-//            {
-//                armStuff.toCollectionPlane();
-//            }
-//            else
-//            {
-//                armStuff.toPreviousCollectionPosition();
-//            }
-//        }
+        //        if (gamepad1.b)
+        //        {
+        //            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+        //            {
+        //                armStuff.toCollectionPlane();
+        //            }
+        //            else
+        //            {
+        //                armStuff.toPreviousCollectionPosition();
+        //            }
+        //        }
 
 
         // collection and deposit
         while (gamepad1.left_trigger > 0)
         {
-            armStuff.savePreviousPosition();
-            armStuff.toPreviousCollectionPosition();
+            //            armStuff.savePreviousPosition();
+            //            armStuff.toPreviousCollectionPosition();
             armStuff.collectMinerals();
         }
 
         while (gamepad1.right_trigger > 0)
         {
-            armStuff.savePreviousPosition();
-            armStuff.toPreviousCollectionPosition();
+            //            armStuff.savePreviousPosition();
+            //            armStuff.toPreviousCollectionPosition();
             armStuff.depositMinerals();
         }
 
-        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0 && armStuff.getIsCollecting())
+        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0 && armStuff.isCollecting())
         {
             armStuff.stopServo();
             armStuff.setCollecting(false);
@@ -140,25 +137,23 @@ public class LaurenTest extends OpMode
 
         if (gamepad1.a)
         {
-            if (!armStuff.getIsHoldRequest())
-            {
-                armStuff.setHoldRequest(true);
-                //            armStuff.moveJ4Up();
-                armStuff.savePreviousPosition();
-            }
 
-            armStuff.toPreviousCollectionPosition();
-        }
-        else
-        {
-            armStuff.setHoldRequest(false);
-        }
+//            armStuff.savePreviousPosition();
+//            armStuff.toPreviousCollectionPosition();
+            armStuff.stopJ2();
+            armStuff.stopJ3();
 
-        if (gamepad1.b)
-        {
-            armStuff.moveJ4Down();
         }
-        if (gamepad1.right_stick_y > 0.02)
+        //        else
+        //        {
+        ////            armStuff.setHoldRequest(false);
+        //        }
+
+        //        if (gamepad1.b)
+        //        {
+        //            armStuff.moveJ4Down();
+        //        }
+        if (gamepad1.right_stick_y > 0.1)
         {
             this.armStuff.extendL1();
         }
@@ -166,7 +161,7 @@ public class LaurenTest extends OpMode
         {
             this.armStuff.stopExtendL1();
         }
-        if (gamepad1.left_stick_y > 0.02)
+        if (gamepad1.left_stick_y > 0.1)
         {
             this.armStuff.extendL2();
         }
@@ -174,14 +169,7 @@ public class LaurenTest extends OpMode
         {
             this.armStuff.stopExtendL2();
         }
-        if (gamepad1.right_stick_x > 0.05)
-        {
-            this.armStuff.Joint1Movement(0.3);
-        }
-        else
-        {
-            this.armStuff.Joint1Movement(0);
-        }
+
 
     }
 
