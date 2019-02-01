@@ -1,11 +1,13 @@
-package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
+package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Autonomous(name="test arm motor CPR", group="tests")
+//@Disabled
 public class MotorTPRTest extends LinearOpMode
 {
     private DcMotor testMotorEncoder1 = null;

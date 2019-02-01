@@ -11,22 +11,22 @@ public class SamwiseSmart extends SamwiseArm
 
     boolean isCollecting = false;
 
-    static final int TICKS_PER_REVOLUTION_J1 = 1680;
-    static final int TICKS_PER_REVOLUTION_J2 = 1440;
-    static final int TICKS_PER_REVOLUTION_J3 = 1440;
+    static final double TICKS_PER_REVOLUTION_J1 = 1680;
+    static final double TICKS_PER_REVOLUTION_J2 = 1440;
+    static final double TICKS_PER_REVOLUTION_J3 = 1993.6;
     static final double TICKS_PER_DEGREE_J1 = TICKS_PER_REVOLUTION_J1 / 360.0;
     static final double TICKS_PER_DEGREE_J2 = (TICKS_PER_REVOLUTION_J2 / 360.0) * 4;
     static final double TICKS_PER_DEGREE_J3 = (TICKS_PER_REVOLUTION_J3 / 360.0) * 2;
 
-    static final double INITIAL_DEGREES_J2 = 200;
-    static final double INITIAL_DEGREES_J3 = 10;
+    static final double INITIAL_DEGREES_J2 = 215;
+    static final double INITIAL_DEGREES_J3 = 48;
     static final int INITIAL_TICKS_J3 = (int) (INITIAL_DEGREES_J3 * TICKS_PER_DEGREE_J3);
     static final int INITIAL_TICKS_J2 = (int) (INITIAL_DEGREES_J2 * TICKS_PER_DEGREE_J2);
 
-    static final double HEIGHT_PLANE_OF_MOTION = 6; //height of plane of motion
+    static final double HEIGHT_PLANE_OF_MOTION = 13; //height of plane of motion
     static final int J4_COLLECTION_HEIGHT = 2;
-    static final double ARM_L1 = 24.5; //length between motorJoint1 and motorJoint2
-    static final double ARM_L2 = 28.5; //length between motorJoint2 and servoJ4
+    static final double ARM_L1 = 14.5; //length between motorJoint1 and motorJoint2
+    static final double ARM_L2 = 17.5; //length between motorJoint2 and servoJ4
     static final double INITIAL_COL_ARM_L3 = 2 * (ARM_L1 + ARM_L2) / 3;
 
     public double initialCollectionPosJ2;
@@ -49,6 +49,7 @@ public class SamwiseSmart extends SamwiseArm
     public SamwiseSmart(HardwareMap hwm)
     {
         super(hwm);
+
 
         double length_J2_J4 = Math.sqrt(Math.pow(HEIGHT_PLANE_OF_MOTION, 2) + Math.pow(INITIAL_COL_ARM_L3, 2));
         double angle1       = Math.toDegrees(Math.asin(HEIGHT_PLANE_OF_MOTION / length_J2_J4));
@@ -173,6 +174,11 @@ public class SamwiseSmart extends SamwiseArm
         super.collectMinerals();
     }
 
+
+    public boolean isCollectionPlane()
+    {
+        return isCollectionPlane;
+    }
 
     public void setIsCollectionPlane(boolean collectionPlane)
     {
