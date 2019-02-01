@@ -81,6 +81,7 @@ public class SamwiseSmart extends SamwiseArm
         motorJ3.setPower(AUTO_POWER_J3);
         while (motorJ2.isBusy() || motorJ3.isBusy())
         {
+            Thread.yield();
         }
     }
 
@@ -97,6 +98,7 @@ public class SamwiseSmart extends SamwiseArm
         motorJ3.setPower(AUTO_POWER_J3);
         while (motorJ1.isBusy() || motorJ2.isBusy() || motorJ3.isBusy())
         {
+            Thread.yield();
         }
     }
 
