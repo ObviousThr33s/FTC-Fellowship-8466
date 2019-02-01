@@ -19,8 +19,9 @@ public class HoldPositionTestOp extends OpMode
     @Override
     public void loop()
     {
+        /*
         if (super.gamepad1.dpad_left)
-        {
+        }
             this.arm.mdriveJ1(true);
         }
         else
@@ -34,6 +35,19 @@ public class HoldPositionTestOp extends OpMode
         else
         {
             this.arm.mstopJ1();
+        }
+        */
+
+        if(gamepad1.dpad_left){
+            arm.mdriveJ1(true);
+        }else if (!gamepad1.dpad_right){
+            arm.mstopJ1();
+        }
+
+        if(gamepad1.dpad_right){
+            arm.mdriveJ1(false);
+        }else if (!gamepad1.dpad_left){
+            arm.mstopJ1();
         }
 
 
@@ -68,5 +82,9 @@ public class HoldPositionTestOp extends OpMode
         {
             arm.stopServo();
         }
+
+        super.telemetry.addData("J1 ticks: ", this.arm.getJ1CurrentPosition());
+        super.telemetry.addData("J2 ticks: ", this.arm.getJ2CurrentPosition());
+        super.telemetry.addData("J3 ticks: ", this.arm.getJ3CurrentPosition());
     }
 }

@@ -4,12 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseSampling;
 
 @Autonomous
 public class SampleAndDepositTestCrater extends LinearOpMode
 {
-    public SamwiseArm armStuff = null;
+    public SamwiseSampling armStuff = null;
     private ElapsedTime runTime = new ElapsedTime();
     double timeoutS = 5;
 
@@ -17,7 +17,7 @@ public class SampleAndDepositTestCrater extends LinearOpMode
     @Override
     public void runOpMode() throws InterruptedException
     {
-        armStuff = new SamwiseArm(this.hardwareMap);
+        armStuff = new SamwiseSampling(this.hardwareMap);
 
         waitForStart();
 

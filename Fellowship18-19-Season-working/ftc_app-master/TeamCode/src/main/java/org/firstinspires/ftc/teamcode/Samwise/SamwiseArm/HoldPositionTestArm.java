@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
-public class HoldPositionTestArm extends SamwiseArm
+public class HoldPositionTestArm extends SamwiseSmart
 {
     private int hold_position_J2 = Integer.MAX_VALUE;
     private int hold_position_J3 = Integer.MAX_VALUE;
@@ -14,13 +14,21 @@ public class HoldPositionTestArm extends SamwiseArm
     public HoldPositionTestArm(HardwareMap hwm)
     {
         super(hwm);
+        motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 
     public void mdriveJ1(boolean isLeft) {
-        motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorJ1.setPower(isLeft?-0.7:0.7);
+        //motorJ1.setPower(isLeft?-0.7:0.7);
+
+        if(isLeft){
+            motorJ1.setPower(0.7);
+        }
+        if(!isLeft){
+            motorJ1.setPower(-0.7);
+        }
     }
+
 
     public void mstopJ1()
     {

@@ -3,17 +3,17 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseSampling;
 
 public class SampleAndDeposit
 {
-    public SamwiseArm armStuff = null;
+    public SamwiseSampling armStuff = null;
     private ElapsedTime runTime = new ElapsedTime();
     double timeoutS = 5;
 
     public SampleAndDeposit(HardwareMap hwm)
     {
-        armStuff = new SamwiseArm(hwm);
+        armStuff = new SamwiseSampling(hwm);
     }
 
     public void sampleAndDepositDepotLeft()

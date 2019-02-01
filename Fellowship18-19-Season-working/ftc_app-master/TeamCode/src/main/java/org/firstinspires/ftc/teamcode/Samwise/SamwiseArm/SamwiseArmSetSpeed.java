@@ -13,7 +13,7 @@ import java.util.List;
  * <p>
  * Keep in mind loop interval too.
  */
-public class SamwiseArmSetSpeed extends SamwiseArm
+public class SamwiseArmSetSpeed extends SamwiseGenius
 {
     // maximum speed when joystick is 1, in inches per second
     private static final int MAXIMUM_SPEED = 20;

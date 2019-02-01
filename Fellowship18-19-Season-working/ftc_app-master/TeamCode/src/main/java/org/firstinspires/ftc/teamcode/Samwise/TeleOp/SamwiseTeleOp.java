@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseSmart;
 
 /****************************************************************************************************
  *                  Teleop Outline:                                                                 *
@@ -58,7 +58,7 @@ public class SamwiseTeleOp extends OpMode
     public SamwiseHanger swHang = new SamwiseHanger();
 
     //public DriveTrainTeleop swDTrain = new DriveTrainTeleop();
-    public SamwiseArm armStuff = null;
+    public SamwiseSmart armStuff = null;
 
     public DcMotor leftdrive = null;
     public DcMotor rightdrive = null;
@@ -70,7 +70,7 @@ public class SamwiseTeleOp extends OpMode
         swHang.init(hardwareMap, telemetry);
 
         //swDTrain.init(hardwareMap, telemetry);
-        armStuff = new SamwiseArm(this.hardwareMap);
+        armStuff = new SamwiseSmart(this.hardwareMap);
 
         leftdrive = hardwareMap.dcMotor.get("left_drive");
         rightdrive = hardwareMap.dcMotor.get("right_drive");
@@ -202,7 +202,7 @@ public class SamwiseTeleOp extends OpMode
         {
             //            armStuff.moveJ4Up();
             armStuff.savePreviousPosition();
-            armStuff.toPreviousCollectionPosition();
+//            armStuff.top();
         }
 
         if (gamepad1.b)
@@ -227,11 +227,11 @@ public class SamwiseTeleOp extends OpMode
         }
         if (gamepad1.right_stick_x > 0.05)
         {
-            this.armStuff.Joint1Movement(0.3);
+            this.armStuff.driveJ1(0.3);
         }
         else
         {
-            this.armStuff.Joint1Movement(0);
+            this.armStuff.driveJ1(0);
         }
 
 
@@ -254,13 +254,11 @@ public class SamwiseTeleOp extends OpMode
         //move J2 up
         if (gamepad1.dpad_right)
         {
-            double J3Position = armStuff.getJ3CurrentPosition();
-            armStuff.toJ3Position(J3Position);
             armStuff.driveJ2(true);
         }
         else
         {
-            if (armStuff.getIsManual() && !gamepad1.dpad_left)
+            if (armStuff.isManual() && !gamepad1.dpad_left)
             {
                 armStuff.stopJ2();
             }
@@ -269,13 +267,11 @@ public class SamwiseTeleOp extends OpMode
         //move J2 down
         if (gamepad1.dpad_left)
         {
-            double J3Position = armStuff.getJ3CurrentPosition();
-            armStuff.toJ3Position(J3Position);
             armStuff.driveJ2(false);
         }
         else
         {
-            if (armStuff.getIsManual() && !gamepad1.dpad_right)
+            if (armStuff.isManual() && !gamepad1.dpad_right)
             {
                 armStuff.stopJ2();
             }
@@ -284,13 +280,11 @@ public class SamwiseTeleOp extends OpMode
         //move J3 up
         if (gamepad1.dpad_up)
         {
-            double J2Position = armStuff.getJ2CurrentPosition();
-            armStuff.toJ2Position(J2Position);
             armStuff.driveJ3(true);
         }
         else
         {
-            if (armStuff.getIsManual() && !gamepad1.dpad_down)
+            if (armStuff.isManual() && !gamepad1.dpad_down)
             {
                 armStuff.stopJ3();
             }
@@ -299,13 +293,11 @@ public class SamwiseTeleOp extends OpMode
         //move J3 down
         if (gamepad1.dpad_down)
         {
-            double J2Position = armStuff.getJ2CurrentPosition();
-            armStuff.toJ2Position(J2Position);
             armStuff.driveJ3(false);
         }
         else
         {
-            if (armStuff.getIsManual() && !gamepad1.dpad_up)
+            if (armStuff.isManual() && !gamepad1.dpad_up)
             {
                 armStuff.stopJ3();
             }
@@ -323,7 +315,7 @@ public class SamwiseTeleOp extends OpMode
         }
 
 
-        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0 && armStuff.getIsCollecting())
+        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0 && armStuff.isCollecting())
         {
             armStuff.stopServo();
             armStuff.setCollecting(false);
