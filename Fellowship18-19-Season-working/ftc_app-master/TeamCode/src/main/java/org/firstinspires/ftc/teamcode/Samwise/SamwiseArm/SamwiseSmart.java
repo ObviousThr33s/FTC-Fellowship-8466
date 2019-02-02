@@ -1,17 +1,15 @@
 package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 
 public class SamwiseSmart extends SamwiseArm
 {
     public boolean holdJ2 = true;
     public boolean holdJ3 = true;
-    int motor_position_j2;
-    int motor_position_j3;
+    private int motor_position_j2;
+    private int motor_position_j3;
 
 
     boolean isCollectionPlane = false;
@@ -93,8 +91,7 @@ public class SamwiseSmart extends SamwiseArm
             motor_position_j2 = motorJ2.getCurrentPosition();
             holdJ2 = false;
         }
-
-        else
+        else if (holdJ3 == false)
         {
             motorJ2.setTargetPosition(motor_position_j2);
             motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -110,10 +107,9 @@ public class SamwiseSmart extends SamwiseArm
             motor_position_j3 = motorJ3.getCurrentPosition();
             holdJ3 = false;
         }
-
-        else
+        else if (holdJ3 == false)
         {
-            motorJ3.setTargetPosition(motor_position_j2);
+            motorJ3.setTargetPosition(motor_position_j3);
             motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorJ3.setPower(HOLD_POWER);
         }

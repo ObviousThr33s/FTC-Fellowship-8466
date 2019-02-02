@@ -6,15 +6,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class SamwiseCollection
 {
-    CRServo servoJ4;
-    CRServo servoC1;
-    CRServo servoC2;
+    private CRServo servoJ4;
+    private CRServo servoC1;
+    private CRServo servoC2;
 
-    public SamwiseCollection(HardwareMap hwm)
+    SamwiseCollection(HardwareMap hwm)
     {
-//        servoJ4 = hwm.crservo.get("J4");
-//        servoC1 = hwm.crservo.get("C1");
-//        servoC2 = hwm.crservo.get("C2");
+        servoJ4 = hwm.crservo.get("J4");
+        servoC1 = hwm.crservo.get("C1");
+        servoC2 = hwm.crservo.get("C2");
     }
 
     /**
@@ -26,10 +26,10 @@ public class SamwiseCollection
      */
     public void depositMinerals()
     {
-//        servoC1.setDirection(DcMotorSimple.Direction.REVERSE);
-//        servoC1.setPower(0.8);
-//        servoC2.setDirection(DcMotorSimple.Direction.FORWARD);
-//        servoC2.setPower(0.8);
+        servoC1.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoC1.setPower(0.8);
+        servoC2.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoC2.setPower(0.8);
     }
 
     /**
@@ -41,10 +41,10 @@ public class SamwiseCollection
      */
     public void collectMinerals()
     {
-//        servoC1.setDirection(DcMotorSimple.Direction.FORWARD);
-//        servoC1.setPower(0.8);
-//        servoC2.setDirection(DcMotorSimple.Direction.REVERSE);
-//        servoC2.setPower(0.8);
+        servoC1.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoC1.setPower(0.8);
+        servoC2.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoC2.setPower(0.8);
     }
 
     /**
@@ -52,26 +52,26 @@ public class SamwiseCollection
      */
     public void stopCollecting()
     {
-//        servoC1.setPower(0);
-//        servoC2.setPower(0);
+        servoC1.setPower(0);
+        servoC2.setPower(0);
     }
 
     public void moveJ4Up()
     {
-//        servoJ4.setDirection(DcMotorSimple.Direction.FORWARD);
-//        servoJ4.setPower(0.8);
+        servoJ4.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoJ4.setPower(0.8);
     }
 
     public void moveJ4Down()
     {
-//        servoJ4.setDirection(DcMotorSimple.Direction.REVERSE);
-//        servoJ4.setPower(0.8);
+        servoJ4.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoJ4.setPower(0.8);
     }
 
     public void stopJ4()
     {
 
-//        servoJ4.setPower(0);
+        servoJ4.setPower(0);
     }
 
 }

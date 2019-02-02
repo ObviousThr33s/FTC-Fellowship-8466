@@ -4,19 +4,19 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class SamwiseSampling extends SamwiseSmart
 {
-    static final int SAMPLING_RIGHT_J1 = -20;
-    static final int SAMPLING_CENTER_J1 = 0;
-    static final int SAMPLING_LEFT_J1 = 20;
-    static final int SAMPLING_CENTER_J2 = 90;
-    static final int SAMPLING_CENTER_J3 = 100;
-    static final int SAMPLING_LEFT_RIGHT_J2 = 100;
-    static final int SAMPLING_LEFT_RIGHT_J3 = 110;
-    static final int SAMPLING_J1_CRATER = 40;
-    static final int SAMPLING_J2_CRATER = 100;
-    static final int SAMPLING_J3_CRATER = 200;
-    static final int SAMPLING_J1_DEPOT = 40;
-    static final int SAMPLING_J2_DEPOT = 100;
-    static final int SAMPLING_J3_DEPOT = 300;
+    private static final int SAMPLING_RIGHT_J1 = -20;
+    private static final int SAMPLING_CENTER_J1 = 0;
+    private static final int SAMPLING_LEFT_J1 = 20;
+    private static final int SAMPLING_CENTER_J2 = 90;
+    private static final int SAMPLING_CENTER_J3 = 100;
+    private static final int SAMPLING_LEFT_RIGHT_J2 = 100;
+    private static final int SAMPLING_LEFT_RIGHT_J3 = 110;
+    private static final int SAMPLING_J1_CRATER = 40;
+    private static final int SAMPLING_J2_CRATER = 100;
+    private static final int SAMPLING_J3_CRATER = 200;
+    private static final int SAMPLING_J1_DEPOT = 40;
+    private static final int SAMPLING_J2_DEPOT = 100;
+    private static final int SAMPLING_J3_DEPOT = 300;
 
     public SamwiseSampling(HardwareMap hwm)
     {
