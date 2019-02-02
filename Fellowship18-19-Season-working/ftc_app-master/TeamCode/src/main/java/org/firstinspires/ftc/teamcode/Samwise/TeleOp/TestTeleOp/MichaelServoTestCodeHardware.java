@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
+package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;

@@ -34,8 +34,8 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         //parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
+        parameters.loggingEnabled = false;
+        //parameters.loggingTag = "IMU";
 
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
@@ -53,12 +53,13 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
             System.out.println("==> IMU initialization: calibrating ...");
             // make sure the imu gyro is calibrated before continuing.
             double startTime = System.currentTimeMillis();
-            while (!imu.isGyroCalibrated() && !imu.isAccelerometerCalibrated() && System.currentTimeMillis() - startTime < 5000) {
+            while (!imu.isGyroCalibrated() //&& !imu.isAccelerometerCalibrated()
+                    && System.currentTimeMillis() - startTime < 5000) {
                 sleep(50);
                 idle();
             }
             double nowTime = System.currentTimeMillis();
-            if (!imu.isGyroCalibrated() || !imu.isAccelerometerCalibrated()) {
+            if (!imu.isGyroCalibrated()) {//|| !imu.isAccelerometerCalibrated()) {
                 //RobotLog.v("IMU Calibration: ", " IMU failed to calibrate in 5 seconds.");
                 System.out.println("==> IMU initialization: IMU failed to calibrate in 5 seconds.");
             }

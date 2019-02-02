@@ -1,10 +1,12 @@
-package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
+package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "ArmTest1 Gamepad Input", group="tests")
+@Disabled
 public class GamepadInputTest extends LinearOpMode
 {
 

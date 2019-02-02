@@ -36,6 +36,7 @@ public class SamwiseSmart extends SamwiseArm
     static final double J4_COLLECTION_HEIGHT = 2.5;
     static final double ARM_L1 = 14.5; //length between motorJoint1 and motorJoint2
     static final double ARM_L2 = 17.1; //length between motorJoint2 and servoJ4
+
     static final double INITIAL_COL_ARM_L3 = 2 * (ARM_L1 + ARM_L2) / 3;
 
     public double initialCollectionPosJ2;
@@ -59,6 +60,17 @@ public class SamwiseSmart extends SamwiseArm
     public SamwiseSmart(HardwareMap hwm)
     {
         super(hwm);
+
+        double length_J2_J4 = Math.sqrt(Math.pow(HEIGHT_PLANE_OF_MOTION, 2) + Math.pow(INITIAL_COL_ARM_L3, 2));
+        double angle1       = Math.toDegrees(Math.asin(HEIGHT_PLANE_OF_MOTION / length_J2_J4));
+        double angle2       = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(length_J2_J4, 2) - Math.pow(ARM_L2, 2)) / (2 * ARM_L1 * length_J2_J4)));
+        double angle3       = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.pow(length_J2_J4, 2)) / (2 * ARM_L1 * ARM_L2)));
+        double j2_degrees   = INITIAL_DEGREES_J2 - (angle1 + angle2 + 90);
+        double j3_degrees   = angle3 - INITIAL_DEGREES_J3;
+        initialCollectionPosJ2 = TICKS_PER_DEGREE_J2 * j2_degrees;
+        initialCollectionPosJ3 = TICKS_PER_DEGREE_J3 * j3_degrees;
+        previousPositionJ2 = initialCollectionPosJ2;
+        previousPositionJ3 = initialCollectionPosJ3;
     }
 
 
@@ -117,6 +129,7 @@ public class SamwiseSmart extends SamwiseArm
         motorJ3.setPower(AUTO_POWER_J3);
         while (motorJ2.isBusy() || motorJ3.isBusy())
         {
+            Thread.yield();
         }
     }
 
@@ -133,6 +146,7 @@ public class SamwiseSmart extends SamwiseArm
         motorJ3.setPower(AUTO_POWER_J3);
         while (motorJ1.isBusy() || motorJ2.isBusy() || motorJ3.isBusy())
         {
+            Thread.yield();
         }
     }
 
@@ -207,6 +221,11 @@ public class SamwiseSmart extends SamwiseArm
         super.collectMinerals();
     }
 
+
+    public boolean isCollectionPlane()
+    {
+        return isCollectionPlane;
+    }
 
     public void setIsCollectionPlane(boolean collectionPlane)
     {

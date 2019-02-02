@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
-public class HoldPositionTestArm extends SamwiseSmart
+public class HoldPositionTestArm extends SamwiseArm
 {
     private int hold_position_J2 = Integer.MAX_VALUE;
     private int hold_position_J3 = Integer.MAX_VALUE;

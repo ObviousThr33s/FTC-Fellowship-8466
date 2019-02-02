@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
+package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
  *                  8. Aim, hang up, and stay                                                       *
  ****************************************************************************************************/
 @TeleOp(name = "Samwise no arm", group = "Samwise")
-//@Disabled
+@Disabled
 public class SamwiseNoArm extends OpMode {
 
     /* Declare OpMode members. */

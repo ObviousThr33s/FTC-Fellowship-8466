@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Samwise.TeleOp.ColorSenseAlignmentTest;
 
 public class SamwiseColor {
 
