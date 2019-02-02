@@ -70,7 +70,6 @@ public class SamwiseCollection
 
     public void stopJ4()
     {
-
         servoJ4.setPower(0);
     }
 

@@ -39,6 +39,14 @@ public class ArmTeleOpTest extends OpMode
             manual = false;
         }
 
+        if (gamepad1.dpad_left)
+        {
+            armStuff.holdJ2 = true;
+            armStuff.holdJ3 = true;
+            armStuff.holdPositionJ2();
+            armStuff.holdPositionJ3();
+        }
+
         // to deposit position
 
         if (gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y)
