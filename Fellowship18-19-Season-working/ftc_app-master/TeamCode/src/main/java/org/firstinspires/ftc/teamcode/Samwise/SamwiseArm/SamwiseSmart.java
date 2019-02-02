@@ -84,14 +84,14 @@ public class SamwiseSmart extends SamwiseArm
         toPositionWithJ1(previousPositionJ1, (int) previousPositionJ2, (int) previousPositionJ3);
     }
 
-    public void holdPositionJ2()
+    public void holdPositionJ2(boolean hold)
     {
-        if (holdJ2)
+
+        if (hold)
         {
             motor_position_j2 = motorJ2.getCurrentPosition();
-            holdJ2 = false;
         }
-        else if (holdJ3 == false)
+        else
         {
             motorJ2.setTargetPosition(motor_position_j2);
             motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -100,14 +100,13 @@ public class SamwiseSmart extends SamwiseArm
     }
 
 
-    public void holdPositionJ3()
+    public void holdPositionJ3(boolean hold)
     {
-        if (holdJ3)
+        if (hold)
         {
             motor_position_j3 = motorJ3.getCurrentPosition();
-            holdJ3 = false;
         }
-        else if (holdJ3 == false)
+        else
         {
             motorJ3.setTargetPosition(motor_position_j3);
             motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);

@@ -13,7 +13,8 @@ public class ArmTeleOpTest extends OpMode
     private SamwiseGenius armStuff;
 
     private boolean manual = false;
-    private boolean hold = false;
+    private boolean isHoldingJ2 = false;
+    private boolean isHoldingJ3 = false;
 
     @Override
     public void init()
@@ -41,31 +42,50 @@ public class ArmTeleOpTest extends OpMode
 
         if (gamepad1.dpad_left)
         {
-            armStuff.holdJ2 = true;
-            armStuff.holdJ3 = true;
-            armStuff.holdPositionJ2();
-            armStuff.holdPositionJ3();
+            if (!isHoldingJ2)
+            {
+                armStuff.holdPositionJ2(true);
+                isHoldingJ2 = true;
+            }
+            else
+            {
+                armStuff.holdPositionJ2(false);
+            }
+
+            if (!isHoldingJ3)
+            {
+                armStuff.holdPositionJ3(true);
+                isHoldingJ3 = true;
+            }
+            else
+            {
+                armStuff.holdPositionJ3(false);
+            }
         }
 
         // to deposit position
 
         if (gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y)
         {
-            hold = false;
-
             if (gamepad1.x)
             {
                 armStuff.silverDropPoint();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
             }
 
             if (gamepad1.y)
             {
                 armStuff.goldDropPoint();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
             }
 
             if (gamepad1.a)
             {
                 armStuff.toInitialPosition();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
             }
 
             // to collection position
@@ -74,21 +94,25 @@ public class ArmTeleOpTest extends OpMode
                 if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
                 {
                     armStuff.toCollectionPlane();
+                    isHoldingJ2 = false;
+                    isHoldingJ3 = false;
                 }
                 else
                 {
                     armStuff.toPreviousPosition();
+                    isHoldingJ2 = false;
+                    isHoldingJ3 = false;
                 }
             }
 
         }
         // collection and deposit
-        while (gamepad1.left_trigger > 0)
+        if (gamepad1.left_trigger > 0)
         {
             armStuff.smartCollectMinerals();
         }
 
-        while (gamepad1.right_trigger > 0)
+        if (gamepad1.right_trigger > 0)
         {
             armStuff.depositMinerals();
         }
@@ -99,12 +123,12 @@ public class ArmTeleOpTest extends OpMode
             armStuff.setCollecting(false);
         }
 
-        while (gamepad1.left_bumper)
+        if (gamepad1.left_bumper)
         {
             armStuff.moveJ4Up();
         }
 
-        while (gamepad1.right_bumper)
+        if (gamepad1.right_bumper)
         {
             armStuff.moveJ4Down();
         }
@@ -116,36 +140,45 @@ public class ArmTeleOpTest extends OpMode
 
         if (manual)
         {
-            hold = true;
 
             if (gamepad1.right_stick_y > 0.1)
             {
                 armStuff.driveJ3(false);
-                armStuff.holdJ3 = true;
+                isHoldingJ3 = false;
             }
             else if (gamepad1.right_stick_y < -0.1)
             {
                 armStuff.driveJ3(true);
-                armStuff.holdJ3 = true;
+                isHoldingJ3 = false;
             }
-            else if (hold)
+            else if (isHoldingJ3)
             {
-                armStuff.holdPositionJ3();
+                armStuff.holdPositionJ3(false);
+            }
+            else
+            {
+                armStuff.holdPositionJ3(true);
+                isHoldingJ3 = true;
             }
 
             if (gamepad1.left_stick_y > 0.1)
             {
                 armStuff.driveJ2(false);
-                armStuff.holdJ2 = true;
+                isHoldingJ2 = false;
             }
             else if (gamepad1.left_stick_y < -0.1)
             {
                 armStuff.driveJ2(true);
-                armStuff.holdJ2 = true;
+                isHoldingJ2 = false;
             }
-            else if (hold)
+            else if (isHoldingJ2)
             {
-                armStuff.holdPositionJ2();
+                armStuff.holdPositionJ2(false);
+            }
+            else
+            {
+                armStuff.holdPositionJ2(true);
+                isHoldingJ2 = true;
             }
         }
         else
