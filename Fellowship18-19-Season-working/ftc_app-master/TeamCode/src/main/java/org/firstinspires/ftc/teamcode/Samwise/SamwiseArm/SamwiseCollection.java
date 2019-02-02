@@ -50,7 +50,7 @@ public class SamwiseCollection
     /**
      * Stop spinning of the claw servos
      */
-    public void stopServo()
+    public void stopCollecting()
     {
         servoC1.setPower(0);
         servoC2.setPower(0);

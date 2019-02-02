@@ -80,7 +80,7 @@ public class HoldPositionTestOp extends OpMode
 
         if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger <0.1)
         {
-            arm.stopServo();
+            arm.stopCollecting();
         }
 
         super.telemetry.addData("J1 ticks: ", this.arm.getJ1CurrentPosition());

@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseGenius;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseSmart;
 
 @TeleOp(name = "LaurenTest", group = "tests")
@@ -130,7 +129,7 @@ public class LaurenTest extends OpMode
 
         if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0 && armStuff.isCollecting())
         {
-            armStuff.stopServo();
+            armStuff.stopCollecting();
             armStuff.setCollecting(false);
         }
 
