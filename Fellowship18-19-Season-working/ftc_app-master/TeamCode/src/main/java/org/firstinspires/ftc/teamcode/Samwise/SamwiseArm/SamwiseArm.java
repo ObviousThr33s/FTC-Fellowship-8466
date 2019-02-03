@@ -42,6 +42,8 @@ public class SamwiseArm extends SamwiseCollection
 
     public void driveJ1(boolean isLeft)
     {
+        motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         if (isLeft)
         {
             motorJ1.setPower(-0.7);
@@ -76,7 +78,6 @@ public class SamwiseArm extends SamwiseCollection
     {
         motorJ2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //TODO: hold J3 in position while driving J2
         if (isUp)
         {
             motorJ2.setPower(-MANUAL_POWER_J2);
@@ -96,7 +97,6 @@ public class SamwiseArm extends SamwiseCollection
     {
         motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //TODO: hold J2 in position while driving J3
         if (isUp)
         {
             motorJ3.setPower(-MANUAL_POWER_J3);
