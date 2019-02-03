@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseGenius;
 
 @TeleOp(name = "Arm Test", group = "tests")
-@Disabled
+//@Disabled
 public class ArmTeleOpTest extends OpMode
 {
     private SamwiseGenius armStuff;
@@ -15,6 +15,7 @@ public class ArmTeleOpTest extends OpMode
     private boolean manual = false;
     private boolean isHoldingJ2 = false;
     private boolean isHoldingJ3 = false;
+    private boolean collect = false;
 
     @Override
     public void init()
@@ -25,6 +26,7 @@ public class ArmTeleOpTest extends OpMode
     @Override
     public void loop()
     {
+
         telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
         telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
         telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
@@ -107,17 +109,23 @@ public class ArmTeleOpTest extends OpMode
 
         }
         // collection and deposit
-        if (gamepad1.left_trigger > 0)
+        if (gamepad1.left_trigger > 0.1)
         {
-            armStuff.smartCollectMinerals();
+            armStuff.savePreviousPosition();
+            armStuff.lowerJ4();
+            collect = true;
+            if (collect)
+            {
+                armStuff.collectMinerals();
+            }
         }
 
-        if (gamepad1.right_trigger > 0)
+        if (gamepad1.right_trigger > 0.1)
         {
             armStuff.depositMinerals();
         }
 
-        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0 && armStuff.isCollecting())
+        if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1 && armStuff.isCollecting())
         {
             armStuff.stopCollecting();
             armStuff.setCollecting(false);
