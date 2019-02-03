@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.HoldPositionTestArm;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
 
 @TeleOp(name = "Hold Position Test", group = "tests")
 //@Disabled
@@ -16,22 +17,30 @@ public class HoldPositionTestOp extends OpMode
     public void init()
     {
         this.arm = new HoldPositionTestArm(super.hardwareMap);
+
     }
 
     @Override
     public void loop()
     {
 
-        if(gamepad1.dpad_left){
-            arm.mdriveJ1(true);
-        }else if (!gamepad1.dpad_right){
-            arm.mstopJ1();
-        }
+        //if(gamepad1.dpad_left){
 
-        if(gamepad1.dpad_right){
-            arm.mdriveJ1(false);
-        }else if (!gamepad1.dpad_left){
-            arm.mstopJ1();
+        //    arm.mdriveJ1(true);
+        //}else if (!gamepad1.dpad_right){
+        //    arm.mstopJ1();
+        //}
+
+        //if(gamepad1.dpad_right){
+        //    arm.mdriveJ1(false);
+        //}else if (!gamepad1.dpad_left){
+        //    arm.mstopJ1();
+        //}
+        if (gamepad1.dpad_left) {
+            arm.J1MovementLeft();
+        }
+        if (gamepad1.dpad_right) {
+            arm.J1MovementRight();
         }
 
         this.arm.mdriveJ2(super.gamepad1.left_stick_y);

@@ -9,12 +9,14 @@ public class HoldPositionTestArm extends SamwiseArm
     private int hold_position_J2 = Integer.MAX_VALUE;
     private int hold_position_J3 = Integer.MAX_VALUE;
 
+    private int motorcurrentposition;
+
     static final double POWER_RANGE=0.2;
 
     public HoldPositionTestArm(HardwareMap hwm)
     {
         super(hwm);
-        motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 
@@ -77,6 +79,29 @@ public class HoldPositionTestArm extends SamwiseArm
             super.motorJ3.setPower(1);
         }
     }
+    public void J1inittest() {
+        motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorJ1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorJ1.setTargetPosition(75);
+
+        motorJ1.setPower(0.1);
+        motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+    public void J1MovementLeft() {
+            motorcurrentposition = motorJ1.getCurrentPosition() + 20;
+            motorJ1.setTargetPosition(motorcurrentposition);
+            motorJ1.setPower(0.3);
+            motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+    }
+    public void J1MovementRight() {
+        motorcurrentposition = motorJ1.getCurrentPosition() - 20;
+        motorJ1.setTargetPosition(motorcurrentposition);
+        motorJ1.setPower(0.3);
+        motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+    }
+
 
 }
 

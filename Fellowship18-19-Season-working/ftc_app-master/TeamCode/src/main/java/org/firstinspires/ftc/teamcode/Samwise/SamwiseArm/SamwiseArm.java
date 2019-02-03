@@ -199,5 +199,8 @@ public class SamwiseArm extends SamwiseCollection
         /*return motorE1.getCurrentPosition();*/
         return 0;
     }
+    public void Arm90DegreePositioning() {
+        motorJ1.setTargetPosition(motorJ1.getCurrentPosition());
+    }
 }
 
