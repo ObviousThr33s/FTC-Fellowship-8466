@@ -87,7 +87,10 @@ public class SamwiseSmart extends SamwiseArm
 
     public void toPreviousPosition()
     {
-        toPositionWithJ1(previousPositionJ1, previousPositionJ2, previousPositionJ3);
+        toPositionWithJ1();
+        motorJ1.setTargetPosition(previousPositionJ1);
+        motorJ2.setTargetPosition(previousPositionJ2);
+        motorJ3.setTargetPosition(previousPositionJ3);
     }
 
     public void holdPositionJ2(boolean hold)
@@ -120,10 +123,8 @@ public class SamwiseSmart extends SamwiseArm
         }
     }
 
-    public void toPosition(int targetJ2Position, int targetJ3Position)
+    public void toPosition()
     {
-        motorJ2.setTargetPosition(targetJ2Position);
-        motorJ3.setTargetPosition(targetJ3Position);
         motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ2.setPower(AUTO_POWER_J2);
@@ -135,11 +136,8 @@ public class SamwiseSmart extends SamwiseArm
         }
     }
 
-    public void toPositionWithJ1(int targetJ1Position, int targetJ2Position, int targetJ3Position)
+    public void toPositionWithJ1()
     {
-        motorJ1.setTargetPosition(targetJ1Position);
-        motorJ2.setTargetPosition(targetJ2Position);
-        motorJ3.setTargetPosition(targetJ3Position);
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -158,7 +156,11 @@ public class SamwiseSmart extends SamwiseArm
         System.out.println("Going To Initial Position");
         setManual(false);
         setIsCollectionPlane(false);
-        toPosition(0, 0);
+        toPosition();
+        motorJ3.setTargetPosition(443);
+        motorJ1.setTargetPosition(0);
+        motorJ2.setTargetPosition(0);
+        motorJ3.setTargetPosition(0);
         System.out.println("Reached Initial Position");
     }
 
@@ -170,7 +172,10 @@ public class SamwiseSmart extends SamwiseArm
     {
         System.out.println("toCollectionPlane");
         setManual(false);
-        toPositionWithJ1(previousPositionJ1, previousPositionJ2, previousPositionJ3);
+        toPositionWithJ1();
+        motorJ1.setTargetPosition(initialCollectionPosJ1);
+        motorJ3.setTargetPosition(initialCollectionPosJ3);
+        motorJ2.setTargetPosition(initialCollectionPosJ2);
         setIsCollectionPlane(true);
     }
 
@@ -186,7 +191,10 @@ public class SamwiseSmart extends SamwiseArm
             savePreviousPosition();
             setIsCollectionPlane(false);
         }
-        toPositionWithJ1(GOLD_DROP_J1, GOLD_DROP_J2, GOLD_DROP_J3);
+        toPositionWithJ1();
+        motorJ3.setTargetPosition(GOLD_DROP_J3);
+        motorJ2.setTargetPosition(GOLD_DROP_J2);
+        motorJ1.setTargetPosition(GOLD_DROP_J1);
     }
 
     /**
@@ -200,13 +208,18 @@ public class SamwiseSmart extends SamwiseArm
             savePreviousPosition();
             setIsCollectionPlane(false);
         }
-        toPositionWithJ1(SILVER_DROP_J1, SILVER_DROP_J2, SILVER_DROP_J3);
+        toPositionWithJ1();
+        motorJ3.setTargetPosition(SILVER_DROP_J3);
+        motorJ2.setTargetPosition(SILVER_DROP_J2);
+        motorJ1.setTargetPosition(SILVER_DROP_J1);
     }
 
     //The arm can only be 15 inches away from the lander if the arm is to reach above the lander to deposit.
     public void toLander()
     {
-        toPosition(900, -1439);
+        toPosition();
+        motorJ3.setTargetPosition(-1439);
+        motorJ2.setTargetPosition(900);
         if (!isStop)
         {
             motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -227,8 +240,8 @@ public class SamwiseSmart extends SamwiseArm
         double collectingJ3  = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.pow(k, 2)) / (2 * ARM_L1 * ARM_L2)));
         motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setPower(AUTO_POWER_J2);
-        motorJ3.setPower(AUTO_POWER_J3);
+        motorJ2.setPower(-AUTO_POWER_J2);
+        motorJ3.setPower(-AUTO_POWER_J3);
         motorJ2.setTargetPosition((int) ((collectingJ2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2));
         motorJ3.setTargetPosition((int) ((collectingJ3 - INITIAL_TICKS_J3) * TICKS_PER_DEGREE_J3));
     }

@@ -20,7 +20,7 @@ public class SamwiseArm extends SamwiseCollection
     static final int TIMEOUT = 100;
 
     static final double MANUAL_POWER_J1 = 0.15;
-    static final double MANUAL_POWER_J2 = 0.15;
+    static final double MANUAL_POWER_J2 = 0.1;
     static final double MANUAL_POWER_J3 = 0.15;
 
     public SamwiseArm(HardwareMap hwm)
@@ -40,32 +40,22 @@ public class SamwiseArm extends SamwiseCollection
         motorJ3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-
-    public void driveJ1(double x)
+    public void driveJ1(boolean isLeft)
     {
-        //TODO
+        if (isLeft)
+        {
+            motorJ1.setPower(-0.7);
+        }
+        else
+        {
+            motorJ1.setPower(0.7);
+        }
     }
 
-    /**
-     * When mapped to joystick x/y
-     * @param x
-     */
-    public void driveJ2(double x)
+    public void stopJ1()
     {
-        //TODO
-        //TODO: hold J3 in position while driving J2
+        motorJ1.setPower(0);
     }
-
-    /**
-     * When mapped to joystick x/y
-     * @param x
-     */
-    public void driveJ3(double x)
-    {
-        //TODO
-        //TODO: hold J2 in position while driving J3
-    }
-
 
     public void stopJ3()
     {
@@ -79,6 +69,7 @@ public class SamwiseArm extends SamwiseCollection
 
     /**
      * When mapped to DPad
+     *
      * @param isUp
      */
     public void driveJ2(boolean isUp)
@@ -92,12 +83,13 @@ public class SamwiseArm extends SamwiseCollection
         }
         else
         {
-            motorJ2.setPower(MANUAL_POWER_J2);
+            motorJ2.setPower(0.1);
         }
     }
 
     /**
      * When mapped to DPad
+     *
      * @param isUp
      */
     public void driveJ3(boolean isUp)

@@ -67,22 +67,52 @@ public class ArmTeleOpTest extends OpMode
             }
         }
 
+
+//        if (gamepad1.left_stick_x > 0.1)
+//        {
+//            armStuff.driveJ1(true);
+//        }
+//        else if (gamepad1.left_stick_x < -0.1)
+//        {
+//            armStuff.driveJ1(false);
+//        }
+//        else
+//        {
+//            armStuff.stopJ1();
+//        }
+
+
         // to deposit position
 
         if (gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y)
         {
+//            if (gamepad1.x)
+//            {
+//                armStuff.silverDropPoint();
+//                isHoldingJ2 = false;
+//                isHoldingJ3 = false;
+//            }
+//
+//            if (gamepad1.y)
+//            {
+//                armStuff.goldDropPoint();
+//                isHoldingJ2 = false;
+//                isHoldingJ3 = false;
+//            }
+
             if (gamepad1.x)
             {
-                armStuff.silverDropPoint();
-                isHoldingJ2 = false;
-                isHoldingJ3 = false;
+                armStuff.driveJ1(true);
             }
 
             if (gamepad1.y)
             {
-                armStuff.goldDropPoint();
-                isHoldingJ2 = false;
-                isHoldingJ3 = false;
+                armStuff.driveJ1(false);
+            }
+
+            if(!gamepad1.x && !gamepad1.y)
+            {
+                armStuff.stopJ1();
             }
 
             if (gamepad1.a)
@@ -127,7 +157,7 @@ public class ArmTeleOpTest extends OpMode
             armStuff.depositMinerals();
         }
 
-        if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1 && armStuff.isCollecting())
+        if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1)
         {
             armStuff.stopCollecting();
             armStuff.setCollecting(false);
