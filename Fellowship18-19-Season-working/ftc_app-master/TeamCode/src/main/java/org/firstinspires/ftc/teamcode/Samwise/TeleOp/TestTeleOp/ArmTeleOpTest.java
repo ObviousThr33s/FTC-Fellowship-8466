@@ -44,6 +44,8 @@ public class ArmTeleOpTest extends OpMode
 
         if (gamepad1.dpad_left)
         {
+            armStuff.stop();
+
             if (!isHoldingJ2)
             {
                 armStuff.holdPositionJ2(true);
