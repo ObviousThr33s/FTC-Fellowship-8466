@@ -10,6 +10,7 @@ public class SamwiseSmart extends SamwiseArm
     public boolean holdJ3 = true;
     private int motor_position_j2;
     private int motor_position_j3;
+    private boolean isStop = false;
 
 
     boolean isCollectionPlane = false;
@@ -37,11 +38,12 @@ public class SamwiseSmart extends SamwiseArm
 
     static final double INITIAL_COL_ARM_L3 = 2 * (ARM_L1 + ARM_L2) / 3;
 
-    public double initialCollectionPosJ2;
-    public double initialCollectionPosJ3;
-    int previousPositionJ1 = 0;
-    double previousPositionJ2 = initialCollectionPosJ2;
-    double previousPositionJ3 = initialCollectionPosJ3;
+    public int initialCollectionPosJ1 = 4200;
+    public int initialCollectionPosJ2 = 300;
+    public int initialCollectionPosJ3 = 500;
+    int previousPositionJ1;
+    int previousPositionJ2;
+    int previousPositionJ3;
 
     static final double AUTO_POWER_J1 = 0.15;
     static final double AUTO_POWER_J2 = 0.15;
@@ -65,12 +67,16 @@ public class SamwiseSmart extends SamwiseArm
         double angle3       = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.pow(length_J2_J4, 2)) / (2 * ARM_L1 * ARM_L2)));
         double j2_degrees   = INITIAL_DEGREES_J2 - (angle1 + angle2 + 90);
         double j3_degrees   = angle3 - INITIAL_DEGREES_J3;
-        initialCollectionPosJ2 = TICKS_PER_DEGREE_J2 * j2_degrees;
-        initialCollectionPosJ3 = TICKS_PER_DEGREE_J3 * j3_degrees;
+        //        initialCollectionPosJ2 = TICKS_PER_DEGREE_J2 * j2_degrees;
+        //        initialCollectionPosJ3 = TICKS_PER_DEGREE_J3 * j3_degrees;
         previousPositionJ2 = initialCollectionPosJ2;
         previousPositionJ3 = initialCollectionPosJ3;
     }
 
+    public void stop()
+    {
+        isStop = true;
+    }
 
     public void savePreviousPosition()
     {
@@ -81,7 +87,7 @@ public class SamwiseSmart extends SamwiseArm
 
     public void toPreviousPosition()
     {
-        toPositionWithJ1(previousPositionJ1, (int) previousPositionJ2, (int) previousPositionJ3);
+        toPositionWithJ1(previousPositionJ1, previousPositionJ2, previousPositionJ3);
     }
 
     public void holdPositionJ2(boolean hold)
@@ -122,7 +128,8 @@ public class SamwiseSmart extends SamwiseArm
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ2.setPower(AUTO_POWER_J2);
         motorJ3.setPower(AUTO_POWER_J3);
-        while (motorJ2.isBusy() || motorJ3.isBusy())
+        isStop = false;
+        while ((motorJ2.isBusy() || motorJ3.isBusy()) && !isStop)
         {
             Thread.yield();
         }
@@ -139,7 +146,8 @@ public class SamwiseSmart extends SamwiseArm
         motorJ1.setPower(AUTO_POWER_J1);
         motorJ2.setPower(AUTO_POWER_J2);
         motorJ3.setPower(AUTO_POWER_J3);
-        while (motorJ1.isBusy() || motorJ2.isBusy() || motorJ3.isBusy())
+        isStop = false;
+        while ((motorJ1.isBusy() || motorJ2.isBusy() || motorJ3.isBusy()) && !isStop)
         {
             Thread.yield();
         }
@@ -162,7 +170,7 @@ public class SamwiseSmart extends SamwiseArm
     {
         System.out.println("toCollectionPlane");
         setManual(false);
-        toPosition((int) initialCollectionPosJ2, (int) initialCollectionPosJ3);
+        toPositionWithJ1(previousPositionJ1, previousPositionJ2, previousPositionJ3);
         setIsCollectionPlane(true);
     }
 
@@ -195,6 +203,18 @@ public class SamwiseSmart extends SamwiseArm
         toPositionWithJ1(SILVER_DROP_J1, SILVER_DROP_J2, SILVER_DROP_J3);
     }
 
+    //The arm can only be 15 inches away from the lander if the arm is to reach above the lander to deposit.
+    public void toLander()
+    {
+        toPosition(900, -1439);
+        if (!isStop)
+        {
+            motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorJ1.setPower(AUTO_POWER_J1);
+            motorJ1.setTargetPosition(4200);
+        }
+    }
+
     public void lowerJ4()
     {
         double tempJ3 = Math.toRadians((motorJ3.getCurrentPosition() + INITIAL_TICKS_J3) / TICKS_PER_DEGREE_J3);
@@ -205,15 +225,12 @@ public class SamwiseSmart extends SamwiseArm
         double collectingJ22 = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(k, 2) - Math.pow(ARM_L2, 2)) / (2 * ARM_L1 * k)));
         double collectingJ2  = collectingJ21 + collectingJ22;
         double collectingJ3  = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.pow(k, 2)) / (2 * ARM_L1 * ARM_L2)));
+        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ2.setPower(AUTO_POWER_J2);
+        motorJ3.setPower(AUTO_POWER_J3);
         motorJ2.setTargetPosition((int) ((collectingJ2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2));
         motorJ3.setTargetPosition((int) ((collectingJ3 - INITIAL_TICKS_J3) * TICKS_PER_DEGREE_J3));
-    }
-
-    public void smartCollectMinerals()
-    {
-        savePreviousPosition();
-        lowerJ4();
-        super.collectMinerals();
     }
 
 
