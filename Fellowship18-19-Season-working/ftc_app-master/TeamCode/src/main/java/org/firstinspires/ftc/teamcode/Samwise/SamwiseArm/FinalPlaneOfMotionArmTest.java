@@ -54,6 +54,8 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     double J2FirsttoLast = 4;
     double J3FirsttoLast = 2;
 
+    int HoldPosONOFF = 1;
+
     public void init() {
         ArmMotor1 = hardwareMap.dcMotor.get("ArmMotor1");
         ArmMotor2 = hardwareMap.dcMotor.get("ArmMotor2");
@@ -120,15 +122,15 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
         ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void loop() {
-
+        if (Math.abs(gamepad1.left_stick_y)>0.1) {
 //        init_loop();
-        if (gamepad1.left_stick_y <= -0.01) { //push forward
-            ArmMotor2.setTargetPosition((int)(J2MaxPos *J2FirsttoLast));
-        }
-        if (gamepad1.left_stick_y >= 0.01) { //backwards
-            ArmMotor2.setTargetPosition((int)(J2MinPos * J2FirsttoLast));
-        }
-        ArmMotor2.setPower(gamepad1.left_stick_y/1.7);
+            if (gamepad1.left_stick_y <= -0.01) { //push forward
+                ArmMotor2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
+            }
+            if (gamepad1.left_stick_y >= 0.01) { //backwards
+                ArmMotor2.setTargetPosition((int) (J2MinPos * J2FirsttoLast));
+            }
+            ArmMotor2.setPower(gamepad1.left_stick_y / 1.7);
         /*double J2CurrentPos_Ticks = ArmMotor2.getCurrentPosition();
         if (J2CurrentPos_Ticks <= mininticks) {
             if (gamepad1.left_stick_y >= 0.02) {
@@ -140,36 +142,49 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
                 ArmMotor2.setPower(0);
             }
         }*/
-        ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(gamepad1.left_stick_y ==0) {
-            ArmMotor2.setPower(0);
-        }
-        double J2CurrentPos_deg;
+            ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if (gamepad1.left_stick_y == 0) {
+                ArmMotor2.setPower(0);
+            }
+            double J2CurrentPos_deg;
 
-        double J3TargetPos_deg;
-        double J3TargetPos_Ticks;
-        double a, b, c, c_1, d;
-        J2CurrentPos_deg = (ArmMotor2.getCurrentPosition() / TickPerDegreeJ2);
-        a = Math.cos(Math.toRadians(180.0 - J2CurrentPos_deg));
-        b = (L1 * a - H) / L2;
-        c = Math.acos(b);
-        c_1 = Math.toDegrees(c);
-        d = c_1 + 180.0 - J2CurrentPos_deg;
-        J3TargetPos_deg = d;
-        J3TargetPos_Ticks = J3TargetPos_deg * TickPerDegreeJ3;
+            double J3TargetPos_deg;
+            double J3TargetPos_Ticks;
+            double a, b, c, c_1, d;
+            J2CurrentPos_deg = (ArmMotor2.getCurrentPosition() / TickPerDegreeJ2);
+            a = Math.cos(Math.toRadians(180.0 - J2CurrentPos_deg));
+            b = (L1 * a - H) / L2;
+            c = Math.acos(b);
+            c_1 = Math.toDegrees(c);
+            d = c_1 + 180.0 - J2CurrentPos_deg;
+            J3TargetPos_deg = d;
+            J3TargetPos_Ticks = J3TargetPos_deg * TickPerDegreeJ3;
 
-        ArmMotor3.setTargetPosition((int)(J3TargetPos_Ticks * 3 * J3FirsttoLast));
-        ArmMotor3.setPower(0.1); //test Power LAtEr
-        ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //J1
-        double RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
-        ArmMotor1.setTargetPosition((int)RotationJoint); //Joint 1 (turn table)
-        ArmMotor1.setPower(0.1);
-        ArmMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (gamepad1.b) {
-            ArmMotor1.setPower(0);
-            ArmMotor2.setPower(0);
-            ArmMotor3.setPower(0);
+            ArmMotor3.setTargetPosition((int) (J3TargetPos_Ticks * 3 * J3FirsttoLast));
+            ArmMotor3.setPower(0.1); //test Power LAtEr
+            ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //J1
+            double RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
+            ArmMotor1.setTargetPosition((int) RotationJoint); //Joint 1 (turn table)
+            ArmMotor1.setPower(0.1);
+            ArmMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if (gamepad1.b) {
+                ArmMotor1.setPower(0);
+                ArmMotor2.setPower(0);
+                ArmMotor3.setPower(0);
+            }
+            HoldPosONOFF = 1;
+        } else {
+            if (HoldPosONOFF == 1) {
+                ArmMotor2.setTargetPosition(ArmMotor2.getCurrentPosition());
+                ArmMotor3.setTargetPosition(ArmMotor3.getCurrentPosition());
+                ArmMotor2.setPower(1);
+                ArmMotor3.setPower(1);
+                ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                HoldPosONOFF = 2;
+            }
+
         }
     }
     public void stop() {
