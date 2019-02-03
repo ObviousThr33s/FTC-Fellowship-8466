@@ -21,7 +21,9 @@ public class SamwiseArm extends SamwiseCollection
 
     static final double MANUAL_POWER_J1 = 0.15;
     static final double MANUAL_POWER_J2 = 0.1;
-    static final double MANUAL_POWER_J3 = 0.15;
+    public static final double MAX_POWER_J3 = 0.15;
+    public static final double MID_POWER_J3 = 0.1;
+    public static final double MIN_POWER_J3 = 0.05;
 
     public SamwiseArm(HardwareMap hwm)
     {
@@ -46,11 +48,11 @@ public class SamwiseArm extends SamwiseCollection
 
         if (isLeft)
         {
-            motorJ1.setPower(-0.7);
+            motorJ1.setPower(-0.4);
         }
         else
         {
-            motorJ1.setPower(0.7);
+            motorJ1.setPower(0.4);
         }
     }
 
@@ -84,7 +86,7 @@ public class SamwiseArm extends SamwiseCollection
         }
         else
         {
-            motorJ2.setPower(0.1);
+            motorJ2.setPower(MANUAL_POWER_J2);
         }
     }
 
@@ -99,11 +101,33 @@ public class SamwiseArm extends SamwiseCollection
 
         if (isUp)
         {
-            motorJ3.setPower(-MANUAL_POWER_J3);
+            if (Math.abs(motorJ3.getCurrentPosition()) <= 996.8)
+            {
+                motorJ3.setPower(MAX_POWER_J3);
+            }
+            else if (Math.abs(motorJ3.getCurrentPosition()) > 996.8 && Math.abs(motorJ3.getCurrentPosition()) <= 1993.6)
+            {
+                motorJ3.setPower(MID_POWER_J3);
+            }
+            else if (Math.abs(motorJ3.getCurrentPosition()) > 1993.6)
+            {
+                motorJ3.setPower(MIN_POWER_J3);
+            }
         }
         else
         {
-            motorJ3.setPower(MANUAL_POWER_J3);
+            if (Math.abs(motorJ3.getCurrentPosition()) <= 996.8)
+            {
+                motorJ3.setPower(MIN_POWER_J3);
+            }
+            else if (Math.abs(motorJ3.getCurrentPosition()) > 996.8 && Math.abs(motorJ3.getCurrentPosition()) <= 1993.6)
+            {
+                motorJ3.setPower(MID_POWER_J3);
+            }
+            else if (Math.abs(motorJ3.getCurrentPosition()) > 1993.6)
+            {
+                motorJ3.setPower(MAX_POWER_J3);
+            }
         }
     }
 
@@ -159,8 +183,8 @@ public class SamwiseArm extends SamwiseCollection
     public void extendL2()
     {
         //TODO: may need to add back when OCTO is in use
-        /*servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoE2.setPower(0.7);*/
+        servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoE2.setPower(0.8);
     }
 
     public void stopExtendL1()
@@ -172,17 +196,17 @@ public class SamwiseArm extends SamwiseCollection
     public void stopExtendL2()
     {
         //TODO: may need to add back when OCTO is in use
-        /*servoE2.setPower(0);*/
+        servoE2.setPower(0);
     }
 
     public void retractArm()
     {
         //TODO: may need to add back when OCTO is in use
         /*motorE1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorE1.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorE1.setDirection(DcMotorSimple.Direction.REVERSE);*/
         servoE2.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorE1.setPower(0.2);
-        servoE2.setPower(0.8);*/
+        //        motorE1.setPower(0.2);
+        servoE2.setPower(0.8);
     }
 
     public int getE1CurrentPosition()
@@ -191,7 +215,9 @@ public class SamwiseArm extends SamwiseCollection
         /*return motorE1.getCurrentPosition();*/
         return 0;
     }
-    public void Arm90DegreePositioning() {
+
+    public void Arm90DegreePositioning()
+    {
         motorJ1.setTargetPosition(motorJ1.getCurrentPosition());
     }
 }

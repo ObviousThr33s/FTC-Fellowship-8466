@@ -81,6 +81,18 @@ public class ArmTeleOpTest extends OpMode
             armStuff.stopJ1();
         }
 
+        if (gamepad1.right_stick_x < -0.1)
+        {
+            armStuff.extendL2();
+        }
+        else if (gamepad1.right_stick_x > 0.1)
+        {
+            armStuff.retractArm();
+        }
+        else
+        {
+            armStuff.stopExtendL2();
+        }
 
         // to deposit position
 

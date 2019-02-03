@@ -45,9 +45,9 @@ public class SamwiseSmart extends SamwiseArm
     int previousPositionJ2;
     int previousPositionJ3;
 
-    static final double AUTO_POWER_J1 = 0.15;
-    static final double AUTO_POWER_J2 = 0.15;
-    static final double AUTO_POWER_J3 = 0.15;
+    static final double AUTO_POWER_J1 = 0.05;
+    static final double AUTO_POWER_J2 = 0.05;
+    static final double AUTO_POWER_J3 = 0.05;
     static final double HOLD_POWER = 0.3;
 
     static final int GOLD_DROP_J1 = 20;
@@ -156,7 +156,7 @@ public class SamwiseSmart extends SamwiseArm
         System.out.println("Going To Initial Position");
         setManual(false);
         setIsCollectionPlane(false);
-        toPosition();
+        toPositionWithJ1();
         motorJ3.setTargetPosition(443);
         motorJ1.setTargetPosition(0);
         motorJ2.setTargetPosition(0);
