@@ -12,7 +12,7 @@ public class ArmTeleOpTest extends OpMode
 {
     private SamwiseGenius armStuff;
 
-    private boolean manual = false;
+    private boolean manual = true;
     private boolean isHoldingJ2 = false;
     private boolean isHoldingJ3 = false;
     private boolean collect = false;
@@ -85,59 +85,51 @@ public class ArmTeleOpTest extends OpMode
         {
             armStuff.extendL2();
         }
-        else if (gamepad1.right_stick_x > 0.1)
-        {
-            armStuff.retractArm();
-        }
-        else
+        else if (gamepad1.right_stick_x > -0.1 && gamepad1.right_stick_x < 0.1)
         {
             armStuff.stopExtendL2();
         }
 
         // to deposit position
-
-        if (gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y)
+        if (gamepad1.x)
         {
-            if (gamepad1.x)
-            {
-                armStuff.silverDropPoint();
-                isHoldingJ2 = false;
-                isHoldingJ3 = false;
-            }
-
-            if (gamepad1.y)
-            {
-                armStuff.goldDropPoint();
-                isHoldingJ2 = false;
-                isHoldingJ3 = false;
-            }
-
-
-            if (gamepad1.a)
-            {
-                armStuff.toInitialPosition();
-                isHoldingJ2 = false;
-                isHoldingJ3 = false;
-            }
-
-            // to collection position
-            if (gamepad1.b)
-            {
-                if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
-                {
-                    armStuff.toCollectionPlane();
-                    isHoldingJ2 = false;
-                    isHoldingJ3 = false;
-                }
-                else
-                {
-                    armStuff.toPreviousPosition();
-                    isHoldingJ2 = false;
-                    isHoldingJ3 = false;
-                }
-            }
-
+            armStuff.silverDropPoint();
+            isHoldingJ2 = false;
+            isHoldingJ3 = false;
         }
+
+        if (gamepad1.y)
+        {
+            armStuff.goldDropPoint();
+            isHoldingJ2 = false;
+            isHoldingJ3 = false;
+        }
+
+
+        if (gamepad1.a)
+        {
+            armStuff.toInitialPosition();
+            isHoldingJ2 = false;
+            isHoldingJ3 = false;
+        }
+
+        // to collection position
+        if (gamepad1.b)
+        {
+            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+            {
+                armStuff.toCollectionPlane();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
+            }
+            else
+            {
+                armStuff.toPreviousPosition();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
+            }
+        }
+
         // collection and deposit
         if (gamepad1.left_trigger > 0.1)
         {
