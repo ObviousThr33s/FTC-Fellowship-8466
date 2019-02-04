@@ -21,9 +21,7 @@ public class SamwiseArm extends SamwiseCollection
 
     static final double MANUAL_POWER_J1 = 0.15;
     static final double MANUAL_POWER_J2 = 0.1;
-    public static final double MAX_POWER_J3 = 0.15;
-    public static final double MID_POWER_J3 = 0.1;
-    public static final double MIN_POWER_J3 = 0.05;
+    static final double MANUAL_POWER_J3 = 0.25;
 
     public SamwiseArm(HardwareMap hwm)
     {
@@ -33,6 +31,7 @@ public class SamwiseArm extends SamwiseCollection
         motorJ1 = hwm.dcMotor.get("J1");
         motorJ2 = hwm.dcMotor.get("J2");
         motorJ3 = hwm.dcMotor.get("J3");
+        servoE2 = hwm.crservo.get("E2");
 
         motorJ1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorJ1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -48,11 +47,11 @@ public class SamwiseArm extends SamwiseCollection
 
         if (isLeft)
         {
-            motorJ1.setPower(-0.4);
+            motorJ1.setPower(MANUAL_POWER_J1);
         }
         else
         {
-            motorJ1.setPower(0.4);
+            motorJ1.setPower(-MANUAL_POWER_J1);
         }
     }
 
@@ -82,11 +81,11 @@ public class SamwiseArm extends SamwiseCollection
 
         if (isUp)
         {
-            motorJ2.setPower(-MANUAL_POWER_J2);
+            motorJ2.setPower(MANUAL_POWER_J2);
         }
         else
         {
-            motorJ2.setPower(MANUAL_POWER_J2);
+            motorJ2.setPower(-MANUAL_POWER_J2);
         }
     }
 
@@ -101,33 +100,11 @@ public class SamwiseArm extends SamwiseCollection
 
         if (isUp)
         {
-            if (Math.abs(motorJ3.getCurrentPosition()) <= 996.8)
-            {
-                motorJ3.setPower(MAX_POWER_J3);
-            }
-            else if (Math.abs(motorJ3.getCurrentPosition()) > 996.8 && Math.abs(motorJ3.getCurrentPosition()) <= 1993.6)
-            {
-                motorJ3.setPower(MID_POWER_J3);
-            }
-            else if (Math.abs(motorJ3.getCurrentPosition()) > 1993.6)
-            {
-                motorJ3.setPower(MIN_POWER_J3);
-            }
+            motorJ3.setPower(-MANUAL_POWER_J3);
         }
         else
         {
-            if (Math.abs(motorJ3.getCurrentPosition()) <= 996.8)
-            {
-                motorJ3.setPower(MIN_POWER_J3);
-            }
-            else if (Math.abs(motorJ3.getCurrentPosition()) > 996.8 && Math.abs(motorJ3.getCurrentPosition()) <= 1993.6)
-            {
-                motorJ3.setPower(MID_POWER_J3);
-            }
-            else if (Math.abs(motorJ3.getCurrentPosition()) > 1993.6)
-            {
-                motorJ3.setPower(MAX_POWER_J3);
-            }
+            motorJ3.setPower(MANUAL_POWER_J3);
         }
     }
 

@@ -230,7 +230,7 @@ public class SamwiseSmart extends SamwiseArm
 
     public void lowerJ4()
     {
-        double tempJ3 = Math.toRadians((motorJ3.getCurrentPosition() + INITIAL_TICKS_J3) / TICKS_PER_DEGREE_J3);
+        double tempJ3 = Math.toRadians(Math.abs((motorJ3.getCurrentPosition()) + INITIAL_TICKS_J3) / TICKS_PER_DEGREE_J3);
         double k      = Math.sqrt(Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.cos(tempJ3) * 2 * ARM_L1 * ARM_L2);
         double L3     = Math.sqrt(Math.pow(k, 2) - Math.pow(HEIGHT_PLANE_OF_MOTION, 2));
         k = Math.sqrt(Math.pow(L3, 2) + Math.pow(J4_COLLECTION_HEIGHT, 2));
