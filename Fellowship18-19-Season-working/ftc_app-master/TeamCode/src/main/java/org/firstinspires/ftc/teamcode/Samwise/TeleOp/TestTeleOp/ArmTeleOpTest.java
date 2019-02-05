@@ -222,6 +222,7 @@ public class ArmTeleOpTest extends OpMode
         else
         {
             //TODO: Michael, put your plane of motion code in here when you're done with it.
+            armStuff.PlaneOfMotion(gamepad1.left_stick_y);
         }
 
     }
