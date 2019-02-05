@@ -107,16 +107,16 @@ public class SamwiseTeleOp extends OpMode
         //Hanger system
         //if the a button is pressed then is moves the hanger arm
 
-        swHang.move(gamepad1.right_stick_y);
+        swHang.move(gamepad2.right_stick_y);
 
-        if (gamepad1.left_bumper)
+        if (gamepad2.left_bumper)
         {
             System.out.println("==> Hanger unhooking ...");
             //telemetry.addData("Mode", "Unhooking");
             swHang.unHook();
             return;
         }
-        else if (gamepad1.right_bumper)
+        else if (gamepad2.right_bumper)
         {
             System.out.println("==> Hanger hooking ...");
             //telemetry.addData("Mode", "hooking");
@@ -124,43 +124,43 @@ public class SamwiseTeleOp extends OpMode
             return;
         }
 
-        if (gamepad1.dpad_down)
+        if (gamepad2.dpad_down)
         {
             swHang.markerservo1.setPosition(.76);
         }
-        if (gamepad1.y)
+        if (gamepad2.y)
         {
             swHang.markerservo1.setPosition(.76);
         }
 
         //Drive Train
-        if (gamepad1.b)
+        if (gamepad2.b)
         {
             powerlevel = 0.5;
             System.out.println("50% power");
         }
-        else if (gamepad1.a)
+        else if (gamepad2.a)
         {
             powerlevel = .7;
             System.out.println("70% power");
         }
-        else if (gamepad1.x)
+        else if (gamepad2.x)
         {
             powerlevel = 1;
             System.out.println("max power");
         }
 
-        if (Math.abs(gamepad1.left_stick_x) <= Math.abs(gamepad1.left_stick_y))
+        if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y))
         {
-            float MotorPower = gamepad1.left_stick_y;
+            float MotorPower = gamepad2.left_stick_y;
 
             leftdrive.setPower(MotorPower * powerlevel);
             rightdrive.setPower(MotorPower * powerlevel);
             //System.out.println("==> moving ...");
         }
-        if (Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y))
+        if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y))
         {
-            float TurnMotorPower = gamepad1.left_stick_x;
+            float TurnMotorPower = gamepad2.left_stick_x;
 
             leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
             rightdrive.setPower(TurnMotorPower * powerlevel);

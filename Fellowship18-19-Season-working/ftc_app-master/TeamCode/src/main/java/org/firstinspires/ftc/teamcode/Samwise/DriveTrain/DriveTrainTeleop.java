@@ -26,28 +26,28 @@ public class DriveTrainTeleop extends OpMode {
     }
 
     public void loop() {
-        if(gamepad1.b) {
+        if(gamepad2.b) {
             powerlevel = 0.5;
             System.out.println("50% power");
         }
-        else if(gamepad1.a) {
+        else if(gamepad2.a) {
             powerlevel = .7;
             System.out.println("70% power");
         }
-        else if(gamepad1.x) {
+        else if(gamepad2.x) {
             powerlevel = 1;
             System.out.println("max power");
         }
 
-        if(Math.abs(gamepad1.left_stick_x) <= Math.abs(gamepad1.left_stick_y)) {
-            float MotorPower = gamepad1.left_stick_y;
+        if(Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y)) {
+            float MotorPower = gamepad2.left_stick_y;
 
             leftdrive.setPower(MotorPower * powerlevel);
             rightdrive.setPower(MotorPower * powerlevel);
             System.out.println("==> moving ...");
         }
-        else if(Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
-            float TurnMotorPower = gamepad1.left_stick_x;
+        else if(Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
+            float TurnMotorPower = gamepad2.left_stick_x;
 
             leftdrive.setPower(TurnMotorPower * powerlevel);
             rightdrive.setPower(-1 * TurnMotorPower * powerlevel);

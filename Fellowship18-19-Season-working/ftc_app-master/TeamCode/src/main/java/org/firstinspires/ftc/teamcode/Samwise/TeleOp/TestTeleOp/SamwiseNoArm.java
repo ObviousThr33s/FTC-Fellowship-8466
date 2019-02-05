@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
  *                  8. Aim, hang up, and stay                                                       *
  ****************************************************************************************************/
 @TeleOp(name = "Samwise no arm", group = "Samwise")
-@Disabled
+//@Disabled
 public class SamwiseNoArm extends OpMode {
 
     /* Declare OpMode members. */
@@ -65,53 +65,53 @@ public class SamwiseNoArm extends OpMode {
          ************************************************************************************************/
 
         //power settings to control the motors maxuimium power
-        if(gamepad1.b) {
+        if(gamepad2.b) {
             powerlevel = 0.5;
             System.out.println("50% power");
         }
-        else if(gamepad1.a) {
+        else if(gamepad2.a) {
             powerlevel = .7;
             System.out.println("70% power");
         }
-        else if(gamepad1.x) {
+        else if(gamepad2.x) {
             powerlevel = 1;
             System.out.println("max power");
         }
 
         //Hanger system
         //if the a button is pressed then is moves the hanger arm
-        swHang.move(gamepad1.right_stick_y);
+        swHang.move(gamepad2.right_stick_y);
 
-        if (gamepad1.left_bumper) {
+        if (gamepad2.left_bumper) {
             System.out.println("==> Hanger unhooking ...");
             //telemetry.addData("Mode", "Unhooking");
             swHang.unHook();
             return;
         }
-        else if (gamepad1.right_bumper) {
+        else if (gamepad2.right_bumper) {
             System.out.println("==> Hanger hooking ...");
             //telemetry.addData("Mode", "hooking");
             swHang.Hook();
             return;
         }
 
-        if(gamepad1.dpad_down) {
+        if(gamepad2.dpad_down) {
             swHang.markerservo1.setPosition(.76);
         }
-        if(gamepad1.y) {
+        if(gamepad2.y) {
             swHang.markerservo1.setPosition(.76);
         }
 
         //Drive Train
-        if(Math.abs(gamepad1.left_stick_x) <= Math.abs(gamepad1.left_stick_y)) {
-            float MotorPower = gamepad1.left_stick_y;
+        if(Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y)) {
+            float MotorPower = gamepad2.left_stick_y;
 
             leftdrive.setPower(MotorPower * powerlevel);
             rightdrive.setPower(MotorPower * powerlevel);
             //System.out.println("==> moving ...");
         }
-        else if(Math.abs(gamepad1.left_stick_x) > Math.abs(gamepad1.left_stick_y)) {
-            float TurnMotorPower = gamepad1.left_stick_x;
+        else if(Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
+            float TurnMotorPower = gamepad2.left_stick_x;
 
             leftdrive.setPower(TurnMotorPower * powerlevel);
             rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
