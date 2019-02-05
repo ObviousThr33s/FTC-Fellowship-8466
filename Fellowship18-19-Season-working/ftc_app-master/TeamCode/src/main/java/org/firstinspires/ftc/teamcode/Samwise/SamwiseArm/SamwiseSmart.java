@@ -230,7 +230,7 @@ public class SamwiseSmart extends SamwiseArm
 
     public void lowerJ4()
     {
-        double tempJ3 = Math.toRadians((motorJ3.getCurrentPosition() + INITIAL_TICKS_J3) / TICKS_PER_DEGREE_J3);
+        double tempJ3 = Math.toRadians(Math.abs((motorJ3.getCurrentPosition()) + INITIAL_TICKS_J3) / TICKS_PER_DEGREE_J3);
         double k      = Math.sqrt(Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.cos(tempJ3) * 2 * ARM_L1 * ARM_L2);
         double L3     = Math.sqrt(Math.pow(k, 2) - Math.pow(HEIGHT_PLANE_OF_MOTION, 2));
         k = Math.sqrt(Math.pow(L3, 2) + Math.pow(J4_COLLECTION_HEIGHT, 2));
@@ -240,8 +240,8 @@ public class SamwiseSmart extends SamwiseArm
         double collectingJ3  = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.pow(k, 2)) / (2 * ARM_L1 * ARM_L2)));
         motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setPower(-AUTO_POWER_J2);
-        motorJ3.setPower(-AUTO_POWER_J3);
+        motorJ2.setPower(AUTO_POWER_J2);
+        motorJ3.setPower(AUTO_POWER_J3);
         motorJ2.setTargetPosition((int) ((collectingJ2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2));
         motorJ3.setTargetPosition((int) ((collectingJ3 - INITIAL_TICKS_J3) * TICKS_PER_DEGREE_J3));
     }
