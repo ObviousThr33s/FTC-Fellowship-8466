@@ -149,8 +149,8 @@ public class SamwiseTeleOp extends OpMode {
         if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
             float TurnMotorPower = gamepad2.left_stick_x;
 
-            leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
-            rightdrive.setPower(TurnMotorPower * powerlevel);
+            leftdrive.setPower(TurnMotorPower * powerlevel);
+            rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
             //System.out.println("==> turning ...");
         }
 
