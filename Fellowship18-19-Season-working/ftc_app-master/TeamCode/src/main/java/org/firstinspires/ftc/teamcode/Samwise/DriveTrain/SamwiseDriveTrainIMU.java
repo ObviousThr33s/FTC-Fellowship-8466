@@ -41,14 +41,24 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-        imu = hwm.get(BNO055IMU.class, "imu");
 
-        boolean imuInitialized = imu.initialize(parameters);
+        boolean imuInitialized = false; // = imu.initialize(parameters);
 
-        if (!imuInitialized) {
+        for ( int i = 0; i<3; i++) {
             //RobotLog.v("IMU initialization: ", "failed to initialize.");
-            System.out.println("==> IMU initialization: failed to initialize.");
-        } else {
+            System.out.println("==> initializing first imu ...");
+            imu = hwm.get(BNO055IMU.class, "imu");
+            imuInitialized = imu.initialize(parameters);
+            if(imuInitialized)
+                break;
+            System.out.println("==> IMU initialization failed. Trying 2nd imu ...");
+            imu = hwm.get(BNO055IMU.class, "imu1");
+            imuInitialized = imu.initialize(parameters);
+            if(imuInitialized)
+                break;
+        }
+
+        if(imuInitialized) {
             //RobotLog.v("Mode", "calibrating...");
             System.out.println("==> IMU initialization: calibrating ...");
             // make sure the imu gyro is calibrated before continuing.
@@ -67,6 +77,9 @@ public class SamwiseDriveTrainIMU extends SamwiseDriveTrain {
             System.out.println("==>imu calib status" + imu.getCalibrationStatus().toString());
             System.out.println("==>IMU heading: " + imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
             System.out.println("==>Mode" + "waiting for start");
+        }
+        else {
+            System.out.println("==>==> WARNING: IMU initialization failed after exhausting the tries !!!!");
         }
     }
 

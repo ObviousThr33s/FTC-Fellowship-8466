@@ -51,8 +51,7 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseSmart;
  ****************************************************************************************************/
 @TeleOp(name = "Samwise: Teleop Tank", group = "Samwise")
 //@Disabled
-public class SamwiseTeleOp extends OpMode
-{
+public class SamwiseTeleOp extends OpMode {
 
     /* Declare OpMode members. */
     public SamwiseHanger swHang = new SamwiseHanger();
@@ -63,10 +62,13 @@ public class SamwiseTeleOp extends OpMode
     public DcMotor leftdrive = null;
     public DcMotor rightdrive = null;
     private double powerlevel = 1.0;
+    private boolean manual = true;
+    private boolean isHoldingJ2 = false;
+    private boolean isHoldingJ3 = false;
+    private boolean collect = false;
 
     @Override
-    public void init()
-    {
+    public void init() {
         swHang.init(hardwareMap, telemetry);
 
         //swDTrain.init(hardwareMap, telemetry);
@@ -84,21 +86,18 @@ public class SamwiseTeleOp extends OpMode
 
 
     @Override
-    public void init_loop()
-    {
+    public void init_loop() {
     }
 
     @Override
-    public void start()
-    {
+    public void start() {
     }
 
     /**
      * This is where our main teleop gamepad input and functions mapping go.
      */
     @Override
-    public void loop()
-    {
+    public void loop() {
         /************************************** Gamepad #1 Mappings *************************************
          *                               Samwise Drive Train and Hanging                                *
          *                       (Please add related function mappings below)                           *
@@ -109,57 +108,45 @@ public class SamwiseTeleOp extends OpMode
 
         swHang.move(gamepad2.right_stick_y);
 
-        if (gamepad2.left_bumper)
-        {
+        if (gamepad2.left_bumper) {
             System.out.println("==> Hanger unhooking ...");
             //telemetry.addData("Mode", "Unhooking");
             swHang.unHook();
             return;
-        }
-        else if (gamepad2.right_bumper)
-        {
+        } else if (gamepad2.right_bumper) {
             System.out.println("==> Hanger hooking ...");
             //telemetry.addData("Mode", "hooking");
             swHang.Hook();
             return;
         }
 
-        if (gamepad2.dpad_down)
-        {
+        if (gamepad2.dpad_down) {
             swHang.markerservo1.setPosition(.76);
         }
-        if (gamepad2.y)
-        {
+        if (gamepad2.y) {
             swHang.markerservo1.setPosition(.76);
         }
 
         //Drive Train
-        if (gamepad2.b)
-        {
+        if (gamepad2.b) {
             powerlevel = 0.5;
             System.out.println("50% power");
-        }
-        else if (gamepad2.a)
-        {
+        } else if (gamepad2.a) {
             powerlevel = .7;
             System.out.println("70% power");
-        }
-        else if (gamepad2.x)
-        {
+        } else if (gamepad2.x) {
             powerlevel = 1;
             System.out.println("max power");
         }
 
-        if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y))
-        {
+        if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y)) {
             float MotorPower = gamepad2.left_stick_y;
 
             leftdrive.setPower(MotorPower * powerlevel);
             rightdrive.setPower(MotorPower * powerlevel);
             //System.out.println("==> moving ...");
         }
-        if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y))
-        {
+        if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
             float TurnMotorPower = gamepad2.left_stick_x;
 
             leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
@@ -198,31 +185,23 @@ public class SamwiseTeleOp extends OpMode
         //        }
 
 
-        if (gamepad1.a)
-        {
+        if (gamepad1.a) {
             //            armStuff.moveJ4Up();
             armStuff.savePreviousPosition();
 //            armStuff.top();
         }
 
-        if (gamepad1.b)
-        {
+        if (gamepad1.b) {
             armStuff.moveJ4Down();
         }
-        if (gamepad1.right_stick_y > 0.02)
-        {
+        if (gamepad1.right_stick_y > 0.02) {
             this.armStuff.extendL1();
-        }
-        else
-        {
+        } else {
             this.armStuff.stopExtendL1();
         }
-        if (gamepad1.left_stick_y > 0.02)
-        {
+        if (gamepad1.left_stick_y > 0.02) {
             this.armStuff.extendL2();
-        }
-        else
-        {
+        } else {
             this.armStuff.stopExtendL2();
         }
 //        if (gamepad1.right_stick_x > 0.05)
@@ -246,79 +225,146 @@ public class SamwiseTeleOp extends OpMode
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
 
-        // Manual driveToCrater
-        if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_right || gamepad1.dpad_left)
-        {
-            armStuff.setManual(true);
+        telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
+        telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
+        telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
+        telemetry.update();
+
+        if (gamepad1.dpad_up) {
+            manual = true;
         }
-        //move J2 up
-        if (gamepad1.dpad_right)
-        {
-            armStuff.driveJ2(true);
+
+        if (gamepad1.dpad_down) {
+            manual = false;
         }
-        else
-        {
-            if (armStuff.isManual() && !gamepad1.dpad_left)
-            {
-                armStuff.stopJ2();
+
+        if (gamepad1.dpad_left) {
+            armStuff.stop();
+
+            if (!isHoldingJ2) {
+                armStuff.holdPositionJ2(true);
+                isHoldingJ2 = true;
+            } else {
+                armStuff.holdPositionJ2(false);
+            }
+
+            if (!isHoldingJ3) {
+                armStuff.holdPositionJ3(true);
+                isHoldingJ3 = true;
+            } else {
+                armStuff.holdPositionJ3(false);
             }
         }
 
-        //move J2 down
-        if (gamepad1.dpad_left)
-        {
-            armStuff.driveJ2(false);
-        }
-        else
-        {
-            if (armStuff.isManual() && !gamepad1.dpad_right)
-            {
-                armStuff.stopJ2();
-            }
+
+        if (gamepad1.left_stick_x > 0.1) {
+            armStuff.driveJ1(true);
+        } else if (gamepad1.left_stick_x < -0.1) {
+            armStuff.driveJ1(false);
+        } else {
+            armStuff.stopJ1();
         }
 
-        //move J3 up
-        if (gamepad1.dpad_up)
-        {
-            armStuff.driveJ3(true);
-        }
-        else
-        {
-            if (armStuff.isManual() && !gamepad1.dpad_down)
-            {
-                armStuff.stopJ3();
-            }
+        if (gamepad1.right_stick_x < -0.1) {
+            armStuff.extendL2();
+        } else if (gamepad1.right_stick_x > -0.1 && gamepad1.right_stick_x < 0.1) {
+            armStuff.stopExtendL2();
         }
 
-        //move J3 down
-        if (gamepad1.dpad_down)
-        {
-            armStuff.driveJ3(false);
+        // to deposit position
+        if (gamepad1.x) {
+            armStuff.silverDropPoint();
+            isHoldingJ2 = false;
+            isHoldingJ3 = false;
         }
-        else
-        {
-            if (armStuff.isManual() && !gamepad1.dpad_up)
-            {
-                armStuff.stopJ3();
+
+        if (gamepad1.y) {
+            armStuff.goldDropPoint();
+            isHoldingJ2 = false;
+            isHoldingJ3 = false;
+        }
+
+
+        if (gamepad1.a) {
+            armStuff.toInitialPosition();
+            isHoldingJ2 = false;
+            isHoldingJ3 = false;
+        }
+
+        // to collection position
+        if (gamepad1.b) {
+            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10) {
+                armStuff.toCollectionPlane();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
+            } else {
+                armStuff.toPreviousPosition();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
             }
         }
 
         // collection and deposit
-        if (gamepad1.left_trigger > 0)
-        {
-            armStuff.collectMinerals();
+        if (gamepad1.left_trigger > 0.1) {
+            armStuff.savePreviousPosition();
+            armStuff.lowerJ4();
+            collect = true;
+            if (collect) {
+                armStuff.collectMinerals();
+            }
         }
 
-        if (gamepad1.right_trigger > 0)
-        {
+        if (gamepad1.right_trigger > 0.1) {
             armStuff.depositMinerals();
         }
 
-
-        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0 && armStuff.isCollecting())
-        {
+        if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1) {
             armStuff.stopCollecting();
             armStuff.setCollecting(false);
+        }
+
+        if (gamepad1.left_bumper) {
+            armStuff.moveJ4Up();
+        }
+
+        if (gamepad1.right_bumper) {
+            armStuff.moveJ4Down();
+        }
+
+        if (!gamepad1.left_bumper && !gamepad1.right_bumper) {
+            armStuff.stopJ4();
+        }
+
+        if (manual) {
+
+            if (gamepad1.right_stick_y > 0.1) {
+                armStuff.driveJ3(false);
+                isHoldingJ3 = false;
+            } else if (gamepad1.right_stick_y < -0.1) {
+                armStuff.driveJ3(true);
+                isHoldingJ3 = false;
+            } else if (isHoldingJ3) {
+                armStuff.holdPositionJ3(false);
+            } else {
+                armStuff.holdPositionJ3(true);
+                isHoldingJ3 = true;
+            }
+
+            if (gamepad1.left_stick_y > 0.1) {
+                armStuff.driveJ2(false);
+                isHoldingJ2 = false;
+            } else if (gamepad1.left_stick_y < -0.1) {
+                armStuff.driveJ2(true);
+                isHoldingJ2 = false;
+            } else if (isHoldingJ2) {
+                armStuff.holdPositionJ2(false);
+            } else {
+                armStuff.holdPositionJ2(true);
+                isHoldingJ2 = true;
+            }
+        } else {
+            //TODO: Michael, put your plane of motion code in here when you're done with it.
+            armStuff.PlaneOfMotion(gamepad1.left_stick_y);
         }
     }
 }
