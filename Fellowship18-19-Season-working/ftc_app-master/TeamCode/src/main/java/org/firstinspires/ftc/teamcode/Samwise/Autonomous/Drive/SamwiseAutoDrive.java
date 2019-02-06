@@ -62,9 +62,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
         // set the digital channel to input.
         touchBackSide.setMode(DigitalChannel.Mode.INPUT);
 
-        //touchFront = hardwareMap.get(DigitalChannel.class, "touch_front");
+        touchFront = hardwareMap.get(DigitalChannel.class, "touch_front");
         // set the digital channel to input.
-        //touchFront.setMode(DigitalChannel.Mode.INPUT);
+        touchFront.setMode(DigitalChannel.Mode.INPUT);
 
         touchfront2 = hardwareMap.get(DigitalChannel.class, "touch_front2");
         // set the digital channel to input.
@@ -92,7 +92,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         sleep(200);
 
         //landing the Robot
-        hanger.encoderDrive(this, 0.6, -56, 4);
+        hanger.encoderDrive(this, 0.6, -57.5, 4);
 
         //Unhooking
         hanger.unHook();

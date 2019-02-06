@@ -32,25 +32,25 @@ public class SamwiseHangerTeleOp extends OpMode {
 
     public void loop() {
 
-        swHang.move(gamepad1.right_stick_y);
+        swHang.move(gamepad2.right_stick_y);
 
-        if (gamepad1.left_bumper) {
+        if (gamepad2.left_bumper) {
             System.out.println("==> Hanger unhooking ...");
             //telemetry.addData("Mode", "Unhooking");
             swHang.unHook();
             return;
         }
-        else if (gamepad1.right_bumper) {
+        else if (gamepad2.right_bumper) {
             System.out.println("==> Hanger hooking ...");
             //telemetry.addData("Mode", "hooking");
             swHang.Hook();
             return;
         }
 
-        if(gamepad1.dpad_down) {
+        if(gamepad2.dpad_down) {
             swHang.markerservo1.setPosition(.76);
         }
-        if(gamepad1.y) {
+        if(gamepad2.y) {
             swHang.markerservo1.setPosition(.76);
         }
     }
