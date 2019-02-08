@@ -44,13 +44,6 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     double mininticks = 0.0 * TickPerDegreeJ2;
     double maxinticks = 90.0 * TickPerDegreeJ2;
 
-    double J2Gear1count = 1.0;
-    double J2Gear2count = 1.0;
-    double J2Gear3count = 1.0;
-
-    double J3Gear1count = 1.0;
-    double J3Gear2count = 1.0;
-
     double J2FirsttoLast = 4;
     double J3FirsttoLast = 2;
 
