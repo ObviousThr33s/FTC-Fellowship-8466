@@ -35,6 +35,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
     DigitalChannel touchBackSide;  // side touch sensor
     DigitalChannel touchFront;  // front touch sensor
     DigitalChannel touchfront2;  // front touch sensor
+    DigitalChannel touchfront3;
 
 
     /**
@@ -69,6 +70,10 @@ public class SamwiseAutoDrive extends LinearOpMode {
         touchfront2 = hardwareMap.get(DigitalChannel.class, "touch_front2");
         // set the digital channel to input.
         touchfront2.setMode(DigitalChannel.Mode.INPUT);
+
+        touchfront3 = hardwareMap.get(DigitalChannel.class, "touch_front3");
+        // set the digital channel to input.
+        touchfront3.setMode(DigitalChannel.Mode.INPUT);
 
         color.init(hardwareMap, telemetry);
 

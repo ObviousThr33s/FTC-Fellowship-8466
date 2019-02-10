@@ -380,7 +380,9 @@ public class SamwiseDriveRouteFactory
                 driveTrain.resetAngle(AxesOrder.ZYX);
 
                 //driveTrain.encoderDrive(samwiseDrive, 80,5);
-                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchfront2, false, 6.5);
+                //driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchfront2, false, 6.5);
+                ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchfront2, samwiseDrive.touchfront3, 6.5);
+
             }
         };
     }
@@ -410,7 +412,9 @@ public class SamwiseDriveRouteFactory
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
                 //driveTrain.encoderDrive(samwiseDrive, 80,5);
-                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, true, 7);
+                //driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, true, 7);
+                ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 7);
+
             }
         };
     }
@@ -453,7 +457,9 @@ public class SamwiseDriveRouteFactory
                 driveTrain.turnDrive(samwiseDrive, -78, 5);
 
                 //driveTrain.encoderDrive(samwiseDrive,73,73, 5);
-                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchfront2, false, 6);
+                //driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchfront2, false, 6);
+                ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchfront2, samwiseDrive.touchfront3, 6.5);
+
             }
         };
     }
@@ -492,7 +498,9 @@ public class SamwiseDriveRouteFactory
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
                 //driveTrain.encoderDrive(samwiseDrive,73,73, 5);
-                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, true, 6);
+                //driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, true, 6);
+                ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 7);
+
             }
         };
     }
@@ -541,7 +549,9 @@ public class SamwiseDriveRouteFactory
 
                 // make this wall driveToCrater using touch sensor
                 //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
-                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchfront2, false, 7);
+                //driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchfront2, false, 7);
+                ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchfront2, samwiseDrive.touchfront3, 6.5);
+
             }
         };
     }
@@ -584,7 +594,9 @@ public class SamwiseDriveRouteFactory
 
                 // make this wall driveToCrater using touch sensor
                 //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
-                driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, true, 7);
+                //driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, true, 7);
+                ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 7);
+
             }
         };
     }
