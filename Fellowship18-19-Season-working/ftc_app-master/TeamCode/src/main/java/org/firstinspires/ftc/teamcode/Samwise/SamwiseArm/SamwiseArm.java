@@ -49,6 +49,11 @@ public class SamwiseArm extends SamwiseCollection
     double J3FirsttoLast = 2;
 
     int HoldPosONOFF = 1;
+
+    public static final int J1_LEFT_PHONE = -1001;
+    public static final int J1_RIGHT_PHONE = -2716;
+    public static final int J2_MIN_PHONE_TICKS = /*916*/ 770;
+
     // for Octo Arm
     DcMotor motorE1;
     CRServo servoE2;
@@ -119,11 +124,11 @@ public class SamwiseArm extends SamwiseCollection
 
         if (isUp)
         {
-            motorJ2.setPower(MANUAL_POWER_J2);
+            motorJ2.setPower(-MANUAL_POWER_J2);
         }
         else
         {
-            motorJ2.setPower(-MANUAL_POWER_J2);
+            motorJ2.setPower(MANUAL_POWER_J2);
         }
     }
 
@@ -160,6 +165,18 @@ public class SamwiseArm extends SamwiseCollection
     public int getJ3CurrentPosition()
     {
         return motorJ3.getCurrentPosition();
+    }
+
+    public boolean isPhoneJ1()
+    {
+        boolean isJ1PhoneArea = getJ1CurrentPosition() < J1_LEFT_PHONE && getJ1CurrentPosition() > J1_RIGHT_PHONE;
+        return isJ1PhoneArea;
+    }
+
+    public boolean isPhoneJ2()
+    {
+        boolean isJ2PhoneArea = getJ2CurrentPosition() >= J2_MIN_PHONE_TICKS;
+        return isJ2PhoneArea;
     }
 
     /************************************************************************************************

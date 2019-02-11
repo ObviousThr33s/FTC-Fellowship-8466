@@ -26,28 +26,28 @@ public class SamwiseSampling extends SamwiseSmart
     public void toSamplePositionRight()
     {
         System.out.println("toSamplePositionRight");
-//        toPositionWithJ1(SAMPLING_RIGHT_J1, SAMPLING_LEFT_RIGHT_J2, SAMPLING_LEFT_RIGHT_J3);
+//        toPosition(SAMPLING_RIGHT_J1, SAMPLING_LEFT_RIGHT_J2, SAMPLING_LEFT_RIGHT_J3);
     }
 
     public void toSamplePositionLeft()
     {
         System.out.println("toSamplePositionLeft");
-//        toPositionWithJ1(SAMPLING_LEFT_J1, SAMPLING_CENTER_J2, SAMPLING_CENTER_J3);
+//        toPosition(SAMPLING_LEFT_J1, SAMPLING_CENTER_J2, SAMPLING_CENTER_J3);
     }
 
     public void toSamplePositionCenter()
     {
         System.out.println("toSamplePositionCenter");
-//        toPositionWithJ1(SAMPLING_CENTER_J1, SAMPLING_LEFT_RIGHT_J2, SAMPLING_LEFT_RIGHT_J3);
+//        toPosition(SAMPLING_CENTER_J1, SAMPLING_LEFT_RIGHT_J2, SAMPLING_LEFT_RIGHT_J3);
     }
 
     public void goldSampleDropDepot()
     {
-//        toPositionWithJ1(SAMPLING_J1_DEPOT, SAMPLING_J2_DEPOT, SAMPLING_J3_DEPOT);
+//        toPosition(SAMPLING_J1_DEPOT, SAMPLING_J2_DEPOT, SAMPLING_J3_DEPOT);
     }
 
     public void goldSampleDropCrater()
     {
-//        toPositionWithJ1(SAMPLING_J1_CRATER, SAMPLING_J2_CRATER, SAMPLING_J3_CRATER);
+//        toPosition(SAMPLING_J1_CRATER, SAMPLING_J2_CRATER, SAMPLING_J3_CRATER);
     }
 }

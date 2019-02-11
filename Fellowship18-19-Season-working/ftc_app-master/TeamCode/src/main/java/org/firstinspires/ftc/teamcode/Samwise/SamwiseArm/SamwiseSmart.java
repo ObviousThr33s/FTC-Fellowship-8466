@@ -38,17 +38,22 @@ public class SamwiseSmart extends SamwiseArm
 
     static final double INITIAL_COL_ARM_L3 = 2 * (ARM_L1 + ARM_L2) / 3;
 
-    public int initialCollectionPosJ1 = 4200;
-    public int initialCollectionPosJ2 = 300;
-    public int initialCollectionPosJ3 = 500;
+    public int initialCollectionPosJ1 = -842;
+    public int initialCollectionPosJ2 = 773;
+    public int initialCollectionPosJ3 = -70;
     int previousPositionJ1;
     int previousPositionJ2;
     int previousPositionJ3;
 
-    static final double AUTO_POWER_J1 = 0.05;
-    static final double AUTO_POWER_J2 = 0.05;
-    static final double AUTO_POWER_J3 = 0.05;
+    static final double J1_POWER = 0.3;
+    static final double J2_POWER = 0.1;
+    static final double UP_POWER_J3 = 0.15;
+    static final double DOWN_POWER_J3 = 0.05;
     static final double HOLD_POWER = 0.3;
+
+    double j1Power = 0;
+    double j2Power = 0;
+    double j3Power = 0;
 
     static final int GOLD_DROP_J1 = 20;
     static final int GOLD_DROP_J2 = 270;
@@ -87,10 +92,36 @@ public class SamwiseSmart extends SamwiseArm
 
     public void toPreviousPosition()
     {
-        toPositionWithJ1();
-        motorJ1.setTargetPosition(previousPositionJ1);
-        motorJ2.setTargetPosition(previousPositionJ2);
-        motorJ3.setTargetPosition(previousPositionJ3);
+        if (motorJ1.getCurrentPosition() > previousPositionJ1)
+        {
+            j1Power = -J1_POWER;
+        }
+        else if (motorJ1.getCurrentPosition() < previousPositionJ1)
+        {
+            j1Power = J1_POWER;
+        }
+
+        if (motorJ2.getCurrentPosition() > previousPositionJ2)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motorJ2.getCurrentPosition() < previousPositionJ2)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motorJ3.getCurrentPosition() > previousPositionJ3)
+        {
+            j3Power = -UP_POWER_J3;
+        }
+        else if (motorJ3.getCurrentPosition() < previousPositionJ3)
+        {
+            j3Power = UP_POWER_J3;
+        }
+        toPositionReverse(j1Power, j2Power, j3Power, previousPositionJ1, previousPositionJ2, previousPositionJ3);
+        j1Power = 0;
+        j2Power = 0;
+        j3Power = 0;
     }
 
     public void holdPositionJ2(boolean hold)
@@ -123,29 +154,56 @@ public class SamwiseSmart extends SamwiseArm
         }
     }
 
-    public void toPosition()
+    public void toPosition(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position, int j3Position)
     {
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setPower(AUTO_POWER_J2);
-        motorJ3.setPower(AUTO_POWER_J3);
+        motorJ3.setPower(j3Power);
+        motorJ3.setTargetPosition(j3Position);
         isStop = false;
-        while ((motorJ2.isBusy() || motorJ3.isBusy()) && !isStop)
+        while (motorJ3.isBusy() && !isStop)
+        {
+            Thread.yield();
+        }
+        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ2.setPower(j2Power);
+        motorJ2.setTargetPosition(j2Position);
+        while (motorJ2.isBusy() && !isStop)
+        {
+            Thread.yield();
+        }
+        motorJ1.setPower(j1Power);
+        motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ1.setTargetPosition(j1Position);
+        while (motorJ1.isBusy() && !isStop)
         {
             Thread.yield();
         }
     }
 
-    public void toPositionWithJ1()
+    public void toPositionReverse(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position, int j3Position)
     {
+        motorJ1.setPower(j1Power);
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ1.setTargetPosition(j1Position);
+        while (motorJ1.isBusy() && !isStop)
+        {
+            Thread.yield();
+        }
+
         motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ2.setPower(j2Power);
+        motorJ2.setTargetPosition(j2Position);
+        while (motorJ2.isBusy() && !isStop)
+        {
+            Thread.yield();
+        }
+
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ1.setPower(AUTO_POWER_J1);
-        motorJ2.setPower(AUTO_POWER_J2);
-        motorJ3.setPower(AUTO_POWER_J3);
+        motorJ3.setPower(j3Power);
+        motorJ3.setTargetPosition(j3Position);
         isStop = false;
-        while ((motorJ1.isBusy() || motorJ2.isBusy() || motorJ3.isBusy()) && !isStop)
+        while (motorJ3.isBusy() && !isStop)
         {
             Thread.yield();
         }
@@ -156,12 +214,37 @@ public class SamwiseSmart extends SamwiseArm
         System.out.println("Going To Initial Position");
         setManual(false);
         setIsCollectionPlane(false);
-        toPositionWithJ1();
-        motorJ3.setTargetPosition(443);
-        motorJ1.setTargetPosition(0);
-        motorJ2.setTargetPosition(0);
-        motorJ3.setTargetPosition(0);
+        if (motorJ1.getCurrentPosition() > 0)
+        {
+            j1Power = -J1_POWER;
+        }
+        else if (motorJ1.getCurrentPosition() < 0)
+        {
+            j1Power = J1_POWER;
+        }
+
+        if (motorJ2.getCurrentPosition() > 0)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motorJ2.getCurrentPosition() < 0)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motorJ3.getCurrentPosition() > 0)
+        {
+            j3Power = -UP_POWER_J3;
+        }
+        else if (motorJ3.getCurrentPosition() < 0)
+        {
+            j3Power = UP_POWER_J3;
+        }
+        toPositionReverse(j1Power, j2Power, j3Power, 0, 0, 0);
         System.out.println("Reached Initial Position");
+        j1Power = 0;
+        j2Power = 0;
+        j3Power = 0;
     }
 
 
@@ -172,11 +255,37 @@ public class SamwiseSmart extends SamwiseArm
     {
         System.out.println("toCollectionPlane");
         setManual(false);
-        toPositionWithJ1();
-        motorJ1.setTargetPosition(initialCollectionPosJ1);
-        motorJ3.setTargetPosition(initialCollectionPosJ3);
-        motorJ2.setTargetPosition(initialCollectionPosJ2);
+        if (motorJ1.getCurrentPosition() > initialCollectionPosJ1)
+        {
+            j1Power = -J1_POWER;
+        }
+        else if (motorJ1.getCurrentPosition() < initialCollectionPosJ1)
+        {
+            j1Power = J1_POWER;
+        }
+
+        if (motorJ2.getCurrentPosition() > initialCollectionPosJ2)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motorJ2.getCurrentPosition() < initialCollectionPosJ2)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motorJ3.getCurrentPosition() > initialCollectionPosJ3)
+        {
+            j3Power = -UP_POWER_J3;
+        }
+        else if (motorJ3.getCurrentPosition() < initialCollectionPosJ3)
+        {
+            j3Power = UP_POWER_J3;
+        }
+        toPosition(j1Power, j2Power, j3Power, initialCollectionPosJ1, initialCollectionPosJ2, initialCollectionPosJ3);
         setIsCollectionPlane(true);
+        j1Power = 0;
+        j2Power = 0;
+        j3Power = 0;
     }
 
     /**
@@ -191,10 +300,36 @@ public class SamwiseSmart extends SamwiseArm
             savePreviousPosition();
             setIsCollectionPlane(false);
         }
-        toPositionWithJ1();
-        motorJ3.setTargetPosition(GOLD_DROP_J3);
-        motorJ2.setTargetPosition(GOLD_DROP_J2);
-        motorJ1.setTargetPosition(GOLD_DROP_J1);
+        if (motorJ1.getCurrentPosition() > GOLD_DROP_J1)
+        {
+            j1Power = -J1_POWER;
+        }
+        else if (motorJ1.getCurrentPosition() < GOLD_DROP_J1)
+        {
+            j1Power = J1_POWER;
+        }
+
+        if (motorJ2.getCurrentPosition() > GOLD_DROP_J2)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motorJ2.getCurrentPosition() < GOLD_DROP_J2)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motorJ3.getCurrentPosition() > GOLD_DROP_J3)
+        {
+            j3Power = -UP_POWER_J3;
+        }
+        else if (motorJ3.getCurrentPosition() < GOLD_DROP_J3)
+        {
+            j3Power = UP_POWER_J3;
+        }
+        toPosition(j1Power, j2Power, j3Power, GOLD_DROP_J1, GOLD_DROP_J2, GOLD_DROP_J3);
+        j1Power = 0;
+        j2Power = 0;
+        j3Power = 0;
     }
 
     /**
@@ -208,24 +343,67 @@ public class SamwiseSmart extends SamwiseArm
             savePreviousPosition();
             setIsCollectionPlane(false);
         }
-        toPositionWithJ1();
-        motorJ3.setTargetPosition(SILVER_DROP_J3);
-        motorJ2.setTargetPosition(SILVER_DROP_J2);
-        motorJ1.setTargetPosition(SILVER_DROP_J1);
+        if (motorJ1.getCurrentPosition() > SILVER_DROP_J1)
+        {
+            j1Power = -J1_POWER;
+        }
+        else if (motorJ1.getCurrentPosition() < SILVER_DROP_J1)
+        {
+            j1Power = J1_POWER;
+        }
+
+        if (motorJ2.getCurrentPosition() > SILVER_DROP_J2)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motorJ2.getCurrentPosition() < SILVER_DROP_J2)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motorJ3.getCurrentPosition() > SILVER_DROP_J3)
+        {
+            j3Power = -UP_POWER_J3;
+        }
+        else if (motorJ3.getCurrentPosition() < SILVER_DROP_J3)
+        {
+            j3Power = UP_POWER_J3;
+        }
+        toPosition(j1Power, j2Power, j3Power, SILVER_DROP_J1, SILVER_DROP_J2, SILVER_DROP_J3);
+        j1Power = 0;
+        j2Power = 0;
+        j3Power = 0;
     }
 
-    //The arm can only be 15 inches away from the lander if the arm is to reach above the lander to deposit.
     public void toLander()
     {
-        toPosition();
-        motorJ3.setTargetPosition(-1439);
-        motorJ2.setTargetPosition(900);
-        if (!isStop)
+        if (motorJ1.getCurrentPosition() > -842)
         {
-            motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorJ1.setPower(AUTO_POWER_J1);
-            motorJ1.setTargetPosition(4200);
+            j1Power = -J1_POWER;
         }
+        else if (motorJ1.getCurrentPosition() < -842)
+        {
+            j1Power = J1_POWER;
+        }
+
+        if (motorJ2.getCurrentPosition() > 531)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motorJ2.getCurrentPosition() < 531)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motorJ3.getCurrentPosition() > -911)
+        {
+            j3Power = -UP_POWER_J3;
+        }
+        else if (motorJ3.getCurrentPosition() < -911)
+        {
+            j3Power = UP_POWER_J3;
+        }
+        toPosition(j1Power, j2Power, j3Power, -842, 531, -911);
     }
 
     public void lowerJ4()
@@ -240,10 +418,14 @@ public class SamwiseSmart extends SamwiseArm
         double collectingJ3  = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.pow(k, 2)) / (2 * ARM_L1 * ARM_L2)));
         motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setPower(AUTO_POWER_J2);
-        motorJ3.setPower(AUTO_POWER_J3);
+        motorJ2.setPower(J2_POWER);
+        motorJ3.setPower(UP_POWER_J3);
         motorJ2.setTargetPosition((int) ((collectingJ2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2));
         motorJ3.setTargetPosition((int) ((collectingJ3 - INITIAL_TICKS_J3) * TICKS_PER_DEGREE_J3));
+        while (motorJ2.isBusy() || motorJ3.isBusy() && !isStop)
+        {
+            Thread.yield();
+        }
     }
 
 
