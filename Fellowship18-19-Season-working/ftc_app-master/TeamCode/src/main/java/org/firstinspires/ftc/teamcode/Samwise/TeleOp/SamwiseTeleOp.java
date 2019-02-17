@@ -34,8 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseGenius;
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseSmart;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TRexSamwiseGenius;
 
 /****************************************************************************************************
  *                  Teleop Outline:                                                                 *
@@ -58,7 +57,7 @@ public class SamwiseTeleOp extends OpMode {
     public SamwiseHanger swHang = new SamwiseHanger();
 
     //public DriveTrainTeleop swDTrain = new DriveTrainTeleop();
-    public SamwiseGenius armStuff = null;
+    public TRexSamwiseGenius armStuff = null;
 
     private boolean manual = true;
     private boolean isHoldingJ2 = false;
@@ -85,7 +84,7 @@ public class SamwiseTeleOp extends OpMode {
         swHang.init(hardwareMap, telemetry);
 
         //swDTrain.init(hardwareMap, telemetry);
-        armStuff = new SamwiseGenius(this.hardwareMap);
+        armStuff = new TRexSamwiseGenius(this.hardwareMap);
 
         leftdrive = hardwareMap.dcMotor.get("left_drive");
         rightdrive = hardwareMap.dcMotor.get("right_drive");

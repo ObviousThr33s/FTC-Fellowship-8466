@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class SamwiseGenius extends SamwiseSmart
+public class OctoSamwiseGenius extends TRexSamwiseSmart
 {
     int hold_position_J2 = Integer.MAX_VALUE;
     int hold_position_J3 = Integer.MAX_VALUE;
@@ -46,7 +46,7 @@ public class SamwiseGenius extends SamwiseSmart
     int HoldPosONOFF = 1;
 
 
-    public SamwiseGenius(HardwareMap hwm)
+    public OctoSamwiseGenius(HardwareMap hwm)
     {
         super(hwm);
     }

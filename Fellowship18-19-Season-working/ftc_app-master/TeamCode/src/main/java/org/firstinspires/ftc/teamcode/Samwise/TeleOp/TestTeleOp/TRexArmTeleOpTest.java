@@ -3,13 +3,13 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseGenius;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TRexSamwiseGenius;
 
 @TeleOp(name = "Arm Test", group = "tests")
 //@Disabled
-public class ArmTeleOpTest extends OpMode
+public class TRexArmTeleOpTest extends OpMode
 {
-    private SamwiseGenius armStuff;
+    private TRexSamwiseGenius armStuff;
 
     private boolean manual = true;
     private boolean isHoldingJ2 = false;
@@ -29,7 +29,7 @@ public class ArmTeleOpTest extends OpMode
     @Override
     public void init()
     {
-        armStuff = new SamwiseGenius(hardwareMap);
+        armStuff = new TRexSamwiseGenius(hardwareMap);
     }
 
     @Override
@@ -75,34 +75,6 @@ public class ArmTeleOpTest extends OpMode
                 armStuff.holdPositionJ3(false);
             }
         }
-
-
-        //        if (armStuff.getJ1CurrentPosition() < J1_LEFT_PHONE &&
-        //            armStuff.getJ1CurrentPosition() > J1_RIGHT_PHONE &&
-        //            armStuff.getJ2CurrentPosition() > J2_MAX_PHONE_TICKS)
-        //        {
-        //            armStuff.stop();
-        //
-        //            if (!isHoldingJ2)
-        //            {
-        //                armStuff.holdPositionJ2(true);
-        //                isHoldingJ2 = true;
-        //            }
-        //            else
-        //            {
-        //                armStuff.holdPositionJ2(false);
-        //            }
-        //
-        //            if (!isHoldingJ3)
-        //            {
-        //                armStuff.holdPositionJ3(true);
-        //                isHoldingJ3 = true;
-        //            }
-        //            else
-        //            {
-        //                armStuff.holdPositionJ3(false);
-        //            }
-        //        }
 
 
         if (gamepad1.left_stick_x > 0.6 && (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2())))

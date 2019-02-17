@@ -1,21 +1,20 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseSmart;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TRexSamwiseSmart;
 
 @TeleOp(name = "LaurenTest", group = "tests")
 //@Disabled
 public class LaurenTest extends OpMode
 {
-    private SamwiseSmart armStuff = null;
+    private TRexSamwiseSmart armStuff = null;
 
     @Override
     public void init()
     {
-        armStuff = new SamwiseSmart(hardwareMap);
+        armStuff = new TRexSamwiseSmart(hardwareMap);
         //        armStuff.extendArm();
     }
 

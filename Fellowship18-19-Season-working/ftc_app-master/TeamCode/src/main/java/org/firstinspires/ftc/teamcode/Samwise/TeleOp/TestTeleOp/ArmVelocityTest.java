@@ -4,17 +4,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseArm;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TRexSamwiseArm;
 
 @TeleOp(name = "ArmVelocityTest", group="tests")
 @Disabled
 public class ArmVelocityTest extends OpMode {
 
-    SamwiseArm arm;
+    TRexSamwiseArm arm;
 
     @Override
     public void init() {
-        arm = new SamwiseArm(hardwareMap);
+        arm = new TRexSamwiseArm(hardwareMap);
     }
 
     @Override

@@ -3,15 +3,14 @@ package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
-public class SamwiseCollection
+public class OctoSamwiseCollection
 {
 //    private Servo servoJ4;
     private CRServo servoC1;
     private CRServo servoC2;
 
-    SamwiseCollection(HardwareMap hwm)
+    OctoSamwiseCollection(HardwareMap hwm)
     {
 //        servoJ4 = hwm.servo.get("J4");
         servoC1 = hwm.crservo.get("C1");

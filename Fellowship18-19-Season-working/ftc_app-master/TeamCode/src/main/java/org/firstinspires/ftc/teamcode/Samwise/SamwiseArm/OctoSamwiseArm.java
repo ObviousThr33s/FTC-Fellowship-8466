@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class SamwiseArm extends SamwiseCollection
+public class OctoSamwiseArm extends TRexSamwiseCollection
 {
     DcMotor motorJ1;
     DcMotor motorJ2;
@@ -66,7 +66,7 @@ public class SamwiseArm extends SamwiseCollection
     static final double UP_POWER_J3 = 0.15;
     static final double DOWN_POWER_J3 = 0.05;
 
-    public SamwiseArm(HardwareMap hwm)
+    public OctoSamwiseArm(HardwareMap hwm)
     {
         super(hwm);
 

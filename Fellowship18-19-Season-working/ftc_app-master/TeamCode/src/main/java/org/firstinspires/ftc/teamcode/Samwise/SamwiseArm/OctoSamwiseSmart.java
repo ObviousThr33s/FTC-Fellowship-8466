@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
-public class SamwiseSmart extends SamwiseArm
+public class OctoSamwiseSmart extends TRexSamwiseArm
 {
     public boolean holdJ2 = true;
     public boolean holdJ3 = true;
@@ -62,7 +62,7 @@ public class SamwiseSmart extends SamwiseArm
     static final int SILVER_DROP_J2 = 270;
     static final int SILVER_DROP_J3 = 90;
 
-    public SamwiseSmart(HardwareMap hwm)
+    public OctoSamwiseSmart(HardwareMap hwm)
     {
         super(hwm);
 
