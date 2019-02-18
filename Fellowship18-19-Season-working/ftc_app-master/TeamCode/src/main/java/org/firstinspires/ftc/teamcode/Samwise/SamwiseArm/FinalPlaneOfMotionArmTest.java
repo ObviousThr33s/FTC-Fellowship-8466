@@ -28,11 +28,11 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     private double SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
 
     //J2, J3 Static
-    static final double EncoderCountJ2 = 1680.0; //number of ticks per motor round
-    static final double EncoderCountJ3 = 1680.0; //number of ticks per motor round
+    static final double EncoderCountJ2 = 1440; //number of ticks per motor round
+    static final double EncoderCountJ3 = 1993.6; //number of ticks per motor round
     static final double HeightOfPlane = 6.0; //height of plane of motion
-    static final double LengthJ2toJ3 = 24.09; //distance between J2 and J3
-    static final double LengthJ3toJ4 = 27.75; //distance between J3 and J4
+    static final double LengthJ2toJ3 = 13.0; //distance between J2 and J3
+    static final double LengthJ3toJ4 = 15.0; //distance between J3 and J4
 
     private double H = HeightOfPlane;
     private double L1 = LengthJ2toJ3; //length between J2 and J3
@@ -50,16 +50,13 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     int HoldPosONOFF = 1;
 
     public void init() {
-        ArmMotor1 = hardwareMap.dcMotor.get("ArmMotor1");
+
         ArmMotor2 = hardwareMap.dcMotor.get("ArmMotor2");
         ArmMotor3 = hardwareMap.dcMotor.get("ArmMotor3");
-        ArmMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ArmMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ArmMotor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ArmMotor1.setPower(0);
         ArmMotor2.setPower(0);
         ArmMotor3.setPower(0);
-        ArmMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -123,7 +120,7 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
             if (gamepad1.left_stick_y >= 0.01) { //backwards
                 ArmMotor2.setTargetPosition((int) (J2MinPos * J2FirsttoLast));
             }
-            ArmMotor2.setPower(gamepad1.left_stick_y / 1.7);
+            ArmMotor2.setPower(gamepad1.left_stick_y / 5);
         /*double J2CurrentPos_Ticks = ArmMotor2.getCurrentPosition();
         if (J2CurrentPos_Ticks <= mininticks) {
             if (gamepad1.left_stick_y >= 0.02) {
@@ -158,11 +155,8 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
             ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             //J1
             double RotationJoint = gamepad1.right_stick_x * SmallDegreeToTicks; // rotation of J1
-            ArmMotor1.setTargetPosition((int) RotationJoint); //Joint 1 (turn table)
-            ArmMotor1.setPower(0.1);
-            ArmMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
             if (gamepad1.b) {
-                ArmMotor1.setPower(0);
                 ArmMotor2.setPower(0);
                 ArmMotor3.setPower(0);
             }
