@@ -31,7 +31,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish third driveToCrater");
                 //telemetry.update();
 
-                driveTrain.turnDrive(samwiseDrive, -90, 5);
+                driveTrain.turnDrive(samwiseDrive, -88, 5);
                 //telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
@@ -136,7 +136,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish first turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, 26,3);
+                driveTrain.encoderDrive(samwiseDrive, 24,3);
                 //telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
@@ -144,7 +144,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish third turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -28.5,3);
+                driveTrain.encoderDrive(samwiseDrive, -30.5,3);
                 //driveTrain.driveToWall(samwiseDrive, samwiseDrive.touchBack, false, 3.5);
 
                 driveTrain.turnDrive(samwiseDrive, 21, 3);
@@ -256,7 +256,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -56,6);
+                driveTrain.encoderDrive(samwiseDrive, -57,6);
 
                 driveTrain.turnDrive(samwiseDrive, 32, 5);
 
@@ -275,6 +275,70 @@ public class SamwiseDriveRouteFactory
 
                 //driveTrain.turnDrive(samwiseDrive, 15, 3);
                 ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 14, 2.5);
+
+
+                // make this wall driveToCrater using touch sensor
+                //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
+                ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 7);
+
+            }
+        };
+    }
+
+    public static ISamwiseDriveRoute createCraterRight4Alliance(final SamwiseAutoDrive samwiseDrive)
+    {
+        return new ISamwiseDriveRoute() {
+            String               route      = "Crater Right";
+            //SamwiseDriveTrain    driveTrain = samwiseDrive.robot;
+            SamwiseDriveTrainIMU    driveTrain = (SamwiseDriveTrainIMU)samwiseDrive.robot;
+            SamwiseMarkerDeposit md         = samwiseDrive.md;
+            Telemetry            telemetry  = samwiseDrive.telemetry;
+
+            @Override
+            public void drive()
+            {
+                //common driveToCrater defined by the parent
+                //telemetryNow(route, "starting parent common driveToCrater ...");
+                System.out.println("==>Driving route "+route);
+
+                driveTrain.encoderDriveSpeed(samwiseDrive, 2.5, 4, .5);
+                //telemetry.addData(route, "finish ")
+
+                driveTrain.turnDrive( samwiseDrive,-35, 2);
+                //telemetry.addData(route, "finish first turn");
+                //telemetry.update();
+
+                driveTrain.encoderDrive(samwiseDrive, 25.5, 4);
+                //telemetry.addData(route, "finish second driveToCrater");
+                //telemetry.update();
+
+                driveTrain.encoderDrive(samwiseDrive, -9.5, 3);
+                //telemetry.addData(route, "finish third driveToCrater");
+                //telemetry.update();
+
+                driveTrain.turnDrive(samwiseDrive, -44.5, 5.5);
+                //telemetry.addData(route, "finish fourth turn");
+                //telemetry.update();
+
+                driveTrain.encoderDrive(samwiseDrive, -47,6);
+
+                driveTrain.turnDrive(samwiseDrive, 29, 5);
+
+                driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, false, samwiseDrive.color, 4);
+
+
+                //driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchFrontSide, true, samwiseDrive.color, 6);
+
+                //driveTrain.encoderDrive(samwiseDrive, 75,6);
+
+                //driveTrain.encoderDrive(samwiseDrive, 7, 4);
+
+                md.shake(SamwiseMarkerDeposit.dropPosition);
+
+                driveTrain.resetAngle(AxesOrder.ZYX);
+
+                //driveTrain.turnDrive(samwiseDrive, 15, 3);
+                ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 17, 2.5);
 
 
                 // make this wall driveToCrater using touch sensor

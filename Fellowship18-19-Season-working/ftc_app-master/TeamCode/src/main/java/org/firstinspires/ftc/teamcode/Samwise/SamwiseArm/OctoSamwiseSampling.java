@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class OctoSamwiseSampling extends TRexSamwiseSmart
+public class OctoSamwiseSampling extends OctoSamwiseSmart
 {
     private static final int SAMPLING_RIGHT_J1 = -20;
     private static final int SAMPLING_CENTER_J1 = 0;

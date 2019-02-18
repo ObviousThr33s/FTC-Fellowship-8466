@@ -13,8 +13,8 @@ public class OctoSamwiseCollection
     OctoSamwiseCollection(HardwareMap hwm)
     {
 //        servoJ4 = hwm.servo.get("J4");
-        servoC1 = hwm.crservo.get("C1");
-        servoC2 = hwm.crservo.get("C2");
+//        servoC1 = hwm.crservo.get("C1");
+//        servoC2 = hwm.crservo.get("C2");
     }
 
     /**
@@ -26,10 +26,10 @@ public class OctoSamwiseCollection
      */
     public void depositMinerals()
     {
-        servoC1.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoC1.setPower(0.8);
-        servoC2.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoC2.setPower(0.8);
+//        servoC1.setDirection(DcMotorSimple.Direction.FORWARD);
+//        servoC1.setPower(0.8);
+//        servoC2.setDirection(DcMotorSimple.Direction.REVERSE);
+//        servoC2.setPower(0.8);
     }
 
     /**
@@ -41,10 +41,10 @@ public class OctoSamwiseCollection
      */
     public void collectMinerals()
     {
-        servoC1.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoC1.setPower(0.8);
-        servoC2.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoC2.setPower(0.8);
+//        servoC1.setDirection(DcMotorSimple.Direction.REVERSE);
+//        servoC1.setPower(0.8);
+//        servoC2.setDirection(DcMotorSimple.Direction.FORWARD);
+//        servoC2.setPower(0.8);
     }
 
     /**
@@ -52,8 +52,8 @@ public class OctoSamwiseCollection
      */
     public void stopCollecting()
     {
-        servoC1.setPower(0);
-        servoC2.setPower(0);
+//        servoC1.setPower(0);
+//        servoC2.setPower(0);
     }
 
 //    public void moveJ4Up()

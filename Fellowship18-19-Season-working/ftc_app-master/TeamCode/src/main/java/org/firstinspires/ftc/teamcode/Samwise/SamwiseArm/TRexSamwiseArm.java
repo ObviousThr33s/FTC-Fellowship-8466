@@ -258,15 +258,15 @@ public class TRexSamwiseArm extends TRexSamwiseCollection
                 motorJ2.setTargetPosition((int) (J2MinPos * J2FirsttoLast));
             }
             motorJ2.setPower(Joysticks / 1.7);
-        /*double J2CurrentPos_Ticks = motorJ2.getCurrentPosition();
+        /*double J2CurrentPos_Ticks = motor1J2.getCurrentPosition();
         if (J2CurrentPos_Ticks <= mininticks) {
             if (Joysticks.left_stick_y >= 0.02) {
-                motorJ2.setPower(0);
+                motor1J2.setPower(0);
             }
         }
         if (J2CurrentPos_Ticks >= 180) {
             if (Joysticks.left_stick_y <= -0.02) {
-                motorJ2.setPower(0);
+                motor1J2.setPower(0);
             }
         }*/
             motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);

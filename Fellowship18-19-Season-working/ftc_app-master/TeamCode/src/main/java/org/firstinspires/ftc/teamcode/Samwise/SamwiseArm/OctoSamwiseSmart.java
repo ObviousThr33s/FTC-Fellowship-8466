@@ -4,11 +4,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
-public class OctoSamwiseSmart extends TRexSamwiseArm
+public class OctoSamwiseSmart extends OctoSamwiseArm
 {
     public boolean holdJ2 = true;
     public boolean holdJ3 = true;
-    private int motor_position_j2;
+    private int motor_position_1j2;
+    private int motor_position_2j2;
     private int motor_position_j3;
     private boolean isStop = false;
 
@@ -39,10 +40,12 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
     static final double INITIAL_COL_ARM_L3 = 2 * (ARM_L1 + ARM_L2) / 3;
 
     public int initialCollectionPosJ1 = -842;
-    public int initialCollectionPosJ2 = 773;
+    public int initialCollectionPos1J2 = 773;
+    public int initialCollectionPos2J2 = 773;
     public int initialCollectionPosJ3 = -70;
     int previousPositionJ1;
-    int previousPositionJ2;
+    int previousPosition1J2;
+    int previousPosition2J2;
     int previousPositionJ3;
 
     static final double J1_POWER = 0.3;
@@ -74,7 +77,8 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         double j3_degrees   = angle3 - INITIAL_DEGREES_J3;
         //        initialCollectionPosJ2 = TICKS_PER_DEGREE_J2 * j2_degrees;
         //        initialCollectionPosJ3 = TICKS_PER_DEGREE_J3 * j3_degrees;
-        previousPositionJ2 = initialCollectionPosJ2;
+        previousPosition1J2 = initialCollectionPos1J2;
+        previousPosition2J2 = initialCollectionPos2J2;
         previousPositionJ3 = initialCollectionPosJ3;
     }
 
@@ -86,7 +90,8 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
     public void savePreviousPosition()
     {
         previousPositionJ1 = motorJ1.getCurrentPosition();
-        previousPositionJ2 = motorJ2.getCurrentPosition();
+        previousPosition1J2 = motor1J2.getCurrentPosition();
+        previousPosition2J2 = motor2J2.getCurrentPosition();
         previousPositionJ3 = motorJ3.getCurrentPosition();
     }
 
@@ -101,11 +106,20 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
             j1Power = J1_POWER;
         }
 
-        if (motorJ2.getCurrentPosition() > previousPositionJ2)
+        if (motor1J2.getCurrentPosition() > previousPosition1J2)
         {
             j2Power = -J2_POWER;
         }
-        else if (motorJ2.getCurrentPosition() < previousPositionJ2)
+        else if (motor1J2.getCurrentPosition() < previousPosition1J2)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motor2J2.getCurrentPosition() > previousPosition2J2)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motor2J2.getCurrentPosition() < previousPosition2J2)
         {
             j2Power = J2_POWER;
         }
@@ -118,7 +132,7 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         {
             j3Power = UP_POWER_J3;
         }
-        toPositionReverse(j1Power, j2Power, j3Power, previousPositionJ1, previousPositionJ2, previousPositionJ3);
+        toPositionReverse(j1Power, j2Power, j3Power, previousPositionJ1, previousPosition1J2, previousPosition2J2, previousPositionJ3);
         j1Power = 0;
         j2Power = 0;
         j3Power = 0;
@@ -129,13 +143,17 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
 
         if (hold)
         {
-            motor_position_j2 = motorJ2.getCurrentPosition();
+            motor_position_1j2 = motor1J2.getCurrentPosition();
+            motor_position_2j2 = motor2J2.getCurrentPosition();
         }
         else
         {
-            motorJ2.setTargetPosition(motor_position_j2);
-            motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorJ2.setPower(HOLD_POWER);
+            motor1J2.setTargetPosition(motor_position_1j2);
+            motor2J2.setTargetPosition(motor_position_2j2);
+            motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor1J2.setPower(HOLD_POWER);
+            motor2J2.setPower(HOLD_POWER);
         }
     }
 
@@ -154,7 +172,7 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         }
     }
 
-    public void toPosition(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position, int j3Position)
+    public void toPosition(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
     {
 
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -165,10 +183,13 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         {
             Thread.yield();
         }
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setPower(j2Power);
-        motorJ2.setTargetPosition(j2Position);
-        while (motorJ2.isBusy() && !isStop)
+        motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor1J2.setPower(j2Power);
+        motor2J2.setPower(j2Power);
+        motor1J2.setTargetPosition(j2Position1);
+        motor2J2.setTargetPosition(j2Position2);
+        while ((motor1J2.isBusy() || motor2J2.isBusy()) && !isStop)
         {
             Thread.yield();
         }
@@ -181,7 +202,7 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         }
     }
 
-    public void toPositionReverse(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position, int j3Position)
+    public void toPositionReverse(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
     {
         motorJ1.setPower(j1Power);
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -191,10 +212,13 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
             Thread.yield();
         }
 
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setPower(j2Power);
-        motorJ2.setTargetPosition(j2Position);
-        while (motorJ2.isBusy() && !isStop)
+        motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor1J2.setPower(j2Power);
+        motor2J2.setPower(j2Power);
+        motor1J2.setTargetPosition(j2Position1);
+        motor2J2.setTargetPosition(j2Position2);
+        while ((motor1J2.isBusy() || motor2J2.isBusy()) && !isStop)
         {
             Thread.yield();
         }
@@ -223,11 +247,20 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
             j1Power = J1_POWER;
         }
 
-        if (motorJ2.getCurrentPosition() > 0)
+        if (motor1J2.getCurrentPosition() > 0)
         {
             j2Power = -J2_POWER;
         }
-        else if (motorJ2.getCurrentPosition() < 0)
+        else if (motor1J2.getCurrentPosition() < 0)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motor2J2.getCurrentPosition() > 0)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motor2J2.getCurrentPosition() < 0)
         {
             j2Power = J2_POWER;
         }
@@ -240,7 +273,7 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         {
             j3Power = UP_POWER_J3;
         }
-        toPositionReverse(j1Power, j2Power, j3Power, 0, 0, 0);
+        toPositionReverse(j1Power, j2Power, j3Power, 0, 0, 0, 0);
         System.out.println("Reached Initial Position");
         j1Power = 0;
         j2Power = 0;
@@ -264,11 +297,20 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
             j1Power = J1_POWER;
         }
 
-        if (motorJ2.getCurrentPosition() > initialCollectionPosJ2)
+        if (motor1J2.getCurrentPosition() > initialCollectionPos1J2)
         {
             j2Power = -J2_POWER;
         }
-        else if (motorJ2.getCurrentPosition() < initialCollectionPosJ2)
+        else if (motor1J2.getCurrentPosition() < initialCollectionPos1J2)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motor2J2.getCurrentPosition() > initialCollectionPos2J2)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motor2J2.getCurrentPosition() < initialCollectionPos2J2)
         {
             j2Power = J2_POWER;
         }
@@ -281,7 +323,7 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         {
             j3Power = UP_POWER_J3;
         }
-        toPosition(j1Power, j2Power, j3Power, initialCollectionPosJ1, initialCollectionPosJ2, initialCollectionPosJ3);
+        toPosition(j1Power, j2Power, j3Power, initialCollectionPosJ1, initialCollectionPos1J2, initialCollectionPos2J2, initialCollectionPosJ3);
         setIsCollectionPlane(true);
         j1Power = 0;
         j2Power = 0;
@@ -309,11 +351,20 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
             j1Power = J1_POWER;
         }
 
-        if (motorJ2.getCurrentPosition() > GOLD_DROP_J2)
+        if (motor1J2.getCurrentPosition() > GOLD_DROP_J2)
         {
             j2Power = -J2_POWER;
         }
-        else if (motorJ2.getCurrentPosition() < GOLD_DROP_J2)
+        else if (motor1J2.getCurrentPosition() < GOLD_DROP_J2)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motor2J2.getCurrentPosition() > GOLD_DROP_J2)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motor2J2.getCurrentPosition() < GOLD_DROP_J2)
         {
             j2Power = J2_POWER;
         }
@@ -326,7 +377,7 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         {
             j3Power = UP_POWER_J3;
         }
-        toPosition(j1Power, j2Power, j3Power, GOLD_DROP_J1, GOLD_DROP_J2, GOLD_DROP_J3);
+        toPosition(j1Power, j2Power, j3Power, GOLD_DROP_J1, GOLD_DROP_J2, GOLD_DROP_J2, GOLD_DROP_J3);
         j1Power = 0;
         j2Power = 0;
         j3Power = 0;
@@ -352,11 +403,20 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
             j1Power = J1_POWER;
         }
 
-        if (motorJ2.getCurrentPosition() > SILVER_DROP_J2)
+        if (motor1J2.getCurrentPosition() > SILVER_DROP_J2)
         {
             j2Power = -J2_POWER;
         }
-        else if (motorJ2.getCurrentPosition() < SILVER_DROP_J2)
+        else if (motor1J2.getCurrentPosition() < SILVER_DROP_J2)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motor2J2.getCurrentPosition() > SILVER_DROP_J2)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motor2J2.getCurrentPosition() < SILVER_DROP_J2)
         {
             j2Power = J2_POWER;
         }
@@ -369,7 +429,7 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         {
             j3Power = UP_POWER_J3;
         }
-        toPosition(j1Power, j2Power, j3Power, SILVER_DROP_J1, SILVER_DROP_J2, SILVER_DROP_J3);
+        toPosition(j1Power, j2Power, j3Power, SILVER_DROP_J1, SILVER_DROP_J2, SILVER_DROP_J2, SILVER_DROP_J3);
         j1Power = 0;
         j2Power = 0;
         j3Power = 0;
@@ -386,11 +446,20 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
             j1Power = J1_POWER;
         }
 
-        if (motorJ2.getCurrentPosition() > 531)
+        if (motor1J2.getCurrentPosition() > 531)
         {
             j2Power = -J2_POWER;
         }
-        else if (motorJ2.getCurrentPosition() < 531)
+        else if (motor1J2.getCurrentPosition() < 531)
+        {
+            j2Power = J2_POWER;
+        }
+
+        if (motor2J2.getCurrentPosition() > 531)
+        {
+            j2Power = -J2_POWER;
+        }
+        else if (motor2J2.getCurrentPosition() < 531)
         {
             j2Power = J2_POWER;
         }
@@ -403,7 +472,7 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         {
             j3Power = UP_POWER_J3;
         }
-        toPosition(j1Power, j2Power, j3Power, -842, 531, -911);
+        toPosition(j1Power, j2Power, j3Power, -842, 531, 531, -911);
     }
 
     public void lowerJ4()
@@ -416,13 +485,16 @@ public class OctoSamwiseSmart extends TRexSamwiseArm
         double collectingJ22 = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(k, 2) - Math.pow(ARM_L2, 2)) / (2 * ARM_L1 * k)));
         double collectingJ2  = collectingJ21 + collectingJ22;
         double collectingJ3  = Math.toDegrees(Math.acos((Math.pow(ARM_L1, 2) + Math.pow(ARM_L2, 2) - Math.pow(k, 2)) / (2 * ARM_L1 * ARM_L2)));
-        motorJ2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ2.setPower(J2_POWER);
+        motor1J2.setPower(J2_POWER);
+        motor2J2.setPower(J2_POWER);
         motorJ3.setPower(UP_POWER_J3);
-        motorJ2.setTargetPosition((int) ((collectingJ2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2));
+        motor1J2.setTargetPosition((int) ((collectingJ2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2));
+        motor2J2.setTargetPosition((int) ((collectingJ2 - INITIAL_DEGREES_J2) * TICKS_PER_DEGREE_J2));
         motorJ3.setTargetPosition((int) ((collectingJ3 - INITIAL_TICKS_J3) * TICKS_PER_DEGREE_J3));
-        while (motorJ2.isBusy() || motorJ3.isBusy() && !isStop)
+        while (motor2J2.isBusy() || motor1J2.isBusy() || motorJ3.isBusy() && !isStop)
         {
             Thread.yield();
         }

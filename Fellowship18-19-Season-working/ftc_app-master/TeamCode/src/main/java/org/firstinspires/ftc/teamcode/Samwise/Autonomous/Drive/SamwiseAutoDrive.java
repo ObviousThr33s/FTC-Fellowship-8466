@@ -101,7 +101,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         //Unhooking
         hanger.unHook();
-        sleep(1000); //wait until the hook fully opens
+        sleep(800); //wait until the hook fully opens
 
         //Lowering the Slide
         //hanger.encoderDrive(this, 0.9, 46, 4);
