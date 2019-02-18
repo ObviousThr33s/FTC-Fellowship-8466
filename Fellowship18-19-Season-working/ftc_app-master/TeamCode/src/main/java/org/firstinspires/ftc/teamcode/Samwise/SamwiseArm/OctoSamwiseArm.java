@@ -227,7 +227,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         //TODO: may need to add back when OCTO is in use
         servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoE2.setPower(0.8);
+        servoE2.setPower(1);
     }
 
     public void stopExtendL1()
@@ -255,7 +255,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     public void testRetract()
     {
         servoE2.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoE2.setPower(0.2);
+        servoE2.setPower(1);
     }
     public int getE1CurrentPosition()
     {
