@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TRexSamwiseGenius;
 
-@TeleOp(name = "Arm Test", group = "tests")
+@TeleOp(name = "T-Rex Arm Test", group = "tests")
 //@Disabled
 public class TRexArmTeleOpTest extends OpMode
 {
