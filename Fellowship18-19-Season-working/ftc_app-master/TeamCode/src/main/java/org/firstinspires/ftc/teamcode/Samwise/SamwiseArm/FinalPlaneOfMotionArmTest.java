@@ -28,7 +28,7 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     private double SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
 
     //J2, J3 Static
-    static final double EncoderCountJ2 = 1440; //number of ticks per motor round
+    static final double EncoderCountJ2 = 1440.0; //number of ticks per motor round
     static final double EncoderCountJ3 = 1993.6; //number of ticks per motor round
     static final double HeightOfPlane = 6.0; //height of plane of motion
     static final double LengthJ2toJ3 = 13.0; //distance between J2 and J3
@@ -41,8 +41,6 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     private double TickPerDegreeJ2 = EncoderCountJ2/360.0;
     double J2MaxPos = 90.0 * TickPerDegreeJ2;
     double J2MinPos = 0.0 * TickPerDegreeJ2;
-    double mininticks = 0.0 * TickPerDegreeJ2;
-    double maxinticks = 90.0 * TickPerDegreeJ2;
 
     double J2FirsttoLast = 4;
     double J3FirsttoLast = 2;

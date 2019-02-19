@@ -32,6 +32,9 @@ public class OctoArmTeleOpTest extends OpMode
     public void init()
     {
         armStuff = new OctoSamwiseGenius(hardwareMap);
+        armStuff.stopJ1();
+        armStuff.stopJ2();
+        armStuff.stopJ3();
     }
 
     @Override
@@ -276,6 +279,7 @@ public class OctoArmTeleOpTest extends OpMode
         }
         else
         {
+            armStuff.setcurrent(gamepad1.left_bumper);
             armStuff.PlaneOfMotion(gamepad1.left_stick_y);
         }
 
