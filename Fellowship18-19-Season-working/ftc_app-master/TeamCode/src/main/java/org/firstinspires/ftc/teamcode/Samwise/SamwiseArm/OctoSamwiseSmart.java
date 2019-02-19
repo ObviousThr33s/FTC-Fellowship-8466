@@ -39,10 +39,10 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
     static final double INITIAL_COL_ARM_L3 = 2 * (ARM_L1 + ARM_L2) / 3;
 
-    public int initialCollectionPosJ1 = -842;
-    public int initialCollectionPos1J2 = 773;
-    public int initialCollectionPos2J2 = 773;
-    public int initialCollectionPosJ3 = -70;
+    public int initialCollectionPosJ1 = -1067;
+    public int initialCollectionPos1J2 = 1433;
+    public int initialCollectionPos2J2 = 1433;
+    public int initialCollectionPosJ3 = -1293;
     int previousPositionJ1;
     int previousPosition1J2;
     int previousPosition2J2;
@@ -50,7 +50,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
     static final double J1_POWER = 0.3;
     static final double J2_POWER = 0.1;
-    static final double UP_POWER_J3 = 0.15;
     static final double DOWN_POWER_J3 = 0.05;
     static final double HOLD_POWER = 0.3;
 

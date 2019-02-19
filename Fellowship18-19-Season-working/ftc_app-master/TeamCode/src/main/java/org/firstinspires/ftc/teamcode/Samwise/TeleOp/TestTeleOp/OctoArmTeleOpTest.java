@@ -41,10 +41,10 @@ public class OctoArmTeleOpTest extends OpMode
     public void loop()
     {
 
-//        telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
-//        telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
-//        telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
-//        telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
+        telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
+        telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
+        telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
+        telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
         telemetry.update();
 
         if (gamepad1.dpad_up)
@@ -57,6 +57,15 @@ public class OctoArmTeleOpTest extends OpMode
             manual = false;
         }
 
+        if (gamepad2.dpad_up)
+        {
+            armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 + 0.1;
+        }
+
+        if (gamepad2.dpad_down)
+        {
+            armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 - 0.1;
+        }
         if (gamepad1.dpad_left)
         {
             armStuff.stop();
@@ -175,18 +184,8 @@ public class OctoArmTeleOpTest extends OpMode
         // collection and deposit
         if (gamepad1.left_trigger > 0.1)
         {
-            //            if (!collect)
-            //            {
-            //                armStuff.savePreviousPosition();
-            //                armStuff.lowerJ4();
-            //               collect = true;
-            //            }
             armStuff.collectMinerals();
         }
-        //        else
-        //        {
-        //            collect = false;
-        //        }
 
         if (gamepad1.right_trigger > 0.1)
         {
@@ -200,47 +199,6 @@ public class OctoArmTeleOpTest extends OpMode
 
         if (manual)
         {
-//            if (gamepad1.right_stick_y > 0.6 /*&& armStuff.getJ3CurrentPosition() < J3_MAX_TICKS*/)
-//            {
-//                armStuff.driveJ3(false);
-//                isHoldingJ3 = false;
-//            }
-//            else if (gamepad1.right_stick_y < -0.6 /*&& armStuff.getJ3CurrentPosition() > J3_MIN_TICKS*/)
-//            {
-//                armStuff.driveJ3(true);
-//                isHoldingJ3 = false;
-//            }
-//            else if (isHoldingJ3)
-//            {
-//                armStuff.holdPositionJ3(false);
-//            }
-//            else
-//            {
-//                armStuff.holdPositionJ3(true);
-//                isHoldingJ3 = true;
-//            }
-//
-//
-//            if (gamepad1.left_stick_y > 0.6 /*&& (armStuff.getJ2CurrentPosition() < J2_MAX_TICKS || !armStuff.isPhoneJ1())*/)
-//            {
-//                armStuff.driveJ2(false);
-//                isHoldingJ2 = false;
-//            }
-//            else if (gamepad1.left_stick_y < -0.6 /*&& (armStuff.getJ2CurrentPosition() > J2_MIN_TICKS || !armStuff.isPhoneJ1())*/)
-//            {
-//                armStuff.driveJ2(true);
-//                isHoldingJ2 = false;
-//            }
-//            else if (isHoldingJ2)
-//            {
-//                armStuff.holdPositionJ2(false);
-//            }
-//            else
-//            {
-//                armStuff.holdPositionJ2(true);
-//                isHoldingJ2 = true;
-//            }
-
             if (gamepad1.right_stick_y > 0.4)
             {
                 armStuff.driveJ3(true);

@@ -64,10 +64,9 @@ public class OctoSamwiseArm extends OctoSamwiseCollection {
     ElapsedTime runTime = new ElapsedTime();
     static final int TIMEOUT = 100;
 
-    static final double MANUAL_POWER_J1 = 0.3;
-    static final double MANUAL_POWER_J2 = 0.1;
-    static final double UP_POWER_J3 = 0.15;
-    static final double DOWN_POWER_J3 = 0.05;
+    public static final double MANUAL_POWER_J1 = 0.3;
+    public static final double MANUAL_POWER_J2 = 0.1;
+    public double UP_POWER_J3 = 0.2;
 
     public OctoSamwiseArm(HardwareMap hwm) {
         super(hwm);
