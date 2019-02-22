@@ -35,7 +35,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TRexSamwiseGenius;
 
 /****************************************************************************************************
  *                  Teleop Outline:                                                                 *
@@ -172,6 +171,12 @@ public class SamwiseTeleOp2 extends OpMode {
          * new arm
          *
          *******************/
+        telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
+        telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
+        telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
+        telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
+        telemetry.update();
+
         if (gamepad1.dpad_up)
         {
             manual = true;
@@ -182,6 +187,15 @@ public class SamwiseTeleOp2 extends OpMode {
             manual = false;
         }
 
+        if (gamepad2.dpad_up)
+        {
+            armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 + 0.1;
+        }
+
+        if (gamepad2.dpad_down)
+        {
+            armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 - 0.1;
+        }
         if (gamepad1.dpad_left)
         {
             armStuff.stop();
@@ -238,12 +252,12 @@ public class SamwiseTeleOp2 extends OpMode {
 
         if (gamepad1.y)
         {
-            armStuff.extendL1();
+            armStuff.retractL1Auto();
         }
 
         if (gamepad1.dpad_right)
         {
-            armStuff.retractArm();
+            armStuff.extendL1Auto();
         }
 
         if (!gamepad1.y && !gamepad1.dpad_right)
@@ -258,41 +272,41 @@ public class SamwiseTeleOp2 extends OpMode {
             isHoldingJ3 = false;
         }
 
-//        if (gamepad1.a)
-//        {
-//            armStuff.toInitialPosition();
-//            isHoldingJ2 = false;
-//            isHoldingJ3 = false;
-//        }
-//
-//        // to collection position
-//        if (gamepad1.b)
-//        {
-//            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
-//            {
-//                armStuff.toCollectionPlane();
-//                isHoldingJ2 = false;
-//                isHoldingJ3 = false;
-//            }
-//            else
-//            {
-//                armStuff.toPreviousPosition();
-//                isHoldingJ2 = false;
-//                isHoldingJ3 = false;
-//            }
-//        }
-
         if (gamepad1.a)
         {
-            armStuff.extendL2();
+            armStuff.toInitialPosition();
+            isHoldingJ2 = false;
+            isHoldingJ3 = false;
         }
 
+        // to collection position
         if (gamepad1.b)
         {
-            armStuff.testRetract();
+            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+            {
+                armStuff.toCollectionPlane();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
+            }
+            else
+            {
+                armStuff.toPreviousPosition();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
+            }
         }
 
-        if (!gamepad1.a && !gamepad1.b)
+        if (gamepad2.a)
+        {
+            armStuff.extendL2Auto();
+        }
+
+        if (gamepad2.b)
+        {
+            armStuff.retractL2Auto();
+        }
+
+        if (!gamepad2.a && !gamepad2.b)
         {
             armStuff.stopExtendL2();
         }
@@ -300,18 +314,8 @@ public class SamwiseTeleOp2 extends OpMode {
         // collection and deposit
         if (gamepad1.left_trigger > 0.1)
         {
-            //            if (!collect)
-            //            {
-            //                armStuff.savePreviousPosition();
-            //                armStuff.lowerJ4();
-            //               collect = true;
-            //            }
             armStuff.collectMinerals();
         }
-        //        else
-        //        {
-        //            collect = false;
-        //        }
 
         if (gamepad1.right_trigger > 0.1)
         {
@@ -325,47 +329,6 @@ public class SamwiseTeleOp2 extends OpMode {
 
         if (manual)
         {
-//            if (gamepad1.right_stick_y > 0.6 /*&& armStuff.getJ3CurrentPosition() < J3_MAX_TICKS*/)
-//            {
-//                armStuff.driveJ3(false);
-//                isHoldingJ3 = false;
-//            }
-//            else if (gamepad1.right_stick_y < -0.6 /*&& armStuff.getJ3CurrentPosition() > J3_MIN_TICKS*/)
-//            {
-//                armStuff.driveJ3(true);
-//                isHoldingJ3 = false;
-//            }
-//            else if (isHoldingJ3)
-//            {
-//                armStuff.holdPositionJ3(false);
-//            }
-//            else
-//            {
-//                armStuff.holdPositionJ3(true);
-//                isHoldingJ3 = true;
-//            }
-//
-//
-//            if (gamepad1.left_stick_y > 0.6 /*&& (armStuff.getJ2CurrentPosition() < J2_MAX_TICKS || !armStuff.isPhoneJ1())*/)
-//            {
-//                armStuff.driveJ2(false);
-//                isHoldingJ2 = false;
-//            }
-//            else if (gamepad1.left_stick_y < -0.6 /*&& (armStuff.getJ2CurrentPosition() > J2_MIN_TICKS || !armStuff.isPhoneJ1())*/)
-//            {
-//                armStuff.driveJ2(true);
-//                isHoldingJ2 = false;
-//            }
-//            else if (isHoldingJ2)
-//            {
-//                armStuff.holdPositionJ2(false);
-//            }
-//            else
-//            {
-//                armStuff.holdPositionJ2(true);
-//                isHoldingJ2 = true;
-//            }
-
             if (gamepad1.right_stick_y > 0.4)
             {
                 armStuff.driveJ3(true);
@@ -404,6 +367,7 @@ public class SamwiseTeleOp2 extends OpMode {
         }
         else
         {
+            armStuff.setcurrent(gamepad1.left_bumper);
             armStuff.PlaneOfMotion(gamepad1.left_stick_y);
         }
 

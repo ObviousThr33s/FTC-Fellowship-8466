@@ -5,15 +5,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
 
-public class OctoSamwiseArm extends OctoSamwiseCollection {
+public class OctoSamwiseArm extends OctoSamwiseCollection
+{
     DcMotor motorJ1;
     DcMotor motor1J2;
     DcMotor motor2J2;
     DcMotor motorJ3;
+
+    public double E2_POWER = 0.8;
 
     static final double BigGearCount = 120.0;
     static final double SmallGearCount = 24.0;
@@ -53,9 +57,11 @@ public class OctoSamwiseArm extends OctoSamwiseCollection {
 
     int HoldPosONOFF = 1;
 
-//    public static final int J1_LEFT_PHONE = -1001;
-//    public static final int J1_RIGHT_PHONE = -2716;
-//    public static final int J2_MIN_PHONE_TICKS = /*916*/ 770;
+    int e1Extended = 5497;
+
+    //    public static final int J1_LEFT_PHONE = -1001;
+    //    public static final int J1_RIGHT_PHONE = -2716;
+    //    public static final int J2_MIN_PHONE_TICKS = /*916*/ 770;
 
     // for Octo Arm
     DcMotor motorE1;
@@ -64,11 +70,12 @@ public class OctoSamwiseArm extends OctoSamwiseCollection {
     ElapsedTime runTime = new ElapsedTime();
     static final int TIMEOUT = 100;
 
-    public static final double MANUAL_POWER_J1 = 0.3;
-    public static final double MANUAL_POWER_J2 = 0.1;
-    public double UP_POWER_J3 = 0.2;
+    public static final double MANUAL_POWER_J1 = 0.6;
+    public static final double MANUAL_POWER_J2 = 0.5;
+    public double UP_POWER_J3 = /*0.4*/1;
 
-    public OctoSamwiseArm(HardwareMap hwm) {
+    public OctoSamwiseArm(HardwareMap hwm)
+    {
         super(hwm);
 
         //Instantiate hardware
@@ -87,27 +94,35 @@ public class OctoSamwiseArm extends OctoSamwiseCollection {
         motor2J2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorJ3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void driveJ1(boolean isLeft) {
+    public void driveJ1(boolean isLeft)
+    {
         motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (isLeft) {
+        if (isLeft)
+        {
             motorJ1.setPower(MANUAL_POWER_J1);
-        } else {
+        }
+        else
+        {
             motorJ1.setPower(-MANUAL_POWER_J1);
         }
     }
 
-    public void stopJ1() {
+    public void stopJ1()
+    {
         motorJ1.setPower(0);
     }
 
-    public void stopJ3() {
+    public void stopJ3()
+    {
         motorJ3.setPower(0);
     }
 
-    public void stopJ2() {
+    public void stopJ2()
+    {
         motor1J2.setPower(0);
         motor2J2.setPower(0);
     }
@@ -117,14 +132,18 @@ public class OctoSamwiseArm extends OctoSamwiseCollection {
      *
      * @param isUp
      */
-    public void driveJ2(boolean isUp) {
+    public void driveJ2(boolean isUp)
+    {
         motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (isUp) {
+        if (isUp)
+        {
             motor1J2.setPower(-MANUAL_POWER_J2);
             motor2J2.setPower(-MANUAL_POWER_J2);
-        } else {
+        }
+        else
+        {
             motor1J2.setPower(MANUAL_POWER_J2);
             motor2J2.setPower(MANUAL_POWER_J2);
         }
@@ -135,46 +154,53 @@ public class OctoSamwiseArm extends OctoSamwiseCollection {
      *
      * @param isUp
      */
-    public void driveJ3(boolean isUp) {
+    public void driveJ3(boolean isUp)
+    {
         motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (isUp) {
+        if (isUp)
+        {
             motorJ3.setPower(-UP_POWER_J3);
-        } else {
+        }
+        else
+        {
             motorJ3.setPower(UP_POWER_J3);
         }
     }
 
 
-    public int getJ1CurrentPosition() {
+    public int getJ1CurrentPosition()
+    {
         return motorJ1.getCurrentPosition();
     }
 
-    public int getJ2CurrentPosition() {
+    public int getJ2CurrentPosition()
+    {
         return motor1J2.getCurrentPosition();
     }
 
-    public int getJ3CurrentPosition() {
+    public int getJ3CurrentPosition()
+    {
         return motorJ3.getCurrentPosition();
     }
 
-//    public boolean isPhoneJ1()
-//    {
-//        boolean isJ1PhoneArea = getJ1CurrentPosition() < J1_LEFT_PHONE && getJ1CurrentPosition() > J1_RIGHT_PHONE;
-//        return isJ1PhoneArea;
-//    }
-//
-//    public boolean isPhoneJ2()
-//    {
-//        boolean isJ2PhoneArea = getJ2CurrentPosition() >= J2_MIN_PHONE_TICKS;
-//        return isJ2PhoneArea;
-//    }
+    //    public boolean isPhoneJ1()
+    //    {
+    //        boolean isJ1PhoneArea = getJ1CurrentPosition() < J1_LEFT_PHONE && getJ1CurrentPosition() > J1_RIGHT_PHONE;
+    //        return isJ1PhoneArea;
+    //    }
+    //
+    //    public boolean isPhoneJ2()
+    //    {
+    //        boolean isJ2PhoneArea = getJ2CurrentPosition() >= J2_MIN_PHONE_TICKS;
+    //        return isJ2PhoneArea;
+    //    }
 
     /************************************************************************************************
      *               For OCTO Arm Only: Arm Extension/Retraction                                    *
      ************************************************************************************************/
-    public void extendArms() {
-        //TODO: may need to add back when OCTO is in use
+    public void extendArms()
+    {
         /*runTime.reset();
         while (runTime.milliseconds() < TIMEOUT)
         {
@@ -187,65 +213,104 @@ public class OctoSamwiseArm extends OctoSamwiseCollection {
         stopExtendServos();*/
     }
 
-    public void stopExtendServos() {
-        //TODO: may need to add back when OCTO is in use
-//        motorE1.setPower(0);
-//        motorE2.setPower(0);
+    public void stopExtendServos()
+    {
+        //        motorE1.setPower(0);
+        //        motorE2.setPower(0);
     }
 
-    public void extendL1() {
-        //TODO: may need to add back when OCTO is in use
-        motorE1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    public void retractL1Auto()
+    {
+        motorE1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorE1.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorE1.setPower(0.15);
+        motorE1.setPower(0.2);
+        motorE1.setTargetPosition(0);
     }
 
-    public void extendL2() {
-        //TODO: may need to add back when OCTO is in use
+    public void extendL2Auto()
+    {
         servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoE2.setPower(1);
+        servoE2.setPower(E2_POWER);
+        try
+        {
+            Thread.sleep(25000);
+        }
+        catch (Exception e){}
     }
 
-    public void stopExtendL1() {
-        //TODO: may need to add back when OCTO is in use
+    public void stopExtendL1()
+    {
         motorE1.setPower(0);
     }
 
-    public void stopExtendL2() {
-        //TODO: may need to add back when OCTO is in use
+    public void stopExtendL2()
+    {
         servoE2.setPower(0);
     }
 
-    public void retractArm() {
-        //TODO: may need to add back when OCTO is in use
+    public void extendL1Auto()
+    {
+        motorE1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorE1.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorE1.setPower(0.8);
+        motorE1.setTargetPosition(e1Extended);
+    }
+
+    public void retractL2Auto()
+    {
+        servoE2.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoE2.setPower(E2_POWER);
+        try
+        {
+            Thread.sleep(25000);
+        }
+        catch(Exception e){}
+    }
+
+    public void extendL1()
+    {
         motorE1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorE1.setDirection(DcMotorSimple.Direction.REVERSE);
-////                motorE2.setDirection(DcMotorSimple.Direction.REVERSE);
         motorE1.setPower(0.8);
-//                motorE2.setPower(0.2);
     }
 
-    public void testRetract() {
+    public void retractL2()
+    {
         servoE2.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoE2.setPower(1);
+        servoE2.setPower(E2_POWER);
     }
 
-    public int getE1CurrentPosition() {
-        //TODO: may need to add back when OCTO is in use
+    public void retractL1()
+    {
+        motorE1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorE1.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorE1.setPower(0.2);
+    }
+
+    public void extendL2()
+    {
+        servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoE2.setPower(E2_POWER);
+    }
+
+    public int getE1CurrentPosition()
+    {
         return motorE1.getCurrentPosition();
-//        return 0;
     }
 
-    public void PlaneOfMotion(float Joysticks) {
+    public void PlaneOfMotion(float Joysticks)
+    {
         //if (Math.abs(Joysticks) > 0.1)
         //{
 
         //        init_loop();
-        if (Joysticks <= -0.01) { //push forward
+        if (Joysticks <= -0.01)
+        { //push forward
             motor1J2.setTargetPosition((int) (J2MaxPos));
             motor2J2.setTargetPosition((int) (J2MaxPos));
         }
-        if (Joysticks >= 0.01) { //backwards
+        if (Joysticks >= 0.01)
+        { //backwards
             motor1J2.setTargetPosition((int) (J2MinPos));
             motor2J2.setTargetPosition((int) (J2MinPos));
         }
@@ -264,7 +329,8 @@ public class OctoSamwiseArm extends OctoSamwiseCollection {
         }*/
         motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (Joysticks == 0) {
+        if (Joysticks == 0)
+        {
             motor1J2.setPower(0);
             motor2J2.setPower(0);
             motorJ3.setPower(0);
@@ -306,13 +372,17 @@ public class OctoSamwiseArm extends OctoSamwiseCollection {
 
     }
 
-    public void Initialposition() {
+    public void Initialposition()
+    {
         motor1J2.setTargetPosition((int) (30 * TickPerDegreeJ2));
         motor1J2.setTargetPosition((int) (30 * TickPerDegreeJ2));
         motorJ3.setTargetPosition(15);
     }
-    public void setcurrent(boolean gamepadTrigger) {
-        if (gamepadTrigger){
+
+    public void setcurrent(boolean gamepadTrigger)
+    {
+        if (gamepadTrigger)
+        {
             motor1J2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor2J2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

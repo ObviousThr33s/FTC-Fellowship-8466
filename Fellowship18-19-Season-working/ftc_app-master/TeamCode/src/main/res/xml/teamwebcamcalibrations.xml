@@ -43,7 +43,7 @@
     focalLength (float pair): space separated focal length value.
     principalPoint (float pair): space separated principal point values (width, height).
     distortionCoefficients (an 8-element float array): distortion coefficients in the following form
-        (r:radial, t:tangential): [r0, r1, t0, t1, r2, r3, r4, r5]
+        (retractL1Auto:radial, t:tangential): [r0, r1, t0, t1, r2, r3, r4, r5]
         see https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html
 
   The examples here are commented out as the values are built-in to the FTC SDK. They serve instead

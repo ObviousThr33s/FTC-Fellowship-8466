@@ -3,9 +3,7 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseArm;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TRexSamwiseGenius;
 
 @TeleOp(name = "Octo Arm Test", group = "tests")
 //@Disabled
@@ -40,12 +38,26 @@ public class OctoArmTeleOpTest extends OpMode
     @Override
     public void loop()
     {
-
         telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
         telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
         telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
         telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
         telemetry.update();
+
+        if (gamepad2.dpad_up)
+        {
+            armStuff.extendL1();
+        }
+
+        if (gamepad2.dpad_down)
+        {
+            armStuff.retractL1();
+        }
+
+        if (!gamepad2.dpad_up && !gamepad2.dpad_down)
+        {
+            armStuff.stopExtendL1();
+        }
 
         if (gamepad1.dpad_up)
         {
@@ -57,15 +69,6 @@ public class OctoArmTeleOpTest extends OpMode
             manual = false;
         }
 
-        if (gamepad2.dpad_up)
-        {
-            armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 + 0.1;
-        }
-
-        if (gamepad2.dpad_down)
-        {
-            armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 - 0.1;
-        }
         if (gamepad1.dpad_left)
         {
             armStuff.stop();
@@ -106,77 +109,78 @@ public class OctoArmTeleOpTest extends OpMode
         }
 
         // to deposit position
-        //        if (gamepad1.x)
-        //        {
-        //            armStuff.silverDropPoint();
-        //            isHoldingJ2 = false;
-        //            isHoldingJ3 = false;
-        //        }
-        //
-        //        if (gamepad1.y)
-        //        {
-        //            armStuff.goldDropPoint();
-        //            isHoldingJ2 = false;
-        //            isHoldingJ3 = false;
-        //        }
+                if (gamepad1.x)
+                {
+                    armStuff.silverDropPoint();
+                    isHoldingJ2 = false;
+                    isHoldingJ3 = false;
+                }
 
-        if (gamepad1.y)
-        {
-            armStuff.extendL1();
-        }
+                if (gamepad1.y)
+                {
+                    armStuff.goldDropPoint();
+                    isHoldingJ2 = false;
+                    isHoldingJ3 = false;
+                }
 
-        if (gamepad1.dpad_right)
-        {
-            armStuff.retractArm();
-        }
 
-        if (!gamepad1.y && !gamepad1.dpad_right)
-        {
-            armStuff.stopExtendL1();
-        }
-
-        if (gamepad1.x)
-        {
-            armStuff.toLander();
-            isHoldingJ2 = false;
-            isHoldingJ3 = false;
-        }
-
-//        if (gamepad1.a)
+//        if (gamepad1.y)
 //        {
-//            armStuff.toInitialPosition();
-//            isHoldingJ2 = false;
-//            isHoldingJ3 = false;
+//            armStuff.retractL1();
 //        }
 //
-//        // to collection position
-//        if (gamepad1.b)
+//        if (gamepad1.dpad_right)
 //        {
-//            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
-//            {
-//                armStuff.toCollectionPlane();
-//                isHoldingJ2 = false;
-//                isHoldingJ3 = false;
-//            }
-//            else
-//            {
-//                armStuff.toPreviousPosition();
-//                isHoldingJ2 = false;
-//                isHoldingJ3 = false;
-//            }
+//            armStuff.extendL1();
+//        }
+//
+//        if (!gamepad1.y && !gamepad1.dpad_right)
+//        {
+//            armStuff.stopExtendL1();
+//        }
+
+//        if (gamepad1.x)
+//        {
+//            armStuff.toLander();
+//            isHoldingJ2 = false;
+//            isHoldingJ3 = false;
 //        }
 
         if (gamepad1.a)
         {
+            armStuff.toInitialPosition();
+            isHoldingJ2 = false;
+            isHoldingJ3 = false;
+        }
+
+        // to collection position
+        if (gamepad1.b)
+        {
+            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+            {
+                armStuff.toCollectionPlane();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
+            }
+            else
+            {
+                armStuff.toPreviousPosition();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
+            }
+        }
+
+        if (gamepad2.a)
+        {
             armStuff.extendL2();
         }
 
-        if (gamepad1.b)
+        if (gamepad2.b)
         {
-            armStuff.testRetract();
+            armStuff.retractL2();
         }
 
-        if (!gamepad1.a && !gamepad1.b)
+        if (!gamepad2.a && !gamepad2.b)
         {
             armStuff.stopExtendL2();
         }
