@@ -4,6 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+
 @TeleOp (name = "PlaneOfMotion")
 
 
@@ -30,7 +34,7 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     private double SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
 
     //J2, J3 Static
-    static final double EncoderCountJ2 = 1440.0; //number of ticks per motor round
+    static final double EncoderCountJ2 = 1993.6; //number of ticks per motor round
     static final double EncoderCountJ3 = 1993.6; //number of ticks per motor round
     static final double HeightOfPlane = 6.0; //height of plane of motion
     static final double LengthJ2toJ3 = 13.0; //distance between J2 and J3
@@ -49,15 +53,13 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
 
     int HoldPosONOFF = 1;
     double power_level = 0.2;
+    private boolean firsttime = false;
 
     public void init() {
 
         ArmMotor2 = hardwareMap.dcMotor.get("1J2");
         ArmMotor3 = hardwareMap.dcMotor.get("J3");
         ArmMotor2_2 = hardwareMap.dcMotor.get("2J2");
-        ArmMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ArmMotor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ArmMotor2_2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ArmMotor2.setPower(0);
         ArmMotor2_2.setPower(0);
         ArmMotor3.setPower(0);
@@ -102,7 +104,9 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
         }
         ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         */
-
+        ArmMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmMotor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmMotor2_2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //manually adjust
         if (gamepad1.left_stick_y > 0.1) {
@@ -114,12 +118,25 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
             ArmMotor2_2.setPower(-power_level);
         }
         if (gamepad1.right_stick_y > 0.1) {
-            ArmMotor3.setPower(power_level);
+            ArmMotor3.setPower(0.5);
         }
         if (gamepad1.right_stick_y < -0.1) {
-            ArmMotor3.setPower(-power_level);
+            ArmMotor3.setPower(-0.5);
         }
+        if ((gamepad1.left_stick_y <0.1) && (gamepad1.left_stick_y > -0.1)) {
+            ArmMotor2.setPower(0);
+            ArmMotor2_2.setPower(0);
+        }
+        if ((gamepad1.right_stick_y < 0.1)&&(gamepad1.left_stick_y > -0.1)) {
+            ArmMotor3.setPower(0);
+        }
+
         if (gamepad1.right_bumper) {
+            firsttime = true;
+        }
+
+        if (firsttime = true) {
+            firsttime = false;
             ArmMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             ArmMotor2_2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             ArmMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -127,25 +144,22 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
             //matthhh
             double J2_init = 180.0;
             double J3_init = 90.0;
+            double J2_adjust = 30.0;
             double J2_PoM_init = J2_init - 30.0 - 90.0;
             double J3_height = L1 * Math.sin(Math.toRadians(J2_PoM_init));
             double J3_angel = 90.0 - J2_PoM_init + Math.toDegrees(Math.acos((J3_height - H) / L2));
-            double J2_adjust = 30.0;
+
             double J3_adjust = J3_angel - J3_init;
 
             ArmMotor2.setTargetPosition((int) J2_adjust * (int) TickPerDegreeJ2);   //check motor rotate direction
-            ArmMotor2_2.setTargetPosition((int) 30 * (int) TickPerDegreeJ2);
-            ArmMotor3.setTargetPosition((int) J3_adjust * (int) TickPerDegreeJ3);
+            ArmMotor2_2.setTargetPosition((int) J2_adjust* (int) TickPerDegreeJ2);
+            ArmMotor3.setTargetPosition(-1*(int) J3_adjust * (int) TickPerDegreeJ3);
             ArmMotor2.setPower(0.2);
             ArmMotor3.setPower(0.2);
             ArmMotor2_2.setPower(0.2);
             ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             ArmMotor2_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            ArmMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            ArmMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            ArmMotor2_2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
     public void loop() {
@@ -216,7 +230,7 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
                 J3TargetPos_Ticks = J3TargetPos_deg * TickPerDegreeJ3;
 
                 ArmMotor3.setTargetPosition((int) (J3TargetPos_Ticks * 3 * J3FirsttoLast));
-                ArmMotor3.setPower(0.2); //test Power LAtEr
+                ArmMotor3.setPower(0); //test Power LAtEr yeet
                 ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 //J1
                 HoldPosONOFF = 1;
