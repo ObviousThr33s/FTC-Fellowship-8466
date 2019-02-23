@@ -189,12 +189,12 @@ public class SamwiseTeleOp2 extends OpMode {
 
         if (gamepad2.dpad_up)
         {
-            armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 + 0.1;
+            //armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 + 0.1;
         }
 
         if (gamepad2.dpad_down)
         {
-            armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 - 0.1;
+            //armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 - 0.1;
         }
         if (gamepad1.dpad_left)
         {

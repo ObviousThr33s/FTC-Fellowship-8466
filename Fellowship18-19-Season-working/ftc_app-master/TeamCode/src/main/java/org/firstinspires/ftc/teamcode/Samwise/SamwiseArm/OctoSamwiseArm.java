@@ -17,7 +17,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     DcMotor motor2J2;
     DcMotor motorJ3;
 
-    public double E2_POWER = 0.8;
+
 
     static final double BigGearCount = 120.0;
     static final double SmallGearCount = 24.0;
@@ -57,7 +57,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     int HoldPosONOFF = 1;
 
-    int e1Extended = 5497;
+    static final int E1_MAX_COUNT = 5497;
 
     //    public static final int J1_LEFT_PHONE = -1001;
     //    public static final int J1_RIGHT_PHONE = -2716;
@@ -72,7 +72,10 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public static final double MANUAL_POWER_J1 = 0.6;
     public static final double MANUAL_POWER_J2 = 0.5;
-    public double UP_POWER_J3 = /*0.4*/1;
+    public static final double UP_POWER_J3 = /*0.4*/1;
+    public static final double E1_POWER = 0.8;
+    public static final double E2_POWER = 0.8;
+
 
     public OctoSamwiseArm(HardwareMap hwm)
     {
@@ -253,7 +256,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         motorE1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorE1.setDirection(DcMotorSimple.Direction.REVERSE);
         motorE1.setPower(0.8);
-        motorE1.setTargetPosition(e1Extended);
+        motorE1.setTargetPosition(E1_MAX_COUNT);
     }
 
     public void retractL2Auto()

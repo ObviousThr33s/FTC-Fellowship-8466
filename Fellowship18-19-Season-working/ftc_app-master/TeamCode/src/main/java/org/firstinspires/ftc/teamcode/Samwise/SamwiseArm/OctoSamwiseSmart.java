@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class OctoSamwiseSmart extends OctoSamwiseArm
 {
+    private static final int OFFSET_TOLERANCE = 10 ;
     public boolean holdJ2 = true;
     public boolean holdJ3 = true;
     private int motor_position_1j2;
@@ -64,7 +65,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     double j1Power = 0;
     double j2Power = 0;
     double j3Power = 0;
-
+    private boolean isPositionSaved;
 
 
     public OctoSamwiseSmart(HardwareMap hwm)
@@ -79,9 +80,11 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         double j3_degrees   = angle3 - INITIAL_DEGREES_J3;
         //        initialCollectionPosJ2 = TICKS_PER_DEGREE_J2 * j2_degrees;
         //        initialCollectionPosJ3 = TICKS_PER_DEGREE_J3 * j3_degrees;
+        previousPositionJ1 = initialCollectionPosJ1;
         previousPosition1J2 = initialCollectionPos1J2;
         previousPosition2J2 = initialCollectionPos2J2;
         previousPositionJ3 = initialCollectionPosJ3;
+        isPositionSaved = false;
     }
 
     public void stop()
@@ -140,6 +143,107 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         j2Power = 0;
         j3Power = 0;
     }
+
+    boolean motorJ1IsAllowedtoMovePlus (int j2position)
+    {
+        return true;
+    }
+
+    boolean motorJ1IsAllowedtoMoveMinus(int j2position)
+    {
+        return true;
+    }
+
+    boolean motorJ1IsAllowedtoMove(int distance, int j2position)
+    {
+        if (distance > 0)
+            return motorJ1IsAllowedtoMovePlus(j2position);
+        else if (distance < 0)
+            return motorJ1IsAllowedtoMoveMinus(j2position);
+
+        return true;
+    }
+
+    boolean motorJ2IsAllowedtoMove(int distance)
+    {
+        return true;
+    }
+
+    boolean motorJ3IsAllowedtoMove(int distance)
+    {
+        return true;
+    }
+
+    public void toPositionIndividualManual (DcMotor motor, int position, double power)
+    {
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if (position != Integer.MAX_VALUE && motor.getCurrentPosition() > position + OFFSET_TOLERANCE)
+            motor.setPower(power);
+        else if (position != Integer.MAX_VALUE && motor.getCurrentPosition() < position - OFFSET_TOLERANCE)
+            motor.setPower(-1 * power);
+        else
+            motor.setPower(0);
+    }
+
+    public void toPositionManual(int posJ1, int posJ2, int posJ3, /*int posJ4,*/ int posE1, int posE2)
+    {
+        if (motorJ1IsAllowedtoMove(posJ1 - motorJ1.getCurrentPosition(), motor1J2.getCurrentPosition()))
+            toPositionIndividualManual(motorJ1, posJ1, MANUAL_POWER_J1);
+        if (motorJ2IsAllowedtoMove(posJ2 - motor1J2.getCurrentPosition())) {
+            toPositionIndividualManual(motor1J2, posJ2, MANUAL_POWER_J2);
+            toPositionIndividualManual(motor2J2, posJ2, MANUAL_POWER_J2);
+        }
+        if (motorJ3IsAllowedtoMove(posJ3 - motorJ3.getCurrentPosition()))
+            toPositionIndividualManual(motorJ3, posJ3, UP_POWER_J3);
+        //toPositionIndividualManual(motorJ4, posJ4, MANUAL_POWER_J4);
+        toPositionIndividualManual(motorE1, posE1, E1_POWER);
+        if (posE2 > 0)
+            extendL2();
+        else if (posE2 < 0)
+            retractL2();
+
+    }
+
+    public void toPreviousPositionManual()
+    {
+        if (previousPositionJ1 == initialCollectionPosJ1 &&
+            previousPosition1J2 == initialCollectionPos1J2 &&
+            previousPositionJ3 == initialCollectionPosJ3)
+        {
+            toPositionManual(previousPositionJ1, previousPosition1J2, previousPositionJ3, E1_MAX_COUNT, 1);
+        }
+        else
+        {
+            toPositionManual(previousPositionJ1, previousPosition1J2, previousPositionJ3, Integer.MAX_VALUE, 0);
+        }
+        isPositionSaved = false;
+    }
+
+    public void toInitialPositionManual()
+    {
+        toPositionManual(0, 0, 0, 0, -1);
+    }
+
+    public void silverDropPointManual()
+    {
+        if (!isPositionSaved)
+        {
+            savePreviousPosition();
+            isPositionSaved = true;
+        }
+        toPositionManual(SILVER_DROP_J1, J2_LANDER, J3_LANDER, Integer.MAX_VALUE, 0);
+    }
+
+    public void goldDropPointManual()
+    {
+        if (!isPositionSaved)
+        {
+            savePreviousPosition();
+            isPositionSaved = true;
+        }
+        toPositionManual(GOLD_DROP_J1, J2_LANDER, J3_LANDER, Integer.MAX_VALUE, 0);
+    }
+
 
     public void holdPositionJ2(boolean hold)
     {
