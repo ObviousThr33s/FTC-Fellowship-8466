@@ -17,7 +17,8 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     DcMotor motor2J2;
     DcMotor motorJ3;
 
-
+    int E2_MAX_COUNTS = Integer.MAX_VALUE;
+    int J4_MAX_COUNTS = Integer.MAX_VALUE;
 
     static final double BigGearCount = 120.0;
     static final double SmallGearCount = 24.0;
@@ -56,6 +57,8 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     double J3FirsttoLast = 2;
 
     int HoldPosONOFF = 1;
+
+    public int e2Count = 0;
 
     static final int E1_MAX_COUNT = 5497;
 
@@ -238,7 +241,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         {
             Thread.sleep(25000);
         }
-        catch (Exception e){}
+        catch (Exception e) {}
     }
 
     public void stopExtendL1()
@@ -267,7 +270,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         {
             Thread.sleep(25000);
         }
-        catch(Exception e){}
+        catch (Exception e) {}
     }
 
     public void extendL1()
@@ -281,6 +284,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         servoE2.setDirection(DcMotorSimple.Direction.REVERSE);
         servoE2.setPower(E2_POWER);
+        e2Count--;
     }
 
     public void retractL1()
@@ -294,6 +298,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
         servoE2.setPower(E2_POWER);
+        e2Count++;
     }
 
     public int getE1CurrentPosition()

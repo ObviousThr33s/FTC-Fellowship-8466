@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class OctoSamwiseSmart extends OctoSamwiseArm
 {
-    private static final int OFFSET_TOLERANCE = 10 ;
+    private static final int OFFSET_TOLERANCE = 10;
     public boolean holdJ2 = true;
     public boolean holdJ3 = true;
     private int motor_position_1j2;
@@ -56,7 +56,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     int previousPosition1J2;
     int previousPosition2J2;
     int previousPositionJ3;
-
 
     static final double J1_POWER = 0.6;
     static final double J2_POWER = /*0.3*/ 0.5;
@@ -144,71 +143,99 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         j3Power = 0;
     }
 
-    boolean motorJ1IsAllowedtoMovePlus (int j2position)
+    boolean motorJ1IsAllowedtoMovePlus()
     {
+        int curJ2Position = motor1J2.getCurrentPosition();
+        int curJ1Position = motorJ1.getCurrentPosition();
+
+        if (curJ2Position < 674) return false;
         return true;
     }
 
-    boolean motorJ1IsAllowedtoMoveMinus(int j2position)
+    boolean motorJ1IsAllowedtoMoveMinus()
     {
+        int curJ2Position = motor1J2.getCurrentPosition();
+        int curJ1Position = motorJ1.getCurrentPosition();
+
+        if (curJ2Position < 674) return false;
         return true;
     }
 
-    boolean motorJ1IsAllowedtoMove(int distance, int j2position)
+    boolean motorJ2IsAllowedtoMovePlus()
     {
-        if (distance > 0)
-            return motorJ1IsAllowedtoMovePlus(j2position);
-        else if (distance < 0)
-            return motorJ1IsAllowedtoMoveMinus(j2position);
+
+        //todo: calculate the phone area
+        return true;
+    }
+
+    boolean motorJ2IsAllowedtoMoveMinus()
+    {
+        int curJ2Position = motor1J2.getCurrentPosition();
+        int curJ1Position = motorJ1.getCurrentPosition();
+
+        if (curJ2Position > 674) return true;
+        else if (curJ1Position <= OFFSET_TOLERANCE && curJ1Position >= -OFFSET_TOLERANCE)
+            return true;
+        else return false;
+    }
+
+    boolean motorJ1IsAllowedtoMove(int target)
+    {
+        int curj1position = motorJ1.getCurrentPosition();
+        if (target > curj1position) return motorJ1IsAllowedtoMovePlus();
+        else if (target < curj1position) return motorJ1IsAllowedtoMoveMinus();
 
         return true;
     }
 
-    boolean motorJ2IsAllowedtoMove(int distance)
+    boolean motorJ2IsAllowedtoMove(int target)
     {
+        int curj2position = motor1J2.getCurrentPosition();
+        if (target > curj2position) return motorJ2IsAllowedtoMovePlus();
+        else if (target < curj2position) return motorJ2IsAllowedtoMoveMinus();
+
         return true;
     }
 
-    boolean motorJ3IsAllowedtoMove(int distance)
+    boolean motorJ3IsAllowedtoMove(int target)
     {
+        int curj3position = motorJ3.getCurrentPosition();
+        if (target > curj3position) return curj3position < 0;
+        else if (target > curj3position) return curj3position > -7000;
+
         return true;
     }
 
-    public void toPositionIndividualManual (DcMotor motor, int position, double power)
+    public void toPositionIndividualManual(DcMotor motor, int position, double power)
     {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         if (position != Integer.MAX_VALUE && motor.getCurrentPosition() > position + OFFSET_TOLERANCE)
             motor.setPower(power);
         else if (position != Integer.MAX_VALUE && motor.getCurrentPosition() < position - OFFSET_TOLERANCE)
             motor.setPower(-1 * power);
-        else
-            motor.setPower(0);
+        else motor.setPower(0);
     }
 
     public void toPositionManual(int posJ1, int posJ2, int posJ3, /*int posJ4,*/ int posE1, int posE2)
     {
-        if (motorJ1IsAllowedtoMove(posJ1 - motorJ1.getCurrentPosition(), motor1J2.getCurrentPosition()))
+        if (motorJ1IsAllowedtoMove(posJ1))
             toPositionIndividualManual(motorJ1, posJ1, MANUAL_POWER_J1);
-        if (motorJ2IsAllowedtoMove(posJ2 - motor1J2.getCurrentPosition())) {
+        if (motorJ2IsAllowedtoMove(posJ2))
+        {
             toPositionIndividualManual(motor1J2, posJ2, MANUAL_POWER_J2);
             toPositionIndividualManual(motor2J2, posJ2, MANUAL_POWER_J2);
         }
-        if (motorJ3IsAllowedtoMove(posJ3 - motorJ3.getCurrentPosition()))
-            toPositionIndividualManual(motorJ3, posJ3, UP_POWER_J3);
+        if (motorJ3IsAllowedtoMove(posJ3)) toPositionIndividualManual(motorJ3, posJ3, UP_POWER_J3);
         //toPositionIndividualManual(motorJ4, posJ4, MANUAL_POWER_J4);
         toPositionIndividualManual(motorE1, posE1, E1_POWER);
-        if (posE2 > 0)
-            extendL2();
-        else if (posE2 < 0)
-            retractL2();
+        if (posE2 > 0 && e2Count < E2_MAX_COUNTS) extendL2();
+        else if (posE2 < 0 && e2Count > 0) retractL2();
 
     }
 
     public void toPreviousPositionManual()
     {
-        if (previousPositionJ1 == initialCollectionPosJ1 &&
-            previousPosition1J2 == initialCollectionPos1J2 &&
-            previousPositionJ3 == initialCollectionPosJ3)
+        if (previousPositionJ1 == initialCollectionPosJ1 && previousPosition1J2 == initialCollectionPos1J2 && previousPositionJ3 == initialCollectionPosJ3)
         {
             toPositionManual(previousPositionJ1, previousPosition1J2, previousPositionJ3, E1_MAX_COUNT, 1);
         }
@@ -217,6 +244,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
             toPositionManual(previousPositionJ1, previousPosition1J2, previousPositionJ3, Integer.MAX_VALUE, 0);
         }
         isPositionSaved = false;
+        J4Count = 0;
     }
 
     public void toInitialPositionManual()
@@ -285,35 +313,35 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setPower(j3Power);
         motorJ3.setTargetPosition(j3Position);
-                isStop = false;
+        isStop = false;
         motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor1J2.setPower(j2Power);
         motor2J2.setPower(j2Power);
         motor1J2.setTargetPosition(j2Position1);
         motor2J2.setTargetPosition(j2Position2);
-//                while ((motor1J2.isBusy() || motor2J2.isBusy() || motorJ3.isBusy()) && !isStop)
-//                {
-//                    //Thread.yield();
-//                }
+        //                while ((motor1J2.isBusy() || motor2J2.isBusy() || motorJ3.isBusy()) && !isStop)
+        //                {
+        //                    //Thread.yield();
+        //                }
         try
         {
             Thread.sleep(500);
         }
-        catch (Exception e){}
+        catch (Exception e) {}
         motorJ1.setPower(j1Power);
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);
         if (!extend)
         {
             extendL1Auto();
-//            extendL2Auto();
+            //            extendL2Auto();
             extend = true;
         }
-                while ((motor1J2.isBusy() || motor2J2.isBusy() || motorJ3.isBusy() || motorJ1.isBusy()|| motorE1.isBusy()) && !isStop)
-                {
-                    //Thread.yield();
-                }
+        while ((motor1J2.isBusy() || motor2J2.isBusy() || motorJ3.isBusy() || motorJ1.isBusy() || motorE1.isBusy()) && !isStop)
+        {
+            //Thread.yield();
+        }
 
 
     }
@@ -324,15 +352,15 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);
         isStop = false;
-//        while (motorJ1.isBusy() && !isStop)
-//                {
-//        //            Thread.yield();
-//                }
+        //        while (motorJ1.isBusy() && !isStop)
+        //                {
+        //        //            Thread.yield();
+        //                }
         try
         {
             Thread.sleep(500);
         }
-        catch (Exception e){}
+        catch (Exception e) {}
         motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor1J2.setPower(j2Power);
@@ -343,10 +371,10 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setPower(j3Power);
         motorJ3.setTargetPosition(j3Position);
-                while ((motorJ1.isBusy() || motor1J2.isBusy() || motor2J2.isBusy() || motorJ3.isBusy()) && !isStop)
-                {
-        //            Thread.yield();
-                }
+        while ((motorJ1.isBusy() || motor1J2.isBusy() || motor2J2.isBusy() || motorJ3.isBusy()) && !isStop)
+        {
+            //            Thread.yield();
+        }
     }
 
     public void toInitialPosition()

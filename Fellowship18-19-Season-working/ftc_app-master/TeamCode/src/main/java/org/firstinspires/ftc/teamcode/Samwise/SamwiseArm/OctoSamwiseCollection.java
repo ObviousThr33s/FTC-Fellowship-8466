@@ -3,18 +3,22 @@ package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class OctoSamwiseCollection
 {
-//    private Servo servoJ4;
+    private CRServo servoJ4;
     private CRServo servoC1;
     private CRServo servoC2;
 
+    public int J4Count = 0;
+
+
     OctoSamwiseCollection(HardwareMap hwm)
     {
-//        servoJ4 = hwm.servo.get("J4");
-//        servoC1 = hwm.crservo.get("C1");
-//        servoC2 = hwm.crservo.get("C2");
+        servoJ4 = hwm.crservo.get("J4");
+        servoC1 = hwm.crservo.get("C1");
+        servoC2 = hwm.crservo.get("C2");
     }
 
     /**
@@ -26,10 +30,10 @@ public class OctoSamwiseCollection
      */
     public void depositMinerals()
     {
-//        servoC1.setDirection(DcMotorSimple.Direction.FORWARD);
-//        servoC1.setPower(0.8);
-//        servoC2.setDirection(DcMotorSimple.Direction.REVERSE);
-//        servoC2.setPower(0.8);
+        servoC1.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoC1.setPower(0.8);
+        servoC2.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoC2.setPower(0.8);
     }
 
     /**
@@ -41,10 +45,10 @@ public class OctoSamwiseCollection
      */
     public void collectMinerals()
     {
-//        servoC1.setDirection(DcMotorSimple.Direction.REVERSE);
-//        servoC1.setPower(0.8);
-//        servoC2.setDirection(DcMotorSimple.Direction.FORWARD);
-//        servoC2.setPower(0.8);
+        servoC1.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoC1.setPower(0.8);
+        servoC2.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoC2.setPower(0.8);
     }
 
     /**
@@ -52,36 +56,27 @@ public class OctoSamwiseCollection
      */
     public void stopCollecting()
     {
-//        servoC1.setPower(0);
-//        servoC2.setPower(0);
+        servoC1.setPower(0);
+        servoC2.setPower(0);
     }
 
-//    public void moveJ4Up()
-//    {
-////        servoJ4.setDirection(DcMotorSimple.Direction.FORWARD);
-////        servoJ4.setPower(0.8);
-//    }
-//
-//    public void moveJ4Down()
-//    {
-////        servoJ4.setDirection(DcMotorSimple.Direction.REVERSE);
-////        servoJ4.setPower(0.8);
-//    }
 
     public void moveJ4Up()
     {
-//        servoJ4.setDirection(Servo.Direction.FORWARD);
-//        servoJ4.setPosition(180);
+        servoJ4.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoJ4.setPower(1);
+        J4Count++;
     }
-////
+
     public void moveJ4Down()
     {
-//        servoJ4.setDirection(Servo.Direction.REVERSE);
-//        servoJ4.setPosition(0);
+        servoJ4.setDirection(DcMotorSimple.Direction.REVERSE);
+        servoJ4.setPower(1);
+        J4Count--;
     }
     public void stopJ4()
     {
-//        servoJ4.(0);
+        servoJ4.setPower(0);
     }
 
 }

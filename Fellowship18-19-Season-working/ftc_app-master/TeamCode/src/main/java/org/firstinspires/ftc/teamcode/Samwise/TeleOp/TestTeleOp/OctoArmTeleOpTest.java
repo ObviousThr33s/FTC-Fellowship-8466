@@ -38,6 +38,8 @@ public class OctoArmTeleOpTest extends OpMode
     @Override
     public void loop()
     {
+        telemetry.addData("E2 counts", armStuff.e2Count);
+        telemetry.addData("J4 counts", armStuff.J4Count);
         telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
         telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
         telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
@@ -125,17 +127,6 @@ public class OctoArmTeleOpTest extends OpMode
 
                     armStuff.goldDropPointManual();
                 }
-
-
-//        if (gamepad1.y)
-//        {
-//            armStuff.retractL1();
-//        }
-//
-//        if (gamepad1.dpad_right)
-//        {
-//            armStuff.extendL1();
-//        }
 //
 //        if (!gamepad1.y && !gamepad1.dpad_right)
 //        {
@@ -242,6 +233,11 @@ public class OctoArmTeleOpTest extends OpMode
             if (gamepad1.right_bumper)
             {
                 armStuff.moveJ4Up();
+            }
+
+            if (!gamepad1.left_bumper && !gamepad1.right_bumper)
+            {
+                armStuff.stopJ4();
             }
         }
         else
