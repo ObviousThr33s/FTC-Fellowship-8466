@@ -139,7 +139,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
         driveRoute.drive();
 
         this.md.move(SamwiseMarkerDeposit.initPosition); //back to init position
-        // telemetryNow("Autonomous", "Completed");
+
+        //retracting the hanger
+        hanger.encoderDrive(this, 0.6, 53.5, 4);
     }
 
     private void adjustPosition() {
