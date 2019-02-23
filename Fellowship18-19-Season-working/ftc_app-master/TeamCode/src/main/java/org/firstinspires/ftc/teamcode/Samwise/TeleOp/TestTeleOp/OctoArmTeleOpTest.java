@@ -184,12 +184,12 @@ public class OctoArmTeleOpTest extends OpMode
         // collection and deposit
         if (gamepad1.left_trigger > 0.1)
         {
-            armStuff.collectMinerals();
+            armStuff.depositMinerals();
         }
 
         if (gamepad1.right_trigger > 0.1)
         {
-            armStuff.depositMinerals();
+            armStuff.collectMinerals();
         }
 
         if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1)
@@ -201,11 +201,11 @@ public class OctoArmTeleOpTest extends OpMode
         {
             if (gamepad1.right_stick_y > 0.4)
             {
-                armStuff.driveJ3(true);
+                armStuff.driveJ3(false);
             }
             else if (gamepad1.right_stick_y < -0.4)
             {
-                armStuff.driveJ3(false);
+                armStuff.driveJ3(true);
             }
             else
             {
@@ -214,11 +214,11 @@ public class OctoArmTeleOpTest extends OpMode
 
             if (gamepad1.left_stick_y > 0.4)
             {
-                armStuff.driveJ2(true);
+                armStuff.driveJ2(false);
             }
             else if (gamepad1.left_stick_y < -0.4)
             {
-                armStuff.driveJ2(false);
+                armStuff.driveJ2(true);
             }
             else
             {
