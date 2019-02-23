@@ -171,11 +171,28 @@ public class SamwiseTeleOp2 extends OpMode {
          * new arm
          *
          *******************/
+        telemetry.addData("E2 counts", armStuff.e2Count);
+        telemetry.addData("J4 counts", armStuff.J4Count);
         telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
         telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
         telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
         telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
         telemetry.update();
+
+        if (gamepad2.left_trigger > 0.1)
+        {
+            armStuff.extendL1();
+        }
+
+        if (gamepad2.right_trigger > 0.1)
+        {
+            armStuff.retractL1();
+        }
+
+        if (!gamepad2.dpad_up && !gamepad2.dpad_down)
+        {
+            armStuff.stopExtendL1();
+        }
 
         if (gamepad1.dpad_up)
         {
@@ -227,52 +244,47 @@ public class SamwiseTeleOp2 extends OpMode {
         }
 
         // to deposit position
-        //        if (gamepad1.x)
-        //        {
-        //            armStuff.silverDropPoint();
-        //            isHoldingJ2 = false;
-        //            isHoldingJ3 = false;
-        //        }
-        //
-        //        if (gamepad1.y)
-        //        {
-        //            armStuff.goldDropPoint();
-        //            isHoldingJ2 = false;
-        //            isHoldingJ3 = false;
-        //        }
+        if (gamepad1.x)
+        {
+            armStuff.silverDropPoint();
+            //                    isHoldingJ2 = false;
+            //                    isHoldingJ3 = false;
+            //                    armStuff.silverDropPointManual();
+        }
 
         if (gamepad1.y)
         {
-            armStuff.retractL1Auto();
-        }
+            armStuff.goldDropPoint();
+            //                    isHoldingJ2 = false;
+            //                    isHoldingJ3 = false;
 
-        if (gamepad1.dpad_right)
-        {
-            armStuff.extendL1Auto();
+            //                    armStuff.goldDropPointManual();
         }
+        //
+        //        if (!gamepad1.y && !gamepad1.dpad_right)
+        //        {
+        //            armStuff.stopExtendL1();
+        //        }
 
-        if (!gamepad1.y && !gamepad1.dpad_right)
-        {
-            armStuff.stopExtendL1();
-        }
-
-        if (gamepad1.x)
-        {
-            armStuff.toLander();
-            isHoldingJ2 = false;
-            isHoldingJ3 = false;
-        }
+        //        if (gamepad1.x)
+        //        {
+        //            armStuff.toLander();
+        //            isHoldingJ2 = false;
+        //            isHoldingJ3 = false;
+        //        }
 
         if (gamepad1.a)
         {
             armStuff.toInitialPosition();
-            isHoldingJ2 = false;
-            isHoldingJ3 = false;
+            //            isHoldingJ2 = false;
+            //            isHoldingJ3 = false;
+            //            armStuff.toInitialPositionManual();
         }
 
         // to collection position
         if (gamepad1.b)
         {
+            //            armStuff.toPreviousPositionManual();
             if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
             {
                 armStuff.toCollectionPlane();
@@ -287,15 +299,30 @@ public class SamwiseTeleOp2 extends OpMode {
             }
         }
 
+        if (gamepad2.dpad_right)
+        {
+            armStuff.extendL2();
+        }
+
+        if (gamepad2.dpad_left)
+        {
+            armStuff.retractL2();
+        }
+
+        if (!gamepad2.a && !gamepad2.b)
+        {
+            armStuff.stopExtendL2();
+        }
+
         // collection and deposit
         if (gamepad1.left_trigger > 0.1)
         {
-            armStuff.collectMinerals();
+            armStuff.depositMinerals();
         }
 
         if (gamepad1.right_trigger > 0.1)
         {
-            armStuff.depositMinerals();
+            armStuff.collectMinerals();
         }
 
         if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1)
@@ -307,11 +334,11 @@ public class SamwiseTeleOp2 extends OpMode {
         {
             if (gamepad1.right_stick_y > 0.4)
             {
-                armStuff.driveJ3(true);
+                armStuff.driveJ3(false);
             }
             else if (gamepad1.right_stick_y < -0.4)
             {
-                armStuff.driveJ3(false);
+                armStuff.driveJ3(true);
             }
             else
             {
@@ -320,11 +347,11 @@ public class SamwiseTeleOp2 extends OpMode {
 
             if (gamepad1.left_stick_y > 0.4)
             {
-                armStuff.driveJ2(true);
+                armStuff.driveJ2(false);
             }
             else if (gamepad1.left_stick_y < -0.4)
             {
-                armStuff.driveJ2(false);
+                armStuff.driveJ2(true);
             }
             else
             {
@@ -339,6 +366,11 @@ public class SamwiseTeleOp2 extends OpMode {
             if (gamepad1.right_bumper)
             {
                 armStuff.moveJ4Up();
+            }
+
+            if (!gamepad1.left_bumper && !gamepad1.right_bumper)
+            {
+                armStuff.stopJ4();
             }
         }
         else
