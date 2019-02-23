@@ -163,6 +163,9 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
         }
     }
     public void loop() {
+        ArmMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmMotor2_2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmMotor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         if (gamepad1.right_bumper) {
             manualmode = false;
         }
@@ -171,7 +174,10 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
         }
 
         if (manualmode = true) {
-            if (gamepad1.left_stick_y > 0.1) {
+            ArmMotor2.setPower(0);
+            ArmMotor2_2.setPower(0);
+            ArmMotor3.setPower(0);
+            /*if (gamepad1.left_stick_y > 0.1) {
                 ArmMotor2.setPower(0.2);
                 ArmMotor2_2.setPower(0.2);
             }
@@ -184,7 +190,7 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
             }
             if (gamepad1.right_stick_y < -0.1) {
                 ArmMotor3.setPower(-0.2);
-            }
+            }*/
         } else {
             if (Math.abs(gamepad1.left_stick_y)>0.1) {
 //        init_loop();
