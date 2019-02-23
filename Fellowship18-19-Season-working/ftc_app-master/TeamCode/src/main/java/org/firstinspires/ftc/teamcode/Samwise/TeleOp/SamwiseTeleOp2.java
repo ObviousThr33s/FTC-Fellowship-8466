@@ -168,7 +168,7 @@ public class SamwiseTeleOp2 extends OpMode {
         }
 
 
-        /*******************
+        /*******************;
          * new arm
          *
          *******************/
