@@ -74,7 +74,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     static final int TIMEOUT = 100;
 
     public static final double MANUAL_POWER_J1 = 0.6;
-    public static final double MANUAL_POWER_J2 = 0.5;
+    public static final double MANUAL_POWER_J2 = 0.3;
     public static final double UP_POWER_J3 = /*0.4*/1;
     public static final double E1_POWER = 0.8;
     public static final double E2_POWER = 0.8;

@@ -113,19 +113,19 @@ public class OctoArmTeleOpTest extends OpMode
         // to deposit position
                 if (gamepad1.x)
                 {
-//                    armStuff.silverDropPoint();
+                    armStuff.silverDropPoint();
 //                    isHoldingJ2 = false;
 //                    isHoldingJ3 = false;
-                    armStuff.silverDropPointManual();
+//                    armStuff.silverDropPointManual();
                 }
 
                 if (gamepad1.y)
                 {
-//                    armStuff.goldDropPoint();
+                    armStuff.goldDropPoint();
 //                    isHoldingJ2 = false;
 //                    isHoldingJ3 = false;
 
-                    armStuff.goldDropPointManual();
+//                    armStuff.goldDropPointManual();
                 }
 //
 //        if (!gamepad1.y && !gamepad1.dpad_right)
@@ -142,28 +142,28 @@ public class OctoArmTeleOpTest extends OpMode
 
         if (gamepad1.a)
         {
-//            armStuff.toInitialPosition();
+            armStuff.toInitialPosition();
 //            isHoldingJ2 = false;
 //            isHoldingJ3 = false;
-            armStuff.toInitialPositionManual();
+//            armStuff.toInitialPositionManual();
         }
 
         // to collection position
         if (gamepad1.b)
         {
-            armStuff.toPreviousPositionManual();
-//            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
-//            {
-//                armStuff.toCollectionPlane();
-//                isHoldingJ2 = false;
-//                isHoldingJ3 = false;
-//            }
-//            else
-//            {
-//                armStuff.toPreviousPosition();
-//                isHoldingJ2 = false;
-//                isHoldingJ3 = false;
-//            }
+//            armStuff.toPreviousPositionManual();
+            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+            {
+                armStuff.toCollectionPlane();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
+            }
+            else
+            {
+                armStuff.toPreviousPosition();
+                isHoldingJ2 = false;
+                isHoldingJ3 = false;
+            }
         }
 
         if (gamepad2.a)

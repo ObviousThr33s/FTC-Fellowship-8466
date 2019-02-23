@@ -187,15 +187,6 @@ public class SamwiseTeleOp2 extends OpMode {
             manual = false;
         }
 
-        if (gamepad2.dpad_up)
-        {
-            //armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 + 0.1;
-        }
-
-        if (gamepad2.dpad_down)
-        {
-            //armStuff.UP_POWER_J3 = armStuff.UP_POWER_J3 - 0.1;
-        }
         if (gamepad1.dpad_left)
         {
             armStuff.stop();
@@ -294,21 +285,6 @@ public class SamwiseTeleOp2 extends OpMode {
                 isHoldingJ2 = false;
                 isHoldingJ3 = false;
             }
-        }
-
-        if (gamepad2.a)
-        {
-            armStuff.extendL2Auto();
-        }
-
-        if (gamepad2.b)
-        {
-            armStuff.retractL2Auto();
-        }
-
-        if (!gamepad2.a && !gamepad2.b)
-        {
-            armStuff.stopExtendL2();
         }
 
         // collection and deposit
