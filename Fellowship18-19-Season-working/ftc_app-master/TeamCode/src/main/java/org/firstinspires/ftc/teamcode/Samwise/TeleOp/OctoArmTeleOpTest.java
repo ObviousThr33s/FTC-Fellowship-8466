@@ -244,7 +244,7 @@ public class OctoArmTeleOpTest extends OpMode
         }
         else
         {
-            armStuff.setcurrent(gamepad1.left_bumper);
+            //armStuff.setcurrent(gamepad1.left_bumper);
             armStuff.PlaneOfMotion(gamepad1.left_stick_y);
         }
 
