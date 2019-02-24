@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 
-public class FinalPlaneOfMotionArmTest extends OpMode{
+public class FinalPlaneOfMotionArmTest extends OpMode {
     private boolean manualmode = false;
 
     //private DcMotor ArmMotor1 = null;
@@ -28,8 +28,8 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     static final double SmallGearCount = 24.0;
     static final double EncoderCountJ1 = 1680.0;
     static final double MaxOrMinDegrees = 45.0;
-    private double J1GearRatio = BigGearCount/SmallGearCount;
-    private double TickPerDegreeJ1 = EncoderCountJ1/360.0;
+    private double J1GearRatio = BigGearCount / SmallGearCount;
+    private double TickPerDegreeJ1 = EncoderCountJ1 / 360.0;
     private double BigToSmallRatio = MaxOrMinDegrees * J1GearRatio;
     private double SmallDegreeToTicks = BigToSmallRatio * TickPerDegreeJ1;
 
@@ -43,8 +43,8 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     private double H = HeightOfPlane;
     private double L1 = LengthJ2toJ3; //length between J2 and J3
     private double L2 = LengthJ3toJ4; //length between J3 and J4
-    private double TickPerDegreeJ3 = EncoderCountJ3/360.0;
-    private double TickPerDegreeJ2 = EncoderCountJ2/360.0;
+    private double TickPerDegreeJ3 = EncoderCountJ3 / 360.0;
+    private double TickPerDegreeJ2 = EncoderCountJ2 / 360.0;
     double J2MaxPos = 90.0 * TickPerDegreeJ2;
     double J2MinPos = 0.0 * TickPerDegreeJ2;
 
@@ -54,6 +54,9 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     int HoldPosONOFF = 0;
     double power_level = 0.2;
     private boolean firsttime = false;
+    double J2initialposition;
+    double J3initialposition;
+
 
     public void init() {
 
@@ -63,13 +66,14 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
         ArmMotor2.setPower(0);
         ArmMotor2_2.setPower(0);
         ArmMotor3.setPower(0);
-        ArmMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ArmMotor2_2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ArmMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // ArmMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // ArmMotor2_2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // ArmMotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ArmMotor2_2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ArmMotor3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
+
     public void init_loop() {
 
     /*
@@ -112,26 +116,26 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
         if (gamepad1.left_stick_y > 0.1) {
             ArmMotor2.setPower(power_level);
             ArmMotor2_2.setPower(power_level);
-        }
-        if (gamepad1.left_stick_y < -0.1) {
+        } else if (gamepad1.left_stick_y < -0.1) {
             ArmMotor2.setPower(-power_level);
             ArmMotor2_2.setPower(-power_level);
-        }
-        if (gamepad1.right_stick_y > 0.1) {
-            ArmMotor3.setPower(0.5);
-        }
-        if (gamepad1.right_stick_y < -0.1) {
-            ArmMotor3.setPower(-0.5);
-        }
-        if ((gamepad1.left_stick_y <0.1) && (gamepad1.left_stick_y > -0.1)) {
+        } else {
             ArmMotor2.setPower(0);
             ArmMotor2_2.setPower(0);
         }
-        if ((gamepad1.right_stick_y < 0.1)&&(gamepad1.left_stick_y > -0.1)) {
-            ArmMotor3.setPower(0);
+        if (gamepad1.right_stick_y > 0.1) {
+            ArmMotor3.setPower(0.5);
+        } else if (gamepad1.right_stick_y < -0.1) {
+            ArmMotor3.setPower(-0.5);
+        } else {
+            ArmMotor3.setPower(0.0);
         }
+        //initial position fixed
 
-        if (gamepad1.right_bumper) {
+        J2initialposition = ArmMotor2.getCurrentPosition();
+        J3initialposition = ArmMotor3.getCurrentPosition();
+
+      /*  if (gamepad1.right_bumper) {
             firsttime = true;
         }
 
@@ -160,12 +164,19 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
             ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             ArmMotor2_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
+        } */
     }
+
     public void loop() {
         ArmMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ArmMotor2_2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ArmMotor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        double J2CurrentPos_deg;
+
+        // double J3TargetPos_deg;
+        double J3TargetPos_Ticks;
+        //  double a, b, c, c_1, d;
+
         if (gamepad1.right_bumper) {
             manualmode = false;
         }
@@ -174,54 +185,47 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
         }
 
         if (manualmode = true) {
-            ArmMotor2.setPower(0);
-            ArmMotor2_2.setPower(0);
-            ArmMotor3.setPower(0);
-            /*if (gamepad1.left_stick_y > 0.1) {
-                ArmMotor2.setPower(0.2);
-                ArmMotor2_2.setPower(0.2);
-            }
-            if (gamepad1.left_stick_y < -0.1) {
-                ArmMotor2.setPower(-0.2);
-                ArmMotor2_2.setPower(-0.2);
-            }
-            if (gamepad1.right_stick_y > 0.1) {
-                ArmMotor3.setPower(0.2);
-            }
-            if (gamepad1.right_stick_y < -0.1) {
-                ArmMotor3.setPower(-0.2);
-            }*/
+
+
         } else {
-            if (Math.abs(gamepad1.left_stick_y)>0.1) {
-//        init_loop();
+
+            J2initialposition = ArmMotor2.getCurrentPosition();
+            J3initialposition = ArmMotor3.getCurrentPosition();
+            if (Math.abs(gamepad1.left_stick_y) > 0.1) {
+
                 if (gamepad1.left_stick_y <= -0.05) { //push forward
+                    J2MaxPos = J2initialposition + EncoderCountJ2 / 50.0;
                     ArmMotor2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
                     ArmMotor2_2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
+                    //    ArmMotor2.setPower(gamepad1.left_stick_y / 5.0);
+                    //    ArmMotor2_2.setPower(gamepad1.left_stick_y / 5.0);
+                    ArmMotor2.setPower(0.5);
+                    ArmMotor2_2.setPower(0.5);
+                    ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    ArmMotor2_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    J3TargetPos_Ticks = J3initialposition + (-1.47 * (EncoderCountJ2 / 50.0));
+                    ArmMotor3.setTargetPosition((int) (J3TargetPos_Ticks * J3FirsttoLast));
+                    ArmMotor3.setPower(0.5); //test Power LAtEr yeet
+                    ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                } else if (gamepad1.left_stick_y >= 0.05) { //backwards
+                    J2MaxPos = J2initialposition - EncoderCountJ2 / 50.0;
+                    ArmMotor2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
+                    ArmMotor2_2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
+                    ArmMotor2.setPower(0.5);
+                    ArmMotor2_2.setPower(0.5);
+                    ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    ArmMotor2_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    J3TargetPos_Ticks = J3initialposition - (-1.47 * (EncoderCountJ2 / 50.0));
+                    ArmMotor3.setTargetPosition((int) (J3TargetPos_Ticks * J3FirsttoLast));
+                    ArmMotor3.setPower(0.5); //test Power LAtEr yeet
+                    ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
-                if (gamepad1.left_stick_y >= 0.05) { //backwards
-                    ArmMotor2.setTargetPosition((int) (J2MinPos * J2FirsttoLast));
-                    ArmMotor2_2.setTargetPosition((int) (J2MinPos * J2FirsttoLast));
-                }
-                ArmMotor2.setPower(gamepad1.left_stick_y / 5);
-                ArmMotor2_2.setPower(gamepad1.left_stick_y / 5);
-        /*double J2CurrentPos_Ticks = ArmMotor2.getCurrentPosition();
-        if (J2CurrentPos_Ticks <= mininticks) {
-            if (gamepad1.left_stick_y >= 0.02) {
-                ArmMotor2.setPower(0);
-            }
-        }
-        if (J2CurrentPos_Ticks >= 180) {
-            if (gamepad1.left_stick_y <= -0.02) {
-                ArmMotor2.setPower(0);
-            }
-        }*/
-                ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                ArmMotor2_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                if (gamepad1.left_stick_y == 0) {
-                    ArmMotor2.setPower(0);
-                    ArmMotor2_2.setPower(0);
-                }
-                double J2CurrentPos_deg;
+
+
+        /*        double J2CurrentPos_deg;
 
                 double J3TargetPos_deg;
                 double J3TargetPos_Ticks;
@@ -240,23 +244,35 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
                 ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 //J1
                 //HoldPosONOFF = 1;
-            } else {
-                if (HoldPosONOFF == 1) {
+            }*/
+                else {
+
+                    stop();
+
+               /* if (HoldPosONOFF == 1) {
                     ArmMotor2.setTargetPosition(ArmMotor2.getCurrentPosition());
-                    ArmMotor2.setTargetPosition(ArmMotor2.getCurrentPosition());
+                    ArmMotor2_2.setTargetPosition(ArmMotor2.getCurrentPosition());
                     ArmMotor3.setTargetPosition(ArmMotor3.getCurrentPosition());
                     ArmMotor2.setPower(1);
+                    ArmMotor2_2.setPower(1);
                     ArmMotor3.setPower(1);
                     ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    ArmMotor2_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    HoldPosONOFF = 2;
-                }
 
+                }
+                */
+
+                }
             }
         }
+
+
+
     }
-    public void stop() {
+    public void stop(){
         ArmMotor2.setPower(0);
+        ArmMotor2_2.setPower(0);
         ArmMotor3.setPower(0);
     }
 }
