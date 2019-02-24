@@ -103,18 +103,12 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void driveJ1(boolean isLeft)
+    public void driveJ1(double power)
     {
         motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (isLeft)
-        {
-            motorJ1.setPower(MANUAL_POWER_J1);
-        }
-        else
-        {
-            motorJ1.setPower(-MANUAL_POWER_J1);
-        }
+            motorJ1.setPower(MANUAL_POWER_J1 *power);
+
     }
 
     public void stopJ1()
@@ -136,42 +130,26 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     /**
      * When mapped to DPad
      *
-     * @param isUp
+     * @param
      */
-    public void driveJ2(boolean isUp)
-    {
+    public void driveJ2(double power) {
         motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (isUp)
-        {
-            motor1J2.setPower(-MANUAL_POWER_J2);
-            motor2J2.setPower(-MANUAL_POWER_J2);
-        }
-        else
-        {
-            motor1J2.setPower(MANUAL_POWER_J2);
-            motor2J2.setPower(MANUAL_POWER_J2);
-        }
+
+        motor1J2.setPower(-MANUAL_POWER_J2 * power);
+        motor2J2.setPower(-MANUAL_POWER_J2 * power);
     }
+
 
     /**
      * When mapped to DPad
-     *
-     * @param isUp
      */
-    public void driveJ3(boolean isUp)
+    public void driveJ3(double power)
     {
         motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (isUp)
-        {
-            motorJ3.setPower(-UP_POWER_J3);
-        }
-        else
-        {
-            motorJ3.setPower(UP_POWER_J3);
-        }
+        motorJ3.setPower(UP_POWER_J3*power);
     }
 
 

@@ -26,6 +26,8 @@ public class OctoArmTeleOpTest extends OpMode
     private static final int J3_MAX_TICKS = Integer.MAX_VALUE;
     private static final int J3_MIN_TICKS = -1938;
 
+
+
     @Override
     public void init()
     {
@@ -97,13 +99,13 @@ public class OctoArmTeleOpTest extends OpMode
         }
 
 
-        if (gamepad1.left_stick_x > 0.6 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
+        if (gamepad1.left_stick_x > 0.2 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
         {
-            armStuff.driveJ1(true);
+            armStuff.driveJ1(gamepad1.left_stick_x);
         }
-        else if (gamepad1.left_stick_x < -0.6 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
+        else if (gamepad1.left_stick_x < -0.2 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
         {
-            armStuff.driveJ1(false);
+            armStuff.driveJ1(gamepad1.left_stick_x);
         }
         else
         {
@@ -199,26 +201,26 @@ public class OctoArmTeleOpTest extends OpMode
 
         if (manual)
         {
-            if (gamepad1.right_stick_y > 0.4)
+            if (gamepad1.right_stick_y > 0.2)
             {
-                armStuff.driveJ3(false);
+                armStuff.driveJ3( -gamepad1.right_stick_y);
             }
-            else if (gamepad1.right_stick_y < -0.4)
+            else if (gamepad1.right_stick_y < -0.2)
             {
-                armStuff.driveJ3(true);
+                armStuff.driveJ3(gamepad1.right_stick_y);
             }
             else
             {
                 armStuff.stopJ3();
             }
 
-            if (gamepad1.left_stick_y > 0.4)
+            if (gamepad1.left_stick_y > 0.2)
             {
-                armStuff.driveJ2(false);
+                armStuff.driveJ2(gamepad1.left_stick_y);
             }
-            else if (gamepad1.left_stick_y < -0.4)
+            else if (gamepad1.left_stick_y < -0.2)
             {
-                armStuff.driveJ2(true);
+                armStuff.driveJ2(gamepad1.left_stick_y);
             }
             else
             {
