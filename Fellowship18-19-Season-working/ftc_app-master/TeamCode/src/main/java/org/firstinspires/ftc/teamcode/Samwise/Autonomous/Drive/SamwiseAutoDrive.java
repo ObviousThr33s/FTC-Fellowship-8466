@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -37,6 +41,8 @@ public class SamwiseAutoDrive extends LinearOpMode {
     DigitalChannel touchfront2;  // front touch sensor
     DigitalChannel touchfront3;
 
+    //DcMotor J3;
+    CRServo servoE2;
 
     /**
      * init with and without tensorflow
@@ -52,7 +58,11 @@ public class SamwiseAutoDrive extends LinearOpMode {
         md.init(hardwareMap);
         hanger.init(hardwareMap, telemetry);
 
-        //sampleAndDeposit = new SampleAndDeposit(hardwareMap);
+        //init J3 and E2 servo
+        //J3 = hardwareMap.dcMotor.get("J3");
+        //J3.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        //J3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        servoE2 = hardwareMap.crservo.get("E2");
 
         // get a reference to our digitalTouch object.
         touchFrontSide = hardwareMap.get(DigitalChannel.class, "touch_front_side");
@@ -101,7 +111,14 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         //Unhooking
         hanger.unHook();
-        sleep(800); //wait until the hook fully opens
+
+        //rotate J3 up
+        //J3.setPower(1);
+
+        sleep(700); //wait until the hook fully opens
+
+        // stop J3
+        //J3.setPower(0);
 
         //Lowering the Slide
         //hanger.encoderDrive(this, 0.9, 46, 4);
@@ -132,6 +149,10 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         //Sampling
         ISamwiseDriveRoute driveRoute = samplingRoute(position);
+
+        // extending E1 and E2
+        servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
+        servoE2.setPower(1);
 
         /**
          * driveToCrater the specific route

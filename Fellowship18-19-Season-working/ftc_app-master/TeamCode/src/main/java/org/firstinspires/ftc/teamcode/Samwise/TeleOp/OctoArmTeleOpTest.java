@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
+package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -166,17 +166,17 @@ public class OctoArmTeleOpTest extends OpMode
             }
         }
 
-        if (gamepad2.a)
+        if (gamepad2.dpad_right)
         {
             armStuff.extendL2();
         }
 
-        if (gamepad2.b)
+        if (gamepad2.dpad_left)
         {
             armStuff.retractL2();
         }
 
-        if (!gamepad2.a && !gamepad2.b)
+        if (!gamepad2.dpad_right && !gamepad2.dpad_left)
         {
             armStuff.stopExtendL2();
         }

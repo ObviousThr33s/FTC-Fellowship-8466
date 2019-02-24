@@ -8,6 +8,11 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrainIMU;
 
 public class SamwiseDriveRouteFactory
 {
+    /**
+     * back 2 crater
+     * @param samwiseDrive
+     * @return
+     */
     public static ISamwiseDriveRoute createCraterCenter(final SamwiseAutoDrive samwiseDrive)
     {
         return new ISamwiseDriveRoute() {
@@ -62,6 +67,8 @@ public class SamwiseDriveRouteFactory
                 //driveTrain.encoderDrive(samwiseDrive, 72, 72, 20);
                 //telemetry.addData(route, "finish eighth driveToCrater");
                 //telemetry.update();
+
+                ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
             }
         };
     }
@@ -166,6 +173,7 @@ public class SamwiseDriveRouteFactory
                 //driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, true, 6);
                 ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 7);
 
+                ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
             }
         };
     }
@@ -256,7 +264,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -56,6);
+                driveTrain.encoderDrive(samwiseDrive, -54,6);
 
                 driveTrain.turnDrive(samwiseDrive, 32, 5);
 
@@ -281,6 +289,7 @@ public class SamwiseDriveRouteFactory
                 //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
                 ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, 7);
 
+                ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
             }
         };
     }
