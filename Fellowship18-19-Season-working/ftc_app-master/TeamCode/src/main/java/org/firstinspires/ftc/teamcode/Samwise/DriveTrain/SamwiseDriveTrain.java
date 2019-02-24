@@ -147,7 +147,7 @@ public class SamwiseDriveTrain extends DriveTrain {
      * @param front
      * @param timeout
      */
-    public void driveToCrater(LinearOpMode opMode, DigitalChannel frontside, DigitalChannel front, double timeout) {
+    public void driveToCrater(LinearOpMode opMode, DigitalChannel frontside, DigitalChannel front, boolean rightTurn, double timeout) {
 
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -173,9 +173,12 @@ public class SamwiseDriveTrain extends DriveTrain {
         if (!frontside.getState()) {
             // side sensor is pressed. turning robot ....
             System.out.println("==> frontside sensor is pressed. turning robot ....");
-            turn(opMode, -8, 2);
+            if (rightTurn)
+                turn(opMode, -6.1, 2);
+            else
+                turn(opMode, 6.1, 2);
 
-            driveToCrater(opMode, frontside, front, timeout); // recursive call till front touch sensor is hit
+            driveToCrater(opMode, frontside, front, rightTurn, timeout); // recursive call till front touch sensor is hit
         }
 
     }
