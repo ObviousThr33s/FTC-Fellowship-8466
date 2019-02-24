@@ -133,7 +133,7 @@ public class FinalPlaneOfMotionArmTest extends OpMode {
         //initial position fixed
 
         J2initialposition = ArmMotor2.getCurrentPosition();
-        J3initialposition = ArmMotor2_2.getCurrentPosition();
+        J3initialposition = ArmMotor3.getCurrentPosition();
 
       /*  if (gamepad1.right_bumper) {
             firsttime = true;

@@ -308,92 +308,82 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public void PlaneOfMotion(float Joysticks)
     {
-        //if (Math.abs(Joysticks) > 0.1)
-        //{
+        motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //        init_loop();
-        if (Joysticks <= -0.01)
-        { //push forward
-            motor1J2.setTargetPosition((int) (J2MaxPos));
-            motor2J2.setTargetPosition((int) (J2MaxPos));
-        }
-        if (Joysticks >= 0.01)
-        { //backwards
-            motor1J2.setTargetPosition((int) (J2MinPos));
-            motor2J2.setTargetPosition((int) (J2MinPos));
-        }
-        motor1J2.setPower(Joysticks / 5.0);
-        motor2J2.setPower(Joysticks / 5.0);
-        /*double J2CurrentPos_Ticks = motor1J2.getCurrentPosition();
-        if (J2CurrentPos_Ticks <= mininticks) {
-            if (Joysticks.left_stick_y >= 0.02) {
-                motor1J2.setPower(0);
-            }
-        }
-        if (J2CurrentPos_Ticks >= 180) {
-            if (Joysticks.left_stick_y <= -0.02) {
-                motor1J2.setPower(0);
-            }
-        }*/
-        motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (Joysticks == 0)
-        {
-            motor1J2.setPower(0);
-            motor2J2.setPower(0);
-            motorJ3.setPower(0);
-        }
-        double J2CurrentPos_deg;
+        double J2initialposition = motor1J2.getCurrentPosition();
+        double J3initialposition = motorJ3.getCurrentPosition();
 
-        double J3TargetPos_deg;
         double J3TargetPos_Ticks;
-        double a, b, c, c_1, d;
-        J2CurrentPos_deg = (motor1J2.getCurrentPosition() / TickPerDegreeJ2);
-        a = Math.cos(Math.toRadians(180.0 - J2CurrentPos_deg));
-        b = (L1 * a - H) / L2;
-        c = Math.acos(b);
-        c_1 = Math.toDegrees(c);
-        d = c_1 + 180.0 - J2CurrentPos_deg;
-        J3TargetPos_deg = d;
-        J3TargetPos_Ticks = J3TargetPos_deg * TickPerDegreeJ3;
-
-        motorJ3.setTargetPosition((int) (J3TargetPos_Ticks * 3));
-        motorJ3.setPower(0.1); //test Power LAtEr
-        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         HoldPosONOFF = 1;
-        // }
-        //else
-        //{
-           /* if (HoldPosONOFF == 1)
-            {
-                motor1J2.setTargetPosition(motor1J2.getCurrentPosition());
-                motorJ3.setTargetPosition(motorJ3.getCurrentPosition());
-                motor1J2.setPower(1);
-                motorJ3.setPower(1);
+
+        while (motor2J2.isBusy()||motor1J2.isBusy()||motorJ3.isBusy()) {
+
+            // ;
+
+        };
+        J2initialposition = motor1J2.getCurrentPosition();
+        J3initialposition = motorJ3.getCurrentPosition();
+        if (Math.abs(Joysticks) > 0.1) {
+
+            if (Joysticks <= -0.05) { //push forward
+                J2MaxPos = J2initialposition + EncoderCountJ2 / 50.0;
+                motor1J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
+                motor2J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
+
+                motor1J2.setPower(0.5);
+                motor2J2.setPower(0.5);
                 motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                J3TargetPos_Ticks = J3initialposition + (-1.47 * (EncoderCountJ2 / 50.0));
+                motorJ3.setTargetPosition((int) (J3TargetPos_Ticks * J3FirsttoLast));
+                motorJ3.setPower(0.5); //test Power LAtEr yeet
                 motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                HoldPosONOFF = 2;
+
+            } else if (Joysticks >= 0.05) { //backwards
+                J2MaxPos = J2initialposition - EncoderCountJ2 / 50.0;
+                motor1J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
+                motor2J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
+                motor1J2.setPower(0.5);
+                motor2J2.setPower(0.5);
+                motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                J3TargetPos_Ticks = J3initialposition - (-1.47 * (EncoderCountJ2 / 50.0));
+                motorJ3.setTargetPosition((int) (J3TargetPos_Ticks * J3FirsttoLast));
+                motorJ3.setPower(0.5); //test Power LAtEr yeet
+                motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-*/
-        //}
-
-    }
-
-    public void Initialposition()
-    {
-        motor1J2.setTargetPosition((int) (30 * TickPerDegreeJ2));
-        motor1J2.setTargetPosition((int) (30 * TickPerDegreeJ2));
-        motorJ3.setTargetPosition(15);
-    }
-
-    public void setcurrent(boolean gamepadTrigger)
-    {
-        if (gamepadTrigger)
-        {
-            motor1J2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motor2J2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
+        else {
+
+                stopJ2();
+                stopJ3();
+
+               /* if (HoldPosONOFF == 1) {
+                    ArmMotor2.setTargetPosition(ArmMotor2.getCurrentPosition());
+                    ArmMotor2_2.setTargetPosition(ArmMotor2.getCurrentPosition());
+                    ArmMotor3.setTargetPosition(ArmMotor3.getCurrentPosition());
+                    ArmMotor2.setPower(1);
+                    ArmMotor2_2.setPower(1);
+                    ArmMotor3.setPower(1);
+                    ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    ArmMotor2_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                }
+                */
+               }
+
+
+
+
+
+
+
     }
+
+
 }
