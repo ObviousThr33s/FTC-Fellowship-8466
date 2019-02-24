@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 public class FinalPlaneOfMotionArmTest extends OpMode{
-    private boolean manualmode = true;
+    private boolean manualmode = false;
 
     //private DcMotor ArmMotor1 = null;
     private DcMotor ArmMotor2 = null;
@@ -51,7 +51,7 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
     double J2FirsttoLast = 1;
     double J3FirsttoLast = 1;
 
-    int HoldPosONOFF = 1;
+    int HoldPosONOFF = 0;
     double power_level = 0.2;
     private boolean firsttime = false;
 
@@ -194,11 +194,11 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
         } else {
             if (Math.abs(gamepad1.left_stick_y)>0.1) {
 //        init_loop();
-                if (gamepad1.left_stick_y <= -0.01) { //push forward
+                if (gamepad1.left_stick_y <= -0.05) { //push forward
                     ArmMotor2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
                     ArmMotor2_2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
                 }
-                if (gamepad1.left_stick_y >= 0.01) { //backwards
+                if (gamepad1.left_stick_y >= 0.05) { //backwards
                     ArmMotor2.setTargetPosition((int) (J2MinPos * J2FirsttoLast));
                     ArmMotor2_2.setTargetPosition((int) (J2MinPos * J2FirsttoLast));
                 }
@@ -234,12 +234,12 @@ public class FinalPlaneOfMotionArmTest extends OpMode{
                 d = c_1 + 180.0 - J2CurrentPos_deg;
                 J3TargetPos_deg = d;
                 J3TargetPos_Ticks = J3TargetPos_deg * TickPerDegreeJ3;
-
+//maatttthhhhh
                 ArmMotor3.setTargetPosition((int) (J3TargetPos_Ticks * 3 * J3FirsttoLast));
                 ArmMotor3.setPower(0); //test Power LAtEr yeet
                 ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 //J1
-                HoldPosONOFF = 1;
+                //HoldPosONOFF = 1;
             } else {
                 if (HoldPosONOFF == 1) {
                     ArmMotor2.setTargetPosition(ArmMotor2.getCurrentPosition());
