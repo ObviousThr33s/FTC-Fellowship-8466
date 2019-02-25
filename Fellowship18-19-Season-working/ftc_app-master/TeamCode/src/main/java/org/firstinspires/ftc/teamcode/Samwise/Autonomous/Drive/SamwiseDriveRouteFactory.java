@@ -55,7 +55,7 @@ public class SamwiseDriveRouteFactory
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
-                driveTrain.resetAngle(AxesOrder.ZYX);
+                //driveTrain.resetAngle(AxesOrder.ZYX);
 
                 ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
 
@@ -149,11 +149,13 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
+                driveTrain.encoderDrive(samwiseDrive, -4,2);
+
                 driveTrain.turnDrive(samwiseDrive, -116, 3);
                 //telemetry.addData(route, "finish third turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -30.5,3);
+                driveTrain.encoderDrive(samwiseDrive, -33,3);
                 //driveTrain.driveToWall(samwiseDrive, samwiseDrive.touchBack, false, 3.5);
 
                 driveTrain.turnDrive(samwiseDrive, 21, 3);
@@ -164,7 +166,7 @@ public class SamwiseDriveRouteFactory
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
-                driveTrain.resetAngle(AxesOrder.ZYX);
+                //driveTrain.resetAngle(AxesOrder.ZYX);
 
                 //driveTrain.turnDrive(samwiseDrive, 12, 3);
                 ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 14, 2.5);
@@ -283,7 +285,7 @@ public class SamwiseDriveRouteFactory
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
-                driveTrain.resetAngle(AxesOrder.ZYX);
+                //driveTrain.resetAngle(AxesOrder.ZYX);
 
                 //driveTrain.turnDrive(samwiseDrive, 15, 3);
                 ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 13, 2.5);
