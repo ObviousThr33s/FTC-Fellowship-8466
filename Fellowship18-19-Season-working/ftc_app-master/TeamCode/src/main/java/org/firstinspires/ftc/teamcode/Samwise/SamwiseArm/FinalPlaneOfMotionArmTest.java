@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.sun.source.tree.IfTree;
 
 
 @TeleOp (name = "PlaneOfMotion")
@@ -184,10 +185,33 @@ public class FinalPlaneOfMotionArmTest extends OpMode {
             manualmode = true;
         }
 
-        if (manualmode = true) {
+        if (manualmode ==true) {
+            ArmMotor2_2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            ArmMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            ArmMotor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            if (gamepad1.left_stick_y>0.05) {
+                ArmMotor2.setPower(0.2);
+                ArmMotor2_2.setPower(0.2);
+            }
+            if (gamepad1.right_stick_y>0.05) {
+                ArmMotor3.setPower(0.2);
+            }
+            if (gamepad1.left_stick_y<-0.05) {
+                ArmMotor2.setPower(-0.2);
+                ArmMotor2_2.setPower(-0.2);
+            }
+            if (gamepad1.right_stick_y<-0.05) {
+                ArmMotor3.setPower(-0.2);
+            }
+            if ((gamepad1.left_stick_y>-0.05) && (gamepad1.left_stick_y<0.05)) {
+                ArmMotor2.setPower(0);
+                ArmMotor2_2.setPower(0);
+            }
+            if ((gamepad1.right_stick_y>-0.5)&&(gamepad1.right_stick_y<0.05)) {
+                ArmMotor3.setPower(0);
+            }
 
-
-        } else {
+        } if (manualmode == false){
 
             J2initialposition = ArmMotor2.getCurrentPosition();
             J3initialposition = ArmMotor3.getCurrentPosition();
@@ -199,11 +223,10 @@ public class FinalPlaneOfMotionArmTest extends OpMode {
                     ArmMotor2_2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
                     //    ArmMotor2.setPower(gamepad1.left_stick_y / 5.0);
                     //    ArmMotor2_2.setPower(gamepad1.left_stick_y / 5.0);
-                    ArmMotor2.setPower(0.5);
-                    ArmMotor2_2.setPower(0.5);
+                    ArmMotor2.setPower(0.2);
+                    ArmMotor2_2.setPower(0.2);
                     ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     ArmMotor2_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
                     J3TargetPos_Ticks = J3initialposition + (-1.47 * (EncoderCountJ2 / 50.0));
                     ArmMotor3.setTargetPosition((int) (J3TargetPos_Ticks * J3FirsttoLast));
                     ArmMotor3.setPower(0.5); //test Power LAtEr yeet
@@ -213,15 +236,20 @@ public class FinalPlaneOfMotionArmTest extends OpMode {
                     J2MaxPos = J2initialposition - EncoderCountJ2 / 50.0;
                     ArmMotor2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
                     ArmMotor2_2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
-                    ArmMotor2.setPower(0.5);
-                    ArmMotor2_2.setPower(0.5);
+                    ArmMotor2.setPower(0.2);
+                    ArmMotor2_2.setPower(0.2);
                     ArmMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     ArmMotor2_2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                     J3TargetPos_Ticks = J3initialposition - (-1.47 * (EncoderCountJ2 / 50.0));
                     ArmMotor3.setTargetPosition((int) (J3TargetPos_Ticks * J3FirsttoLast));
-                    ArmMotor3.setPower(0.5); //test Power LAtEr yeet
+                    ArmMotor3.setPower(0.2); //test Power LAtEr yeet
                     ArmMotor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                } if ((gamepad1.left_stick_y >-0.05)&&(gamepad1.left_stick_y<0.05)) {
+                    ArmMotor2.setTargetPosition();
+                    ArmMotor2.setPower(0);
+                    ArmMotor3.setPower(0);
+                    ArmMotor2_2.setPower(0);
                 }
 
 
@@ -245,10 +273,6 @@ public class FinalPlaneOfMotionArmTest extends OpMode {
                 //J1
                 //HoldPosONOFF = 1;
             }*/
-                else {
-
-                    stop();
-
                /* if (HoldPosONOFF == 1) {
                     ArmMotor2.setTargetPosition(ArmMotor2.getCurrentPosition());
                     ArmMotor2_2.setTargetPosition(ArmMotor2.getCurrentPosition());
@@ -262,8 +286,6 @@ public class FinalPlaneOfMotionArmTest extends OpMode {
 
                 }
                 */
-
-                }
             }
         }
 
