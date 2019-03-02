@@ -60,7 +60,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public int e2Count = 0;
 
-    static final int E1_MAX_COUNT = 5497;
+    static final int E1_MAX_COUNT = 4661;
 
     //    public static final int J1_LEFT_PHONE = -1001;
     //    public static final int J1_RIGHT_PHONE = -2716;
@@ -74,8 +74,8 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     static final int TIMEOUT = 100;
 
     public static final double MANUAL_POWER_J1 = 0.6;
-    public static final double MANUAL_POWER_J2 = 0.3;
-    public static final double UP_POWER_J3 = /*0.4*/1;
+    public static final double MANUAL_POWER_J2 = 0.2;
+    public static final double UP_POWER_J3 = 0.2;
     public static final double E1_POWER = 0.8;
     public static final double E2_POWER = 0.8;
 
@@ -107,7 +107,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            motorJ1.setPower(MANUAL_POWER_J1 *power);
+        motorJ1.setPower(MANUAL_POWER_J1 * power);
 
     }
 
@@ -132,7 +132,8 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
      *
      * @param
      */
-    public void driveJ2(double power) {
+    public void driveJ2(double power)
+    {
         motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -149,7 +150,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorJ3.setPower(UP_POWER_J3*power);
+        motorJ3.setPower(UP_POWER_J3 * power);
     }
 
 
@@ -296,16 +297,20 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         double J3TargetPos_Ticks;
         HoldPosONOFF = 1;
 
-        while (motor2J2.isBusy()||motor1J2.isBusy()||motorJ3.isBusy()) {
+        while (motor2J2.isBusy() || motor1J2.isBusy() || motorJ3.isBusy())
+        {
 
             // ;
 
-        };
+        }
+        ;
         J2initialposition = motor1J2.getCurrentPosition();
         J3initialposition = motorJ3.getCurrentPosition();
-        if (Math.abs(Joysticks) > 0.1) {
+        if (Math.abs(Joysticks) > 0.1)
+        {
 
-            if (Joysticks <= -0.05) { //push forward
+            if (Joysticks <= -0.05)
+            { //push forward
                 J2MaxPos = J2initialposition + EncoderCountJ2 / 50.0;
                 motor1J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
                 motor2J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
@@ -320,7 +325,9 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
                 motorJ3.setPower(0.5); //test Power LAtEr yeet
                 motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            } else if (Joysticks >= 0.05) { //backwards
+            }
+            else if (Joysticks >= 0.05)
+            { //backwards
                 J2MaxPos = J2initialposition - EncoderCountJ2 / 50.0;
                 motor1J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
                 motor2J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
@@ -335,10 +342,11 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
                 motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
         }
-        else {
+        else
+        {
 
-                stopJ2();
-                stopJ3();
+            stopJ2();
+            stopJ3();
 
                /* if (HoldPosONOFF == 1) {
                     ArmMotor2.setTargetPosition(ArmMotor2.getCurrentPosition());
@@ -353,13 +361,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
                 }
                 */
-               }
-
-
-
-
-
-
+        }
 
     }
 

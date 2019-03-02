@@ -76,84 +76,34 @@ public class OctoArmTeleOpTest extends OpMode
         if (gamepad1.dpad_left)
         {
             armStuff.stop();
-
-            if (!isHoldingJ2)
-            {
-                armStuff.holdPositionJ2(true);
-                isHoldingJ2 = true;
-            }
-            else
-            {
-                armStuff.holdPositionJ2(false);
-            }
-
-            if (!isHoldingJ3)
-            {
-                armStuff.holdPositionJ3(true);
-                isHoldingJ3 = true;
-            }
-            else
-            {
-                armStuff.holdPositionJ3(false);
-            }
-        }
-
-
-        if (gamepad1.left_stick_x > 0.2 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
-        {
-            armStuff.driveJ1(gamepad1.left_stick_x);
-        }
-        else if (gamepad1.left_stick_x < -0.2 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
-        {
-            armStuff.driveJ1(gamepad1.left_stick_x);
-        }
-        else
-        {
             armStuff.stopJ1();
+            armStuff.stopJ2();
+            armStuff.stopJ3();
+            armStuff.stopJ4();
+            armStuff.stopExtendL1();
+            armStuff.stopExtendL2();
         }
 
         // to deposit position
-                if (gamepad1.x)
-                {
-                    armStuff.silverDropPoint();
-//                    isHoldingJ2 = false;
-//                    isHoldingJ3 = false;
-//                    armStuff.silverDropPointManual();
-                }
+        if (gamepad1.x)
+        {
+            armStuff.toLander();
+        }
 
-                if (gamepad1.y)
-                {
-                    armStuff.goldDropPoint();
-//                    isHoldingJ2 = false;
-//                    isHoldingJ3 = false;
-
-//                    armStuff.goldDropPointManual();
-                }
-//
-//        if (!gamepad1.y && !gamepad1.dpad_right)
-//        {
-//            armStuff.stopExtendL1();
-//        }
-
-//        if (gamepad1.x)
-//        {
-//            armStuff.toLander();
-//            isHoldingJ2 = false;
-//            isHoldingJ3 = false;
-//        }
+        if (gamepad1.y)
+        {
+            armStuff.testDrive();
+//            armStuff.extendL1Auto();
+        }
 
         if (gamepad1.a)
         {
             armStuff.toInitialPosition();
-//            isHoldingJ2 = false;
-//            isHoldingJ3 = false;
-//            armStuff.toInitialPositionManual();
         }
 
         // to collection position
         if (gamepad1.b)
         {
-//            armStuff.toPreviousPositionManual();
             if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
             {
                 armStuff.toCollectionPlane();
@@ -201,9 +151,22 @@ public class OctoArmTeleOpTest extends OpMode
 
         if (manual)
         {
+            if (gamepad1.left_stick_x > 0.2 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
+            {
+                armStuff.driveJ1(gamepad1.left_stick_x);
+            }
+            else if (gamepad1.left_stick_x < -0.2 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
+            {
+                armStuff.driveJ1(gamepad1.left_stick_x);
+            }
+            else
+            {
+                armStuff.stopJ1();
+            }
+
             if (gamepad1.right_stick_y > 0.2)
             {
-                armStuff.driveJ3( -gamepad1.right_stick_y);
+                armStuff.driveJ3( gamepad1.right_stick_y);
             }
             else if (gamepad1.right_stick_y < -0.2)
             {
