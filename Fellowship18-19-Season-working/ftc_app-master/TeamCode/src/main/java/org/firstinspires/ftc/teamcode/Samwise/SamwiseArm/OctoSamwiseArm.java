@@ -3,12 +3,7 @@ package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
 
 public class OctoSamwiseArm extends OctoSamwiseCollection
 {
@@ -25,7 +20,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public static final double MANUAL_POWER_J1 = 0.6;
     public static final double MANUAL_POWER_J2 = 0.2;
-    public static final double UP_POWER_J3 = 0.2;
+    public static final double MANUAL_POWER_J3 = 0.2;
     public static final double E1_POWER = 0.8;
     public static final double E2_POWER = 0.8;
 
@@ -56,8 +51,10 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorJ1.setPower(MANUAL_POWER_J1 * power);
+        motorJ1.setPower(-MANUAL_POWER_J1 * power);
     }
+
+
 
     public void stopJ1()
     {
@@ -85,8 +82,8 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motor1J2.setPower(-MANUAL_POWER_J2 * power);
-        motor2J2.setPower(-MANUAL_POWER_J2 * power);
+        motor1J2.setPower(MANUAL_POWER_J2 * power);
+        motor2J2.setPower(MANUAL_POWER_J2 * power);
     }
 
 
@@ -97,7 +94,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorJ3.setPower(UP_POWER_J3 * power);
+        motorJ3.setPower(-MANUAL_POWER_J3 * power);
     }
 
 
