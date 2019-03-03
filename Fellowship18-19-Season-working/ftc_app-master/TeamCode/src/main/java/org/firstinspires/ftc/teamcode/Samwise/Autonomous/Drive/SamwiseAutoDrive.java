@@ -41,8 +41,12 @@ public class SamwiseAutoDrive extends LinearOpMode {
     DigitalChannel touchfront2;  // front touch sensor
     DigitalChannel touchfront3;
 
-    //DcMotor J3;
+    DcMotor motorE1;
+    DcMotor motorJ1;
+
     CRServo servoE2;
+
+    static final int E1_MAX_COUNT = 3500;//4661;
 
     /**
      * init with and without tensorflow
@@ -58,10 +62,16 @@ public class SamwiseAutoDrive extends LinearOpMode {
         md.init(hardwareMap);
         hanger.init(hardwareMap, telemetry);
 
-        //init J3 and E2 servo
-        //J3 = hardwareMap.dcMotor.get("J3");
-        //J3.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        //J3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //init J1 and E2 servo
+        motorJ1 = hardwareMap.dcMotor.get("J1");
+        motorJ1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //motorJ1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        motorE1 = hardwareMap.dcMotor.get("E1");
+        motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //motorE1.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        //motorE1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         servoE2 = hardwareMap.crservo.get("E2");
 
         // get a reference to our digitalTouch object.
@@ -154,6 +164,11 @@ public class SamwiseAutoDrive extends LinearOpMode {
         servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
         servoE2.setPower(1);
 
+        this.extendL1Auto();
+
+        //retracting the hanger without blocking the drive
+        hanger.encoderDriveNoWait(this, 0.6, 57.5);
+
         /**
          * driveToCrater the specific route
          */
@@ -161,8 +176,11 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         this.md.move(SamwiseMarkerDeposit.initPosition); //back to init position
 
+        //this.turnJ1Auto();
+
         //retracting the hanger
-        hanger.encoderDrive(this, 0.6, 53.5, 4);
+        hanger.encoderDrive(this, 0.6, 53.5, 3);
+
     }
 
     private void adjustPosition() {
@@ -235,6 +253,22 @@ public class SamwiseAutoDrive extends LinearOpMode {
             }
         }
         return driveRoute;
+    }
+
+    public void extendL1Auto()
+    {
+        motorE1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorE1.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorE1.setPower(0.6);
+        motorE1.setTargetPosition(E1_MAX_COUNT);
+    }
+
+    public void turnJ1Auto()
+    {
+        motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ1.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorJ1.setPower(0.5);
+        motorJ1.setTargetPosition(500);
     }
 
 }

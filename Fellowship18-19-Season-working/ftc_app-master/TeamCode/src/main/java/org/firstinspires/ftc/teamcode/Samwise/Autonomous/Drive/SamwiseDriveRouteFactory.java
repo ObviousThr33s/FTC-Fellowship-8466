@@ -43,7 +43,7 @@ public class SamwiseDriveRouteFactory
                 driveTrain.encoderDrive(samwiseDrive, -43,  5);
                 //driveTrain.driveToWall(samwiseDrive, samwiseDrive.touchBack, false, 7);
 
-                driveTrain.turnDrive(samwiseDrive, 35, 3);
+                driveTrain.turnDrive(samwiseDrive, 34, 3);
                 //telemetry.addData(route, "finish sixth turn");
                 //telemetry.update();
 
@@ -54,6 +54,9 @@ public class SamwiseDriveRouteFactory
                 //telemetry.update();
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
+
+                // turn J1
+                //samwiseDrive.turnJ1Auto();
 
                 //driveTrain.resetAngle(AxesOrder.ZYX);
 
@@ -68,9 +71,9 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish eighth driveToCrater");
                 //telemetry.update();
 
-                ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
+                //((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
 
-                driveTrain.encoderDrive(samwiseDrive, -4, 2);
+                //driveTrain.encoderDrive(samwiseDrive, -3, 2);
             }
         };
     }
@@ -145,7 +148,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish first turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, 24,3);
+                driveTrain.encoderDrive(samwiseDrive, 25,3);
                 //telemetry.addData(route, "finish second driveToCrater");
                 //telemetry.update();
 
@@ -155,7 +158,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish third turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -33,3);
+                driveTrain.encoderDrive(samwiseDrive, -34,3);
                 //driveTrain.driveToWall(samwiseDrive, samwiseDrive.touchBack, false, 3.5);
 
                 driveTrain.turnDrive(samwiseDrive, 21, 3);
@@ -177,9 +180,9 @@ public class SamwiseDriveRouteFactory
                 //driveTrain.driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, true, 6);
                 ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, true,7);
 
-                ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
+                //((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
 
-                driveTrain.encoderDrive(samwiseDrive, -4, 2);
+                //driveTrain.encoderDrive(samwiseDrive, -3, 2);
             }
         };
     }
@@ -295,9 +298,9 @@ public class SamwiseDriveRouteFactory
                 //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
                 ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, true,7);
 
-                ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
+                //((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
 
-                driveTrain.encoderDrive(samwiseDrive, -4, 2);
+                //driveTrain.encoderDrive(samwiseDrive, -3, 2);
             }
         };
     }
@@ -339,7 +342,7 @@ public class SamwiseDriveRouteFactory
 
                 driveTrain.encoderDrive(samwiseDrive, -43,6);
 
-                driveTrain.turnDrive(samwiseDrive, 28, 5);
+                driveTrain.turnDrive(samwiseDrive, 26, 5);
 
                 driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, false, samwiseDrive.color, 4);
 
@@ -362,9 +365,9 @@ public class SamwiseDriveRouteFactory
                 //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
                 ((SamwiseDriveTrain)driveTrain).driveToCrater(samwiseDrive, samwiseDrive.touchFrontSide, samwiseDrive.touchFront, true,7);
 
-                ((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
+                //((SamwiseDriveTrain)driveTrain).turn(samwiseDrive, 15, 2.5);
 
-                driveTrain.encoderDrive(samwiseDrive, -4, 2);
+                //driveTrain.encoderDrive(samwiseDrive, -3, 2);
             }
         };
     }

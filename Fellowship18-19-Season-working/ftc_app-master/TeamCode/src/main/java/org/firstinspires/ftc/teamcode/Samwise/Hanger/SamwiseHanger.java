@@ -21,10 +21,10 @@ public class SamwiseHanger {
     public Telemetry telemetry;
 
     public DcMotor hangermotor1;
-    public Servo   hangerservo1;
-    public Servo   markerservo1;
+    public Servo hangerservo1;
+    public Servo markerservo1;
 
-    public SamwiseHanger(){
+    public SamwiseHanger() {
 
     }
 
@@ -81,6 +81,18 @@ public class SamwiseHanger {
         }
 
         this.hangermotor1.setPower(0);
+        //hangermotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void encoderDriveNoWait(LinearOpMode linearopMode, double speed, double inches) {
+
+        int TargetPosition = this.hangermotor1.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+        this.hangermotor1.setTargetPosition(TargetPosition);
+
+        this.hangermotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.hangermotor1.setPower(speed);
+
+        //this.hangermotor1.setPower(0);
         //hangermotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 

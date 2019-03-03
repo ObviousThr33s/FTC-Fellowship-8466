@@ -63,15 +63,17 @@ public class OctoArmTeleOpTest extends OpMode
             armStuff.stopExtendL1();
         }
 
-        if (gamepad1.dpad_up)
+        /*if (gamepad1.a)
         {
             manual = true;
+            System.out.println("true");
         }
 
         if (gamepad1.dpad_down)
         {
             manual = false;
-        }
+            System.out.println("false");
+        }*/
 
         if (gamepad1.dpad_left)
         {
@@ -96,7 +98,7 @@ public class OctoArmTeleOpTest extends OpMode
 //            armStuff.extendL1Auto();
         }
 
-        if (gamepad1.a)
+        if (gamepad1.dpad_up)
         {
             armStuff.toInitialPosition();
         }
@@ -205,11 +207,11 @@ public class OctoArmTeleOpTest extends OpMode
                 armStuff.stopJ4();
             }
         }
-        else
+        /*else
         {
             //armStuff.setcurrent(gamepad1.left_bumper);
             armStuff.PlaneOfMotion(gamepad1.left_stick_y);
-        }
+        }*/
 
     }
 }
