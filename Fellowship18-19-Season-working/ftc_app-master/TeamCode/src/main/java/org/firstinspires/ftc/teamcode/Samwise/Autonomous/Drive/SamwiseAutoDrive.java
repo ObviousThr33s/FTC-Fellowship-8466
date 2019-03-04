@@ -179,7 +179,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         //this.turnJ1Auto();
 
         //retracting the hanger
-        hanger.encoderDrive(this, 0.6, 53.5, 3);
+        // hanger.encoderDrive(this, 0.6, 53.5, 3);
 
     }
 

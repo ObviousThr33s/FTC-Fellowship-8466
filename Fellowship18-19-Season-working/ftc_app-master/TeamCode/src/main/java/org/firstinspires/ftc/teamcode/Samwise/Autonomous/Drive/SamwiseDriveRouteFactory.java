@@ -56,7 +56,7 @@ public class SamwiseDriveRouteFactory
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
                 // turn J1
-                //samwiseDrive.turnJ1Auto();
+                samwiseDrive.turnJ1Auto();
 
                 //driveTrain.resetAngle(AxesOrder.ZYX);
 
