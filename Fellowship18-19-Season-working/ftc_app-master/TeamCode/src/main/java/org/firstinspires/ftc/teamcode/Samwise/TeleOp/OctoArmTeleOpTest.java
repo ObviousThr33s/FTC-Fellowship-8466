@@ -26,8 +26,6 @@ public class OctoArmTeleOpTest extends OpMode
     private static final int J3_MAX_TICKS = Integer.MAX_VALUE;
     private static final int J3_MIN_TICKS = -1938;
 
-
-
     @Override
     public void init()
     {
@@ -89,24 +87,26 @@ public class OctoArmTeleOpTest extends OpMode
         // to deposit position
         if (gamepad1.x)
         {
+            armStuff.stopSam();
             armStuff.toLander();
         }
 
         if (gamepad1.y)
         {
-            armStuff.testDrive();
-//            armStuff.extendL1Auto();
+            armStuff.extendL1Auto();
         }
 
         if (gamepad1.dpad_up)
         {
+            armStuff.stopSam();
             armStuff.toInitialPosition();
         }
 
         // to collection position
         if (gamepad1.b)
         {
-            if (Math.abs(armStuff.getJ1CurrentPosition()) < 10 && Math.abs(armStuff.getJ2CurrentPosition()) < 10 && Math.abs(armStuff.getJ3CurrentPosition()) < 10)
+            armStuff.stopSam();
+            if (Math.abs(armStuff.getJ1CurrentPosition()) < 100 && Math.abs(armStuff.getJ2CurrentPosition()) < 100 && Math.abs(armStuff.getJ3CurrentPosition()) < 100)
             {
                 armStuff.toCollectionPlane();
                 isHoldingJ2 = false;
@@ -136,17 +136,17 @@ public class OctoArmTeleOpTest extends OpMode
         }
 
         // collection and deposit
-        if (gamepad1.left_trigger > 0.1)
-        {
-            armStuff.depositMinerals();
-        }
-
-        if (gamepad1.right_trigger > 0.1)
+        if (gamepad2.left_trigger > 0.1)
         {
             armStuff.collectMinerals();
         }
 
-        if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1)
+        if (gamepad2.right_trigger > 0.1)
+        {
+            armStuff.depositMinerals();
+        }
+
+        if (gamepad2.left_trigger < 0.1 && gamepad2.right_trigger < 0.1)
         {
             armStuff.stopCollecting();
         }
@@ -168,7 +168,7 @@ public class OctoArmTeleOpTest extends OpMode
 
             if (gamepad1.right_stick_y > 0.2)
             {
-                armStuff.driveJ3( gamepad1.right_stick_y);
+                armStuff.driveJ3(gamepad1.right_stick_y);
             }
             else if (gamepad1.right_stick_y < -0.2)
             {
@@ -192,17 +192,15 @@ public class OctoArmTeleOpTest extends OpMode
                 armStuff.stopJ2();
             }
 
-            if (gamepad1.left_bumper)
+            if (gamepad2.right_stick_x > 0.2)
             {
                 armStuff.moveJ4Down();
             }
-
-            if (gamepad1.right_bumper)
+            else if (gamepad2.right_stick_x < -0.2)
             {
                 armStuff.moveJ4Up();
             }
-
-            if (!gamepad1.left_bumper && !gamepad1.right_bumper)
+            else
             {
                 armStuff.stopJ4();
             }
@@ -212,6 +210,7 @@ public class OctoArmTeleOpTest extends OpMode
             //armStuff.setcurrent(gamepad1.left_bumper);
             armStuff.PlaneOfMotion(gamepad1.left_stick_y);
         }*/
+
 
     }
 }
