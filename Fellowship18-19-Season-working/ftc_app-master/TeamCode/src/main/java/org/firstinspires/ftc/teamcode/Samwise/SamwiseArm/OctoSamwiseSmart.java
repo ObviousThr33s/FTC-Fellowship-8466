@@ -33,9 +33,9 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
     static final int GOLD_DROP_J1 = -1294;
     static final int SILVER_DROP_J1 = -955;
-    static final int J1_LANDER = -930;
-    static final int J2_LANDER = -1061;
-    static final int J3_LANDER = -3827;
+    static final int J1_LANDER = -1095;
+    static final int J2_LANDER = -221;
+    static final int J3_LANDER = -2449;
 
     static final double INITIAL_DEGREES_J2 = 240;
     static final double INITIAL_DEGREES_J3 = 50;
@@ -47,9 +47,9 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     static final double ARM_L1 = 14.5; //length between motorJoint1 and motorJoint2
     static final double ARM_L2 = 17.1; //length between motorJoint2 and servoJ4
 
-    public int initialCollectionPosJ1 = 937;
-    public int initialCollectionPos1J2 = -1328;
-    public int initialCollectionPos2J2 = -1328;
+    public int initialCollectionPosJ1 = 1114;
+    public int initialCollectionPos1J2 = -1401;
+    public int initialCollectionPos2J2 = -1401;
     public int initialCollectionPosJ3 = -1559;
 
     int previousPositionJ1 = initialCollectionPosJ1;
