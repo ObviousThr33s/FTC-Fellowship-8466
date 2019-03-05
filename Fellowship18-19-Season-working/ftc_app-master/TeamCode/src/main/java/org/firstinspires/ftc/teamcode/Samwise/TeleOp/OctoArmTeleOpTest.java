@@ -46,17 +46,17 @@ public class OctoArmTeleOpTest extends OpMode
         telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
         telemetry.update();
 
-        if (gamepad2.dpad_up)
+        if (gamepad1.right_bumper)
         {
             armStuff.extendL1();
         }
 
-        if (gamepad2.dpad_down)
+        if (gamepad1.right_trigger>0.2)
         {
             armStuff.retractL1();
         }
 
-        if (!gamepad2.dpad_up && !gamepad2.dpad_down)
+        if (gamepad1.right_trigger<0.2 && !gamepad1.right_bumper)
         {
             armStuff.stopExtendL1();
         }
@@ -120,17 +120,17 @@ public class OctoArmTeleOpTest extends OpMode
             }
         }
 
-        if (gamepad2.dpad_right)
+        if (gamepad1.left_bumper)
         {
             armStuff.extendL2();
         }
 
-        if (gamepad2.dpad_left)
+        if (gamepad1.left_trigger>0.2)
         {
             armStuff.retractL2();
         }
 
-        if (!gamepad2.dpad_right && !gamepad2.dpad_left)
+        if (!gamepad1.left_bumper && gamepad1.left_trigger<0.2)
         {
             armStuff.stopExtendL2();
         }

@@ -46,7 +46,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     CRServo servoE2;
 
-    static final int E1_MAX_COUNT = 3500;//4661;
+    static final int E1_MAX_COUNT = 4660;
 
     /**
      * init with and without tensorflow
@@ -180,6 +180,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         //retracting the hanger
         // hanger.encoderDrive(this, 0.6, 53.5, 3);
+        while(opModeIsActive()){
+            idle(); // keep L2
+        }
 
     }
 
@@ -268,7 +271,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setDirection(DcMotorSimple.Direction.REVERSE);
         motorJ1.setPower(0.5);
-        motorJ1.setTargetPosition(500);
+        motorJ1.setTargetPosition(550);
     }
 
 }
