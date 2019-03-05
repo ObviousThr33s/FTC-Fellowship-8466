@@ -107,7 +107,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorJ1.setPower(MANUAL_POWER_J1 * power);
+        motorJ1.setPower(-MANUAL_POWER_J1 * power);
 
     }
 
@@ -138,8 +138,8 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        motor1J2.setPower(-MANUAL_POWER_J2 * power);
-        motor2J2.setPower(-MANUAL_POWER_J2 * power);
+        motor1J2.setPower(MANUAL_POWER_J2 * power);
+        motor2J2.setPower(MANUAL_POWER_J2 * power);
     }
 
 
@@ -150,7 +150,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorJ3.setPower(UP_POWER_J3 * power);
+        motorJ3.setPower(-UP_POWER_J3 * power);
     }
 
 

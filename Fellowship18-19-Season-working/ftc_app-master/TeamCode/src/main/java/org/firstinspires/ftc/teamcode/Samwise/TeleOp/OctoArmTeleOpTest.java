@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
 
 @TeleOp(name = "Octo Arm Test", group = "tests")
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
 public class OctoArmTeleOpTest extends OpMode
 {
     private OctoSamwiseGenius armStuff;
+    private SamwiseDriveTrain driveTrain;
 
     private boolean manual = true;
     private boolean isHoldingJ2 = false;
@@ -114,6 +116,7 @@ public class OctoArmTeleOpTest extends OpMode
             }
             else
             {
+                armStuff.saveLanderPosition();
                 armStuff.toPreviousPosition();
                 isHoldingJ2 = false;
                 isHoldingJ3 = false;
