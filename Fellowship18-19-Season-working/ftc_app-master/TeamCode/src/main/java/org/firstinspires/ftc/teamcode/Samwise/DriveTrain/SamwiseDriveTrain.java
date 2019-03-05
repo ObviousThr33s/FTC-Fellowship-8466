@@ -121,6 +121,23 @@ public class SamwiseDriveTrain extends DriveTrain {
         encoderDrive(opMode, TURN_SPEED, inches, -inches, timeout);
     }
 
+    public void makeTurnWithoutWait (double degrees)
+    {
+        double inches = INCHES_PER_DEGREE * degrees;
+        int newLeftTarget = leftDrive.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+        int newRightTarget = rightDrive.getCurrentPosition() + (int) (-inches * COUNTS_PER_INCH);
+        leftDrive.setTargetPosition(newLeftTarget);
+        rightDrive.setTargetPosition(newRightTarget);
+
+        // Turn On RUN_TO_POSITION
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        leftDrive.setPower(Math.abs(TURN_SPEED));
+        rightDrive.setPower(Math.abs(TURN_SPEED));
+
+    }
+
     @Override
     public void drive(double power) {
         leftDrive.setPower(power);
