@@ -13,7 +13,7 @@ public class GenerateLookupTable
 {
     private static final List listHeight = new ArrayList(Arrays.asList( 15.600269452067298));
     private static final double L1 = 21.5; //length between motorJoint1 and motorJoint2
-    private static final double L2 = 22.75; //length between motorJoint2 and servoWrist
+    private static final double L2 = 21.75; //length between motorJoint2 and servoWrist
     private static final double MINIMUM_L3 = 15;
     private static final double INTERVAL = 0.5;
 
@@ -21,8 +21,8 @@ public class GenerateLookupTable
     {
 
         // calculate height
-        double J2_ticks     = 1462;
-        double J3_ticks     = 1387;
+        double J2_ticks     = 2288;
+        double J3_ticks     = 2921;
         double J2Deg        = 211 - J2_ticks / 25.57;
         double J3Deg        = 48 + J3_ticks / 35.84;
         System.out.println("J2Deg: "+J2Deg);

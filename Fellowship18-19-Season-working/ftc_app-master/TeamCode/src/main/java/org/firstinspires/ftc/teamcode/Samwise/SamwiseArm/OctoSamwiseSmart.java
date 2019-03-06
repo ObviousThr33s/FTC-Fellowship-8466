@@ -77,12 +77,16 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
     public void toLander()
     {
+        runTime.reset();
         System.out.println("------------------------- toLander start -----------------");
         stopSam();
         savePreviousPosition();
+        System.out.println(" to lander timer1: "+runTime.time(TimeUnit.MILLISECONDS));
         //        toPositionWithSam(J1_POWER, J2_POWER, J3_POWER, J1_LANDER, J2_LANDER, J2_LANDER, J3_LANDER, true);
-//        robot.makeTurnWithoutWait(90);
+        robot.makeTurnWithoutWait(90);
+        System.out.println(" to lander timer2: "+runTime.time(TimeUnit.MILLISECONDS));
         toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER, J2_LANDER, J2_LANDER, J3_LANDER);
+        System.out.println(" to lander timer3: "+runTime.time(TimeUnit.MILLISECONDS));
         System.out.println("------------------------- toLander end -----------------");
     }
 
@@ -91,8 +95,8 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         System.out.println("------------------------- backFromLander start -----------------");
         //        toPositionWithSam(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3, false);
 
-//        robot.makeTurnWithoutWait(-90);
         stopSam();
+        robot.makeTurnWithoutWait(-90);
         toPositionReverse(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
         System.out.println("------------------------- backFromLander end -----------------");
     }
@@ -140,16 +144,16 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setTargetPosition(j3Position);
         motorJ3.setPower(j3Power);
-/*
-        while (motorJ3.getCurrentPosition() > SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 3)
+
+       /* while (motorJ3.getCurrentPosition() > SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 3)
         {
             try
             {
                 Thread.sleep(10);
             }
             catch (Exception e) {}
-        }*/
-
+        }
+*/
         motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor1J2.setTargetPosition(j2Position1);
@@ -157,8 +161,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motor1J2.setPower(j2Power);
         motor2J2.setPower(j2Power);
 
-/*
-        while (motor2J2.getCurrentPosition() > SAFE_POS_J2 && runTime.time(TimeUnit.SECONDS) < 3)
+       /* while (motor2J2.getCurrentPosition() > SAFE_POS_J2 && runTime.time(TimeUnit.SECONDS) < 3)
     {
         try
         {

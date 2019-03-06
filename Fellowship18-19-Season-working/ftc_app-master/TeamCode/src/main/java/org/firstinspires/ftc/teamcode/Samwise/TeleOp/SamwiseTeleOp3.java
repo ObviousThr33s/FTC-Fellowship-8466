@@ -50,7 +50,8 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
  ****************************************************************************************************/
 @TeleOp(name = "Samwise: Teleop Tank 3", group = "Samwise")
 //@Disabled
-public class SamwiseTeleOp3 extends OctoArmTeleOpTest {
+public class SamwiseTeleOp3 extends OctoArmTeleOpTest
+{
 
     /* Declare OpMode members. */
     public SamwiseHanger swHang = new SamwiseHanger();
@@ -79,7 +80,8 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest {
 
 
     @Override
-    public void init() {
+    public void init()
+    {
         swHang.init(hardwareMap, telemetry);
 
         //swDTrain.init(hardwareMap, telemetry);
@@ -98,18 +100,21 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest {
 
 
     @Override
-    public void init_loop() {
+    public void init_loop()
+    {
     }
 
     @Override
-    public void start() {
+    public void start()
+    {
     }
 
     /**
      * This is where our main teleop gamepad input and functions mapping go.
      */
     @Override
-    public void loop() {
+    public void loop()
+    {
         /************************************** Gamepad #1 Mappings *************************************
          *                               Samwise Drive Train and Hanging                                *
          *                       (Please add related function mappings below)                           *
@@ -137,43 +142,57 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest {
             swHang.hookUpdate();
         }
 
-        if (gamepad2.left_bumper) {
+        if (gamepad2.left_bumper)
+        {
             swHang.markerservo1.setPosition(.76);
         }
 
         //Drive Train
-        if (gamepad2.b) {
+        if (gamepad2.b)
+        {
             powerlevel = 0.5;
             System.out.println("50% power");
-        } else if (gamepad2.a) {
+        }
+        else if (gamepad2.a)
+        {
             powerlevel = .7;
             System.out.println("70% power");
-        } else if (gamepad2.x) {
+        }
+        else if (gamepad2.x)
+        {
             powerlevel = 1;
             System.out.println("max power");
         }
 
-        if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y)) {
-            System.out.println("------------------------------ drive straight: "+ gamepad2.left_stick_y + " start --------------------------");
-            float MotorPower = gamepad2.left_stick_y;
+        // to avoid driving with very small powers not visible) even with no button pressed
+        if (Math.abs(gamepad2.left_stick_x) > 0.1 || Math.abs(gamepad2.left_stick_y) > 0.1)
+        {
+            if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y))
+            {
 
-            leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftdrive.setPower(MotorPower * powerlevel);
-            rightdrive.setPower(MotorPower * powerlevel);
-            //System.out.println("==> moving ...");
-            System.out.println("------------------------------ drive straight: "+ gamepad2.left_stick_y + " end --------------------------");
+                float MotorPower = gamepad2.left_stick_y;
+
+                leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                leftdrive.setPower(MotorPower * powerlevel);
+                rightdrive.setPower(MotorPower * powerlevel);
+                //System.out.println("==> moving ...");
+            }
+            if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y))
+            {
+                float TurnMotorPower = gamepad2.left_stick_x;
+
+                leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                leftdrive.setPower(TurnMotorPower * powerlevel);
+                rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
+                //System.out.println("==> turning ...");
+            }
         }
-        if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
-            System.out.println("------------------------------ drive turn: "+ gamepad2.left_stick_y + " start --------------------------");
-            float TurnMotorPower = gamepad2.left_stick_x;
-
-            leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftdrive.setPower(TurnMotorPower * powerlevel);
-            rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
-            //System.out.println("==> turning ...");
-            System.out.println("------------------------------ drive turn: "+ gamepad2.left_stick_y + " end --------------------------");
+        else
+        {
+            leftdrive.setPower(0);
+            rightdrive.setPower(0);
         }
 
         // arm control: delegate to parent OctoArmTest
