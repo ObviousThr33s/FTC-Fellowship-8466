@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name = "Kyla v1.0 CraterCenter", group = "Samwise")
+@Disabled
 public  class SamwiseDriveRouteCraterCenter extends SamwiseDriveRouteTest {
 
     @Override

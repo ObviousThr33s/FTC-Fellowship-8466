@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samwise.DriveTrain;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @TeleOp (name = "DriveTeleOp 2.2.12v")
+@Disabled
 public class DriveTrainTeleop extends OpMode {
 
     public DcMotor leftdrive = null;

@@ -28,7 +28,7 @@ public class OctoSamwiseCollection
      * 3. Spin to deposit
      * 4. Return to previously saved position
      */
-    public void depositMinerals()
+    public void collectMinerals()
     {
         servoC1.setDirection(DcMotorSimple.Direction.REVERSE);
         servoC1.setPower(0.8);
@@ -43,7 +43,7 @@ public class OctoSamwiseCollection
      * 3. Spin to collect
      * 4. Stop and return to previously saved position
      */
-    public void collectMinerals()
+    public void depositMinerals()
     {
         servoC1.setDirection(DcMotorSimple.Direction.FORWARD);
         servoC1.setPower(0.8);

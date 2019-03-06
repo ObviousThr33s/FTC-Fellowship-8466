@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.HoldPositionTestArm;
 
 @TeleOp(name = "Hold Position Test", group = "tests")
-//@Disabled
+@Disabled
 public class HoldPositionTestOp extends OpMode
 {
     HoldPositionTestArm arm = null;

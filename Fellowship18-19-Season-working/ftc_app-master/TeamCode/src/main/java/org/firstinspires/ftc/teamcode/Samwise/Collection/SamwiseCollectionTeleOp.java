@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Samwise.Collection;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name = "CollectionArmTeleOp")
+@Disabled
 public class SamwiseCollectionTeleOp extends OpMode {       //will eventually extend to SamewiseRobot
 
     public DcMotor cMotor1 = null; //left and right range of motion

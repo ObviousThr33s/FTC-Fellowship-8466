@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp (name = "J2test")
+@Disabled
 public class J2test extends OpMode{
     private DcMotor j21 = null;
     private DcMotor j22 = null;

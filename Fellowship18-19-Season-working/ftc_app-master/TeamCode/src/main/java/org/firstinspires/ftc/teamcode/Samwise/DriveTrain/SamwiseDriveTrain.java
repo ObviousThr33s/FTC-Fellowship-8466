@@ -138,20 +138,27 @@ public class SamwiseDriveTrain extends DriveTrain {
 
     }
 
+
     @Override
     public void drive(double power) {
+        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftDrive.setPower(power);
         rightDrive.setPower(power);
     }
 
     @Override
     public void turnleft(double power) {
+        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftDrive.setPower(power);
         rightDrive.setPower(-power);
     }
 
     @Override
     public void turnright(double power) {
+        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftDrive.setPower(-power);
         rightDrive.setPower(power);
     }

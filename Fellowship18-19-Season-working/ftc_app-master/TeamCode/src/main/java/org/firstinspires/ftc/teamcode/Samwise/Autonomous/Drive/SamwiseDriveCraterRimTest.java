@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name = "Crater Rim Test", group = "Samwise")
-//@Disabled
+@Disabled
 public class SamwiseDriveCraterRimTest extends SamwiseDriveRouteTest {
 
     @Override

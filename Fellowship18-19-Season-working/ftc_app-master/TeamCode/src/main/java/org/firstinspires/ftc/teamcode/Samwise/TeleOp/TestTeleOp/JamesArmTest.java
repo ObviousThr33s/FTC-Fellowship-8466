@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TRexSamwiseGenius;
 
 @TeleOp (name = "JamesArmTest", group="tests")
-//@Disabled
+@Disabled
 public class JamesArmTest extends OpMode{
 
     TRexSamwiseGenius sa;

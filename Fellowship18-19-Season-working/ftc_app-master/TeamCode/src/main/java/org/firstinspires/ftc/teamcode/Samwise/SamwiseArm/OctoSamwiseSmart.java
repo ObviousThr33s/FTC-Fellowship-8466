@@ -109,7 +109,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     {
 //        toPositionWithSam(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3, false);
 
-                robot.makeTurnWithoutWait( 90);
+                robot.makeTurnWithoutWait( -90);
                 toPositionReverse(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
     }
 
@@ -358,8 +358,9 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
 //        toPositionWithSam(J1_POWER, J2_POWER, J3_POWER, J1_LANDER, J2_LANDER, J2_LANDER, J3_LANDER, true);
 
-                robot.makeTurnWithoutWait(-90);
+                robot.makeTurnWithoutWait(90);
                 toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER, J2_LANDER, J2_LANDER, J3_LANDER);
+                stopSam();
     }
 
     //    public void testDrive()
@@ -372,6 +373,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     {
         robot.leftDrive.setPower(0);
         robot.rightDrive.setPower(0);
+        this.stopJ4();
     }
 
     public boolean isCollectionPlane()

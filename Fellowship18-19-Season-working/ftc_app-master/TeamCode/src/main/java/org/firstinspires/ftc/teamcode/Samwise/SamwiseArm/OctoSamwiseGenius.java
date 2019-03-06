@@ -21,7 +21,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
     static final double MAX_DEGREES_J3 = 180;
     static final double MIN_DEGREES_J2 = 135;
     static final double MIN_DEGREES_J3 = INITIAL_DEGREES_J3;
-    static final double J4_COLLECTION_HEIGHT = 2;
+    static final double J4_COLLECTION_HEIGHT = 4;
     static final double MAX_POWER_J2 = 0.3;
     static final double MAX_POWER_J3 = 0.3;
 

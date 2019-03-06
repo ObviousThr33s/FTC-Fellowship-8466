@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Samwise.Autonomous.Drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -13,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 
 @Autonomous(name = "SamwiseAutoDriveTest v1", group = "Samwise")
-//@Disabled
+@Disabled
 public class SamwiseAutoDriveTest extends LinearOpMode {
 
     // this is set before the robot is initialized

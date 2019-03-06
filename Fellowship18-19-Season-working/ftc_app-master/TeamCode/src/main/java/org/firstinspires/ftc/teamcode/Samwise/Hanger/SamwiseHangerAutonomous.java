@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.Samwise.Hanger;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Samwise.Conceptual.SamwiseRobot;
 
 @Autonomous(name = "HangerAuto", group = "Exercises")
+@Disabled
 public class SamwiseHangerAutonomous extends LinearOpMode {
 
 

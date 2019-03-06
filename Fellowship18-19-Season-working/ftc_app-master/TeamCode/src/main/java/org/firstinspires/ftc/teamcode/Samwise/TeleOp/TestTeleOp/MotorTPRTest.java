@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Autonomous(name="test arm motor CPR", group="tests")
-//@Disabled
+@Disabled
 public class MotorTPRTest extends LinearOpMode
 {
     private DcMotor testMotorEncoder1 = null;

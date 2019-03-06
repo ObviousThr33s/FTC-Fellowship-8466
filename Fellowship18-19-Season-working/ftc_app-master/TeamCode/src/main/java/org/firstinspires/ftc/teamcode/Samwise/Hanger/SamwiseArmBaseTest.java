@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samwise.Hanger;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 @TeleOp(name = "ARM v2")
+@Disabled
     public class SamwiseArmBaseTest extends OpMode {
         public DcMotor leftdrive = null;
         public DcMotor rightdrive = null;

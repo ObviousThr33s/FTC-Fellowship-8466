@@ -132,12 +132,12 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest {
             return;
         }*/
 
-        if (gamepad2.y)
+        if (gamepad2.right_bumper)
         {
             swHang.hookUpdate();
         }
 
-        if (gamepad2.dpad_down) {
+        if (gamepad2.left_bumper) {
             swHang.markerservo1.setPosition(.76);
         }
 
@@ -156,6 +156,8 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest {
         if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y)) {
             float MotorPower = gamepad2.left_stick_y;
 
+            leftdrive.setDirection(DcMotor.Direction.REVERSE);
+            rightdrive.setDirection(DcMotor.Direction.FORWARD);
             leftdrive.setPower(MotorPower * powerlevel);
             rightdrive.setPower(MotorPower * powerlevel);
             //System.out.println("==> moving ...");
@@ -163,6 +165,8 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest {
         if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
             float TurnMotorPower = gamepad2.left_stick_x;
 
+            leftdrive.setDirection(DcMotor.Direction.REVERSE);
+            rightdrive.setDirection(DcMotor.Direction.FORWARD);
             leftdrive.setPower(TurnMotorPower * powerlevel);
             rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
             //System.out.println("==> turning ...");
