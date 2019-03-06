@@ -47,63 +47,13 @@ public class OctoArmTeleOpTest extends OpMode
         telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
         telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
         telemetry.update();
-
-        if (gamepad1.right_bumper)
+/******************************** Gamepad 1 *******************************************************/
+        //------------- a ----------------
+        if (gamepad1.a)
         {
-            armStuff.extendL1();
+            armStuff.lowerJ4();
         }
-
-        if (gamepad1.right_trigger>0.2)
-        {
-            armStuff.retractL1();
-        }
-
-        if (gamepad1.right_trigger<0.2 && !gamepad1.right_bumper)
-        {
-            armStuff.stopExtendL1();
-        }
-
-        /*if (gamepad1.a)
-        {
-            manual = true;
-            System.out.println("true");
-        }
-
-        if (gamepad1.dpad_down)
-        {
-            manual = false;
-            System.out.println("false");
-        }*/
-
-        if (gamepad1.dpad_left)
-        {
-            armStuff.stop();
-            armStuff.stopJ1();
-            armStuff.stopJ2();
-            armStuff.stopJ3();
-            armStuff.stopJ4();
-            armStuff.stopExtendL1();
-            armStuff.stopExtendL2();
-        }
-
-        // to deposit position
-        if (gamepad1.x)
-        {
-            armStuff.stopSam();
-            armStuff.toLander();
-        }
-
-        if (gamepad1.y)
-        {
-            armStuff.extendL1Auto();
-        }
-
-        if (gamepad1.dpad_up)
-        {
-            armStuff.stopSam();
-            armStuff.toInitialPosition();
-        }
-
+        //------------- b ----------------
         // to collection position
         if (gamepad1.b)
         {
@@ -116,46 +66,76 @@ public class OctoArmTeleOpTest extends OpMode
             }
             else
             {
-                armStuff.saveLanderPosition();
-                armStuff.toPreviousPosition();
+                //                armStuff.saveLanderPosition();
+                armStuff.backFromLander();
                 isHoldingJ2 = false;
                 isHoldingJ3 = false;
             }
         }
 
-        if (gamepad1.left_bumper)
+        //------------- x ----------------
+        // to deposit position
+        if (gamepad1.x)
         {
-            armStuff.extendL2();
+            armStuff.stopSam();
+            armStuff.toLander();
         }
 
-        if (gamepad1.left_trigger>0.2)
+        //------------- y ----------------
+        if (gamepad1.y)
         {
-            armStuff.retractL2();
+            armStuff.extendL1Auto();
         }
 
-        if (!gamepad1.left_bumper && gamepad1.left_trigger<0.2)
+        //------------- dpad ----------------
+        if (gamepad1.dpad_up){
+            armStuff.toCollectionPlane();
+        }
+        if (gamepad1.dpad_left)
         {
-            armStuff.stopExtendL2();
+            armStuff.toPositionWithoutJ1(armStuff.pos2J2, armStuff.pos2J2, armStuff.pos2J3);
+        }
+        if (gamepad1.dpad_right)
+        {
+            armStuff.toPositionWithoutJ1(armStuff.pos3J2, armStuff.pos3J2, armStuff.pos3J3);
+        }
+        if (gamepad1.dpad_down)
+        {
+            armStuff.toPositionWithoutJ1(armStuff.pos4J2, armStuff.pos4J2, armStuff.pos4J3);
         }
 
+        //------------- triggers ----------------
         // collection and deposit
-        if (gamepad2.left_trigger > 0.1)
+        if (gamepad1.left_trigger > 0.1)
         {
             armStuff.collectMinerals();
         }
 
-        if (gamepad2.right_trigger > 0.1)
+        if (gamepad1.right_trigger > 0.1)
         {
             armStuff.depositMinerals();
         }
 
-        if (gamepad2.left_trigger < 0.1 && gamepad2.right_trigger < 0.1)
+        if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1)
         {
             armStuff.stopCollecting();
         }
 
-        if (manual)
+        //------------- bumpers----------------
+        if (gamepad1.left_bumper)
         {
+            armStuff.moveJ4Down();
+        }
+        else if (gamepad1.right_bumper)
+        {
+            armStuff.moveJ4Up();
+        }
+        else
+        {
+            armStuff.stopJ4();
+        }
+
+        //------------- left_stick_x----------------
             if (gamepad1.left_stick_x > 0.2 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
             {
                 armStuff.driveJ1(gamepad1.left_stick_x);
@@ -169,19 +149,7 @@ public class OctoArmTeleOpTest extends OpMode
                 armStuff.stopJ1();
             }
 
-            if (gamepad1.right_stick_y > 0.2)
-            {
-                armStuff.driveJ3(gamepad1.right_stick_y);
-            }
-            else if (gamepad1.right_stick_y < -0.2)
-            {
-                armStuff.driveJ3(gamepad1.right_stick_y);
-            }
-            else
-            {
-                armStuff.stopJ3();
-            }
-
+        //------------- left_stick_y----------------
             if (gamepad1.left_stick_y > 0.2)
             {
                 armStuff.driveJ2(gamepad1.left_stick_y);
@@ -195,25 +163,87 @@ public class OctoArmTeleOpTest extends OpMode
                 armStuff.stopJ2();
             }
 
-            if (gamepad2.right_stick_x > 0.2)
-            {
-                armStuff.moveJ4Down();
-            }
-            else if (gamepad2.right_stick_x < -0.2)
-            {
-                armStuff.moveJ4Up();
-            }
-            else
-            {
-                armStuff.stopJ4();
-            }
-        }
-        /*else
+        //------------- right_stick_x----------------
+        // UNMAPPED FOR NOW
+
+        //------------- right_stick_y----------------
+        if (gamepad1.right_stick_y > 0.2)
         {
-            //armStuff.setcurrent(gamepad1.left_bumper);
-            armStuff.PlaneOfMotion(gamepad1.left_stick_y);
-        }*/
+            armStuff.driveJ3(gamepad1.right_stick_y);
+        }
+        else if (gamepad1.right_stick_y < -0.2)
+        {
+            armStuff.driveJ3(gamepad1.right_stick_y);
+        }
+        else
+        {
+            armStuff.stopJ3();
+        }
 
 
+        /************************ gamepad 2 ************************/
+        //------------- a ----------------
+        // UNMAPPED
+
+        //------------- b ----------------
+        // UNMAPPED
+
+        //------------- x ----------------
+        // UNMAPPED
+
+        //------------- y ----------------
+        // UNMAPPED
+
+
+        //------------- dpad ----------------
+        if (gamepad2.dpad_up)
+        {
+            armStuff.stopSam();
+            armStuff.toInitialPosition();
+        }
+        if (gamepad2.dpad_left)
+        {
+            armStuff.stop();
+            armStuff.stopJ1();
+            armStuff.stopJ2();
+            armStuff.stopJ3();
+            armStuff.stopJ4();
+            armStuff.stopExtendL1();
+            armStuff.stopExtendL2();
+        }
+
+
+        //------------- triggers ----------------
+        if (gamepad2.left_trigger>0.2)
+        {
+            armStuff.extendL1();
+        }
+
+        if (gamepad2.right_trigger>0.2)
+        {
+            armStuff.extendL2();
+        }
+
+        //------------- bumpers ----------------
+        if (gamepad2.left_bumper)
+        {
+            armStuff.retractL1();
+        }
+        if (gamepad2.right_bumper)
+        {
+            armStuff.retractL2();
+        }
+
+        if (gamepad2.right_trigger<0.2 && !gamepad2.right_bumper)
+        {
+            armStuff.stopExtendL2();
+        }
+
+        if (!gamepad2.left_bumper && gamepad2.left_trigger<0.2)
+        {
+            armStuff.stopExtendL1();
+        }
+
+//        armStuff.hoverPlaneOfMotion(gamepad2.right_stick_y);
     }
 }

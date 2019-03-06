@@ -96,11 +96,14 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         motorJ1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor1J2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor1J2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor1J2.setDirection(DcMotorSimple.Direction.REVERSE);
         motor2J2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor2J2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor2J2.setDirection(DcMotorSimple.Direction.REVERSE);
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorJ3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorJ3.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void driveJ1(double power)
@@ -138,8 +141,8 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        motor1J2.setPower(MANUAL_POWER_J2 * power);
-        motor2J2.setPower(MANUAL_POWER_J2 * power);
+        motor1J2.setPower(-MANUAL_POWER_J2 * power);
+        motor2J2.setPower(-MANUAL_POWER_J2 * power);
     }
 
 

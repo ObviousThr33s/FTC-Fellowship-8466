@@ -119,6 +119,7 @@ public class SamwiseTeleOp extends OpMode {
         //if the a button is pressed then is moves the hanger arm
 
         swHang.move(gamepad2.right_stick_y);
+/*
 
         if (gamepad2.left_bumper) {
             System.out.println("==> Hanger unhooking ...");
@@ -130,6 +131,12 @@ public class SamwiseTeleOp extends OpMode {
             //telemetry.addData("Mode", "hooking");
             swHang.Hook();
             return;
+        }
+*/
+
+        if (gamepad2.y)
+        {
+            swHang.hookUpdate();
         }
 
         if (gamepad2.dpad_down) {

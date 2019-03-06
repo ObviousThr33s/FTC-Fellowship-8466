@@ -43,14 +43,24 @@ public class SamwiseHanger {
         hangermotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void unHook() {
+    public void Hook() {
+            hangerservo1.setPosition(0);
+    }
 
+    public void unHook() {
         hangerservo1.setPosition(0.5);
     }
 
-    public void Hook() {
+    public void hookUpdate() {
 
-        hangerservo1.setPosition(0);
+        if (Math.abs(hangerservo1.getPosition())<0.1)
+        {
+            hangerservo1.setPosition(0.5);
+        }
+        else
+        {
+            hangerservo1.setPosition(0);
+        }
     }
 
     public void move(double power) {

@@ -120,19 +120,24 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest {
 
         swHang.move(gamepad2.right_stick_y);
 
-        if (gamepad2.left_bumper) {
+        /*if (gamepad2.b) {
             System.out.println("==> Hanger unhooking ...");
             //telemetry.addData("Mode", "Unhooking");
             swHang.unHook();
             return;
-        } else if (gamepad2.right_bumper) {
+        } else if (gamepad2.a) {
             System.out.println("==> Hanger hooking ...");
             //telemetry.addData("Mode", "hooking");
             swHang.Hook();
             return;
+        }*/
+
+        if (gamepad2.y)
+        {
+            swHang.hookUpdate();
         }
 
-        if (gamepad2.y) {
+        if (gamepad2.dpad_down) {
             swHang.markerservo1.setPosition(.76);
         }
 
