@@ -11,9 +11,6 @@ public class OctoSamwiseCollection
     private CRServo servoC1;
     private CRServo servoC2;
 
-    public int J4Count = 0;
-
-
     OctoSamwiseCollection(HardwareMap hwm)
     {
         servoJ4 = hwm.crservo.get("J4");
@@ -65,15 +62,14 @@ public class OctoSamwiseCollection
     {
         servoJ4.setDirection(DcMotorSimple.Direction.FORWARD);
         servoJ4.setPower(1);
-        J4Count++;
     }
 
     public void moveJ4Down()
     {
         servoJ4.setDirection(DcMotorSimple.Direction.REVERSE);
         servoJ4.setPower(1);
-        J4Count--;
     }
+
     public void stopJ4()
     {
         servoJ4.setPower(0);

@@ -154,22 +154,26 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest {
         }
 
         if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y)) {
+            System.out.println("------------------------------ drive straight: "+ gamepad2.left_stick_y + " start --------------------------");
             float MotorPower = gamepad2.left_stick_y;
 
-            leftdrive.setDirection(DcMotor.Direction.REVERSE);
-            rightdrive.setDirection(DcMotor.Direction.FORWARD);
+            leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             leftdrive.setPower(MotorPower * powerlevel);
             rightdrive.setPower(MotorPower * powerlevel);
             //System.out.println("==> moving ...");
+            System.out.println("------------------------------ drive straight: "+ gamepad2.left_stick_y + " end --------------------------");
         }
         if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
+            System.out.println("------------------------------ drive turn: "+ gamepad2.left_stick_y + " start --------------------------");
             float TurnMotorPower = gamepad2.left_stick_x;
 
-            leftdrive.setDirection(DcMotor.Direction.REVERSE);
-            rightdrive.setDirection(DcMotor.Direction.FORWARD);
+            leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             leftdrive.setPower(TurnMotorPower * powerlevel);
             rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
             //System.out.println("==> turning ...");
+            System.out.println("------------------------------ drive turn: "+ gamepad2.left_stick_y + " end --------------------------");
         }
 
         // arm control: delegate to parent OctoArmTest

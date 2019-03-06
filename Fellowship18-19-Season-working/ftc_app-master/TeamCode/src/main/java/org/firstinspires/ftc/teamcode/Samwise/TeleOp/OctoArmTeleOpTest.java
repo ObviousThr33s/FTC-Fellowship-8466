@@ -25,14 +25,12 @@ public class OctoArmTeleOpTest extends OpMode
     @Override
     public void loop()
     {
-        telemetry.addData("E2 counts", armStuff.e2Count);
-        telemetry.addData("J4 counts", armStuff.J4Count);
-        telemetry.addData("J1 encoder ticks", armStuff.getJ1CurrentPosition());
-        telemetry.addData("J2 encoder ticks", armStuff.getJ2CurrentPosition());
-        telemetry.addData("J3 encoder ticks", armStuff.getJ3CurrentPosition());
-        telemetry.addData("E1 encoder ticks", armStuff.getE1CurrentPosition());
+        telemetry.addData("J1 ticks", armStuff.getJ1CurrentPosition());
+        telemetry.addData("J2 ticks", armStuff.getJ2CurrentPosition()+", "+armStuff.get2J2CurrentPosition());
+        telemetry.addData("J3 ticks", armStuff.getJ3CurrentPosition());
+        telemetry.addData("E1 ticks", armStuff.getE1CurrentPosition());
         telemetry.update();
-/******************************** Gamepad 1 *******************************************************/
+        /******************************** Gamepad 1 *******************************************************/
         //------------- a ----------------
         if (gamepad1.a)
         {
@@ -49,7 +47,7 @@ public class OctoArmTeleOpTest extends OpMode
             }
             else
             {
-                //                armStuff.saveLanderPosition();
+                armStuff.saveLanderPosition();
                 armStuff.backFromLander();
             }
         }
@@ -58,24 +56,18 @@ public class OctoArmTeleOpTest extends OpMode
         // to deposit position
         if (gamepad1.x)
         {
-            armStuff.stopSam();
             armStuff.toLander();
         }
 
         //------------- y ----------------
         if (gamepad1.y)
         {
-            armStuff.stop();
-            armStuff.stopJ1();
-            armStuff.stopJ2();
-            armStuff.stopJ3();
-            armStuff.stopJ4();
-            armStuff.stopExtendL1();
-            armStuff.stopExtendL2();
+            armStuff.stopAll();
         }
 
         //------------- dpad ----------------
-        if (gamepad1.dpad_up){
+        if (gamepad1.dpad_up)
+        {
             armStuff.toCollectionPlane();
         }
         if (gamepad1.dpad_right)
@@ -95,17 +87,17 @@ public class OctoArmTeleOpTest extends OpMode
         // collection and deposit
         if (gamepad1.left_trigger > 0.1)
         {
-//            todo armStuff.collectMinerals();
+            //            todo armStuff.collectMinerals();
         }
 
         if (gamepad1.right_trigger > 0.1)
         {
-//            todo armStuff.depositMinerals();
+            //            todo armStuff.depositMinerals();
         }
 
         if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1)
         {
-//            todo armStuff.stopCollecting();
+            //            todo armStuff.stopCollecting();
         }
 
         //------------- bumpers----------------
@@ -123,32 +115,32 @@ public class OctoArmTeleOpTest extends OpMode
         }*/
 
         //------------- left_stick_x----------------
-            if (gamepad1.left_stick_x > 0.2 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
-            {
-                armStuff.driveJ1(gamepad1.left_stick_x);
-            }
-            else if (gamepad1.left_stick_x < -0.2 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
-            {
-                armStuff.driveJ1(gamepad1.left_stick_x);
-            }
-            else
-            {
-                armStuff.stopJ1();
-            }
+        if (gamepad1.left_stick_x > 0.2 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
+        {
+            armStuff.driveJ1(gamepad1.left_stick_x);
+        }
+        else if (gamepad1.left_stick_x < -0.2 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
+        {
+            armStuff.driveJ1(gamepad1.left_stick_x);
+        }
+        else
+        {
+            armStuff.stopJ1();
+        }
 
         //------------- left_stick_y----------------
-            if (gamepad1.left_stick_y > 0.2)
-            {
-                armStuff.driveJ2(gamepad1.left_stick_y);
-            }
-            else if (gamepad1.left_stick_y < -0.2)
-            {
-                armStuff.driveJ2(gamepad1.left_stick_y);
-            }
-            else
-            {
-                armStuff.stopJ2();
-            }
+        if (gamepad1.left_stick_y > 0.2)
+        {
+            armStuff.driveJ2(gamepad1.left_stick_y);
+        }
+        else if (gamepad1.left_stick_y < -0.2)
+        {
+            armStuff.driveJ2(gamepad1.left_stick_y);
+        }
+        else
+        {
+            armStuff.stopJ2();
+        }
 
         //------------- right_stick_x----------------
         // UNMAPPED FOR NOW
@@ -170,13 +162,13 @@ public class OctoArmTeleOpTest extends OpMode
 
         /************************ gamepad 2 ************************/
         //------------- a ----------------
-        // UNMAPPED
+        // mapped in teleop3
 
         //------------- b ----------------
-        // UNMAPPED
+        // mapped in teleop3
 
         //------------- x ----------------
-        // UNMAPPED
+        // mapped in teleop3
 
         //------------- y ----------------
         if (gamepad2.y)
@@ -216,14 +208,13 @@ public class OctoArmTeleOpTest extends OpMode
         }
 
 
-
         //------------- triggers ----------------
-        if (gamepad2.left_trigger>0.2)
+        if (gamepad2.left_trigger > 0.2)
         {
             armStuff.depositMinerals();
         }
 
-        if (gamepad2.right_trigger>0.2)
+        if (gamepad2.right_trigger > 0.2)
         {
             armStuff.collectMinerals();
         }
@@ -236,11 +227,11 @@ public class OctoArmTeleOpTest extends OpMode
         //------------- bumpers ----------------
         // left bumper: mapped in teleop3
         // right bumper: mapped in teleop3
-        if (Math.abs(gamepad2.right_stick_x)<0.1)
+        if (Math.abs(gamepad2.right_stick_x) < 0.1)
         {
             armStuff.stopJ4();
         }
-        else if (gamepad2.right_stick_x>0)
+        else if (gamepad2.right_stick_x > 0)
         {
             armStuff.moveJ4Up();
         }
@@ -248,6 +239,6 @@ public class OctoArmTeleOpTest extends OpMode
         {
             armStuff.moveJ4Down();
         }
-//        armStuff.hoverPlaneOfMotion(gamepad2.right_stick_x);
+        //        armStuff.hoverPlaneOfMotion(gamepad2.right_stick_x);
     }
 }

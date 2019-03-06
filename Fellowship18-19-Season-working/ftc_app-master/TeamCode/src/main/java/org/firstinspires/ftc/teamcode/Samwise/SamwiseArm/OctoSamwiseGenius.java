@@ -56,7 +56,6 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
     public void hoverPlaneOfMotion(double speed)
     {
         long startTime = System.currentTimeMillis();
-        setManual(false);
 
         // stop when joystick/speed is zero
         if (Math.abs(speed) <= ZERO_GATE)
