@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
 import android.net.http.SslCertificate;
+import android.widget.HeterogeneousExpandableList;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,8 +16,8 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
     private static final double ZERO_GATE = 0.1;
     private static final double ZERO_TICKS = 10;
     private static final double SAFFE_DEGREES_DIFF = 2;
-    static final double MAX_POWER_J2 = 0.3;
-    static final double MAX_POWER_J3 = 0.3;
+    static final double MAX_POWER_J2 = 0.5;
+    static final double MAX_POWER_J3 = 0.5;
 
     static final double L1 = 21.5; //length between J2 and J3
     static final double L2 = 21.75; //length between J3 and J4
@@ -93,6 +94,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
     public void lowerJ4()
     {
+        runTime.reset();
         System.out.println("------------------------------------ lowerJ4 start ---------------------------------");
         System.out.println("J2 ticks: " + getJ2CurrentPosition());
         System.out.println("J3 ticks: " + getJ3CurrentPosition());
@@ -103,6 +105,10 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
         double height = this.calculateHeight(J2Deg, J3Deg);
         System.out.println("height: " + height);
+        if (height<=J4_COLLECTION_HEIGHT)
+        {
+            return;
+        }
 
         double k  = Math.sqrt(Math.pow(L1, 2) + Math.pow(L2, 2) - Math.cos(Math.toRadians(J3Deg)) * 2 * L1 * L2);
         double L3 = Math.sqrt(Math.pow(k, 2) - Math.pow(height, 2));
@@ -141,7 +147,10 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
         int J3_ticks = (int) ((collectingJ3 - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
         System.out.println("J2_ticks: " + J2_ticks);
         System.out.println("J3_ticks: " + J3_ticks);
-        this.toPositionWithoutJ1(J2_POWER, UP_POWER_J3, J2_ticks, J2_ticks, J3_ticks);
+        if (runTime.time(TimeUnit.SECONDS)<3)
+        {
+            this.toPositionWithoutJ1(J2_POWER, UP_POWER_J3, J2_ticks, J2_ticks, J3_ticks);
+        }
     }
 
     private double recalculateHeight(double J2Deg, double J3Deg)
@@ -154,6 +163,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
     private void toNextHorizontal(boolean isLeft)
     {
+        runTime.reset();
         // calculate height and distance
         double J2Deg      = INITIAL_DEGREES_J2 - getJ2CurrentPosition() / TICKS_PER_DEGREE_J2;
         double J3Deg      = getJ3CurrentPosition() / TICKS_PER_DEGREE_J3 + INITIAL_DEGREES_J3;
@@ -161,6 +171,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
         double k_sqrd     = Math.pow(L1, 2) + Math.pow(L2, 2) - Math.cos(Math.toRadians(J3Deg)) * 2 * L1 * L2;
         double current_L3 = Math.sqrt(k_sqrd - Math.pow(height, 2));
         double new_L3     = Math.sqrt(Math.pow(current_L3, 2) + Math.pow(HORIZONGTAL_DISTANCE_BETWEEN_SET_POINT, 2));
+/*
 
         // J2 update
         List   degreesList = this.calculateJ2J3DegreesWithRestriction(height, new_L3);
@@ -169,6 +180,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
         int newTicksJ2 = (int) ((INITIAL_DEGREES_J2 - newJ2Deg) * TICKS_PER_DEGREE_J2);
         int newTicksJ3 = (int) ((newJ3Deg - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
+*/
 
         // J1 update
         double diffDeg1   = Math.toDegrees(Math.asin(VERTICAL_DISTANCE_BETWEEN_SET_POINT / new_L3));
@@ -183,8 +195,12 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
             newTicksJ1 = getJ1CurrentPosition() - diffTicks1;
         }
 
-        toPosition(J1_POWER, J2_POWER, UP_POWER_J3, newTicksJ1, newTicksJ2, newTicksJ2, newTicksJ3);
-        System.out.println("Next position: " + newTicksJ1 + ", " + newTicksJ2 + ", " + newTicksJ3);
+        System.out.println("toNextHorizontal Calculation time (milliseconds): "+runTime.time(TimeUnit.MILLISECONDS));
+        if (runTime.time(TimeUnit.SECONDS)<3)
+        {
+            toPosition(J1_POWER, J2_POWER, UP_POWER_J3, newTicksJ1, getJ2CurrentPosition(), getJ2CurrentPosition(), getJ3CurrentPosition());
+        }
+        System.out.println("Next position: " + newTicksJ1 + ", " + getJ2CurrentPosition() + ", " + getJ3CurrentPosition());
     }
 
     private List<Double> calculateJ2J3DegreesWithRestriction(double height, double L3)
@@ -223,6 +239,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
     private void toNextVertical(boolean isUp)
     {
+        runTime.reset();
         // calculate height and distance
         double J2Deg      = INITIAL_DEGREES_J2 - getJ2CurrentPosition() / TICKS_PER_DEGREE_J2;
         double J3Deg      = getJ3CurrentPosition() / TICKS_PER_DEGREE_J3 + INITIAL_DEGREES_J3;
@@ -245,8 +262,11 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
         int newTicksJ2 = (int) ((INITIAL_DEGREES_J2 - newJ2Deg) * TICKS_PER_DEGREE_J2);
         int newTicksJ3 = (int) ((newJ3Deg - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
-
-        toPositionWithoutJ1(newTicksJ2, newTicksJ3);
+        System.out.println("toNextVertical Calculation time (milliseconds): "+runTime.time(TimeUnit.MILLISECONDS));
+        if (runTime.time(TimeUnit.SECONDS)<3)
+        {
+            toPositionWithoutJ1(newTicksJ2, newTicksJ3);
+        }
         System.out.println("Next position: " + +newTicksJ2 + ", " + newTicksJ3);
     }
 
@@ -284,7 +304,6 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
             System.out.println("-------------------------------- end of loop " + loop++ + " ...........................");
             return;
         }
-/*
 
         //stop when maximum is reached
         if ((speed < 0 && Math.abs(getJ3CurrentPosition() - maximum_ticks_J3) <= ZERO_TICKS) || (speed > 0 && Math.abs(getJ2CurrentPosition() - minimum_ticks_J2) <= ZERO_TICKS))
@@ -295,7 +314,6 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
         {
             this.maintainPOM(speed);
         }
-*/
         System.out.println("The loop takes " + (System.currentTimeMillis() - startTime) + " milliseconds.");
         System.out.println("-------------------------------- end of loop " + loop++ + " ...........................");
     }
@@ -397,7 +415,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
             if (Math.abs(getJ3CurrentPosition() - maximum_ticks_J3) > ZERO_TICKS)
             {
                 this.motorJ3.setTargetPosition(maximum_ticks_J3);
-                this.motorJ3.setPower(MAX_POWER_J3 * speed);
+                this.motorJ3.setPower(MAX_POWER_J3 );
                 System.out.println("Start POM -- expanding, J3 Target set to: " + super.motorJ3.getTargetPosition());
             }
         }
@@ -407,8 +425,8 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
             {
                 this.motor1J2.setTargetPosition(minimum_ticks_J2);
                 this.motor2J2.setTargetPosition(minimum_ticks_J2);
-                this.motor1J2.setPower(MAX_POWER_J2 * speed);
-                this.motor2J2.setPower(MAX_POWER_J2 * speed);
+                this.motor1J2.setPower(MAX_POWER_J2);
+                this.motor2J2.setPower(MAX_POWER_J2);
                 System.out.println("Start POM -- retracting, J2 Target set to: " + super.motor2J2.getTargetPosition());
             }
         }
@@ -426,8 +444,8 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
             double J2Deg = this.calculateJ2Degrees(J3Deg);
             this.motor1J2.setTargetPosition((int) ((INITIAL_DEGREES_J2 - J2Deg) * TICKS_PER_DEGREE_J2));
             this.motor2J2.setTargetPosition((int) ((INITIAL_DEGREES_J2 - J2Deg) * TICKS_PER_DEGREE_J2));
-            this.motor1J2.setPower(MAX_POWER_J2 * speed);
-            this.motor2J2.setPower(MAX_POWER_J2 * speed);
+            this.motor1J2.setPower(MAX_POWER_J2);
+            this.motor2J2.setPower(MAX_POWER_J2);
             System.out.println("Maintain POM -- expanding: J3 is at: " + J3ticks);
             System.out.println("Maintain POM -- expanding: J2 Target set to: " + super.motor2J2.getTargetPosition());
         }
@@ -437,7 +455,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
             double J2Deg   = INITIAL_DEGREES_J2 - J2ticks / TICKS_PER_DEGREE_J2;
             double J3Deg   = this.calculateJ3Degrees(J2Deg);
             this.motorJ3.setTargetPosition((int) ((J3Deg - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3));
-            this.motorJ3.setPower(UP_POWER_J3 * speed);
+            this.motorJ3.setPower(UP_POWER_J3);
             System.out.println("Maintain POM -- retracting: J2 is at: " + J2ticks);
             System.out.println("Maintain POM -- retracting: J3 Target set to: " + super.motorJ3.getTargetPosition());
         }
@@ -496,12 +514,12 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
     public void toPositionWithoutJ1(int j2Position2, int j3Position)
     {
+        runTime.reset();
         this.toPositionWithoutJ1(J2_POWER, UP_POWER_J3, j2Position2, j2Position2, j3Position);
     }
 
     public void toPositionWithoutJ1(double j2Power, double j3Power, int j2Position1, int j2Position2, int j3Position)
     {
-        runTime.reset();
         isStop = false;
 
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -517,11 +535,11 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
         while ((Math.abs(getJ2CurrentPosition() - motor2J2.getTargetPosition()) > ZERO_TICKS || Math.abs(getJ3CurrentPosition() - motorJ3.getTargetPosition()) > ZERO_TICKS) && !isStop && runTime.time(TimeUnit.SECONDS) < 4)
         {
-            try
+           /* try
             {
                 Thread.sleep(10);
             }
-            catch (Exception e) {}
+            catch (Exception e) {}*/
         }
 
         System.out.println("toPositionWithoutJ1 Time: " + runTime.time(TimeUnit.SECONDS));

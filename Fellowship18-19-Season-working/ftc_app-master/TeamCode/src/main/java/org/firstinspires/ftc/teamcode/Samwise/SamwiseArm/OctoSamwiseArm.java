@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.AbstractPhysical.MotorsAndServos;
 
+import java.util.concurrent.TimeUnit;
+
 public class OctoSamwiseArm extends OctoSamwiseCollection
 {
     DcMotor motorJ1;
@@ -26,6 +28,12 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     public static final double E1_POWER = 0.8;
     public static final double E2_POWER = 0.8;
 
+    static final int TIME_POWER_RAMP_UP = 100;
+    static final int TIME_POWER_RAMP_DOWN = 100;
+
+    private ElapsedTime runtime = new ElapsedTime();
+
+    static final double ZERO_MANUAL_POWER = 0.01;
 
     public OctoSamwiseArm(HardwareMap hwm)
     {
@@ -55,13 +63,45 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public void driveJ1(double power)
     {
+//        System.out.println("driveJ1 timer1: " + System.currentTimeMillis());
         motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorJ1.setPower(-MANUAL_POWER_J1 * power);
+        //smooth start
+        if (Math.abs(motorJ1.getPower()) < 0.01)
+        {
+//            System.out.println("driveJ1 timer2: " + System.currentTimeMillis());
+            runtime.reset();
+            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            while (milliTime < TIME_POWER_RAMP_UP)
+            {
+                motorJ1.setPower(-MANUAL_POWER_J1 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            }
+        }
+        else
+        {
+//            System.out.println("driveJ1 timer3: " + System.currentTimeMillis());
+            double newPower = -MANUAL_POWER_J1 * power;
+            motorJ1.setPower(newPower);
+        }
     }
 
     public void stopJ1()
     {
-        motorJ1.setPower(0);
+        if (Math.abs(motorJ1.getPower()) > ZERO_MANUAL_POWER)
+        {
+//            System.out.println("Time at beginning of \"stopJ1\"" + System.currentTimeMillis());
+            runtime.reset();
+            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            while (milliTime < TIME_POWER_RAMP_DOWN)
+            {
+                if (milliTime > 1)
+                {
+                    motorJ1.setPower(-MANUAL_POWER_J1 * motorJ1.getPower() * (1.0 / milliTime));
+                }
+                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            }
+            motorJ1.setPower(0);
+        }
     }
 
 
@@ -69,12 +109,39 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorJ3.setPower(-UP_POWER_J3 * power);
+        if (Math.abs(motorJ3.getPower()) < 0.01)
+        {
+            runtime.reset();
+            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            while (milliTime < TIME_POWER_RAMP_UP)
+            {
+                motorJ3.setPower(-UP_POWER_J3 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            }
+        }
+        else
+        {
+            double newPower = -UP_POWER_J3 * power;
+            motorJ3.setPower(newPower);
+        }
     }
 
     public void stopJ3()
     {
-        motorJ3.setPower(0);
+        if (Math.abs(motorJ3.getPower()) > ZERO_MANUAL_POWER)
+        {
+            runtime.reset();
+            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            while (milliTime < TIME_POWER_RAMP_DOWN)
+            {
+                if (milliTime > 1)
+                {
+                    motorJ3.setPower(-MANUAL_POWER_J1 * motorJ3.getPower() * (1.0 / milliTime));
+                }
+                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            }
+            motorJ3.setPower(0);
+        }
     }
 
     public void driveJ2(double power)
@@ -82,15 +149,43 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-
-        motor1J2.setPower(-MANUAL_POWER_J2 * power);
-        motor2J2.setPower(-MANUAL_POWER_J2 * power);
+        if (Math.abs(motor1J2.getPower()) < 0.01 || Math.abs(motor2J2.getPower()) < 0.01)
+        {
+            runtime.reset();
+            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            while (milliTime < TIME_POWER_RAMP_UP)
+            {
+                motor1J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                motor2J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            }
+        }
+        else
+        {
+            double newPower = -MANUAL_POWER_J2 * power;
+            motor1J2.setPower(newPower);
+            motor2J2.setPower(newPower);
+        }
     }
 
     public void stopJ2()
     {
-        motor1J2.setPower(0);
-        motor2J2.setPower(0);
+        if (Math.abs(motor1J2.getPower()) > ZERO_MANUAL_POWER && Math.abs(motor2J2.getPower()) > ZERO_MANUAL_POWER)
+        {
+            runtime.reset();
+            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            while (milliTime < TIME_POWER_RAMP_DOWN)
+            {
+                if (milliTime > 1)
+                {
+                    motor1J2.setPower(-MANUAL_POWER_J1 * motor1J2.getPower() * (1.0 / milliTime));
+                    motor2J2.setPower(-MANUAL_POWER_J1 * motor2J2.getPower() * (1.0 / milliTime));
+                }
+                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+            }
+            motor1J2.setPower(0);
+            motor2J2.setPower(0);
+        }
     }
 
     public int getJ1CurrentPosition()
@@ -102,6 +197,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         return motor1J2.getCurrentPosition();
     }
+
     public int get2J2CurrentPosition()
     {
         return motor2J2.getCurrentPosition();

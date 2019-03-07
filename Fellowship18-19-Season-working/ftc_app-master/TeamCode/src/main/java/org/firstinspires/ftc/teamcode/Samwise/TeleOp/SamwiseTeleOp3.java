@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -49,8 +51,8 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
  *                  8. Aim, hang up, and say                                                       *
  ****************************************************************************************************/
 @TeleOp(name = "Samwise: Teleop Tank 3", group = "Samwise")
-//@Disabled
-public class SamwiseTeleOp3 extends OctoArmTeleOpTest
+@Disabled
+public class SamwiseTeleOp3 extends OpMode
 {
 
     /* Declare OpMode members. */
@@ -85,9 +87,7 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest
         swHang.init(hardwareMap, telemetry);
 
         //swDTrain.init(hardwareMap, telemetry);
-        //armStuff = new OctoSamwiseGenius(this.hardwareMap);
-        super.init();
-
+        //armStuff = new OctoSamwiseGenius(this.hardwareMap)
         leftdrive = hardwareMap.dcMotor.get("left_drive");
         rightdrive = hardwareMap.dcMotor.get("right_drive");
 
@@ -201,8 +201,5 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest
         }
 
         // arm control: delegate to parent OctoArmTest
-
-        super.loop();
-
     }
 }

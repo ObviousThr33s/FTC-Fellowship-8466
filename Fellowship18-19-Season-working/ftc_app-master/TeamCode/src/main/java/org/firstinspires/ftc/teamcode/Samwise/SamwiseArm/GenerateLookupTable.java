@@ -21,8 +21,8 @@ public class GenerateLookupTable
     {
 
         // calculate height
-        double J2_ticks     = 2288;
-        double J3_ticks     = 2921;
+        double J2_ticks     = 459;
+        double J3_ticks     = 2541;
         double J2Deg        = 211 - J2_ticks / 25.57;
         double J3Deg        = 48 + J3_ticks / 35.84;
         System.out.println("J2Deg: "+J2Deg);
