@@ -170,10 +170,10 @@ public class OctoArmTeleOpTest extends OpMode
         // mapped in teleop3
 
         //------------- b ----------------
-        // mapped in teleop3
+        // unmapped
 
         //------------- x ----------------
-        // mapped in teleop3
+        // unmapped
 
         //------------- y ----------------
         if (gamepad2.y)

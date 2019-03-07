@@ -33,7 +33,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
     SamwiseMarkerDeposit md = new SamwiseMarkerDeposit();
     SamwiseHanger hanger = new SamwiseHanger();//sr.hanger();
     SamwiseColor color = new SamwiseColor();
-   // SampleAndDeposit sampleAndDeposit = null;
+    // SampleAndDeposit sampleAndDeposit = null;
 
     DigitalChannel touchFrontSide;  // side touch sensor
     DigitalChannel touchBackSide;  // side touch sensor
@@ -43,6 +43,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     DcMotor motorE1;
     DcMotor motorJ1;
+
+    DcMotor motor2J2;
+    DcMotor motor1J2;
 
     CRServo servoE2;
 
@@ -69,6 +72,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         motorE1 = hardwareMap.dcMotor.get("E1");
         motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motor1J2 = hardwareMap.dcMotor.get("1J2");
+        motor2J2 = hardwareMap.dcMotor.get("2J2");
 
         //motorE1.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         //motorE1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -110,8 +116,8 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
-            //Unhinging Robot
+/*
+        //Unhinging Robot
         //hanger.encoderDrive(this,1,0.9,1);
         hanger.hangermotor1.setPower(1);
         sleep(200);
@@ -169,9 +175,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         //retracting the hanger without blocking the drive
         hanger.encoderDriveNoWait(this, 0.6, 57.5);
 
-        /**
-         * driveToCrater the specific route
-         */
+        //driveToCrater the specific route
         driveRoute.drive();
 
         this.md.move(SamwiseMarkerDeposit.initPosition); //back to init position
@@ -180,9 +184,22 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         //retracting the hanger
         // hanger.encoderDrive(this, 0.6, 53.5, 3);
-        while(opModeIsActive()){
+        while (opModeIsActive()) {
             idle(); // keep L2
         }
+        */
+        this.driveJ2up(500);
+
+        sleep(1000);
+
+        this.turnJ1Auto(550);
+
+        sleep(1000);
+
+        this.turnJ1Auto(550);
+        this.driveJ2up(1000);
+
+
 
     }
 
@@ -190,17 +207,17 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         double ratio;
 
-         do {
-             Recognition reference = vis.getReference();
+        do {
+            Recognition reference = vis.getReference();
 
-             if(reference == null) {
-                 return;
-             }
+            if (reference == null) {
+                return;
+            }
 
-             double curPos = (reference.getBottom() + reference.getTop()) / 2;
-             ratio = idealPos / curPos;
+            double curPos = (reference.getBottom() + reference.getTop()) / 2;
+            ratio = idealPos / curPos;
 
-             System.out.println("==>Current Ratio (before correction): " + ratio);
+            System.out.println("==>Current Ratio (before correction): " + ratio);
 
             if (ratio > 1) {
                 // turn left
@@ -258,20 +275,36 @@ public class SamwiseAutoDrive extends LinearOpMode {
         return driveRoute;
     }
 
-    public void extendL1Auto()
-    {
+    public void extendL1Auto() {
         motorE1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorE1.setDirection(DcMotorSimple.Direction.REVERSE);
         motorE1.setPower(0.6);
         motorE1.setTargetPosition(E1_MAX_COUNT);
     }
 
-    public void turnJ1Auto()
-    {
+    public void turnJ1Auto(int count) {
+        motorJ1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorJ1.setTargetPosition(count);
         motorJ1.setPower(0.5);
-        motorJ1.setTargetPosition(550);
+    }
+
+    public void driveJ2up(int count) {
+
+        motor1J2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor2J2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motor1J2.setDirection(DcMotorSimple.Direction.REVERSE);
+        motor2J2.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        motor1J2.setTargetPosition(count);
+        motor2J2.setTargetPosition(count);
+
+        motor1J2.setPower(0.3);
+        motor2J2.setPower(0.3);
     }
 
 }

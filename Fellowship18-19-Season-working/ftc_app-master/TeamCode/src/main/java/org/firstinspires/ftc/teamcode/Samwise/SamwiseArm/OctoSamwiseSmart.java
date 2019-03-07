@@ -79,7 +79,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     {
         runTime.reset();
         System.out.println("------------------------- toLander start -----------------");
-        stopSam();
         savePreviousPosition();
         System.out.println(" to lander timer1: "+runTime.time(TimeUnit.MILLISECONDS));
         //        toPositionWithSam(J1_POWER, J2_POWER, J3_POWER, J1_LANDER, J2_LANDER, J2_LANDER, J3_LANDER, true);
@@ -87,6 +86,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         System.out.println(" to lander timer2: "+runTime.time(TimeUnit.MILLISECONDS));
         toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER, J2_LANDER, J2_LANDER, J3_LANDER);
         System.out.println(" to lander timer3: "+runTime.time(TimeUnit.MILLISECONDS));
+        stopSam();
         System.out.println("------------------------- toLander end -----------------");
     }
 
@@ -97,7 +97,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
         stopSam();
         robot.makeTurnWithoutWait(-90);
-        toPositionReverse(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
+        toPosition(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
         System.out.println("------------------------- backFromLander end -----------------");
     }
 

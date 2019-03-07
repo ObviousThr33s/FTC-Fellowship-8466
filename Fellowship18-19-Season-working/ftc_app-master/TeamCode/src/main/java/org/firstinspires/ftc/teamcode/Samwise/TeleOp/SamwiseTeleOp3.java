@@ -137,32 +137,37 @@ public class SamwiseTeleOp3 extends OctoArmTeleOpTest
             return;
         }*/
 
-        if (gamepad2.right_bumper)
+        if (gamepad2.left_bumper)
         {
-            swHang.hookUpdate();
+            swHang.unHook();
         }
 
-        if (gamepad2.left_bumper)
+            if (gamepad2.right_bumper)
+        {
+            swHang.Hook();
+        }
+
+        if (gamepad2.a)
         {
             swHang.markerservo1.setPosition(.76);
         }
 
-        //Drive Train
-        if (gamepad2.b)
-        {
-            powerlevel = 0.5;
-            System.out.println("50% power");
-        }
-        else if (gamepad2.a)
-        {
-            powerlevel = .7;
-            System.out.println("70% power");
-        }
-        else if (gamepad2.x)
-        {
-            powerlevel = 1;
-            System.out.println("max power");
-        }
+//        //Drive Train
+//        if (gamepad2.b)
+//        {
+//            powerlevel = 0.5;
+//            System.out.println("50% power");
+//        }
+//        else if (gamepad2.a)
+//        {
+//            powerlevel = .7;
+//            System.out.println("70% power");
+//        }
+//        else if (gamepad2.x)
+//        {
+//            powerlevel = 1;
+//            System.out.println("max power");
+//        }
 
         // to avoid driving with very small powers not visible) even with no button pressed
         if (Math.abs(gamepad2.left_stick_x) > 0.1 || Math.abs(gamepad2.left_stick_y) > 0.1)
