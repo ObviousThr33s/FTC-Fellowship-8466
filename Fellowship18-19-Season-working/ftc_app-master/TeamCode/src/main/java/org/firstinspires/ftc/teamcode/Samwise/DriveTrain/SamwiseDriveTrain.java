@@ -65,7 +65,7 @@ public class SamwiseDriveTrain extends DriveTrain {
         int newRightTarget;
 
         // Ensure that the opmode is still active
-        if (opMode.opModeIsActive()) {
+        if (opMode==null || opMode.opModeIsActive()) {
             // Determine new target position, and pass to motor controller
             newLeftTarget = leftDrive.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
             newRightTarget = rightDrive.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
@@ -87,7 +87,7 @@ public class SamwiseDriveTrain extends DriveTrain {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opMode.opModeIsActive() && (runtime.seconds() < timeoutS) && (leftDrive.isBusy() && rightDrive.isBusy())) {
+            while ((opMode==null || opMode.opModeIsActive()) && (runtime.seconds() < timeoutS) && (leftDrive.isBusy() && rightDrive.isBusy())) {
                 opMode.idle();
             }
 

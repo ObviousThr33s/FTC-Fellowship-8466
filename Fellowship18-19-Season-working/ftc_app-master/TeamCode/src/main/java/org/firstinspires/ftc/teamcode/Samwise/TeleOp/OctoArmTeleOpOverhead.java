@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
@@ -14,6 +13,7 @@ public class OctoArmTeleOpOverhead extends SamwiseTeleOp3
     @Override
     public void init()
     {
+        super.init();
         armStuff = new OctoSamwiseGenius(hardwareMap);
         armStuff.stopJ1();
         armStuff.stopJ2();
@@ -23,6 +23,8 @@ public class OctoArmTeleOpOverhead extends SamwiseTeleOp3
     @Override
     public void loop()
     {
+        super.loop();
+
         telemetry.addData("J1 ticks", armStuff.getJ1CurrentPosition());
         telemetry.addData("J2 ticks", armStuff.getJ2CurrentPosition() + ", " + armStuff.get2J2CurrentPosition());
         telemetry.addData("J3 ticks", armStuff.getJ3CurrentPosition());
@@ -45,7 +47,6 @@ public class OctoArmTeleOpOverhead extends SamwiseTeleOp3
             }
             else
             {
-                armStuff.saveLanderPositionOverhead();
                 armStuff.backFromLanderOverhead();
             }
         }
@@ -54,13 +55,14 @@ public class OctoArmTeleOpOverhead extends SamwiseTeleOp3
         // to deposit position
         if (gamepad1.x)
         {
-            armStuff.toLanderOverhead();
+            armStuff.toLanderGoldOverhead();
         }
 
         //------------- y ----------------
         if (gamepad1.y)
         {
-            armStuff.stopAll();
+//            armStuff.stopAll();
+            armStuff.toLanderSilverOverhead();
         }
 
         //------------- dpad ----------------

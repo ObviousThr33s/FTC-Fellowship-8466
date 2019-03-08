@@ -16,9 +16,11 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
     private static final double ZERO_GATE = 0.1;
     private static final double ZERO_TICKS = 10;
     private static final double SAFFE_DEGREES_DIFF = 2;
+
     static final double MAX_POWER_J2 = 0.5;
     static final double MAX_POWER_J3 = 0.5;
 
+    /****************** Start: update as hardware or autonomous changes ***************/
     static final double L1 = 21.5; //length between J2 and J3
     static final double L2 = 21.75; //length between J3 and J4
     static final double INITIAL_DEGREES_J2 = 211;
@@ -27,7 +29,6 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
     static final double MIN_DEGREES_J3 = INITIAL_DEGREES_J3;
     static final double MAX_DEGREES_J2 = INITIAL_DEGREES_J2;
     static final double MAX_DEGREES_J3 = 180;
-    //TODO: J1 maximum and minimum degrees.
 
     static final double TICKS_PER_REVOLUTION_J1 = 1680;
     static final double TICKS_PER_REVOLUTION_J2 = 383.6;
@@ -35,6 +36,16 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
     static final double TICKS_PER_DEGREE_J1 = (TICKS_PER_REVOLUTION_J1 / 360.0) * 5;
     static final double TICKS_PER_DEGREE_J2 = (TICKS_PER_REVOLUTION_J2 / 360.0) * 24;
     static final double TICKS_PER_DEGREE_J3 = (TICKS_PER_REVOLUTION_J3 / 360.0) * 24;
+
+    static final double MIN_POM_HEIGHT = 9;
+    static final double MINIMUM_l3_RESTRICT = 15; // maximum is calculated.
+
+    static final double J4_COLLECTION_HEIGHT = 4;
+
+    static final double VERTICAL_DISTANCE_BETWEEN_SET_POINT = 4;
+
+    static final double HORIZONGTAL_DISTANCE_BETWEEN_SET_POINT = 6;
+    /****************** End: update as hardware or autonomous changes ***************/
 
     // minimum horizontal distance between J2 and J4, in inches
     private double minimum_L3 = -1;
@@ -46,15 +57,6 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
     // maximum ticks at set plane of motion height
     private int maximum_ticks_J2 = -1;
     private int maximum_ticks_J3 = -1;
-
-    static final double MIN_POM_HEIGHT = 9;
-    static final double MINIMUM_l3_RESTRICT = 15; // maximum is calculated.
-
-    static final double J4_COLLECTION_HEIGHT = 4;
-
-    static final double VERTICAL_DISTANCE_BETWEEN_SET_POINT = 4;
-
-    static final double HORIZONGTAL_DISTANCE_BETWEEN_SET_POINT = 6;
 
     // vertical distance from between J2 and J4
     private double pomHeight = -1;
