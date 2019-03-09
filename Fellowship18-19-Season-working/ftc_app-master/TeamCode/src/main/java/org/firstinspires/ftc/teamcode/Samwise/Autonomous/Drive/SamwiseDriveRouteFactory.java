@@ -586,9 +586,9 @@ public class SamwiseDriveRouteFactory
 
                 driveTrain.encoderDrive(samwiseDrive,2.5, 5);
 
-                driveTrain.turnDrive(samwiseDrive, 33, 3);
+                driveTrain.turnDrive(samwiseDrive, 36, 3);
 
-                driveTrain.encoderDrive(samwiseDrive,29, 29, 4);
+                driveTrain.encoderDrive(samwiseDrive,30, 4);
 
                 driveTrain.turnDrive(samwiseDrive,-67,4);
 
@@ -597,7 +597,7 @@ public class SamwiseDriveRouteFactory
 
                 driveTrain.encoderDrive(samwiseDrive,-2.5, 5);
 
-                driveTrain.turnDrive(samwiseDrive, -93, 5);
+                driveTrain.turnDrive(samwiseDrive, -88, 5);
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 

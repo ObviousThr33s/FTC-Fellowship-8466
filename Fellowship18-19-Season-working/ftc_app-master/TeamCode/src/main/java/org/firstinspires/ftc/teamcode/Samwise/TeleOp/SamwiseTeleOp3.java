@@ -179,8 +179,8 @@ public class SamwiseTeleOp3 extends OpMode
 
                 leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                leftdrive.setPower(MotorPower * powerlevel);
-                rightdrive.setPower(MotorPower * powerlevel);
+                leftdrive.setPower(-1*MotorPower * powerlevel);
+                rightdrive.setPower(-1* MotorPower * powerlevel);
                 //System.out.println("==> moving ...");
             }
             if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y))
@@ -189,8 +189,8 @@ public class SamwiseTeleOp3 extends OpMode
 
                 leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                leftdrive.setPower(TurnMotorPower * powerlevel);
-                rightdrive.setPower(-1 * TurnMotorPower * powerlevel);
+                leftdrive.setPower(-1*TurnMotorPower * powerlevel);
+                rightdrive.setPower(TurnMotorPower * powerlevel);
                 //System.out.println("==> turning ...");
             }
         }

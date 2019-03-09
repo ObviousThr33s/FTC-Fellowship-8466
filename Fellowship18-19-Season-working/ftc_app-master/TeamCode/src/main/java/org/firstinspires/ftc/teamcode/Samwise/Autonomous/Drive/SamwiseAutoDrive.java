@@ -43,6 +43,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     DcMotor motorE1;
     DcMotor motorJ1;
+    DcMotor motorJ3;
 
     DcMotor motor2J2;
     DcMotor motor1J2;
@@ -69,6 +70,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
         motorJ1 = hardwareMap.dcMotor.get("J1");
         motorJ1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //motorJ1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        motorJ3 = hardwareMap.dcMotor.get("J3");
+        motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         motorE1 = hardwareMap.dcMotor.get("E1");
         motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -116,7 +120,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-/*
+
         //Unhinging Robot
         //hanger.encoderDrive(this,1,0.9,1);
         hanger.hangermotor1.setPower(1);
@@ -180,25 +184,27 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         this.md.move(SamwiseMarkerDeposit.initPosition); //back to init position
 
-        //this.turnJ1Auto();
+
+        this.driveJ2up(500);
+        sleep(300);
+/*
+        sleep(1000);
+
+        this.turnJ1Auto(550);
+
+        sleep(1000);
+*/
+        this.turnJ1Auto(580);
+
+        //this.driveJ3up(800);
+
+        //this.driveJ2up(1600);
 
         //retracting the hanger
         // hanger.encoderDrive(this, 0.6, 53.5, 3);
         while (opModeIsActive()) {
             idle(); // keep L2
         }
-        */
-        this.driveJ2up(500);
-
-        sleep(1000);
-
-        this.turnJ1Auto(550);
-
-        sleep(1000);
-
-        this.turnJ1Auto(550);
-        this.driveJ2up(1000);
-
 
 
     }
@@ -305,6 +311,18 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         motor1J2.setPower(0.3);
         motor2J2.setPower(0.3);
+    }
+
+    public void driveJ3up(int count) {
+
+        motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorJ3.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        motorJ3.setTargetPosition(count);
+
+        motorJ3.setPower(1);
     }
 
 }
