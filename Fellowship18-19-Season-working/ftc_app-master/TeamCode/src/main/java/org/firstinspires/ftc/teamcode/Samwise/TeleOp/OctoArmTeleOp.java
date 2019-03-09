@@ -127,12 +127,12 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         }*/
 
         //------------- left_stick_x----------------
-        if (gamepad1.left_stick_x > 0.02 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
+        if (gamepad1.left_stick_x > 0.1 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
         {
             //            System.out.println("Time at beginning of \"driveJ1\""+System.currentTimeMillis());
             armStuff.driveJ1(gamepad1.left_stick_x);
         }
-        else if (gamepad1.left_stick_x < -0.02 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
+        else if (gamepad1.left_stick_x < -0.1 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
         {
             //            System.out.println("Time at beginning of \"driveJ1\""+System.currentTimeMillis());
             armStuff.driveJ1(gamepad1.left_stick_x);
@@ -143,11 +143,11 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         }
 
         //------------- left_stick_y----------------
-        if (gamepad1.left_stick_y > 0.02)
+        if (gamepad1.left_stick_y > 0.1)
         {
             armStuff.driveJ2(gamepad1.left_stick_y);
         }
-        else if (gamepad1.left_stick_y < -0.02)
+        else if (gamepad1.left_stick_y < -0.1)
         {
             armStuff.driveJ2(gamepad1.left_stick_y);
         }
@@ -160,11 +160,11 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         // UNMAPPED FOR NOW
 
         //------------- right_stick_y----------------
-        if (gamepad1.right_stick_y > 0.02)
+        if (gamepad1.right_stick_y > 0.1)
         {
             armStuff.driveJ3(gamepad1.right_stick_y);
         }
-        else if (gamepad1.right_stick_y < -0.02)
+        else if (gamepad1.right_stick_y < -0.1)
         {
             armStuff.driveJ3(gamepad1.right_stick_y);
         }
