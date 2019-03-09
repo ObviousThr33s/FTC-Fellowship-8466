@@ -78,6 +78,13 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     private boolean inGoldDeposit = false;
     private boolean inSilverDeposit = false;
 
+    public boolean isInCollectionPlane()
+    {
+        return inCollectionPlane;
+    }
+
+    private boolean inCollectionPlane = false;
+
     public int pos2J2 = 1813;
     public int pos2J3 = 1836;
 
@@ -120,12 +127,14 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     /***************************** 90/90 ********************/
     public void toCollectionPlane()
     {
+        this.inCollectionPlane=true;
         toPosition(0.6, 0.6, 0.6, initialCollectionPosJ1, initialCollectionPosJ2, initialCollectionPosJ2, initialCollectionPosJ3);
     }
 
     public void toLanderGold()
     {
         this.inGoldDeposit = true;
+        this.inCollectionPlane=false;
 
         runTime.reset();
         savePreviousPosition();
@@ -137,6 +146,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     public void toLanderSilver()
     {
         this.inSilverDeposit = true;
+        this.inCollectionPlane=false;
 
         runTime.reset();
         savePreviousPosition();
@@ -150,6 +160,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         this.saveLanderPosition();
         this.inSilverDeposit = false;
         this.inGoldDeposit = false;
+        this.inCollectionPlane=true;
         stopSam();
         robot.makeTurnWithoutWait(86);
         toPosition(0.6, 0.3, 0.3, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);

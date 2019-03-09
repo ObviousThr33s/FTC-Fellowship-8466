@@ -65,7 +65,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //smooth start
-        if (Math.abs(motorJ1.getPower()) < 0.01)
+        if (Math.abs(motorJ1.getPower()) < 0.1)
         {
             runtime.reset();
             long milliTime = runtime.time(TimeUnit.MILLISECONDS);
@@ -105,7 +105,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (Math.abs(motorJ3.getPower()) < 0.01)
+        if (Math.abs(motorJ3.getPower()) < 0.1)
         {
             runtime.reset();
             long milliTime = runtime.time(TimeUnit.MILLISECONDS);
@@ -145,7 +145,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (Math.abs(motor1J2.getPower()) < 0.01 || Math.abs(motor2J2.getPower()) < 0.01)
+        if (Math.abs(motor1J2.getPower()) < 0.1 || Math.abs(motor2J2.getPower()) < 0.1)
         {
             runtime.reset();
             long milliTime = runtime.time(TimeUnit.MILLISECONDS);
