@@ -63,22 +63,25 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public void driveJ1(double power)
     {
-        motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //smooth start
-        if (Math.abs(motorJ1.getPower()) < 0.1)
+        if (Math.abs(power)>0.1)
         {
-            runtime.reset();
-            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            while (milliTime < TIME_POWER_RAMP_UP)
+            motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //smooth start
+            if (Math.abs(motorJ1.getPower()) < 0.1)
             {
-                motorJ1.setPower(-MANUAL_POWER_J1 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
-                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                runtime.reset();
+                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                while (milliTime < TIME_POWER_RAMP_UP)
+                {
+                    motorJ1.setPower(-MANUAL_POWER_J1 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                }
             }
-        }
-        else
-        {
-            double newPower = -MANUAL_POWER_J1 * power;
-            motorJ1.setPower(newPower);
+            else
+            {
+                double newPower = -MANUAL_POWER_J1 * power;
+                motorJ1.setPower(newPower);
+            }
         }
     }
 
@@ -103,22 +106,25 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public void driveJ3(double power)
     {
-        motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if (Math.abs(power)>0.1)
+        {
+            motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (Math.abs(motorJ3.getPower()) < 0.1)
-        {
-            runtime.reset();
-            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            while (milliTime < TIME_POWER_RAMP_UP)
+            if (Math.abs(motorJ3.getPower()) < 0.1)
             {
-                motorJ3.setPower(-UP_POWER_J3 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
-                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                runtime.reset();
+                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                while (milliTime < TIME_POWER_RAMP_UP)
+                {
+                    motorJ3.setPower(-UP_POWER_J3 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                }
             }
-        }
-        else
-        {
-            double newPower = -UP_POWER_J3 * power;
-            motorJ3.setPower(newPower);
+            else
+            {
+                double newPower = -UP_POWER_J3 * power;
+                motorJ3.setPower(newPower);
+            }
         }
     }
 
@@ -142,25 +148,28 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public void driveJ2(double power)
     {
-        motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if (Math.abs(power)>0.1)
+        {
+            motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        if (Math.abs(motor1J2.getPower()) < 0.1 || Math.abs(motor2J2.getPower()) < 0.1)
-        {
-            runtime.reset();
-            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            while (milliTime < TIME_POWER_RAMP_UP)
+            if (Math.abs(motor1J2.getPower()) < 0.1 || Math.abs(motor2J2.getPower()) < 0.1)
             {
-                motor1J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
-                motor2J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
-                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                runtime.reset();
+                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                while (milliTime < TIME_POWER_RAMP_UP)
+                {
+                    motor1J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                    motor2J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                }
             }
-        }
-        else
-        {
-            double newPower = -MANUAL_POWER_J2 * power;
-            motor1J2.setPower(newPower);
-            motor2J2.setPower(newPower);
+            else
+            {
+                double newPower = -MANUAL_POWER_J2 * power;
+                motor1J2.setPower(newPower);
+                motor2J2.setPower(newPower);
+            }
         }
     }
 
