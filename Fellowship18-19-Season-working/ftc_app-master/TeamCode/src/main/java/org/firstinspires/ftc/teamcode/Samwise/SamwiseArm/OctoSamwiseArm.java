@@ -63,12 +63,10 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public void driveJ1(double power)
     {
-//        System.out.println("driveJ1 timer1: " + System.currentTimeMillis());
         motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //smooth start
         if (Math.abs(motorJ1.getPower()) < 0.01)
         {
-//            System.out.println("driveJ1 timer2: " + System.currentTimeMillis());
             runtime.reset();
             long milliTime = runtime.time(TimeUnit.MILLISECONDS);
             while (milliTime < TIME_POWER_RAMP_UP)
@@ -79,7 +77,6 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
         }
         else
         {
-//            System.out.println("driveJ1 timer3: " + System.currentTimeMillis());
             double newPower = -MANUAL_POWER_J1 * power;
             motorJ1.setPower(newPower);
         }
@@ -89,7 +86,6 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
     {
         if (Math.abs(motorJ1.getPower()) > ZERO_MANUAL_POWER)
         {
-//            System.out.println("Time at beginning of \"stopJ1\"" + System.currentTimeMillis());
             runtime.reset();
             long milliTime = runtime.time(TimeUnit.MILLISECONDS);
             while (milliTime < TIME_POWER_RAMP_DOWN)

@@ -48,11 +48,9 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
             if (Math.abs(armStuff.getJ1CurrentPosition()) < 100 && Math.abs(armStuff.getJ2CurrentPosition()) < 100 && Math.abs(armStuff.getJ3CurrentPosition()) < 100)
             {
                 armStuff.toCollectionPlane();
-//                System.out.println("Time at end of \"toCollectionPlane\""+System.currentTimeMillis());
             }
             else
             {
-                armStuff.saveLanderPosition();
                 armStuff.backFromLander();
             }
         }
@@ -61,7 +59,7 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         // to deposit position
         if (gamepad1.x)
         {
-            armStuff.toLander();
+            armStuff.toLanderGold();
         }
 
         //------------- y ----------------
