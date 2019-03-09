@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
 
 @TeleOp(name = "Samwise: Teleop Tank 3 - Overhead Deposit", group = "Samwise")
-//@Disabled
+@Disabled
 public class OctoArmTeleOpOverhead extends SamwiseTeleOp3
 {
     private OctoSamwiseGenius armStuff;

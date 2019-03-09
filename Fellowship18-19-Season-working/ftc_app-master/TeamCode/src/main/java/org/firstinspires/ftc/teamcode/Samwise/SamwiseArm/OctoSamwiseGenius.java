@@ -97,7 +97,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
         double J3Deg = getJ3CurrentPosition() / TICKS_PER_DEGREE_J3 + INITIAL_DEGREES_J3;
 
         double height = this.calculateHeight(J2Deg, J3Deg);
-        if (height<=J4_COLLECTION_HEIGHT)
+        if (height <= J4_COLLECTION_HEIGHT)
         {
             return;
         }
@@ -108,8 +108,8 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
         k = Math.sqrt(Math.pow(L3, 2) + Math.pow(J4_COLLECTION_HEIGHT, 2));
         double collectingJ21 = Math.toDegrees(Math.asin(J4_COLLECTION_HEIGHT / k));
         double collectingJ22 = Math.toDegrees(Math.acos((Math.pow(L1, 2) + Math.pow(k, 2) - Math.pow(L2, 2)) / (2 * L1 * k)));
-        double collectingJ2 = 90 + collectingJ22 + collectingJ21;
-        double collectingJ3 = Math.toDegrees(Math.acos((Math.pow(L1, 2) + Math.pow(L2, 2) - Math.pow(k, 2)) / (2 * L1 * L2)));
+        double collectingJ2  = 90 + collectingJ22 + collectingJ21;
+        double collectingJ3  = Math.toDegrees(Math.acos((Math.pow(L1, 2) + Math.pow(L2, 2) - Math.pow(k, 2)) / (2 * L1 * L2)));
         if (collectingJ2 > MAX_DEGREES_J2)
         {
             collectingJ2 = MAX_DEGREES_J2 - SAFFE_DEGREES_DIFF;
@@ -128,7 +128,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
         }
         int J2_ticks = (int) ((INITIAL_DEGREES_J2 - collectingJ2) * TICKS_PER_DEGREE_J2);
         int J3_ticks = (int) ((collectingJ3 - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
-        if (runTime.time(TimeUnit.SECONDS)<3)
+        if (runTime.time(TimeUnit.SECONDS) < 3)
         {
             this.toPositionWithoutJ1(J2_POWER, UP_POWER_J3, J2_ticks, J2_ticks, J3_ticks);
         }
@@ -176,7 +176,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
             newTicksJ1 = getJ1CurrentPosition() - diffTicks1;
         }
 
-        if (runTime.time(TimeUnit.SECONDS)<3)
+        if (runTime.time(TimeUnit.SECONDS) < 3)
         {
             toPosition(J1_POWER, J2_POWER, UP_POWER_J3, newTicksJ1, getJ2CurrentPosition(), getJ2CurrentPosition(), getJ3CurrentPosition());
         }
@@ -241,7 +241,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
         int newTicksJ2 = (int) ((INITIAL_DEGREES_J2 - newJ2Deg) * TICKS_PER_DEGREE_J2);
         int newTicksJ3 = (int) ((newJ3Deg - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
-        if (runTime.time(TimeUnit.SECONDS)<3)
+        if (runTime.time(TimeUnit.SECONDS) < 3)
         {
             toPositionWithoutJ1(newTicksJ2, newTicksJ3);
         }
@@ -249,6 +249,8 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
     public void hoverPlaneOfMotion(double speed)
     {
+        runTime.reset();
+
         long startTime = System.currentTimeMillis();
 
         // stop when joystick/speed is zero
@@ -267,15 +269,6 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
         if (pomHeight < 0)
         {
             this.startPOM(speed);
-
-            try
-            {
-                Thread.sleep(20);
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
 
             System.out.println("The loop takes " + (System.currentTimeMillis() - startTime) + " milliseconds.");
             System.out.println("-------------------------------- end of loop " + loop++ + " ...........................");
@@ -300,8 +293,13 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
         //fix J3 position according to J2 position in order stay on the  plane.
         super.motor1J2.setPower(0);
         super.motor2J2.setPower(0);
-        double J3Degrees = this.calculateJ3Degrees(INITIAL_DEGREES_J2 - getJ2CurrentPosition() / TICKS_PER_DEGREE_J2);
-        super.motorJ3.setTargetPosition((int) ((J3Degrees - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3));
+        double J3Degrees      = this.calculateJ3Degrees(INITIAL_DEGREES_J2 - getJ2CurrentPosition() / TICKS_PER_DEGREE_J2);
+        int    targetPosition = (int) ((J3Degrees - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
+        super.motorJ3.setTargetPosition(targetPosition);
+        while (Math.abs(motorJ3.getCurrentPosition() - targetPosition) > ZERO_TICKS && runTime.time(TimeUnit.SECONDS) < 4)
+        {
+            // wait
+        }
         this.pomHeight = -1;
         this.loop = 0;
         System.out.println("POM Stopped.");
@@ -392,8 +390,13 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
             if (Math.abs(getJ3CurrentPosition() - maximum_ticks_J3) > ZERO_TICKS)
             {
                 this.motorJ3.setTargetPosition(maximum_ticks_J3);
-                this.motorJ3.setPower(MAX_POWER_J3 );
+                this.motorJ3.setPower(MAX_POWER_J3);
                 System.out.println("Start POM -- expanding, J3 Target set to: " + super.motorJ3.getTargetPosition());
+
+                while (Math.abs(motorJ3.getCurrentPosition() - maximum_ticks_J3) > ZERO_TICKS && runTime.time(TimeUnit.SECONDS) < 4)
+                {
+                    this.maintainPOM(speed);
+                }
             }
         }
         else            //(joystick down)retracting: move J2 first
@@ -405,6 +408,11 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
                 this.motor1J2.setPower(MAX_POWER_J2);
                 this.motor2J2.setPower(MAX_POWER_J2);
                 System.out.println("Start POM -- retracting, J2 Target set to: " + super.motor2J2.getTargetPosition());
+
+                while (Math.abs(motor2J2.getCurrentPosition() - minimum_ticks_J2) > ZERO_TICKS && runTime.time(TimeUnit.SECONDS) < 4)
+                {
+                    this.maintainPOM(speed);
+                }
             }
         }
     }
@@ -419,22 +427,34 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
             //Dist from J2 to J4
             double J2Deg = this.calculateJ2Degrees(J3Deg);
-            this.motor1J2.setTargetPosition((int) ((INITIAL_DEGREES_J2 - J2Deg) * TICKS_PER_DEGREE_J2));
-            this.motor2J2.setTargetPosition((int) ((INITIAL_DEGREES_J2 - J2Deg) * TICKS_PER_DEGREE_J2));
+            int targetPositionJ2 = (int) ((INITIAL_DEGREES_J2 - J2Deg) * TICKS_PER_DEGREE_J2);
+            this.motor1J2.setTargetPosition(targetPositionJ2);
+            this.motor2J2.setTargetPosition(targetPositionJ2);
             this.motor1J2.setPower(MAX_POWER_J2);
             this.motor2J2.setPower(MAX_POWER_J2);
             System.out.println("Maintain POM -- expanding: J3 is at: " + J3ticks);
             System.out.println("Maintain POM -- expanding: J2 Target set to: " + super.motor2J2.getTargetPosition());
+
+            while ((Math.abs(motor1J2.getCurrentPosition()-targetPositionJ2)>ZERO_TICKS || Math.abs(motor2J2.getCurrentPosition()-targetPositionJ2)>ZERO_TICKS || Math.abs(motorJ3.getCurrentPosition() - maximum_ticks_J3) > ZERO_TICKS) && runTime.time(TimeUnit.SECONDS) < 4)
+            {
+                this.maintainPOM(speed);
+            }
         }
         else            //retracting
         {
-            double J2ticks = getJ2CurrentPosition();
-            double J2Deg   = INITIAL_DEGREES_J2 - J2ticks / TICKS_PER_DEGREE_J2;
-            double J3Deg   = this.calculateJ3Degrees(J2Deg);
-            this.motorJ3.setTargetPosition((int) ((J3Deg - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3));
+            double J2ticks          = getJ2CurrentPosition();
+            double J2Deg            = INITIAL_DEGREES_J2 - J2ticks / TICKS_PER_DEGREE_J2;
+            double J3Deg            = this.calculateJ3Degrees(J2Deg);
+            int    targetPositionJ3 = (int) ((J3Deg - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
+            this.motorJ3.setTargetPosition(targetPositionJ3);
             this.motorJ3.setPower(UP_POWER_J3);
             System.out.println("Maintain POM -- retracting: J2 is at: " + J2ticks);
             System.out.println("Maintain POM -- retracting: J3 Target set to: " + super.motorJ3.getTargetPosition());
+
+            while ((Math.abs(motorJ3.getCurrentPosition() - targetPositionJ3) > ZERO_TICKS || Math.abs(motor2J2.getCurrentPosition() - minimum_ticks_J2) > ZERO_TICKS) && runTime.time(TimeUnit.SECONDS) < 4)
+            {
+                this.maintainPOM(speed);
+            }
         }
     }
 

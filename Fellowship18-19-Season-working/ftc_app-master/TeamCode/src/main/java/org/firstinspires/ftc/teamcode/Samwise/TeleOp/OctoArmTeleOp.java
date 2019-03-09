@@ -65,7 +65,8 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         //------------- y ----------------
         if (gamepad1.y)
         {
-            armStuff.stopAll();
+//            armStuff.stopAll();
+            armStuff.toLanderSilver();
         }
 
         //------------- dpad ----------------
@@ -249,6 +250,6 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         {
             armStuff.moveJ4Down();
         }
-//        armStuff.hoverPlaneOfMotion(gamepad1.right_stick_x);
+        armStuff.hoverPlaneOfMotion(gamepad1.right_stick_x);
     }
 }
