@@ -15,14 +15,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     private static final int OFFSET_TOLERANCE = 10;
     boolean isStop = false;
 
-    /********************** 90/90 turn deposit ***********************/
-    int initialCollectionPosJ1 = 1450;
-    int initialCollectionPosJ2 = 1462;
-    int initialCollectionPosJ3 = 1387;
-
-    int previousPositionJ1 = initialCollectionPosJ1;
-    int previousPositionJ2 = initialCollectionPosJ2;
-    int previousPositionJ3 = initialCollectionPosJ3;
+    /********************** 90/90 turn deposit collapsed initial ***********************/
 
     int J1_LANDER_GOLD = -600;
     int J2_LANDER_GOLD = 459;
@@ -32,7 +25,35 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     int J2_LANDER_SILVER = 459;
     int J3_LANDER_SILVER = 2541;
 
+    int initialCollectionPosJ1 = 1450;
+    int initialCollectionPosJ2 = 1462;
+    int initialCollectionPosJ3 = 1387;
+
+    int previousPositionJ1 = initialCollectionPosJ1;
+    int previousPositionJ2 = initialCollectionPosJ2;
+    int previousPositionJ3 = initialCollectionPosJ3;
+
+
+    /********************** 90/90 turn deposit extednded initial ***********************/
+
+    int J1_LANDER_GOLD_extendedArm = -600;
+    int J2_LANDER_GOLD_extendedArm = 459;
+    int J3_LANDER_GOLD_extendedArm = 2541;
+
+    int J1_LANDER_SILVER_extendedArm = -900;
+    int J2_LANDER_SILVER_extendedArm = 459;
+    int J3_LANDER_SILVER_extendedArm = 2541;
+
+    int initialCollectionPosJ1_extendedArm = 1450;
+    int initialCollectionPosJ2_extendedArm = 1462;
+    int initialCollectionPosJ3_extendedArm = 1387;
+
+    int previousPositionJ1_extendedArm = initialCollectionPosJ1_extendedArm;
+    int previousPositionJ2_extendedArm = initialCollectionPosJ2_extendedArm;
+    int previousPositionJ3_extendedArm = initialCollectionPosJ3_extendedArm;
+
     /********************** Overhead deposit start ***********************/
+
     int J1_LANDER_GOLD_OVERHEAD = -600;
     int J2_LANDER_GOLD_OVERHEAD = 792;
     int J3_LANDER_GOLD_OVERHEAD = 6985;
@@ -50,9 +71,9 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     int previousCollectionPositionJ3_overhead = initialCollectionPosJ3_overhead;
 
     /********************** sShared ***********************/
-    static final double J1_POWER = 0.8;
-    static final double J2_POWER = 0.8;
-    static final double J3_POWER = 0.8;
+    static final double J1_POWER = 0.6;
+    static final double J2_POWER = 0.4;
+    static final double J3_POWER = 0.4;
 
     private boolean inGoldDeposit = false;
     private boolean inSilverDeposit = false;
@@ -96,14 +117,10 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         toPosition(J1_POWER, J2_POWER, J3_POWER, 0, 0, 0, 0);
     }
 
+    /***************************** 90/90 ********************/
     public void toCollectionPlane()
     {
-        toPosition(J1_POWER, J2_POWER, J3_POWER, initialCollectionPosJ1, initialCollectionPosJ2, initialCollectionPosJ2, initialCollectionPosJ3);
-    }
-
-    public void toCollectionPlaneOverhead()
-    {
-        toPosition(J1_POWER, J2_POWER, J3_POWER, initialCollectionPosJ1_overhead, initialCollectionPosJ2_overhead, initialCollectionPosJ2_overhead, initialCollectionPosJ3_overhead);
+        toPosition(0.6, 0.6, 0.6, initialCollectionPosJ1, initialCollectionPosJ2, initialCollectionPosJ2, initialCollectionPosJ3);
     }
 
     public void toLanderGold()
@@ -112,7 +129,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
         runTime.reset();
         savePreviousPosition();
-        robot.makeTurnWithoutWait(90);
+        robot.makeTurnWithoutWait(-90);
         toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_GOLD, J2_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
         stopSam();
     }
@@ -123,9 +140,59 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
         runTime.reset();
         savePreviousPosition();
-        robot.makeTurnWithoutWait(90);
+        robot.makeTurnWithoutWait(-90);
         toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_SILVER, J2_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
         stopSam();
+    }
+
+    public void backFromLander()
+    {
+        this.saveLanderPosition();
+        this.inSilverDeposit = false;
+        this.inGoldDeposit = false;
+        stopSam();
+        robot.makeTurnWithoutWait(86);
+        toPosition(0.6, 0.3, 0.3, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
+    }
+    public void saveLanderPosition()
+    {
+        if (this.inSilverDeposit)
+        {
+            this.saveLanderPositionSilver();
+        }
+        if (this.inGoldDeposit)
+        {
+            this.saveLanderPositionGold();
+        }
+    }
+
+
+
+    private void saveLanderPositionGold()
+    {
+        J1_LANDER_GOLD = motorJ1.getCurrentPosition();
+        J2_LANDER_GOLD = motor1J2.getCurrentPosition();
+        J3_LANDER_GOLD = motorJ3.getCurrentPosition();
+    }
+
+    private void saveLanderPositionSilver()
+    {
+        J1_LANDER_SILVER = motorJ1.getCurrentPosition();
+        J2_LANDER_SILVER = motor1J2.getCurrentPosition();
+        J3_LANDER_SILVER = motorJ3.getCurrentPosition();
+    }
+
+    public void savePreviousPosition()
+    {
+        previousPositionJ1 = motorJ1.getCurrentPosition();
+        previousPositionJ2 = motor2J2.getCurrentPosition();
+        previousPositionJ3 = motorJ3.getCurrentPosition();
+    }
+    /*********************** overhead ***************/
+
+    public void toCollectionPlaneOverhead()
+    {
+        toPosition(J1_POWER, J2_POWER, J3_POWER, initialCollectionPosJ1_overhead, initialCollectionPosJ2_overhead, initialCollectionPosJ2_overhead, initialCollectionPosJ3_overhead);
     }
 
     public void toLanderGoldOverhead()
@@ -147,16 +214,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         robot.encoderDrive(null, 15, 3);
     }
 
-    public void backFromLander()
-    {
-        this.saveLanderPosition();
-        this.inSilverDeposit = false;
-        this.inGoldDeposit = false;
-        stopSam();
-        robot.makeTurnWithoutWait(-90);
-        toPosition(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
-    }
-
     public void backFromLanderOverhead()
     {
         this.saveLanderPositionOverhead();
@@ -168,17 +225,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         robot.encoderDrive(null, -15, 3);
     }
 
-    public void saveLanderPosition()
-    {
-        if (this.inSilverDeposit)
-        {
-            this.saveLanderPositionSilver();
-        }
-        if (this.inGoldDeposit)
-        {
-            this.saveLanderPositionGold();
-        }
-    }
 
     public void saveLanderPositionOverhead()
     {
@@ -192,38 +238,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         }
     }
 
-    public void stopSam()
-    {
-        robot.leftDrive.setPower(0);
-        robot.rightDrive.setPower(0);
-        this.stopJ4();
-        this.stopCollecting();
-    }
-
-    public void stopAll()
-    {
-        stop();
-        stopJ1();
-        stopJ2();
-        stopJ3();
-        stopJ4();
-        stopExtendL1();
-        stopExtendL2();
-    }
-
-    private void saveLanderPositionGold()
-    {
-        J1_LANDER_GOLD = motorJ1.getCurrentPosition();
-        J2_LANDER_GOLD = motor1J2.getCurrentPosition();
-        J3_LANDER_GOLD = motorJ3.getCurrentPosition();
-    }
-
-    private void saveLanderPositionSilver()
-    {
-        J1_LANDER_SILVER = motorJ1.getCurrentPosition();
-        J2_LANDER_SILVER = motor1J2.getCurrentPosition();
-        J3_LANDER_SILVER = motorJ3.getCurrentPosition();
-    }
 
     private void saveLanderPositionOverheadGold()
     {
@@ -239,12 +253,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         J3_LANDER_SILVER_OVERHEAD = motorJ3.getCurrentPosition();
     }
 
-    public void savePreviousPosition()
-    {
-        previousPositionJ1 = motorJ1.getCurrentPosition();
-        previousPositionJ2 = motor2J2.getCurrentPosition();
-        previousPositionJ3 = motorJ3.getCurrentPosition();
-    }
 
     public void savePreviousPositionOverhead()
     {
@@ -252,6 +260,78 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         previousCollectionPositionJ2_overhead = motor2J2.getCurrentPosition();
         previousCollectionPositionJ3_overhead = motorJ3.getCurrentPosition();
     }
+
+    /********************* start from extended arm ****************************/
+
+    public void toCollectionPlaneExtendedArm()
+    {
+        toPosition(J1_POWER, J2_POWER, J3_POWER, initialCollectionPosJ1_extendedArm, initialCollectionPosJ2_extendedArm, initialCollectionPosJ2_extendedArm, initialCollectionPosJ3_extendedArm);
+    }
+
+    public void toLanderGoldExtendedArm()
+    {
+        this.inGoldDeposit = true;
+
+        runTime.reset();
+        savePreviousPositionExtendedArm();
+        robot.makeTurnWithoutWait(-90);
+        toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_GOLD_extendedArm, J2_LANDER_GOLD_extendedArm, J2_LANDER_GOLD_extendedArm, J3_LANDER_GOLD_extendedArm);
+        stopSam();
+    }
+
+    public void toLanderSilverExtendedArm()
+    {
+        this.inSilverDeposit = true;
+
+        runTime.reset();
+        savePreviousPositionExtendedArm();
+        robot.makeTurnWithoutWait(-90);
+        toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_SILVER_extendedArm, J2_LANDER_SILVER_extendedArm, J2_LANDER_SILVER_extendedArm, J3_LANDER_SILVER_extendedArm);
+        stopSam();
+    }
+    public void backFromLanderExtendedArm()
+    {
+        this.saveLanderPositionExtendedArm();
+        this.inSilverDeposit = false;
+        this.inGoldDeposit = false;
+        stopSam();
+        robot.makeTurnWithoutWait(90);
+        toPosition(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1_extendedArm, previousPositionJ2_extendedArm, previousPositionJ2_extendedArm, previousPositionJ3_extendedArm);
+    }
+    public void saveLanderPositionExtendedArm()
+    {
+        if (this.inSilverDeposit)
+        {
+            this.saveLanderPositionSilverExtendedArm();
+        }
+        if (this.inGoldDeposit)
+        {
+            this.saveLanderPositionGoldExtendedArm();
+        }
+    }
+
+    private void saveLanderPositionGoldExtendedArm()
+    {
+        J1_LANDER_GOLD_extendedArm = motorJ1.getCurrentPosition();
+        J2_LANDER_GOLD_extendedArm = motor1J2.getCurrentPosition();
+        J3_LANDER_GOLD_extendedArm = motorJ3.getCurrentPosition();
+    }
+
+    private void saveLanderPositionSilverExtendedArm()
+    {
+        J1_LANDER_SILVER_extendedArm = motorJ1.getCurrentPosition();
+        J2_LANDER_SILVER_extendedArm = motor1J2.getCurrentPosition();
+        J3_LANDER_SILVER_extendedArm = motorJ3.getCurrentPosition();
+    }
+
+    public void savePreviousPositionExtendedArm()
+    {
+        previousPositionJ1_extendedArm = motorJ1.getCurrentPosition();
+        previousPositionJ2_extendedArm = motor2J2.getCurrentPosition();
+        previousPositionJ3_extendedArm = motorJ3.getCurrentPosition();
+    }
+
+    /*************************** end of extended arm *********************/
 
     public void toPosition(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
     {
@@ -288,6 +368,26 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         }
 
         System.out.println("toPosition Time: " + runTime.time(TimeUnit.SECONDS));
+    }
+
+
+    public void stopSam()
+    {
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+        this.stopJ4();
+        this.stopCollecting();
+    }
+
+    public void stopAll()
+    {
+        stop();
+        stopJ1();
+        stopJ2();
+        stopJ3();
+        stopJ4();
+        stopExtendL1();
+        stopExtendL2();
     }
 
    /* public void toPositionReverse(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
