@@ -30,7 +30,7 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
         sleep(300);
         movieboi.hangermotor1.setPower(0);
 
-        movieboi.encoderDrive(this, 0.4, 20.9, 4);
+        movieboi.encoderDrive(this, 0.4, 2000, 4);
         System.out.print("unhooking");
 
 
@@ -38,7 +38,7 @@ public class SamwiseHangerAutonomous extends LinearOpMode {
         System.out.print("rehookinng");
         sleep(2000);
 
-        movieboi.encoderDrive(this, 0.6, 20.9, 4);
+        movieboi.encoderDrive(this, 0.6, 2000, 4);
 
         movieboi.Hook();
         //movieboi.hangerservo2.setPosition(0);

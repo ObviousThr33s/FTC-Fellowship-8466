@@ -72,8 +72,8 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
     /********************** sShared ***********************/
     static final double J1_POWER = 0.6;
-    static final double J2_POWER = 0.4;
-    static final double J3_POWER = 0.4;
+    static final double J2_POWER = 0.6;
+    static final double J3_POWER = 0.6;
 
     private boolean inGoldDeposit = false;
     private boolean inSilverDeposit = false;
@@ -128,7 +128,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     public void toCollectionPlane()
     {
         this.inCollectionPlane=true;
-        toPosition(0.6, 0.6, 0.6, initialCollectionPosJ1, initialCollectionPosJ2, initialCollectionPosJ2, initialCollectionPosJ3);
+        toPosition(J1_POWER, J2_POWER, J3_POWER,  initialCollectionPosJ1, initialCollectionPosJ2, initialCollectionPosJ2, initialCollectionPosJ3);
     }
 
     public void toLanderGold()
@@ -163,7 +163,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         this.inCollectionPlane=true;
         stopSam();
         robot.makeTurnWithoutWait(86);
-        toPosition(0.6, 0.3, 0.3, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
+        toPosition(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
     }
     public void saveLanderPosition()
     {

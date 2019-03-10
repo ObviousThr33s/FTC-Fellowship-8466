@@ -96,6 +96,9 @@ public class SamwiseTeleOp3 extends OpMode
 
         leftdrive.setDirection(DcMotor.Direction.REVERSE);
         rightdrive.setDirection(DcMotor.Direction.FORWARD);
+
+        //swHang.encoderDrive(1, 30);
+
     }
 
 
@@ -119,11 +122,12 @@ public class SamwiseTeleOp3 extends OpMode
          *                               Samwise Drive Train and Hanging                                *
          *                       (Please add related function mappings below)                           *
          ************************************************************************************************/
-
+        //telemetry.addData("hanger motor ticks", swHang.getMoter1Count());
         //Hanger system
         //if the a button is pressed then is moves the hanger arm
 
-        swHang.move(gamepad2.right_stick_y);
+        swHang.move(-gamepad2.right_stick_y);
+        //telemetry.update();
 
         /*if (gamepad2.b) {
             System.out.println("==> Hanger unhooking ...");
