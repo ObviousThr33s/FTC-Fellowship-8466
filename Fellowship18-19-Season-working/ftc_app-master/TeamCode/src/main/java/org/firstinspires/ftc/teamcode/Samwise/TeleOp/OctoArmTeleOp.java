@@ -8,17 +8,22 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
 
+import java.util.concurrent.TimeUnit;
+
 @TeleOp(name = "Samwise: Teleop Tank 3", group = "Samwise")
 //@Disabled
 public class OctoArmTeleOp extends SamwiseTeleOp3
 {
     private OctoSamwiseGenius armStuff;
 
+    ElapsedTime runTime;
+
     @Override
     public void init()
     {
         super.init();
         armStuff = new OctoSamwiseGenius(hardwareMap);
+        runTime = new ElapsedTime();
         armStuff.stopJ1();
         armStuff.stopJ2();
         armStuff.stopJ3();
@@ -51,7 +56,9 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
             }
             else
             {
+                runTime.reset();
                 armStuff.backFromLander();
+                telemetry.addData("Time", runTime.time(TimeUnit.SECONDS));
             }
         }
 
@@ -59,14 +66,18 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         // to deposit position
         if (gamepad1.x)
         {
+            runTime.reset();
             armStuff.toLanderSilver();
+            telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
         }
 
         //------------- y ----------------
         if (gamepad1.y)
         {
             //            armStuff.stopAll();
+            runTime.reset();
             armStuff.toLanderGold();
+            telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
         }
 
         //------------- dpad ----------------
@@ -193,11 +204,11 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
 
 
         //------------- dpad ----------------
-        if (gamepad2.dpad_up)
+        if (gamepad2.dpad_up && gamepad2.x)
         {
             armStuff.extendL1();
         }
-        if (gamepad2.dpad_down)
+        if (gamepad2.dpad_down && gamepad2.x)
         {
             armStuff.retractL1();
         }
@@ -207,11 +218,11 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
             armStuff.stopExtendL1();
         }
 
-        if (gamepad2.dpad_right)
+        if (gamepad2.dpad_right && gamepad2.x)
         {
             armStuff.extendL2();
         }
-        if (gamepad2.dpad_left)
+        if (gamepad2.dpad_left && gamepad2.x)
         {
             armStuff.retractL2();
         }
