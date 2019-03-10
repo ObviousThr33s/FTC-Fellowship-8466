@@ -27,7 +27,6 @@ public class GenerateLookupTable
         double J3Deg        = 48 + J3_ticks / 35.84;
         System.out.println("J2Deg: "+J2Deg);
         System.out.println("J3Deg: "+J3Deg);
-
         double J4Deg        = 180 - J3Deg - J2Deg + 90;
         double height_J3_J4 = L2 * Math.sin(Math.toRadians(J4Deg));
         double height_J3_J2 = L1 * Math.sin(Math.toRadians(J2Deg - 90));

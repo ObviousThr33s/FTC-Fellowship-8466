@@ -8,22 +8,17 @@ import org.firstinspires.ftc.teamcode.Samwise.DriveTrain.SamwiseDriveTrain;
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
 import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
 
-import java.util.concurrent.TimeUnit;
-
 @TeleOp(name = "Samwise: Teleop Tank 3", group = "Samwise")
 //@Disabled
 public class OctoArmTeleOp extends SamwiseTeleOp3
 {
     private OctoSamwiseGenius armStuff;
 
-    ElapsedTime runTime;
-
     @Override
     public void init()
     {
         super.init();
         armStuff = new OctoSamwiseGenius(hardwareMap);
-        runTime = new ElapsedTime();
         armStuff.stopJ1();
         armStuff.stopJ2();
         armStuff.stopJ3();
@@ -56,9 +51,7 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
             }
             else
             {
-                runTime.reset();
                 armStuff.backFromLander();
-                telemetry.addData("Time", runTime.time(TimeUnit.SECONDS));
             }
         }
 
@@ -66,18 +59,14 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         // to deposit position
         if (gamepad1.x)
         {
-            runTime.reset();
             armStuff.toLanderSilver();
-            telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
         }
 
         //------------- y ----------------
         if (gamepad1.y)
         {
             //            armStuff.stopAll();
-            runTime.reset();
             armStuff.toLanderGold();
-            telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
         }
 
         //------------- dpad ----------------
@@ -138,12 +127,12 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         }*/
 
         //------------- left_stick_x----------------
-        if (gamepad1.left_stick_x > 0.1 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
+        if (gamepad1.left_stick_x > 0.02 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
         {
             //            System.out.println("Time at beginning of \"driveJ1\""+System.currentTimeMillis());
             armStuff.driveJ1(gamepad1.left_stick_x);
         }
-        else if (gamepad1.left_stick_x < -0.1 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
+        else if (gamepad1.left_stick_x < -0.02 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
         {
             //            System.out.println("Time at beginning of \"driveJ1\""+System.currentTimeMillis());
             armStuff.driveJ1(gamepad1.left_stick_x);
@@ -154,11 +143,11 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         }
 
         //------------- left_stick_y----------------
-        if (gamepad1.left_stick_y > 0.1)
+        if (gamepad1.left_stick_y > 0.02)
         {
             armStuff.driveJ2(gamepad1.left_stick_y);
         }
-        else if (gamepad1.left_stick_y < -0.1)
+        else if (gamepad1.left_stick_y < -0.02)
         {
             armStuff.driveJ2(gamepad1.left_stick_y);
         }
@@ -171,11 +160,11 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         // UNMAPPED FOR NOW
 
         //------------- right_stick_y----------------
-        if (gamepad1.right_stick_y > 0.1)
+        if (gamepad1.right_stick_y > 0.02)
         {
             armStuff.driveJ3(gamepad1.right_stick_y);
         }
-        else if (gamepad1.right_stick_y < -0.1)
+        else if (gamepad1.right_stick_y < -0.02)
         {
             armStuff.driveJ3(gamepad1.right_stick_y);
         }
@@ -204,11 +193,11 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
 
 
         //------------- dpad ----------------
-        if (gamepad2.dpad_up && gamepad2.x)
+        if (gamepad2.dpad_up)
         {
             armStuff.extendL1();
         }
-        if (gamepad2.dpad_down && gamepad2.x)
+        if (gamepad2.dpad_down)
         {
             armStuff.retractL1();
         }
@@ -218,11 +207,11 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
             armStuff.stopExtendL1();
         }
 
-        if (gamepad2.dpad_right && gamepad2.x)
+        if (gamepad2.dpad_right)
         {
             armStuff.extendL2();
         }
-        if (gamepad2.dpad_left && gamepad2.x)
+        if (gamepad2.dpad_left)
         {
             armStuff.retractL2();
         }
