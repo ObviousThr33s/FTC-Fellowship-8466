@@ -181,20 +181,25 @@ public class SamwiseDriveTrain extends DriveTrain {
         drive(Math.abs(DRIVE_SPEED));
         System.out.println("==> driveToCrater with frontside and front touch sensors ... ");
 
-        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && frontside.getState() && front.getState()) {
+        boolean sidestate = frontside.getState();
+        boolean frontstate = front.getState();
+
+        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && sidestate && frontstate) {
             // robot keeps driving until side or front touch sensor is pressed
+            sidestate = frontside.getState();
+            frontstate = front.getState();
             opMode.idle();
         }
 
         // Stop all motion;
         drive(0);
 
-        if (!front.getState() || (runtime.seconds() >= timeout) || !opMode.opModeIsActive()) {
+        if (!frontstate || (runtime.seconds() >= timeout) || !opMode.opModeIsActive()) {
             System.out.println("==> front touch sensor is pressed. Stopping...");
             return; // stop
         }
 
-        if (!frontside.getState()) {
+        if (!sidestate) {
             // side sensor is pressed. turning robot ....
             System.out.println("==> frontside sensor is pressed. turning robot ....");
             if (rightTurn)
@@ -221,9 +226,12 @@ public class SamwiseDriveTrain extends DriveTrain {
         }
         System.out.println("==> drive to depot till seeing the blue or red line ... ");
 
-        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && touch.getState() &&
+        boolean state = touch.getState();
+
+        while (opMode.opModeIsActive() && (runtime.seconds() < timeout) && state &&
                 (colorSensor.senseColor() == SamwiseColor.color.GREY)) {
             // robot keeps driving until side  is pressed
+            state = touch.getState();
             opMode.idle();
         }
 
@@ -236,7 +244,7 @@ public class SamwiseDriveTrain extends DriveTrain {
             return; // stop
         }
 
-        if (!touch.getState()) {
+        if (!state) {
             // side sensor is pressed. turning robot ....
             System.out.println("==> side sensor is pressed. turning robot ....");
             if(forward){

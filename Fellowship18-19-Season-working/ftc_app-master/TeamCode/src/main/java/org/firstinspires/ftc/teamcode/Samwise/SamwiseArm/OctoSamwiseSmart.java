@@ -17,11 +17,11 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
     /********************** 90/90 turn deposit collapsed initial ***********************/
 
-    int J1_LANDER_GOLD = -600;
+    int J1_LANDER_GOLD = -900;
     int J2_LANDER_GOLD = 459;
     int J3_LANDER_GOLD = 2541;
 
-    int J1_LANDER_SILVER = -900;
+    int J1_LANDER_SILVER = -600;
     int J2_LANDER_SILVER = 459;
     int J3_LANDER_SILVER = 2541;
 
@@ -138,9 +138,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
         runTime.reset();
         savePreviousPosition();
-        robot.makeTurnWithoutWait(-90);
-        toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_GOLD, J2_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
-        stopSam();
+        toPositionWait(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_GOLD, J2_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
     }
 
     public void toLanderSilver()
@@ -150,20 +148,17 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
         runTime.reset();
         savePreviousPosition();
-        robot.makeTurnWithoutWait(-90);
-        toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_SILVER, J2_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
-        stopSam();
+        toPositionWait(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_SILVER, J2_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
     }
 
     public void backFromLander()
     {
+        runTime.reset();
         this.saveLanderPosition();
         this.inSilverDeposit = false;
         this.inGoldDeposit = false;
         this.inCollectionPlane=true;
-        stopSam();
-        robot.makeTurnWithoutWait(86);
-        toPosition(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
+        toPositionReverse(J1_POWER, J2_POWER, J3_POWER, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
     }
     public void saveLanderPosition()
     {
@@ -176,7 +171,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
             this.saveLanderPositionGold();
         }
     }
-
 
 
     private void saveLanderPositionGold()
@@ -380,7 +374,71 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
         System.out.println("toPosition Time: " + runTime.time(TimeUnit.SECONDS));
     }
+    public void toPositionWait(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
+    {
+        runTime.reset();
 
+        isStop = false;
+
+        motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor1J2.setTargetPosition(j2Position1);
+        motor2J2.setTargetPosition(j2Position2);
+        motor1J2.setPower(j2Power);
+        motor2J2.setPower(j2Power);
+
+        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ3.setTargetPosition(j3Position);
+        motorJ3.setPower(j3Power);
+
+        while ((motor2J2.getCurrentPosition() - 459) > 50 && motorJ3.getCurrentPosition() > SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 4)
+        {
+        }
+
+        motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ1.setTargetPosition(j1Position);
+        motorJ1.setPower(j1Power);
+
+        robot.makeTurnWithoutWait(-90);
+
+        while (Math.abs(motorJ1.getCurrentPosition() - j1Position) > SAFE_MARGIN)
+        {
+
+        }
+
+        System.out.println("toPosition Time: " + runTime.time(TimeUnit.SECONDS));
+    }
+
+    public void toPositionReverse(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
+    {
+        runTime.reset();
+        robot.makeTurnWithoutWait(90);
+        motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ1.setTargetPosition(j1Position);
+        motorJ1.setPower(j1Power);
+        isStop = false;
+
+        while (motorJ1.getCurrentPosition() < -100 && runTime.time(TimeUnit.SECONDS) < 4)
+        {
+        }
+
+        System.out.println("toPositionReverse Time1: " + runTime.time(TimeUnit.SECONDS));
+        motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor1J2.setTargetPosition(j2Position1);
+        motor2J2.setTargetPosition(j2Position2);
+        motor1J2.setPower(j2Power);
+        motor2J2.setPower(j2Power);
+
+        motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ3.setTargetPosition(j3Position);
+        motorJ3.setPower(j3Power);
+
+        while (Math.abs(motor1J2.getCurrentPosition() - j2Position1) > SAFE_MARGIN || Math.abs(motorJ3.getCurrentPosition() - j3Position) > SAFE_MARGIN && !isStop && runTime.time(TimeUnit.SECONDS) < 4)
+        {
+        }
+        System.out.println("toPositionReverse Time2: " + runTime.time(TimeUnit.SECONDS));
+    }
 
     public void stopSam()
     {

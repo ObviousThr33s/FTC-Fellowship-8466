@@ -158,7 +158,7 @@ public class SamwiseDriveRouteFactory
                 //telemetry.addData(route, "finish third turn");
                 //telemetry.update();
 
-                driveTrain.encoderDrive(samwiseDrive, -34,3);
+                driveTrain.encoderDrive(samwiseDrive, -36,3);
                 //driveTrain.driveToWall(samwiseDrive, samwiseDrive.touchBack, false, 3.5);
 
                 driveTrain.turnDrive(samwiseDrive, 21, 3);
