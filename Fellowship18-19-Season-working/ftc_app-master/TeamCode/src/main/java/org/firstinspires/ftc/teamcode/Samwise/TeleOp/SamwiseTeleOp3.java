@@ -35,7 +35,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
-import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.OctoSamwiseGenius;
 
 /****************************************************************************************************
  *                  Teleop Outline:                                                                 *
