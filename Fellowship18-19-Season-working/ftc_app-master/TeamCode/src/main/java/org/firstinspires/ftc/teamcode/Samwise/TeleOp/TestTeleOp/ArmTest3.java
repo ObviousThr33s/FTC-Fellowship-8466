@@ -79,7 +79,7 @@ public class ArmTest3 extends OpMode{
 
         init_loop();
         if (gamepad1.left_stick_y <= -0.01) { //push forward
-                ArmMotor2.setTargetPosition((int)J2MaxPos);
+            ArmMotor2.setTargetPosition((int)J2MaxPos);
         }
         if (gamepad1.left_stick_y >= 0.01) { //backwards
             ArmMotor2.setTargetPosition((int)J2MinPos);

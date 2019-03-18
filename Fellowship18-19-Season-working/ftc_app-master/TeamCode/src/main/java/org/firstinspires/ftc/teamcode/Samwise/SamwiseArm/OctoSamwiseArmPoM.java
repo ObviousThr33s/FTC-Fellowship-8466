@@ -89,7 +89,7 @@ public class OctoSamwiseArmPoM extends OctoSamwiseSmart
 
             if (Joysticks <= -0.05)
             { //push forward
-                J2MaxPos = J2initialposition + EncoderCountJ2 / 50.0;
+                J2MaxPos = motor1J2.getCurrentPosition() + EncoderCountJ2 / 360.0;
                 motor1J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
                 motor2J2.setTargetPosition((int) (J2MaxPos * J2FirsttoLast));
 
@@ -98,7 +98,7 @@ public class OctoSamwiseArmPoM extends OctoSamwiseSmart
                 motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                J3TargetPos_Ticks = J3initialposition + (-1.47 * (EncoderCountJ2 / 50.0));
+                J3TargetPos_Ticks = motorJ3.getCurrentPosition() + (-1.5 * (EncoderCountJ2 / 360.0));
                 motorJ3.setTargetPosition((int) (J3TargetPos_Ticks * J3FirsttoLast));
                 motorJ3.setPower(0.5); //test Power LAtEr yeet
                 motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
