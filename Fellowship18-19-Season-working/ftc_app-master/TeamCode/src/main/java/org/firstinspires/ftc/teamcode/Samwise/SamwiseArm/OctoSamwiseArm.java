@@ -24,7 +24,7 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public static final double MANUAL_POWER_J1 = 0.8;
     public static final double MANUAL_POWER_J2 = 0.4;
-    public static final double UP_POWER_J3 = 0.4;
+    public static final double MANUAL_POWER_J3 = 0.4;
     public static final double E1_POWER = 0.8;
     public static final double E2_POWER = 0.8;
 
@@ -63,134 +63,132 @@ public class OctoSamwiseArm extends OctoSamwiseCollection
 
     public void driveJ1(double power)
     {
-        if (Math.abs(power)>0.1)
+        motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorJ1.setPower(-MANUAL_POWER_J1 * power);
+        if (motorJ1.getPower() > 0.1)
         {
-            motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            //smooth start
-            if (Math.abs(motorJ1.getPower()) < 0.1)
-            {
-                runtime.reset();
-                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-                while (milliTime < TIME_POWER_RAMP_UP)
-                {
-                    motorJ1.setPower(-MANUAL_POWER_J1 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
-                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
-                }
-            }
-            else
-            {
-                double newPower = -MANUAL_POWER_J1 * power;
-                motorJ1.setPower(newPower);
-            }
+
         }
     }
 
     public void stopJ1()
     {
-        if (Math.abs(motorJ1.getPower()) > ZERO_MANUAL_POWER)
-        {
-            runtime.reset();
-            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            while (milliTime < TIME_POWER_RAMP_DOWN)
-            {
-                if (milliTime > 1)
-                {
-                    motorJ1.setPower(-MANUAL_POWER_J1 * motorJ1.getPower() * (1.0 / milliTime));
-                }
-                milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            }
-            motorJ1.setPower(0);
-        }
+//        if (Math.abs(motorJ1.getPower()) > ZERO_MANUAL_POWER)
+//        {
+//            runtime.reset();
+//            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//            while (milliTime < TIME_POWER_RAMP_DOWN)
+//            {
+//                if (milliTime > 1)
+//                {
+//                    motorJ1.setPower(-MANUAL_POWER_J1 * motorJ1.getPower() * (1.0 / milliTime));
+//                }
+//                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//            }
+//            motorJ1.setPower(0);
+//        }
+
+        motorJ1.setPower(0);
     }
 
 
     public void driveJ3(double power)
     {
-        if (Math.abs(power)>0.1)
-        {
-            motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            if (Math.abs(motorJ3.getPower()) < 0.1)
-            {
-                runtime.reset();
-                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-                while (milliTime < TIME_POWER_RAMP_UP)
-                {
-                    motorJ3.setPower(-UP_POWER_J3 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
-                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
-                }
-            }
-            else
-            {
-                double newPower = -UP_POWER_J3 * power;
-                motorJ3.setPower(newPower);
-            }
-        }
+//        if (Math.abs(power)>0.1)
+//        {
+//            motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//            if (Math.abs(motorJ3.getPower()) < 0.1)
+//            {
+//                runtime.reset();
+//                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//                while (milliTime < TIME_POWER_RAMP_UP)
+//                {
+//                    motorJ3.setPower(-MANUAL_POWER_J3 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+//                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//                }
+//            }
+//            else
+//            {
+//                double newPower = -MANUAL_POWER_J3 * power;
+//                motorJ3.setPower(newPower);
+//            }
+//        }
+        motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorJ3.setPower(/*-MANUAL_POWER_J3 */ power);
     }
 
     public void stopJ3()
     {
-        if (Math.abs(motorJ3.getPower()) > ZERO_MANUAL_POWER)
-        {
-            runtime.reset();
-            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            while (milliTime < TIME_POWER_RAMP_DOWN)
-            {
-                if (milliTime > 1)
-                {
-                    motorJ3.setPower(-MANUAL_POWER_J1 * motorJ3.getPower() * (1.0 / milliTime));
-                }
-                milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            }
-            motorJ3.setPower(0);
-        }
+//        if (Math.abs(motorJ3.getPower()) > ZERO_MANUAL_POWER)
+//        {
+//            runtime.reset();
+//            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//            while (milliTime < TIME_POWER_RAMP_DOWN)
+//            {
+//                if (milliTime > 1)
+//                {
+//                    motorJ3.setPower(-MANUAL_POWER_J1 * motorJ3.getPower() * (1.0 / milliTime));
+//                }
+//                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//            }
+//            motorJ3.setPower(0);
+//        }
+        motorJ3.setPower(0);
     }
 
     public void driveJ2(double power)
     {
-        if (Math.abs(power)>0.1)
-        {
-            motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        if (Math.abs(power)>0.1)
+//        {
+//            motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//            if (Math.abs(motor1J2.getPower()) < 0.1 || Math.abs(motor2J2.getPower()) < 0.1)
+//            {
+//                runtime.reset();
+//                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//                while (milliTime < TIME_POWER_RAMP_UP)
+//                {
+//                    motor1J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+//                    motor2J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+//                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//                }
+//            }
+//            else
+//            {
+//                double newPower = -MANUAL_POWER_J2 * power;
+//                motor1J2.setPower(newPower);
+//                motor2J2.setPower(newPower);
+//            }
+//        }
+        motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            if (Math.abs(motor1J2.getPower()) < 0.1 || Math.abs(motor2J2.getPower()) < 0.1)
-            {
-                runtime.reset();
-                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-                while (milliTime < TIME_POWER_RAMP_UP)
-                {
-                    motor1J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
-                    motor2J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
-                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
-                }
-            }
-            else
-            {
-                double newPower = -MANUAL_POWER_J2 * power;
-                motor1J2.setPower(newPower);
-                motor2J2.setPower(newPower);
-            }
-        }
+        motor1J2.setPower(-MANUAL_POWER_J2 * power);
+        motor2J2.setPower(-MANUAL_POWER_J2 * power);
     }
 
     public void stopJ2()
     {
-        if (Math.abs(motor1J2.getPower()) > ZERO_MANUAL_POWER && Math.abs(motor2J2.getPower()) > ZERO_MANUAL_POWER)
-        {
-            runtime.reset();
-            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            while (milliTime < TIME_POWER_RAMP_DOWN)
-            {
-                if (milliTime > 1)
-                {
-                    motor1J2.setPower(-MANUAL_POWER_J1 * motor1J2.getPower() * (1.0 / milliTime));
-                    motor2J2.setPower(-MANUAL_POWER_J1 * motor2J2.getPower() * (1.0 / milliTime));
-                }
-                milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            }
-            motor1J2.setPower(0);
-            motor2J2.setPower(0);
-        }
+//        if (Math.abs(motor1J2.getPower()) > ZERO_MANUAL_POWER && Math.abs(motor2J2.getPower()) > ZERO_MANUAL_POWER)
+//        {
+//            runtime.reset();
+//            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//            while (milliTime < TIME_POWER_RAMP_DOWN)
+//            {
+//                if (milliTime > 1)
+//                {
+//                    motor1J2.setPower(-MANUAL_POWER_J1 * motor1J2.getPower() * (1.0 / milliTime));
+//                    motor2J2.setPower(-MANUAL_POWER_J1 * motor2J2.getPower() * (1.0 / milliTime));
+//                }
+//                milliTime = runtime.time(TimeUnit.MILLISECONDS);
+//            }
+//            motor1J2.setPower(0);
+//            motor2J2.setPower(0);
+//        }
+        motor1J2.setPower(0);
+        motor2J2.setPower(0);
     }
 
     public int getJ1CurrentPosition()

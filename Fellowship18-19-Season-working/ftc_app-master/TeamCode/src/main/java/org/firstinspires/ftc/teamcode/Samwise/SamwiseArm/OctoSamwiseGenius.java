@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 
-import android.net.http.SslCertificate;
-import android.widget.HeterogeneousExpandableList;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -130,7 +127,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
         int J3_ticks = (int) ((collectingJ3 - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
         if (runTime.time(TimeUnit.SECONDS) < 3)
         {
-            this.toPositionWithoutJ1(J2_POWER, UP_POWER_J3, J2_ticks, J2_ticks, J3_ticks);
+            this.toPositionWithoutJ1(J2_POWER, MANUAL_POWER_J3, J2_ticks, J2_ticks, J3_ticks);
         }
     }
 
@@ -178,7 +175,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
 
         if (runTime.time(TimeUnit.SECONDS) < 3)
         {
-            toPosition(J1_POWER, J2_POWER, UP_POWER_J3, newTicksJ1, getJ2CurrentPosition(), getJ2CurrentPosition(), getJ3CurrentPosition());
+            toPosition(J1_POWER, J2_POWER, MANUAL_POWER_J3, newTicksJ1, getJ2CurrentPosition(), getJ2CurrentPosition(), getJ3CurrentPosition());
         }
     }
 
@@ -447,7 +444,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
             double J3Deg            = this.calculateJ3Degrees(J2Deg);
             int    targetPositionJ3 = (int) ((J3Deg - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
             this.motorJ3.setTargetPosition(targetPositionJ3);
-            this.motorJ3.setPower(UP_POWER_J3);
+            this.motorJ3.setPower(MANUAL_POWER_J3);
             System.out.println("Maintain POM -- retracting: J2 is at: " + J2ticks);
             System.out.println("Maintain POM -- retracting: J3 Target set to: " + super.motorJ3.getTargetPosition());
 
@@ -512,7 +509,7 @@ public class OctoSamwiseGenius extends OctoSamwiseSmart
     public void toPositionWithoutJ1(int j2Position2, int j3Position)
     {
         runTime.reset();
-        this.toPositionWithoutJ1(J2_POWER, UP_POWER_J3, j2Position2, j2Position2, j3Position);
+        this.toPositionWithoutJ1(J2_POWER, MANUAL_POWER_J3, j2Position2, j2Position2, j3Position);
     }
 
     public void toPositionWithoutJ1(double j2Power, double j3Power, int j2Position1, int j2Position2, int j3Position)
