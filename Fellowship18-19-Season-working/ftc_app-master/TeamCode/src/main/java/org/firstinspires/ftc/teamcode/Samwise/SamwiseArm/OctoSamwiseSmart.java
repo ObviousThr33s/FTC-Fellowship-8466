@@ -309,7 +309,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motorJ1.setTargetPosition(j1Position);
         motorJ1.setPower(j1Power);
 
-        while ((Math.abs(motorJ1.getCurrentPosition() - j1Position) > SAFE_MARGIN || Math.abs(motor1J2.getCurrentPosition() - j2Position1) > SAFE_MARGIN || Math.abs(motorJ3.getCurrentPosition() - j3Position) > SAFE_MARGIN) && !isStop)
+        while ((Math.abs(motorJ1.getCurrentPosition() - j1Position) > SAFE_MARGIN || Math.abs(motor1J2.getCurrentPosition() - j2Position1) > SAFE_MARGIN || Math.abs(motorJ3.getCurrentPosition() - j3Position) > SAFE_MARGIN) && !isStop && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }
 
@@ -337,7 +337,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 //        trapezoid.setTrapezoidTarget(motor2J2, j2Power, j2Position2);
 //        trapezoid.setTrapezoidTarget(motorJ3, j3Power, j3Position);
 
-        while ((motor2J2.getCurrentPosition() - 459) > 50 && motorJ3.getCurrentPosition() > SAFE_POS_J3)
+        while ((motor2J2.getCurrentPosition() - 459) > 50 && motorJ3.getCurrentPosition() > SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }
 
@@ -349,7 +349,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
 
         robot.makeTurnWithoutWait(-90);
 
-        while ((Math.abs(motorJ1.getCurrentPosition() - j1Position) > SAFE_MARGIN || robot.leftDrive.getCurrentPosition() < -200 || robot.rightDrive.getCurrentPosition() > 200))
+        while ((Math.abs(motorJ1.getCurrentPosition() - j1Position) > SAFE_MARGIN || robot.leftDrive.getCurrentPosition() < -200 || robot.rightDrive.getCurrentPosition() > 200) && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }
 
@@ -367,7 +367,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motorJ1.setPower(j1Power);
         isStop = false;
 
-        while ((motorJ1.getCurrentPosition() < -100 || robot.leftDrive.getCurrentPosition() > 200 || robot.rightDrive.getCurrentPosition() < -200))
+        while ((motorJ1.getCurrentPosition() < -100 || robot.leftDrive.getCurrentPosition() > 200 || robot.rightDrive.getCurrentPosition() < -200) && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }
 
@@ -387,7 +387,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motorJ3.setTargetPosition(j3Position);
         motorJ3.setPower(j3Power);
 
-        while ((Math.abs(motor1J2.getCurrentPosition() - j2Position1) > SAFE_MARGIN || Math.abs(motorJ3.getCurrentPosition() - j3Position) > SAFE_MARGIN) && !isStop)
+        while ((Math.abs(motor1J2.getCurrentPosition() - j2Position1) > SAFE_MARGIN || Math.abs(motorJ3.getCurrentPosition() - j3Position) > SAFE_MARGIN) && !isStop && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }
         System.out.println("toPositionReverse Time2: " + runTime.time(TimeUnit.SECONDS));
