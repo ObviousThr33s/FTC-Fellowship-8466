@@ -64,20 +64,20 @@ public class Planeofmotion extends OpMode {
         }
         if (Math.abs(gamepad1.left_stick_y) > 0.1) {
             if (gamepad1.left_stick_y>0.1) {
-                J2.setTargetPosition(500);
-                J22.setTargetPosition(500);
+                J2.setTargetPosition(1000);
+                J22.setTargetPosition(1000);
             } if (gamepad1.left_stick_y <-0.1) {
-                J2.setTargetPosition(-500);
-                J22.setTargetPosition(-500);
+                J2.setTargetPosition(-1000);
+                J22.setTargetPosition(-1000);
             }
-            J2.setPower(Math.abs(gamepad1.left_stick_y)/3);
-            J22.setPower(Math.abs(gamepad1.left_stick_y)/3);
+            J2.setPower(Math.abs(gamepad1.left_stick_y)/2);
+            J22.setPower(Math.abs(gamepad1.left_stick_y)/2);
             J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             J22.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            J3targetpos = (int)(J2.getCurrentPosition()* 1.5);
+            J3targetpos = (int)(J2.getCurrentPosition()* 1.6);
             J3.setTargetPosition(J3targetpos);
-            J3.setPower(0.3);
+            J3.setPower(0.7);
             J3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
         if ((gamepad1.left_stick_y <0.1)&&(gamepad1.left_stick_y >-0.1) ) {
