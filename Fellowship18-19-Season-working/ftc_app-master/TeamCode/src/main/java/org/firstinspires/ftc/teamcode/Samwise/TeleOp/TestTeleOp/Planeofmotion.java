@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp.TestTeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp (name = "pLaNeOfMoTiOn")
+@Disabled
 public class Planeofmotion extends OpMode {
     private DcMotor J1 = null;
     private DcMotor J2 = null;
