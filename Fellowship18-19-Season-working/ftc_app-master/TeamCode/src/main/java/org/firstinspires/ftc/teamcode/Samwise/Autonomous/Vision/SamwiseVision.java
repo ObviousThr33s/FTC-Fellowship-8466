@@ -22,7 +22,7 @@ public class SamwiseVision extends Vision {
     private final float sampleDistanceNear = 0;
     private final float sampleDistanceFar = 160;
 
-    private final double ratio = .25;
+    private final double ratio = .35;
     private final double confidence = 0.65;
 
     // private GoldPosition goldPos = GoldPosition.UNKNOWN;
@@ -68,6 +68,8 @@ public class SamwiseVision extends Vision {
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TfodRoverRuckus.TFOD_MODEL_ASSET, TfodRoverRuckus.LABEL_GOLD_MINERAL, TfodRoverRuckus.LABEL_SILVER_MINERAL);
 
+        //turn on camera LED
+        com.vuforia.CameraDevice.getInstance().setFlashTorchMode(true);
     }
 
     /**
@@ -93,6 +95,7 @@ public class SamwiseVision extends Vision {
     }
 
     public void deactivate() {
+        com.vuforia.CameraDevice.getInstance().setFlashTorchMode(false);
         tfod.deactivate();
     }
 

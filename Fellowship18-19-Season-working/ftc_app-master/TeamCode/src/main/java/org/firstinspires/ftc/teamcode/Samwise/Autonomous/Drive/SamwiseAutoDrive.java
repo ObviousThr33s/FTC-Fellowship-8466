@@ -50,7 +50,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     CRServo servoE2;
 
-    static final int E1_MAX_COUNT = 4660;
+    static final int E1_MAX_COUNT = 4600;
 
     /**
      * init with and without tensorflow
@@ -179,7 +179,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         // extending E1 and E2
         servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoE2.setPower(1);
+        servoE2.setPower(.9);
 
         this.extendL1Auto();
 

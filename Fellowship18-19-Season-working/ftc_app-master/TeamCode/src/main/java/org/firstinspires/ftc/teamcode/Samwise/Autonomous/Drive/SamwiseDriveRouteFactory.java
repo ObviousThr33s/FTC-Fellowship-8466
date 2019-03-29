@@ -536,7 +536,8 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive,3, 3);
+                //driveTrain.encoderDrive(samwiseDrive,3, 3);
+                driveTrain.encoderDriveSpeed(samwiseDrive, 3, 4, .5);
 
                 driveTrain.turnDrive(samwiseDrive, 39, 3);
 
@@ -584,7 +585,8 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive,2.5, 5);
+                //driveTrain.encoderDrive(samwiseDrive,2.5, 5);
+                driveTrain.encoderDriveSpeed(samwiseDrive, 2.5, 4, .5);
 
                 driveTrain.turnDrive(samwiseDrive, 36, 3);
 
@@ -683,7 +685,8 @@ public class SamwiseDriveRouteFactory
                 //telemetryNow(route, "starting parent common driveToCrater ...");
                 System.out.println("==>Driving route "+route);
 
-                driveTrain.encoderDrive(samwiseDrive, 2.5, 4);
+                //driveTrain.encoderDrive(samwiseDrive, 2.5, 4);
+                driveTrain.encoderDriveSpeed(samwiseDrive, 3, 4, .5);
 
                 driveTrain.turnDrive(samwiseDrive, -35, 3);
 
