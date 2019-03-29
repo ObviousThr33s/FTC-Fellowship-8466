@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp (name = "pLaNeOfMoTiOn")
-@Disabled
 public class Planeofmotion extends OpMode {
     private DcMotor J1 = null;
     private DcMotor J2 = null;
@@ -79,7 +78,7 @@ public class Planeofmotion extends OpMode {
 
             J3targetpos = (int)(J2.getCurrentPosition()* 1.6);
             J3.setTargetPosition(J3targetpos);
-            J3.setPower(0.7);
+            J3.setPower(0.5);
             J3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
         if ((gamepad1.left_stick_y <0.1)&&(gamepad1.left_stick_y >-0.1) ) {
