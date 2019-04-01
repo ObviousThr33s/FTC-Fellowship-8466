@@ -50,6 +50,8 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     CRServo servoE2;
 
+    boolean runWithArm = false;
+
     static final int E1_MAX_COUNT = 4600;
 
     /**
@@ -119,7 +121,11 @@ public class SamwiseAutoDrive extends LinearOpMode {
         this.init(true);
 
         // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+        //waitForStart();
+        while (!opModeIsActive() && !isStopRequested()) {
+            telemetry.addData("status", "waiting for start command...");
+            telemetry.update();
+        }
 
         //Unhinging Robot
         //hanger.encoderDrive(this,1,0.9,1);
@@ -178,10 +184,12 @@ public class SamwiseAutoDrive extends LinearOpMode {
         ISamwiseDriveRoute driveRoute = samplingRoute(position);
 
         // extending E1 and E2
-        servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoE2.setPower(.9);
+        if(runWithArm) {
+            servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
+            servoE2.setPower(.9);
 
-        this.extendL1Auto();
+            this.extendL1Auto();
+        }
 
         //retracting the hanger without blocking the drive
         hanger.encoderDriveNoWait(this, .6, 400);
@@ -192,26 +200,21 @@ public class SamwiseAutoDrive extends LinearOpMode {
         this.md.move(SamwiseMarkerDeposit.initPosition); //back to init position
 
 
-        this.driveJ2up(100);
-        //sleep(300);
+        if(runWithArm) {
+            this.driveJ2up(100);
+            //sleep(300);
 
-/*
-        sleep(1000);
+            //this.turnJ1Auto(580);
 
-        this.turnJ1Auto(550);
+            //this.driveJ3up(800);
 
-        sleep(1000);
-*/
-        //this.turnJ1Auto(580);
+            //this.driveJ2up(1600);
 
-        //this.driveJ3up(800);
-
-        //this.driveJ2up(1600);
-
-        //retracting the hanger
-        // hanger.encoderDrive(this, 0.6, 53.5, 3);
-        while (opModeIsActive()) {
-            idle(); // keep L2
+            //retracting the hanger
+            // hanger.encoderDrive(this, 0.6, 53.5, 3);
+            while (opModeIsActive()) {
+                idle(); // keep L2
+            }
         }
 
     }
