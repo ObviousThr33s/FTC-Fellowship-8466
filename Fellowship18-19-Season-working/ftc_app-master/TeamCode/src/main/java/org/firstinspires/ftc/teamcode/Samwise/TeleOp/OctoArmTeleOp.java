@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -9,11 +10,13 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TrapezoidSpeed;
 import java.util.concurrent.TimeUnit;
 
 @TeleOp(name = "Samwise: Teleop Tank 3", group = "Samwise")
-//@Disabled
+@Disabled
 public class OctoArmTeleOp extends SamwiseTeleOp3
 {
     private OctoSamwiseGenius armStuff;
     private TrapezoidSpeed trapezoid;
+
+    protected boolean isPlaneOfMotion = false;
 
     ElapsedTime runTime;
 
@@ -32,6 +35,7 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
     @Override
     public void loop()
     {
+
         super.loop();
 
         telemetry.addData("J1 ticks", armStuff.getJ1CurrentPosition());
@@ -41,59 +45,59 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
 //        telemetry.update();
         /******************************** Gamepad 1 *******************************************************/
         //------------- a ----------------
-        if (gamepad1.a)
-        {
-//            armStuff.lowerJ4();
-            armStuff.testTrapezoid();
-        }
-        //------------- b ----------------
-        // to collection position
-        if (gamepad1.b)
-        {
-            armStuff.stopSam();
-            if (Math.abs(armStuff.getJ1CurrentPosition()) < 100 && Math.abs(armStuff.getJ2CurrentPosition()) < 100 && Math.abs(armStuff.getJ3CurrentPosition()) < 100)
+            if (gamepad1.a)
             {
-                armStuff.toCollectionPlane();
+//            armStuff.lowerJ4();
+                armStuff.testTrapezoid();
             }
-            else
+            //------------- b ----------------
+            // to collection position
+            if (gamepad1.b)
+            {
+                armStuff.stopSam();
+                if (Math.abs(armStuff.getJ1CurrentPosition()) < 100 && Math.abs(armStuff.getJ2CurrentPosition()) < 100 && Math.abs(armStuff.getJ3CurrentPosition()) < 100)
+                {
+                    armStuff.toCollectionPlane();
+                }
+                else
+                {
+                    runTime.reset();
+                    armStuff.toCrater();
+                    telemetry.addData("Time", runTime.time(TimeUnit.SECONDS));
+                }
+            }
+
+            //------------- x ----------------
+            // to deposit position
+            if (gamepad1.x)
             {
                 runTime.reset();
-                armStuff.toCrater();
-                telemetry.addData("Time", runTime.time(TimeUnit.SECONDS));
+                armStuff.toLanderSilver();
+                telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
             }
-        }
 
-        //------------- x ----------------
-        // to deposit position
-        if (gamepad1.x)
-        {
-            runTime.reset();
-            armStuff.toLanderSilver();
-            telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
-        }
-
-        //------------- y ----------------
-        if (gamepad1.y)
-        {
-            //            armStuff.stopAll();
-            runTime.reset();
-            armStuff.toLanderGold();
+            //------------- y ----------------
+            if (gamepad1.y)
+            {
+                //            armStuff.stopAll();
+                runTime.reset();
+                armStuff.toLanderGold();
             telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
         }
 
         //------------- dpad ----------------
-        if (gamepad1.dpad_up)
+        /*if (gamepad1.dpad_up)
         {
             armStuff.up();
-        }
+        }*/
         if (gamepad1.dpad_right)
         {
             armStuff.right();
         }
-        if (gamepad1.dpad_down)
+        /*if (gamepad1.dpad_down)
         {
             armStuff.down();
-        }
+        }/*/
         if (gamepad1.dpad_left)
         {
             armStuff.left();
@@ -143,35 +147,32 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         }
 
         //------------- left_stick_y----------------
-        if (gamepad1.left_stick_y > 0.1)
-        {
-            armStuff.driveJ2(gamepad1.left_stick_y);
-        }
-        else if (gamepad1.left_stick_y < -0.1)
-        {
-            armStuff.driveJ2(gamepad1.left_stick_y);
-        }
-        else
-        {
-            armStuff.stopJ2();
-        }
+        if(gamepad1.dpad_up) {
+            isPlaneOfMotion = true;
+        } if (gamepad1.dpad_down){
+                isPlaneOfMotion = false;
+    }
 
-        //------------- right_stick_x----------------
-        //Currently available
-        //------------- right_stick_y----------------
-        if (gamepad1.right_stick_y > 0.1)
-        {
-            armStuff.driveJ3(gamepad1.right_stick_y);
-        }
-        else if (gamepad1.right_stick_y < -0.1)
-        {
-            armStuff.driveJ3(gamepad1.right_stick_y);
-        }
-        else
-        {
-            armStuff.stopJ3();
-        }
+        if (!isPlaneOfMotion) {
+            if (gamepad1.left_stick_y > 0.1) {
+                armStuff.driveJ2(gamepad1.left_stick_y);
+            } else if (gamepad1.left_stick_y < -0.1) {
+                armStuff.driveJ2(gamepad1.left_stick_y);
+            } else {
+                armStuff.stopJ2();
+            }
 
+            //------------- right_stick_x----------------
+            //Currently available
+            //------------- right_stick_y----------------
+            if (gamepad1.right_stick_y > 0.1) {
+                armStuff.driveJ3(gamepad1.right_stick_y);
+            } else if (gamepad1.right_stick_y < -0.1) {
+                armStuff.driveJ3(gamepad1.right_stick_y);
+            } else {
+                armStuff.stopJ3();
+            }
+        }
 
         /************************ gamepad 2 ************************/
         //------------- a ----------------
