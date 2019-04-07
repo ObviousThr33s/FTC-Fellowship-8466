@@ -51,8 +51,7 @@ import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
  ****************************************************************************************************/
 @TeleOp(name = "Samwise: Teleop Tank 3", group = "Samwise")
 @Disabled
-public class SamwiseTeleOp3 extends OpMode
-{
+public class SamwiseTeleOp3 extends OpMode {
 
     /* Declare OpMode members. */
     public SamwiseHanger swHang = new SamwiseHanger();
@@ -81,8 +80,7 @@ public class SamwiseTeleOp3 extends OpMode
 
 
     @Override
-    public void init()
-    {
+    public void init() {
         swHang.init(hardwareMap, telemetry);
 
         //swDTrain.init(hardwareMap, telemetry);
@@ -102,21 +100,18 @@ public class SamwiseTeleOp3 extends OpMode
 
 
     @Override
-    public void init_loop()
-    {
+    public void init_loop() {
     }
 
     @Override
-    public void start()
-    {
+    public void start() {
     }
 
     /**
      * This is where our main teleop gamepad input and functions mapping go.
      */
     @Override
-    public void loop()
-    {
+    public void loop() {
         /************************************** Gamepad #1 Mappings *************************************
          *                               Samwise Drive Train and Hanging                                *
          *                       (Please add related function mappings below)                           *
@@ -140,18 +135,15 @@ public class SamwiseTeleOp3 extends OpMode
             return;
         }*/
 
-        if (gamepad2.left_bumper)
-        {
+        if (gamepad2.left_bumper) {
             swHang.unHook();
         }
 
-            if (gamepad2.right_bumper)
-        {
+        if (gamepad2.right_bumper) {
             swHang.Hook();
         }
 
-        if (gamepad2.a)
-        {
+        if (gamepad2.a) {
             swHang.markerservo1.setPosition(.76);
         }
 
@@ -173,32 +165,27 @@ public class SamwiseTeleOp3 extends OpMode
 //        }
 
         // to avoid driving with very small powers not visible) even with no button pressed
-        if (Math.abs(gamepad2.left_stick_x) > 0.1 || Math.abs(gamepad2.left_stick_y) > 0.1)
-        {
-            if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y))
-            {
+        if (Math.abs(gamepad2.left_stick_x) > 0.1 || Math.abs(gamepad2.left_stick_y) > 0.1) {
+            if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y)) {
 
                 float MotorPower = gamepad2.left_stick_y;
 
                 leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                leftdrive.setPower(-1*MotorPower * powerlevel);
-                rightdrive.setPower(-1* MotorPower * powerlevel);
+                leftdrive.setPower(-1 * MotorPower * powerlevel);
+                rightdrive.setPower(-1 * MotorPower * powerlevel);
                 //System.out.println("==> moving ...");
             }
-            if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y))
-            {
+            if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
                 float TurnMotorPower = gamepad2.left_stick_x;
 
                 leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                leftdrive.setPower(-1*TurnMotorPower * powerlevel);
+                leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
                 rightdrive.setPower(TurnMotorPower * powerlevel);
                 //System.out.println("==> turning ...");
             }
-        }
-        else
-        {
+        } else {
             leftdrive.setPower(0);
             rightdrive.setPower(0);
         }

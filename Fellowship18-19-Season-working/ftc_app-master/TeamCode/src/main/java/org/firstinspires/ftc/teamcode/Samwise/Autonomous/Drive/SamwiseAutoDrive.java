@@ -129,13 +129,13 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         //Unhinging Robot
         //hanger.encoderDrive(this,1,0.9,1);
-        System.out.println("==> hanger encoder1 : "+hanger.hangermotor1.getCurrentPosition());
+        //System.out.println("==> hanger encoder1 : "+hanger.hangermotor1.getCurrentPosition());
 
-        hanger.hangermotor1.setPower(-1);
-        sleep(200);
+        //hanger.hangermotor1.setPower(-1);
+        //sleep(200);
         //hanger.hangermotor1.setPower(0);
 
-        System.out.println("==> hanger encoder2 : "+hanger.hangermotor1.getCurrentPosition());
+        //System.out.println("==> hanger encoder2 : "+hanger.hangermotor1.getCurrentPosition());
 
         //landing the Robot
         //hanger.encoderDrive(this, 1, 3000);
@@ -144,11 +144,11 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
         //Unhooking
         hanger.unHook();
-
-        //rotate J3 up
-        //J3.setPower(1);
-
-        sleep(700); //wait until the hook fully opens
+        sleep(400); //wait until the hook fully opens
+        while (hanger.hangerservo1.getPosition()>0.1){
+            hanger.unHook();
+            sleep(200);
+        }
 
         // stop J3
         //J3.setPower(0);
