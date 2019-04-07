@@ -34,44 +34,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     int previousPositionJ2 = initialCollectionPosJ2;
     int previousPositionJ3 = initialCollectionPosJ3;
 
-
-    /********************** 90/90 turn deposit extednded initial ***********************/
-
-    int J1_LANDER_GOLD_extendedArm = -600;
-    int J2_LANDER_GOLD_extendedArm = 459;
-    int J3_LANDER_GOLD_extendedArm = 2541;
-
-    int J1_LANDER_SILVER_extendedArm = -900;
-    int J2_LANDER_SILVER_extendedArm = 459;
-    int J3_LANDER_SILVER_extendedArm = 2541;
-
-    int initialCollectionPosJ1_extendedArm = 1450;
-    int initialCollectionPosJ2_extendedArm = 1462;
-    int initialCollectionPosJ3_extendedArm = 1387;
-
-    int previousPositionJ1_extendedArm = initialCollectionPosJ1_extendedArm;
-    int previousPositionJ2_extendedArm = initialCollectionPosJ2_extendedArm;
-    int previousPositionJ3_extendedArm = initialCollectionPosJ3_extendedArm;
-
-    /********************** Overhead deposit start ***********************/
-
-    int J1_LANDER_GOLD_OVERHEAD = -600;
-    int J2_LANDER_GOLD_OVERHEAD = 792;
-    int J3_LANDER_GOLD_OVERHEAD = 6985;
-
-    int J1_LANDER_SILVER_OVERHEAD = -900;
-    int J2_LANDER_SILVER_OVERHEAD = 792;
-    int J3_LANDER_SILVER_OVERHEAD = 6985;
-
-    int initialCollectionPosJ1_overhead = -600;
-    int initialCollectionPosJ2_overhead = 1462;
-    int initialCollectionPosJ3_overhead = 1387;
-
-    int previousCollectionPositionJ1_overhead = initialCollectionPosJ1_overhead;
-    int previousCollectionPositionJ2_overhead = initialCollectionPosJ2_overhead;
-    int previousCollectionPositionJ3_overhead = initialCollectionPosJ3_overhead;
-
-    /********************** sShared ***********************/
+    /********************** Shared ***********************/
     static final double J1_POWER = 0.6;
     static final double J2_POWER = 0.6;
     static final double J3_POWER = 0.6;
@@ -201,85 +164,12 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         previousPositionJ3 = motorJ3.getCurrentPosition();
     }
 
-    /*********************** overhead ***************/
-
-    public void toCollectionPlaneOverhead()
-    {
-        toPosition(J1_POWER, J2_POWER, J3_POWER, initialCollectionPosJ1_overhead, initialCollectionPosJ2_overhead, initialCollectionPosJ2_overhead, initialCollectionPosJ3_overhead);
-    }
-
-    public void toLanderGoldOverhead()
-    {
-        this.inSilverDeposit = true;
-
-        runTime.reset();
-        savePreviousPositionOverhead();
-        toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_GOLD_OVERHEAD, J2_LANDER_GOLD_OVERHEAD, J2_LANDER_GOLD_OVERHEAD, J3_LANDER_GOLD_OVERHEAD);
-        robot.encoderDrive(null, 15, 3);
-    }
-
-    public void toLanderSilverOverhead()
-    {
-        this.inSilverDeposit = true;
-        runTime.reset();
-        savePreviousPositionOverhead();
-        toPosition(J1_POWER, J2_POWER, J3_POWER, J1_LANDER_SILVER_OVERHEAD, J2_LANDER_SILVER_OVERHEAD, J2_LANDER_SILVER_OVERHEAD, J3_LANDER_SILVER_OVERHEAD);
-        robot.encoderDrive(null, 15, 3);
-    }
-
-    public void backFromLanderOverhead()
-    {
-        this.saveLanderPositionOverhead();
-        this.inSilverDeposit = false;
-        this.inGoldDeposit = false;
-        stopSam();
-
-        toPosition(J1_POWER, J2_POWER, J3_POWER, previousCollectionPositionJ1_overhead, previousCollectionPositionJ2_overhead, previousCollectionPositionJ2_overhead, previousCollectionPositionJ3_overhead);
-        robot.encoderDrive(null, -15, 3);
-    }
-
-
-    public void saveLanderPositionOverhead()
-    {
-        if (this.inSilverDeposit)
-        {
-            this.saveLanderPositionOverheadSilver();
-        }
-        if (this.inGoldDeposit)
-        {
-            this.saveLanderPositionOverheadGold();
-        }
-    }
-
-
-    private void saveLanderPositionOverheadGold()
-    {
-        J1_LANDER_GOLD_OVERHEAD = motorJ1.getCurrentPosition();
-        J2_LANDER_GOLD_OVERHEAD = motor1J2.getCurrentPosition();
-        J3_LANDER_GOLD_OVERHEAD = motorJ3.getCurrentPosition();
-    }
-
-    private void saveLanderPositionOverheadSilver()
-    {
-        J1_LANDER_SILVER_OVERHEAD = motorJ1.getCurrentPosition();
-        J2_LANDER_SILVER_OVERHEAD = motor1J2.getCurrentPosition();
-        J3_LANDER_SILVER_OVERHEAD = motorJ3.getCurrentPosition();
-    }
-
-
-    public void savePreviousPositionOverhead()
-    {
-        previousCollectionPositionJ1_overhead = motorJ1.getCurrentPosition();
-        previousCollectionPositionJ2_overhead = motor2J2.getCurrentPosition();
-        previousCollectionPositionJ3_overhead = motorJ3.getCurrentPosition();
-    }
 
     public void toPosition(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
     {
         runTime.reset();
 
         isStop = false;
-//        trapezoid.setTrapezoidTarget(motorJ3, j3Power, j3Position);
 
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setTargetPosition(j3Position);
@@ -289,8 +179,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         {
         }
 */
-//        trapezoid.setTrapezoidTarget(motor1J2, j2Power, j2Position2);
-//        trapezoid.setTrapezoidTarget(motor2J2, j2Power, j2Position2);
 
         motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -303,7 +191,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     {
     }*/
 
-//        trapezoid.setTrapezoidTarget(motorJ1, j1Power, j1Position);
 
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);
@@ -333,15 +220,9 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motorJ3.setTargetPosition(j3Position);
         motorJ3.setPower(j3Power);
 
-//        trapezoid.setTrapezoidTarget(motor1J2, j2Power, j2Position2);
-//        trapezoid.setTrapezoidTarget(motor2J2, j2Power, j2Position2);
-//        trapezoid.setTrapezoidTarget(motorJ3, j3Power, j3Position);
-
         while ((motor2J2.getCurrentPosition() - 459) > 50 && motorJ3.getCurrentPosition() > SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }
-
-//        trapezoid.setTrapezoidTarget(motorJ1, j1Power, j1Position);
 
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);
@@ -360,7 +241,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     {
         runTime.reset();
         robot.makeTurnWithoutWait(90);
-//        trapezoid.setTrapezoidTarget(motorJ1, j1Power, j1Position);
 
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);
@@ -372,9 +252,6 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         }
 
         System.out.println("toPositionReverse Time1: " + runTime.time(TimeUnit.SECONDS));
-//        trapezoid.setTrapezoidTarget(motor1J2, j2Power, j2Position2);
-//        trapezoid.setTrapezoidTarget(motor2J2, j2Power, j2Position2);
-//        trapezoid.setTrapezoidTarget(motorJ3, j3Power, j3Position);
 
         motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
