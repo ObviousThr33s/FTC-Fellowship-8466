@@ -55,42 +55,39 @@ public class BetterPlaneofMotion extends OctoArmTeleOp {
             if (gamepad1.left_stick_y>0.1) {
                 J3.setTargetPosition(500);
                 goingforward = true;
-
             } if (gamepad1.left_stick_y <-0.1) {
                 J2.setTargetPosition(-500);
                 J22.setTargetPosition(-500);
                 goingforward = false;
             }
-            J2targetpos = (int)(J3.getCurrentPosition()/ 1.6);
-            J3targetpos = (int)(J2.getCurrentPosition()* 1.6);
-
-            if (goingforward == true){
-                J3.setPower(Math.abs(gamepad1.left_stick_y)/2);
-                J3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                J2.setTargetPosition(J2targetpos);
-                J22.setTargetPosition(J2targetpos);
-                J2.setPower(0.3);
-                J22.setPower(0.3);
-                J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                J22.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                if ((gamepad1.left_stick_y<0.1)&&(gamepad1.left_stick_y>-0.1)) {
-                    J3.setPower(0);
-                }
-            } if (goingforward == false) {
-                J2.setPower(Math.abs(gamepad1.left_stick_y)/2);
-                J22.setPower(Math.abs(gamepad1.left_stick_y)/2);
-                J22.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                J3.setTargetPosition(J3targetpos);
-                J3.setPower(0.3);
-                J3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                if ((gamepad1.left_stick_y<0.1)&&(gamepad1.left_stick_y>-0.1)) {
-                    J2.setPower(0);
-                    J22.setPower(0);
-                }
+        }
+        J2targetpos = (int)(J3.getCurrentPosition()/ 1.6);
+        J3targetpos = (int)(J2.getCurrentPosition()* 1.6);
+        if (goingforward == true){
+            J3.setPower(Math.abs(gamepad1.left_stick_y)/2);
+            J3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            J2.setTargetPosition(J2targetpos);
+            J22.setTargetPosition(J2targetpos);
+            J2.setPower(0.3);
+            J22.setPower(0.3);
+            J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            J22.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if ((gamepad1.left_stick_y<0.1)&&(gamepad1.left_stick_y>-0.1)) {
+                J3.setPower(0);
+            }
+        } if (goingforward == false) {
+            J2.setPower(Math.abs(gamepad1.left_stick_y)/2);
+            J22.setPower(Math.abs(gamepad1.left_stick_y)/2);
+            J22.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            J3.setTargetPosition(J3targetpos);
+            J3.setPower(0.3);
+            J3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if ((gamepad1.left_stick_y<0.1)&&(gamepad1.left_stick_y>-0.1)) {
+                J2.setPower(0);
+                J22.setPower(0);
             }
         }
-
 
     }
 }
