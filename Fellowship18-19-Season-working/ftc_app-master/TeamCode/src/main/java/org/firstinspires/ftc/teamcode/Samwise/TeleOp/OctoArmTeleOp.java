@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TrapezoidSpeed;
 import java.util.concurrent.TimeUnit;
 
 @TeleOp(name = "Samwise: Teleop Tank 3", group = "Samwise")
-@Disabled
+
 public class OctoArmTeleOp extends SamwiseTeleOp3
 {
     private OctoSamwiseGenius armStuff;
