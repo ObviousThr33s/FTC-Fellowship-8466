@@ -76,7 +76,21 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         }
 
         //------------- dpad ----------------
+        // --------------- pom ---------------------
         if (gamepad1.dpad_up)
+        {
+            armStuff.hoverPlaneOfMotion(-1);
+        }
+        if (gamepad1.dpad_down)
+        {
+            armStuff.hoverPlaneOfMotion(1);
+        }
+        if (!gamepad1.dpad_up && !gamepad1.dpad_down)
+        {
+            armStuff.hoverPlaneOfMotion(0);
+        }
+
+       /* if (gamepad1.dpad_up)
         {
             armStuff.up();
         }
@@ -91,10 +105,10 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         if (gamepad1.dpad_left)
         {
             armStuff.left();
-        }
+        }*/
 
         //------------- triggers ----------------
-        // collection and deposit
+      /*  // collection and deposit
         if (gamepad1.left_trigger > 0.1)
         {
             if (armStuff.isInCollectionPlane()) armStuff.toCollectionPlane();
@@ -116,7 +130,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         {
             if (armStuff.isInCollectionPlane())
                 armStuff.toPositionWithoutJ1(armStuff.pos4J2, armStuff.pos4J3);
-        }
+        }*/
 
         //------------- bumpers----------------
 /*        if (gamepad1.left_bumper)
@@ -259,7 +273,5 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         {
             armStuff.moveJ4Down();
         }
-
-//        armStuff.hoverPlaneOfMotion(gamepad1.right_stick_x);
     }
 }

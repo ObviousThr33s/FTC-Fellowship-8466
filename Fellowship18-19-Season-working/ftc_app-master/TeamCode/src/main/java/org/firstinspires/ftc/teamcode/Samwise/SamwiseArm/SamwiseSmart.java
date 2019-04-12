@@ -17,15 +17,15 @@ public class SamwiseSmart extends SamwiseArm
 
     int J1_LANDER_GOLD = -900;
     int J2_LANDER_GOLD = 459;
-    int J3_LANDER_GOLD = -2541;
+    int J3_LANDER_GOLD = 2541;
 
     int J1_LANDER_SILVER = -600;
     int J2_LANDER_SILVER = 459;
-    int J3_LANDER_SILVER = -2541;
+    int J3_LANDER_SILVER = 2541;
 
     int initialCollectionPosJ1 = 1450;
     int initialCollectionPosJ2 = 1462;
-    int initialCollectionPosJ3 = -1387;
+    int initialCollectionPosJ3 = 1387;
 
     int previousPositionJ1 = initialCollectionPosJ1;
     int previousPositionJ2 = initialCollectionPosJ2;

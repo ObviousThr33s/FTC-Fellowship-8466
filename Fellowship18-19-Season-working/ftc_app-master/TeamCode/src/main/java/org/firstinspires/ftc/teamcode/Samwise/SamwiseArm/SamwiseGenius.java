@@ -15,7 +15,7 @@ public class SamwiseGenius extends SamwiseSmart
     private static final double SAFFE_DEGREES_DIFF = 2;
 
     static final double MAX_POWER_J2 = 0.5;
-    static final double MAX_POWER_J3 = 0.5;
+    static final double MAX_POWER_J3 = 0.8;
 
     /****************** Start: update as hardware or autonomous changes ***************/
     static final double L1 = 21.5; //length between J2 and J3
@@ -59,6 +59,11 @@ public class SamwiseGenius extends SamwiseSmart
     private double pomHeight = -1;
 
     private int loop = 0;
+
+    private boolean isExpanding = false;
+    private boolean isRetracting = false;
+
+    private static final boolean RETRACT_J2_FIRST = true;
 
     public SamwiseGenius(HardwareMap hwm)
     {
@@ -179,9 +184,9 @@ public class SamwiseGenius extends SamwiseSmart
         }
     }
 
-    private List<Double> calculateJ2J3DegreesWithRestriction(double height, double L3)
+    private List <Double> calculateJ2J3DegreesWithRestriction(double height, double L3)
     {
-        List<Double> result = new ArrayList<>(2);
+        List <Double> result = new ArrayList <>(2);
 
         double k_sqrd     = L3 * L3 + height * height;
         double k          = Math.sqrt(k_sqrd);
@@ -253,7 +258,11 @@ public class SamwiseGenius extends SamwiseSmart
         // stop when joystick/speed is zero
         if (Math.abs(speed) <= ZERO_GATE)
         {
-            if (this.pomHeight > 0) this.stopPOM();
+            if (this.pomHeight > 0)
+            {
+                this.stopPOM();
+                this.isPOM = false;
+            }
             return;
         }
 
@@ -265,6 +274,7 @@ public class SamwiseGenius extends SamwiseSmart
         //if height/minimum/maximum was never calculated before, do it and start POM
         if (pomHeight < 0)
         {
+            super.isPOM = true;
             this.startPOM(speed);
 
             System.out.println("The loop takes " + (System.currentTimeMillis() - startTime) + " milliseconds.");
@@ -276,6 +286,7 @@ public class SamwiseGenius extends SamwiseSmart
         if ((speed < 0 && Math.abs(getJ3CurrentPosition() - maximum_ticks_J3) <= ZERO_TICKS) || (speed > 0 && Math.abs(getJ2CurrentPosition() - minimum_ticks_J2) <= ZERO_TICKS))
         {
             this.stopPOM();
+            this.isPOM = false;
         }
         else //maintain POM
         {
@@ -287,20 +298,30 @@ public class SamwiseGenius extends SamwiseSmart
 
     private void stopPOM()
     {
-        //todo: different depending on expanding or retracting
-        //fix J3 position according to J2 position in order stay on the  plane.
-        super.motor1J2.setPower(0);
-        super.motor2J2.setPower(0);
-        double J3Degrees      = this.calculateJ3Degrees(INITIAL_DEGREES_J2 - getJ2CurrentPosition() / TICKS_PER_DEGREE_J2);
-        int    targetPosition = (int) ((J3Degrees - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
-        super.motorJ3.setTargetPosition(targetPosition);
-        while (Math.abs(motorJ3.getCurrentPosition() - targetPosition) > ZERO_TICKS && runTime.time(TimeUnit.SECONDS) < 4)
+        if (!RETRACT_J2_FIRST && this.isRetracting)
         {
-            // wait
+            //fix J3 position according to J2 position in order stay on the  plane.
+            super.motor1J2.setPower(0);
+            super.motor2J2.setPower(0);
+            double J3Degrees      = this.calculateJ3Degrees(INITIAL_DEGREES_J2 - getJ2CurrentPosition() / TICKS_PER_DEGREE_J2);
+            int    targetPosition = (int) ((J3Degrees - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
+            super.motorJ3.setTargetPosition(targetPosition);
+            System.out.println("POM Stopped from retracting.");
+        }
+        if (RETRACT_J2_FIRST || this.isExpanding)
+        {
+            //fix J2 position according to J3 position in order stay on the  plane.
+            super.motorJ3.setPower(0);
+            double J2Degrees      = this.calculateJ2Degrees(getJ3CurrentPosition() / TICKS_PER_DEGREE_J3 + INITIAL_DEGREES_J3);
+            int    targetPosition = (int) ((INITIAL_DEGREES_J2 - J2Degrees) * TICKS_PER_DEGREE_J2);
+            super.motor1J2.setTargetPosition(targetPosition);
+            super.motor2J2.setTargetPosition(targetPosition);
+            System.out.println("POM Stopped from "+(RETRACT_J2_FIRST?"retracting":"expanding")+".");
         }
         this.pomHeight = -1;
         this.loop = 0;
-        System.out.println("POM Stopped.");
+        this.isRetracting = false;
+        this.isExpanding = false;
     }
 
     private void startPOM(double speed)
@@ -380,37 +401,37 @@ public class SamwiseGenius extends SamwiseSmart
         System.out.println("maximum_ticks_J3: " + maximum_ticks_J3);
 
         // apply angle speed to motors
-        this.motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        super.motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        super.motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        super.motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if (speed < 0)    //(joystick up) expanding : move J3 first
         {
             if (Math.abs(getJ3CurrentPosition() - maximum_ticks_J3) > ZERO_TICKS)
             {
-                this.motorJ3.setTargetPosition(maximum_ticks_J3);
-                this.motorJ3.setPower(MAX_POWER_J3);
+                super.motorJ3.setTargetPosition(maximum_ticks_J3);
+                super.motorJ3.setPower(MAX_POWER_J3);
+                this.isExpanding = true;
                 System.out.println("Start POM -- expanding, J3 Target set to: " + super.motorJ3.getTargetPosition());
-
-                /*while (Math.abs(motorJ3.getCurrentPosition() - maximum_ticks_J3) > ZERO_TICKS && runTime.time(TimeUnit.SECONDS) < 4)
-                {
-                    this.maintainPOM(speed);
-                }*/
             }
         }
         else            //(joystick down)retracting: move J2 first
         {
             if (Math.abs(getJ2CurrentPosition() - minimum_ticks_J2) > ZERO_TICKS)
             {
-                this.motor1J2.setTargetPosition(minimum_ticks_J2);
-                this.motor2J2.setTargetPosition(minimum_ticks_J2);
-                this.motor1J2.setPower(MAX_POWER_J2);
-                this.motor2J2.setPower(MAX_POWER_J2);
-                System.out.println("Start POM -- retracting, J2 Target set to: " + super.motor2J2.getTargetPosition());
-
-                /*while (Math.abs(motor2J2.getCurrentPosition() - minimum_ticks_J2) > ZERO_TICKS && runTime.time(TimeUnit.SECONDS) < 4)
+                if (RETRACT_J2_FIRST)
                 {
-                    this.maintainPOM(speed);
-                }*/
+                    super.motor1J2.setTargetPosition(minimum_ticks_J2);
+                    super.motor2J2.setTargetPosition(minimum_ticks_J2);
+                    super.motor1J2.setPower(MAX_POWER_J2);
+                    super.motor2J2.setPower(MAX_POWER_J2);
+                }
+                else
+                {
+                    super.motorJ3.setTargetPosition(minimum_ticks_J3);
+                    super.motorJ3.setPower(MAX_POWER_J3);
+                }
+                this.isRetracting = true;
+                System.out.println("Start POM -- retracting, J2 Target set to: " + super.motor2J2.getTargetPosition());
             }
         }
     }
@@ -418,25 +439,22 @@ public class SamwiseGenius extends SamwiseSmart
     private void maintainPOM(double speed)
     {
         // apply angle speed to motors
-        if (speed < 0)    //expanding
+        if (!RETRACT_J2_FIRST || speed < 0)    //expanding
         {
             double J3ticks = getJ3CurrentPosition();
             double J3Deg   = J3ticks / TICKS_PER_DEGREE_J3 + INITIAL_DEGREES_J3;
+            System.out.println("J3 degrees: " + J3Deg);
 
             //Dist from J2 to J4
             double J2Deg = this.calculateJ2Degrees(J3Deg);
+            System.out.println("J2 degrees: " + J2Deg);
             int targetPositionJ2 = (int) ((INITIAL_DEGREES_J2 - J2Deg) * TICKS_PER_DEGREE_J2);
-            this.motor1J2.setTargetPosition(targetPositionJ2);
-            this.motor2J2.setTargetPosition(targetPositionJ2);
-            this.motor1J2.setPower(MAX_POWER_J2);
-            this.motor2J2.setPower(MAX_POWER_J2);
-            System.out.println("Maintain POM -- expanding: J3 is at: " + J3ticks);
-            System.out.println("Maintain POM -- expanding: J2 Target set to: " + targetPositionJ2);
-
-            /*while ((Math.abs(motor1J2.getCurrentPosition()-targetPositionJ2)>ZERO_TICKS || Math.abs(motor2J2.getCurrentPosition()-targetPositionJ2)>ZERO_TICKS || Math.abs(motorJ3.getCurrentPosition() - maximum_ticks_J3) > ZERO_TICKS) && runTime.time(TimeUnit.SECONDS) < 4)
-            {
-                this.maintainPOM(speed);
-            }*/
+            super.motor1J2.setTargetPosition(targetPositionJ2);
+            super.motor2J2.setTargetPosition(targetPositionJ2);
+            super.motor1J2.setPower(MAX_POWER_J2);
+            super.motor2J2.setPower(MAX_POWER_J2);
+            System.out.println("Maintain POM -- " + (!RETRACT_J2_FIRST ? "retracting" : "expanding") + ": J3 is at: " + J3ticks);
+            System.out.println("Maintain POM -- " + (!RETRACT_J2_FIRST ? "retracting" : "expanding") + ": J2 Target set to: " + targetPositionJ2);
         }
         else            //retracting
         {
@@ -444,21 +462,16 @@ public class SamwiseGenius extends SamwiseSmart
             double J2Deg            = INITIAL_DEGREES_J2 - J2ticks / TICKS_PER_DEGREE_J2;
             double J3Deg            = this.calculateJ3Degrees(J2Deg);
             int    targetPositionJ3 = (int) ((J3Deg - INITIAL_DEGREES_J3) * TICKS_PER_DEGREE_J3);
-            this.motorJ3.setTargetPosition(targetPositionJ3);
-            this.motorJ3.setPower(MANUAL_POWER_J3);
+            super.motorJ3.setTargetPosition(targetPositionJ3);
+            super.motorJ3.setPower(1);
             System.out.println("Maintain POM -- retracting: J2 is at: " + J2ticks);
             System.out.println("Maintain POM -- retracting: J3 Target set to: " + super.motorJ3.getTargetPosition());
-
-            /*while ((Math.abs(motorJ3.getCurrentPosition() - targetPositionJ3) > ZERO_TICKS || Math.abs(motor2J2.getCurrentPosition() - minimum_ticks_J2) > ZERO_TICKS) && runTime.time(TimeUnit.SECONDS) < 4)
-            {
-                this.maintainPOM(speed);
-            }*/
         }
     }
 
-    private List<Double> calculateJ2J3Degrees(double L3)
+    private List <Double> calculateJ2J3Degrees(double L3)
     {
-        List<Double> result = new ArrayList<>(2);
+        List <Double> result = new ArrayList <>(2);
 
         double k_sqrd     = L3 * L3 + pomHeight * pomHeight;
         double k          = Math.sqrt(k_sqrd);
@@ -474,7 +487,7 @@ public class SamwiseGenius extends SamwiseSmart
 
     private double calculateJ2Degrees(double j3Deg)
     {
-        double k_sqrd = Math.sqrt(Math.pow(L2, 2) + Math.pow(L1, 2) - Math.cos(Math.toRadians(j3Deg)) * 2 * L2 * L1);
+        double k_sqrd = Math.pow(L2, 2) + Math.pow(L1, 2) - Math.cos(Math.toRadians(j3Deg)) * 2 * L2 * L1;
         double k      = Math.sqrt(k_sqrd);
         double J2Deg1 = Math.toDegrees(Math.asin(pomHeight / k));
         double J2Deg2 = Math.toDegrees(Math.acos((L1 * L1 + k_sqrd - L2 * L2) / (2 * L1 * k)));

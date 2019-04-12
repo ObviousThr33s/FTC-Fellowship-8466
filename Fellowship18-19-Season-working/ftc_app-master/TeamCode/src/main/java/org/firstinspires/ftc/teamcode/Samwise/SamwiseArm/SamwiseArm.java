@@ -37,6 +37,8 @@ public class SamwiseArm extends OctoSamwiseCollection
     boolean isManualJ2 = false;
     boolean isManualJ3 = false;
 
+    boolean isPOM = false;
+
     public SamwiseArm(HardwareMap hwm)
     {
         super(hwm);
@@ -60,11 +62,13 @@ public class SamwiseArm extends OctoSamwiseCollection
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorJ3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorJ3.setDirection(DcMotorSimple.Direction.REVERSE);
+//        motorJ3.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void manualDriveJ1(double power)
     {
+        if (this.isPOM) return;
+
         if (Math.abs(power) > 0.1)
         {
             this.isManualJ1 = true;
@@ -91,6 +95,8 @@ public class SamwiseArm extends OctoSamwiseCollection
 
     public void manualStopJ1()
     {
+        if (this.isPOM) return;
+
         if (!this.isManualJ1) return;
 
         if (Math.abs(motorJ1.getPower()) > ZERO_MANUAL_POWER)
@@ -114,6 +120,8 @@ public class SamwiseArm extends OctoSamwiseCollection
 
     public void manualDriveJ3(double power)
     {
+        if (this.isPOM) return;
+
         if (Math.abs(power) > 0.1)
         {
             this.isManualJ3 = true;
@@ -141,6 +149,8 @@ public class SamwiseArm extends OctoSamwiseCollection
 
     public void manualStopJ3()
     {
+        if (this.isPOM) return;
+
         if (!this.isManualJ3) return;
 
         if (Math.abs(motorJ3.getPower()) > ZERO_MANUAL_POWER)
@@ -163,6 +173,8 @@ public class SamwiseArm extends OctoSamwiseCollection
 
     public void manualDriveJ2(double power)
     {
+        if (this.isPOM) return;
+
         if (Math.abs(power) > 0.1)
         {
             this.isManualJ2 = true;
@@ -193,6 +205,8 @@ public class SamwiseArm extends OctoSamwiseCollection
 
     public void manualStopJ2()
     {
+        if (this.isPOM) return;
+
         if (!this.isManualJ2) return;
 
         if (Math.abs(motor1J2.getPower()) > ZERO_MANUAL_POWER && Math.abs(motor2J2.getPower()) > ZERO_MANUAL_POWER)
@@ -240,28 +254,6 @@ public class SamwiseArm extends OctoSamwiseCollection
         return motorE1.getCurrentPosition();
     }
 
-    /************************************************************************************************
-     *               For OCTO Arm Only: Arm Extension/Retraction                                    *
-     ************************************************************************************************/
-
-    public void retractL1Auto()
-    {
-        motorE1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorE1.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorE1.setPower(0.2);
-        motorE1.setTargetPosition(0);
-    }
-
-    public void extendL2Auto()
-    {
-        servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
-        servoE2.setPower(E2_POWER);
-        try
-        {
-            Thread.sleep(25000);
-        }
-        catch (Exception e) {}
-    }
 
     public void stopExtendL1()
     {
@@ -271,25 +263,6 @@ public class SamwiseArm extends OctoSamwiseCollection
     public void stopExtendL2()
     {
         servoE2.setPower(0);
-    }
-
-    public void extendL1Auto()
-    {
-        motorE1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorE1.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorE1.setPower(0.8);
-        motorE1.setTargetPosition(E1_MAX_COUNT);
-    }
-
-    public void retractL2Auto()
-    {
-        servoE2.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoE2.setPower(E2_POWER);
-        try
-        {
-            Thread.sleep(25000);
-        }
-        catch (Exception e) {}
     }
 
     public void extendL1()
