@@ -140,12 +140,12 @@ public class SamwiseAutoDrive extends LinearOpMode {
         //landing the Robot
         //hanger.encoderDrive(this, 1, 3000);
         //sleep(2000);
-        hanger.encoderDrive(this, 1, 4900, 3);
+        hanger.encoderDrive(this, 1, 12850, 5.5);
 
         //Unhooking
         hanger.unHook();
         sleep(400); //wait until the hook fully opens
-        while (hanger.hangerservo1.getPosition()>0.1){
+        while (hanger.hangerservo1.getPosition()<0.4){
             hanger.unHook();
             sleep(200);
         }
@@ -192,7 +192,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         }
 
         //retracting the hanger without blocking the drive
-        hanger.encoderDriveNoWait(this, .6, 400);
+        hanger.encoderDriveNoWait(this, .6, 700);
 
         //driveToCrater the specific route
         driveRoute.drive();

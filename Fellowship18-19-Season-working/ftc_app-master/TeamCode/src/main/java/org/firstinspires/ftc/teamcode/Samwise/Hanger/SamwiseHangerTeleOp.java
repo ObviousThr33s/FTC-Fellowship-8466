@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Samwise.Conceptual.SamwiseRobot;
 
 @TeleOp(name = "HangerArmTeleOp v2")
-@Disabled
+//@Disabled
 public class SamwiseHangerTeleOp extends OpMode {
 
     //HardwareMap hw;
@@ -34,6 +34,8 @@ public class SamwiseHangerTeleOp extends OpMode {
 
     public void loop() {
 
+        System.out.println("==> hanger Motor position: "+swHang.hangermotor1.getCurrentPosition());
+        System.out.println("==> hanger servo position: "+swHang.hangerservo1.getPosition());
         swHang.move(gamepad2.right_stick_y);
 
         if (gamepad2.left_bumper) {

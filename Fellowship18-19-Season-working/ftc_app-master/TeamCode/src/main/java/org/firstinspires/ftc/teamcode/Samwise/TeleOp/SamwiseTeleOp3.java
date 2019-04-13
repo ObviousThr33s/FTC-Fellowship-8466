@@ -136,11 +136,11 @@ public class SamwiseTeleOp3 extends OpMode {
         }*/
 
         if (gamepad2.left_bumper) {
-            swHang.unHook();
+            swHang.Hook();
         }
 
         if (gamepad2.right_bumper) {
-            swHang.Hook();
+            swHang.unHook();
         }
 
         if (gamepad2.a) {

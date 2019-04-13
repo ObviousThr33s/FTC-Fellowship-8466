@@ -59,7 +59,7 @@ public class SamwiseDriveRouteFactory {
 
                 //driveTrain.resetAngle(AxesOrder.ZYX);
 
-                ((SamwiseDriveTrain) driveTrain).turn(samwiseDrive, 15, 2.5);
+                ((SamwiseDriveTrain) driveTrain).turn(samwiseDrive, 10, 2.5);
 
                 // make this wall driveToCrater using touch sensor
                 //driveTrain.encoderDrive(samwiseDrive, 66, 66,7);
@@ -171,7 +171,7 @@ public class SamwiseDriveRouteFactory {
                 //driveTrain.resetAngle(AxesOrder.ZYX);
 
                 //driveTrain.turnDrive(samwiseDrive, 12, 3);
-                ((SamwiseDriveTrain) driveTrain).turn(samwiseDrive, 14, 2.5);
+                ((SamwiseDriveTrain) driveTrain).turn(samwiseDrive, 10, 2.5);
 
 
                 // make this wall driveToCrater using touch sensor

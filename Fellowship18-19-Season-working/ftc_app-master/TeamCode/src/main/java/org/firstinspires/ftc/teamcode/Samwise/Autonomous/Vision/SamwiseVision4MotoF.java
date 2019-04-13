@@ -6,6 +6,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.robotcore.external.tfod.TfodRoverRuckus;
 import org.firstinspires.ftc.teamcode.AbstractPhysical.Vision;
 
 import java.util.ArrayList;
@@ -13,9 +14,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.firstinspires.ftc.robotcore.external.tfod.TfodRoverRuckus;
-
-public class SamwiseVision extends Vision {
+public class SamwiseVision4MotoF extends SamwiseVision {
     /**
      * on screen distance btwn samples and camera. Must be calibrated!!!
      */
@@ -38,10 +37,11 @@ public class SamwiseVision extends Vision {
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
 
+    /*
     public enum GoldPosition {
 
         LEFT, CENTER, RIGHT, UNKNOWN;
-    }
+    }*/
 
     enum CameraOrientation {
         ROTATE_0, ROTATE_90;
@@ -152,18 +152,18 @@ public class SamwiseVision extends Vision {
          }*/
 
         //Sort samples from right to left
-        Collections.sort(samples, new SortByBottom());
+        Collections.sort(samples, new SortByLeft());
 
         // ONLY should have two minerals
         System.out.println("==>Sample position right :" + samples.get(0));
         System.out.println("==>Sample position middle :" + samples.get(1));
 
         if (samples.get(0).getLabel().equals(TfodRoverRuckus.LABEL_GOLD_MINERAL)) {
-            return GoldPosition.RIGHT;
+            return GoldPosition.CENTER;
         }
 
         if (samples.get(1).getLabel().equals(TfodRoverRuckus.LABEL_GOLD_MINERAL)) {
-            return GoldPosition.CENTER;
+            return GoldPosition.RIGHT;
         }
 
         return GoldPosition.LEFT;
@@ -246,7 +246,7 @@ public class SamwiseVision extends Vision {
             System.out.println("==>" + recog);
         }
 
-        Collections.sort(recognitions, new SortByLeft());
+        Collections.sort(recognitions, new SortByBottom());
 
         System.out.println("==> --- after sorting --- size: " + recognitions.size());
         for (Recognition recog : recognitions) {
@@ -255,8 +255,8 @@ public class SamwiseVision extends Vision {
         /**
          * Consider ONLY first two minerals in the list
          */
-        float firstBoxSize = recognitions.get(0).getRight() - recognitions.get(0).getLeft();
-        float secondBoxSize = recognitions.get(1).getRight() - recognitions.get(1).getLeft();
+        float firstBoxSize = recognitions.get(0).getBottom() - recognitions.get(0).getTop();
+        float secondBoxSize = recognitions.get(1).getBottom() - recognitions.get(1).getTop();
 
         /**
          * ONLY add to samples when the two minerals:
@@ -270,7 +270,7 @@ public class SamwiseVision extends Vision {
             return null;
         }
 
-        double overlapRatio = recognitions.get(0).getTop() / recognitions.get(1).getTop();
+        double overlapRatio = recognitions.get(0).getLeft() / recognitions.get(1).getLeft();
         if (overlapRatio < 1.5 && overlapRatio > 0.7) {
             System.out.println("==> the two objects are too close to each other. Their overlap ratio = " + overlapRatio);
             return null;

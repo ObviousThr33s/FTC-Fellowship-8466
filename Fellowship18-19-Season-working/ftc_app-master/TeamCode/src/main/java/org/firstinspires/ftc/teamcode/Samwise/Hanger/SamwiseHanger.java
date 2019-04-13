@@ -45,18 +45,18 @@ public class SamwiseHanger {
     }
 
     public void Hook() {
-            hangerservo1.setPosition(0.5);
+            hangerservo1.setPosition(0);
     }
 
     public void unHook() {
-        hangerservo1.setPosition(0);
+        hangerservo1.setPosition(0.7);
     }
 
     public void hookUpdate() {
 
         if (Math.abs(hangerservo1.getPosition())<0.1)
         {
-            hangerservo1.setPosition(0.5);
+            hangerservo1.setPosition(0.6);
         }
         else
         {
