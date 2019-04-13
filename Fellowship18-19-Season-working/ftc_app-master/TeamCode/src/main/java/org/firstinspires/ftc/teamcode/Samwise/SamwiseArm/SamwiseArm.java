@@ -18,7 +18,7 @@ public class SamwiseArm extends OctoSamwiseCollection
     DcMotor motorE1;
     CRServo servoE2;
 
-    static final int E1_MAX_COUNT = 4661;
+    static final double JOYSTICK_SENSITIVITY = 0.1;
 
     public static final double MANUAL_POWER_J1 = 0.8;
     public static final double MANUAL_POWER_J2 = 0.4;
@@ -30,8 +30,6 @@ public class SamwiseArm extends OctoSamwiseCollection
     static final int TIME_POWER_RAMP_DOWN = 100;
 
     private ElapsedTime runtime = new ElapsedTime();
-
-    static final double ZERO_MANUAL_POWER = 0.01;
 
     boolean isManualJ1 = false;
     boolean isManualJ2 = false;
@@ -62,20 +60,17 @@ public class SamwiseArm extends OctoSamwiseCollection
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorJ3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorJ3.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void manualDriveJ1(double power)
     {
         if (this.isPOM) return;
 
-        if (Math.abs(power) > 0.1)
+        if (Math.abs(power) > JOYSTICK_SENSITIVITY)
         {
-            this.isManualJ1 = true;
-
             motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             //smooth start
-            if (Math.abs(motorJ1.getPower()) < 0.1)
+            if (!this.isManualJ1)
             {
                 runtime.reset();
                 long milliTime = runtime.time(TimeUnit.MILLISECONDS);
@@ -84,6 +79,7 @@ public class SamwiseArm extends OctoSamwiseCollection
                     motorJ1.setPower(-MANUAL_POWER_J1 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
                     milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 }
+                this.isManualJ1 = true;
             }
             else
             {
@@ -97,9 +93,7 @@ public class SamwiseArm extends OctoSamwiseCollection
     {
         if (this.isPOM) return;
 
-        if (!this.isManualJ1) return;
-
-        if (Math.abs(motorJ1.getPower()) > ZERO_MANUAL_POWER)
+        if (this.isManualJ1)
         {
             runtime.reset();
             long milliTime = runtime.time(TimeUnit.MILLISECONDS);
@@ -122,13 +116,10 @@ public class SamwiseArm extends OctoSamwiseCollection
     {
         if (this.isPOM) return;
 
-        if (Math.abs(power) > 0.1)
+        if (Math.abs(power) > JOYSTICK_SENSITIVITY)  // reduce joystick sensitivity
         {
-            this.isManualJ3 = true;
-
             motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            if (Math.abs(motorJ3.getPower()) < 0.1)
+            if (!this.isManualJ3)
             {
                 runtime.reset();
                 long milliTime = runtime.time(TimeUnit.MILLISECONDS);
@@ -137,6 +128,7 @@ public class SamwiseArm extends OctoSamwiseCollection
                     motorJ3.setPower(-MANUAL_POWER_J3 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
                     milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 }
+                this.isManualJ3 = true;
             }
             else
             {
@@ -151,9 +143,7 @@ public class SamwiseArm extends OctoSamwiseCollection
     {
         if (this.isPOM) return;
 
-        if (!this.isManualJ3) return;
-
-        if (Math.abs(motorJ3.getPower()) > ZERO_MANUAL_POWER)
+        if (this.isManualJ3)
         {
             runtime.reset();
             long milliTime = runtime.time(TimeUnit.MILLISECONDS);
@@ -166,7 +156,7 @@ public class SamwiseArm extends OctoSamwiseCollection
                 milliTime = runtime.time(TimeUnit.MILLISECONDS);
             }
             motorJ3.setPower(0);
-            this.isManualJ3=false;
+            this.isManualJ3 = false;
             System.out.println("manualStopJ3");
         }
     }
@@ -175,14 +165,11 @@ public class SamwiseArm extends OctoSamwiseCollection
     {
         if (this.isPOM) return;
 
-        if (Math.abs(power) > 0.1)
+        if (Math.abs(power) > JOYSTICK_SENSITIVITY)
         {
-            this.isManualJ2 = true;
-
             motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            if (Math.abs(motor1J2.getPower()) < 0.1 || Math.abs(motor2J2.getPower()) < 0.1)
+            if (!this.isManualJ2)
             {
                 runtime.reset();
                 long milliTime = runtime.time(TimeUnit.MILLISECONDS);
@@ -192,6 +179,7 @@ public class SamwiseArm extends OctoSamwiseCollection
                     motor2J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
                     milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 }
+                this.isManualJ2 = true;
             }
             else
             {
@@ -207,9 +195,7 @@ public class SamwiseArm extends OctoSamwiseCollection
     {
         if (this.isPOM) return;
 
-        if (!this.isManualJ2) return;
-
-        if (Math.abs(motor1J2.getPower()) > ZERO_MANUAL_POWER && Math.abs(motor2J2.getPower()) > ZERO_MANUAL_POWER)
+        if (this.isManualJ2)
         {
             runtime.reset();
             long milliTime = runtime.time(TimeUnit.MILLISECONDS);

@@ -10,33 +10,33 @@ public class SamwiseGenius extends SamwiseSmart
 {
     // small enough number to consider zero
     private static final double ZERO_GATE = 0.1;
-    private static final double ZERO_TICKS = 10;
+    static final double ZERO_TICKS = 10;
     private static final double SAFFE_DEGREES_DIFF = 2;
 
-    static final double MAX_POWER_J2 = 0.5;
-    static final double MAX_POWER_J3 = 0.8;
+    private static final double MAX_POWER_J2 = 0.5;
+    private static final double MAX_POWER_J3 = 0.8;
 
     /****************** Start: update as hardware or autonomous changes ***************/
-    static final double L1 = 21.5; //length between J2 and J3
-    static final double L2 = 21.75; //length between J3 and J4
-    static final double INITIAL_DEGREES_J2 = 211;
-    static final double INITIAL_DEGREES_J3 = 48;
-    static final double MIN_DEGREES_J2 = 120;
-    static final double MIN_DEGREES_J3 = INITIAL_DEGREES_J3;
-    static final double MAX_DEGREES_J2 = INITIAL_DEGREES_J2;
-    static final double MAX_DEGREES_J3 = 180;
+     static final double L1 = 21.5; //length between J2 and J3
+     static final double L2 = 21.75; //length between J3 and J4
+     static final double INITIAL_DEGREES_J2 = 211;
+     static final double INITIAL_DEGREES_J3 = 48;
+     static final double MIN_DEGREES_J2 = 120;
+     static final double MIN_DEGREES_J3 = INITIAL_DEGREES_J3;
+     static final double MAX_DEGREES_J2 = INITIAL_DEGREES_J2;
+     static final double MAX_DEGREES_J3 = 180;
 
-    static final double TICKS_PER_REVOLUTION_J1 = 1680;
-    static final double TICKS_PER_REVOLUTION_J2 = 383.6;
-    static final double TICKS_PER_REVOLUTION_J3 = 537.6;
-    static final double TICKS_PER_DEGREE_J1 = (TICKS_PER_REVOLUTION_J1 / 360.0) * 5;
-    static final double TICKS_PER_DEGREE_J2 = (TICKS_PER_REVOLUTION_J2 / 360.0) * 24;
-    static final double TICKS_PER_DEGREE_J3 = (TICKS_PER_REVOLUTION_J3 / 360.0) * 24;
+     static final double TICKS_PER_REVOLUTION_J1 = 1680;
+     static final double TICKS_PER_REVOLUTION_J2 = 383.6;
+     static final double TICKS_PER_REVOLUTION_J3 = 537.6;
+     static final double TICKS_PER_DEGREE_J1 = (TICKS_PER_REVOLUTION_J1 / 360.0) * 5;
+     static final double TICKS_PER_DEGREE_J2 = (TICKS_PER_REVOLUTION_J2 / 360.0) * 24;
+     static final double TICKS_PER_DEGREE_J3 = (TICKS_PER_REVOLUTION_J3 / 360.0) * 24;
 
-    static final double MIN_POM_HEIGHT = 9;
-    static final double MINIMUM_L3_RESTRICT = 15; // maximum is calculated.
+     static final double MIN_POM_HEIGHT = 9;
+     static final double MINIMUM_L3_RESTRICT = 15; // maximum is calculated.
 
-    static final double J4_COLLECTION_HEIGHT = 4;
+    private static final double J4_COLLECTION_HEIGHT = 4;
     /****************** End: update as hardware or autonomous changes ***************/
 
     // minimum horizontal distance between J2 and J4, in inches
@@ -51,12 +51,12 @@ public class SamwiseGenius extends SamwiseSmart
     private int maximum_ticks_J3 = -1;
 
     // vertical distance from between J2 and J4
-    private double pomHeight = -1;
+    double pomHeight = -1;
 
-    private int loop = 0;
+    int loop = 0;
 
-    private boolean isExpanding = false;
-    private boolean isRetracting = false;
+    boolean isExpanding = false;
+    boolean isRetracting = false;
 
     private static final boolean RETRACT_J2_FIRST = true;
 
@@ -119,7 +119,6 @@ public class SamwiseGenius extends SamwiseSmart
             if (this.pomHeight > 0)
             {
                 this.stopPOM();
-                this.isPOM = false;
             }
             return;
         }
@@ -144,7 +143,6 @@ public class SamwiseGenius extends SamwiseSmart
         if ((speed < 0 && Math.abs(getJ3CurrentPosition() - maximum_ticks_J3) <= ZERO_TICKS) || (speed > 0 && Math.abs(getJ2CurrentPosition() - minimum_ticks_J2) <= ZERO_TICKS))
         {
             this.stopPOM();
-            this.isPOM = false;
         }
         else //maintain POM
         {
@@ -180,6 +178,7 @@ public class SamwiseGenius extends SamwiseSmart
         this.loop = 0;
         this.isRetracting = false;
         this.isExpanding = false;
+        this.isPOM = false;
     }
 
     private void startPOM(double speed)
@@ -325,7 +324,7 @@ public class SamwiseGenius extends SamwiseSmart
         }
     }
 
-    private List <Double> calculateJ2J3Degrees(double L3, double height)
+    List <Double> calculateJ2J3Degrees(double L3, double height)
     {
         List <Double> result = new ArrayList <>(2);
 
@@ -341,7 +340,7 @@ public class SamwiseGenius extends SamwiseSmart
         return result;
     }
 
-    private double calculateJ2Degrees(double j3Deg, double height)
+    double calculateJ2Degrees(double j3Deg, double height)
     {
         double k_sqrd = Math.pow(L2, 2) + Math.pow(L1, 2) - Math.cos(Math.toRadians(j3Deg)) * 2 * L2 * L1;
         double k      = Math.sqrt(k_sqrd);
@@ -351,7 +350,7 @@ public class SamwiseGenius extends SamwiseSmart
         return 90 + J2Deg1 + J2Deg2;
     }
 
-    private double calculateJ3Degrees(double J2Degrees, double height)
+    double calculateJ3Degrees(double J2Degrees, double height)
     {
         double height_J2_J3 = Math.sin(Math.toRadians(J2Degrees - 90)) * L1;
         double height_J3_J4 = height_J2_J3 - height;
@@ -361,7 +360,7 @@ public class SamwiseGenius extends SamwiseSmart
     }
 
 
-    private double calculateHeight(double J2Deg, double J3Deg)
+    double calculateHeight(double J2Deg, double J3Deg)
     {
         double J4Deg        = 180 - J3Deg - J2Deg + 90;
         double height_J3_J4 = L2 * Math.sin(Math.toRadians(J4Deg));
