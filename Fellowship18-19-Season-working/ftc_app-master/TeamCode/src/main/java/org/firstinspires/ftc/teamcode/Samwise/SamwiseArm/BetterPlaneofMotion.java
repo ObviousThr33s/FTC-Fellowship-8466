@@ -3,8 +3,11 @@ package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Samwise.TeleOp.OctoArmTeleOp;
+
+import java.util.prefs.BackingStoreException;
 
 //@TeleOp (name = "Planeofmotion2")
 @TeleOp(name = "Samwise: Teleop Tank 4")
@@ -26,7 +29,7 @@ public class BetterPlaneofMotion extends OctoArmTeleOp {
     private double TickPerDegreeJ2 = EncoderCountJ2/360.0;
 
     public void init() {
-        //super.init();
+        super.init();
 
         J1 = hardwareMap.dcMotor.get("J1");
         J2 = hardwareMap.dcMotor.get("1J2");
@@ -46,18 +49,18 @@ public class BetterPlaneofMotion extends OctoArmTeleOp {
         J22.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     public void loop() {
-        //super.loop();
+        super.loop();
 
-        //if(!isPlaneOfMotion){
-            //return;
-       // }
+        if(!isPlaneOfMotion){
+            return;
+        }
         if (Math.abs(gamepad1.left_stick_y) > 0.1) {
             if (gamepad1.left_stick_y>0.1) {
-                J3.setTargetPosition(500);
+                J3.setTargetPosition(900);
                 goingforward = true;
             } if (gamepad1.left_stick_y <-0.1) {
-                J2.setTargetPosition(-500);
-                J22.setTargetPosition(-500);
+                J2.setTargetPosition(-900);
+                J22.setTargetPosition(-900);
                 goingforward = false;
             }
         }
@@ -68,8 +71,8 @@ public class BetterPlaneofMotion extends OctoArmTeleOp {
             J3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             J2.setTargetPosition(J2targetpos);
             J22.setTargetPosition(J2targetpos);
-            J2.setPower(0.3);
-            J22.setPower(0.3);
+            J2.setPower(0.6);
+            J22.setPower(0.6);
             J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             J22.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             if ((gamepad1.left_stick_y<0.1)&&(gamepad1.left_stick_y>-0.1)) {
@@ -81,7 +84,7 @@ public class BetterPlaneofMotion extends OctoArmTeleOp {
             J22.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             J3.setTargetPosition(J3targetpos);
-            J3.setPower(0.3);
+            J3.setPower(0.6);
             J3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             if ((gamepad1.left_stick_y<0.1)&&(gamepad1.left_stick_y>-0.1)) {
                 J2.setPower(0);

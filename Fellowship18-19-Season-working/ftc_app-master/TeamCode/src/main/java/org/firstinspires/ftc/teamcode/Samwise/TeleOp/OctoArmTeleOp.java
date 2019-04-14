@@ -10,13 +10,13 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TrapezoidSpeed;
 import java.util.concurrent.TimeUnit;
 
 @TeleOp(name = "Samwise: Teleop Tank 3", group = "Samwise")
-
+@Disabled
 public class OctoArmTeleOp extends SamwiseTeleOp3
 {
     private OctoSamwiseGenius armStuff;
     private TrapezoidSpeed trapezoid;
 
-    protected boolean isPlaneOfMotion = false;
+    public boolean isPlaneOfMotion = false;
 
     ElapsedTime runTime;
 
@@ -149,8 +149,8 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
         //------------- left_stick_y----------------
         if(gamepad1.dpad_up) {
             isPlaneOfMotion = true;
-        } if (gamepad1.dpad_down){
-                isPlaneOfMotion = false;
+        } if (gamepad1.dpad_down) {
+        isPlaneOfMotion = false;
     }
 
         if (!isPlaneOfMotion) {
@@ -183,7 +183,6 @@ public class OctoArmTeleOp extends SamwiseTeleOp3
 
         //------------- x ----------------
         // unmapped
-
         //------------- y ----------------
         if (gamepad2.y)
         {
