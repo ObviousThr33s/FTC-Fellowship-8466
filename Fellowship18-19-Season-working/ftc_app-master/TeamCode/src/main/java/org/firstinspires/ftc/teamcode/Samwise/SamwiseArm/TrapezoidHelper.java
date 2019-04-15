@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 public class TrapezoidHelper
 {
     static ElapsedTime runtime = new ElapsedTime();
-    private static final double POWER_STEP_LENGTH_DRIVETRAIN = 0.01;
+    private static final double POWER_STEP_LENGTH_DRIVETRAIN = 0.1;
     private static final double POWER_STEP_LENGTH_J1 = 0.01;
     private static final double POWER_STEP_LENGTH_J2 = 0.005;
     private static final double POWER_STEP_LENGTH_J3 = 0.01;

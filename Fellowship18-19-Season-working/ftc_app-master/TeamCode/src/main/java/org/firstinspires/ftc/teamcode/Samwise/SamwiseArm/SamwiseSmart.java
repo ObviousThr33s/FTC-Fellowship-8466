@@ -24,8 +24,8 @@ public class SamwiseSmart extends SamwiseArm
     int J3_LANDER_SILVER = 2000;
 
     int initialCollectionPosJ1 = 2150;
-    int initialCollectionPosJ2 = 1005;
-    int initialCollectionPosJ3 = 700;
+    int initialCollectionPosJ2 = 1320;
+    int initialCollectionPosJ3 = 2000;
 
     int previousPositionJ1 = initialCollectionPosJ1;
     int previousPositionJ2 = initialCollectionPosJ2;
@@ -48,7 +48,7 @@ public class SamwiseSmart extends SamwiseArm
     ElapsedTime runTime = new ElapsedTime();
 
     private static final int SAFE_POS_J1 = -200;
-    private static final int SAFE_POS_J2 = 400;
+    private static final int SAFE_POS_J2 = 700;
     private static final int SAFE_POS_J3 = 1600;
 
     public SamwiseSmart(HardwareMap hwm)
