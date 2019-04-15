@@ -16,7 +16,7 @@ public class SamwiseSmart extends SamwiseArm {
 
     int J1_LANDER_GOLD = -236;
     int J2_LANDER_GOLD = 241;
-    int J3_LANDER_GOLD = 3000;
+    int J3_LANDER_GOLD = 2800;
 
     int J1_LANDER_SILVER = 114;
     int J2_LANDER_SILVER = 241;
@@ -58,8 +58,8 @@ public class SamwiseSmart extends SamwiseArm {
     ElapsedTime runTime = new ElapsedTime();
 
     private static final int SAFE_POS_J1 = -200;
-    private static final int SAFE_POS_J2 = 600;
-    private static final int SAFE_POS_J3 = 1700;
+    private static final int SAFE_POS_J2 = 400;
+    private static final int SAFE_POS_J3 = 2200;
 
     public SamwiseSmart(HardwareMap hwm) {
         super(hwm);
@@ -193,7 +193,7 @@ public class SamwiseSmart extends SamwiseArm {
         motorJ3.setTargetPosition(j3Position);
         motorJ3.setPower(j3Power);
 
-        while (motor2J2.getCurrentPosition() < SAFE_POS_J2 && motorJ3.getCurrentPosition() < SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 4) {
+        while (motor2J2.getCurrentPosition() > SAFE_POS_J2 && motorJ3.getCurrentPosition() < SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 4) {
         }
 
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -233,20 +233,38 @@ public class SamwiseSmart extends SamwiseArm {
         motorJ3.setTargetPosition(j3Position);
         motorJ3.setPower(j3Power - 0.2);
 
-        if (j3Position - 600 < motorJ3.getCurrentPosition())
-        {
+        if (j3Position - 200 < motorJ3.getCurrentPosition()) {
             motorJ3.setPower(j3Power - 0.1);
         }
 
-        if (j3Position - 800 < motorJ3.getCurrentPosition())
-        {
+        if (j3Position - 400 < motorJ3.getCurrentPosition()) {
             motorJ3.setPower(j3Power);
         }
 
-        if (j3Position - 1000 < motorJ3.getCurrentPosition())
-        {
+        if (j3Position - 800 < motorJ3.getCurrentPosition()) {
             motorJ3.setPower(j3Power - 0.1);
         }
+
+        if (j3Position - 900 < motorJ3.getCurrentPosition()) {
+            motorJ3.setPower(j3Power - 0.15);
+        }
+
+        if (j3Position - 1000 < motorJ3.getCurrentPosition()) {
+            motorJ3.setPower(j3Power - 0.2);
+        }
+
+        if (j3Position - 1100 < motorJ3.getCurrentPosition()) {
+            motorJ3.setPower(j3Power - 0.25);
+        }
+
+        if (j3Position - 1200 < motorJ3.getCurrentPosition()) {
+            motorJ3.setPower(j3Power - 0.3);
+        }
+
+        if (j3Position - 1300 < motorJ3.getCurrentPosition()) {
+            motorJ3.setPower(j3Power - 0.35);
+        }
+
       /*  while (Math.abs(motor1J2.getCurrentPosition() - j2Position1) > SAFE_MARGIN || Math.abs(motorJ3.getCurrentPosition() - j3Position) > SAFE_MARGIN && !isStop && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }*/
