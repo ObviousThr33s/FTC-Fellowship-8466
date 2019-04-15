@@ -127,14 +127,14 @@ public class SamwiseTeleOp3 extends OpMode
         //Hanger system
         //if the a button is pressed then is moves the hanger arm
 
-        if (Math.abs(-gamepad2.right_stick_y)>JOYSTICK_SENSITIVITY)
-        {
+//        if (Math.abs(-gamepad2.right_stick_y)>JOYSTICK_SENSITIVITY)
+//        {
             swHang.move(-gamepad2.right_stick_y);
-        }
-        else
-        {
-            swHang.stop();
-        }
+//        }
+//        else
+//        {
+//            swHang.stop();
+//        }
         //telemetry.update();
 
         /*if (gamepad2.b) {
