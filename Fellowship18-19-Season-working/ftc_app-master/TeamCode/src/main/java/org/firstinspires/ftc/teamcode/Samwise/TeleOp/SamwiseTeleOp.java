@@ -33,6 +33,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         telemetry.addData("J2 ticks", armStuff.getJ2CurrentPosition() + ", " + armStuff.get2J2CurrentPosition());
         telemetry.addData("J3 ticks", armStuff.getJ3CurrentPosition());
         telemetry.addData("E1 ticks", armStuff.getE1CurrentPosition());
+        telemetry.addData("Robot ticks", armStuff.getRobotTicks());
         //        telemetry.update();
         /******************************** Gamepad 1 *******************************************************/
         //------------- a ----------------

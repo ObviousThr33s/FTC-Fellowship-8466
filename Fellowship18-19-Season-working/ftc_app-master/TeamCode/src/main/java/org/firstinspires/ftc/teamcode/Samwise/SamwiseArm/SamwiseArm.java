@@ -22,10 +22,12 @@ public class SamwiseArm extends OctoSamwiseCollection
 
     public static final double MANUAL_POWER_J1 = 0.8;
     public static final double MANUAL_POWER_J2 = 0.4;
-    public static final double MANUAL_POWER_J3 = 0.4;
+    public static final double MANUAL_POWER_J3 = 0.5;
     public static final double E1_POWER = 0.8;
     public static final double E2_POWER = 0.8;
 
+    static final double POWER_RAMP_DIFFERENCE = 0.1;
+    static final double POWER_RAMP_DIFFERENCE_J2 = 0.05;
     static final int TIME_POWER_RAMP_UP = 100;
     static final int TIME_POWER_RAMP_DOWN = 100;
 
@@ -58,7 +60,6 @@ public class SamwiseArm extends OctoSamwiseCollection
         motor2J2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor2J2.setDirection(DcMotorSimple.Direction.REVERSE);
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorJ3.setDirection(DcMotorSimple.Direction.REVERSE);
         motorJ3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
@@ -69,24 +70,29 @@ public class SamwiseArm extends OctoSamwiseCollection
 
         if (Math.abs(power) > JOYSTICK_SENSITIVITY)
         {
+
+            this.isManualJ1 = true;
             motorJ1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
             //smooth start
-            if (!this.isManualJ1)
+            double currentPower     = this.motorJ1.getPower();
+            double targetPower      = -MANUAL_POWER_J1 * power;
+            double power_difference = targetPower - currentPower;
+            if (Math.abs(power_difference) >= POWER_RAMP_DIFFERENCE)
             {
                 runtime.reset();
                 long milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 while (milliTime < TIME_POWER_RAMP_UP)
                 {
-                    motorJ1.setPower(-MANUAL_POWER_J1 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                    motorJ1.setPower(currentPower + power_difference * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
                     milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 }
-                this.isManualJ1 = true;
             }
             else
             {
-                double newPower = -MANUAL_POWER_J1 * power;
-                motorJ1.setPower(newPower);
+                motorJ1.setPower(targetPower);
             }
+            System.out.println("manualDriveJ1");
         }
     }
 
@@ -96,16 +102,20 @@ public class SamwiseArm extends OctoSamwiseCollection
 
         if (this.isManualJ1)
         {
-            runtime.reset();
-            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            while (milliTime < TIME_POWER_RAMP_DOWN)
+            do
             {
-                if (milliTime > 1)
+                runtime.reset();
+                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                while (milliTime < TIME_POWER_RAMP_DOWN)
                 {
-                    motorJ1.setPower(-MANUAL_POWER_J1 * motorJ1.getPower() * (1.0 / milliTime));
+                    if (milliTime > 1)
+                    {
+                        motorJ1.setPower(-MANUAL_POWER_J1 * motorJ1.getPower() * (1.0 / milliTime));
+                    }
+                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 }
-                milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            }
+            } while (Math.abs(motorJ1.getPower()) > POWER_RAMP_DIFFERENCE);
+
             motorJ1.setPower(0);
             this.isManualJ1 = false;
             System.out.println("manualStopJ1");
@@ -119,22 +129,24 @@ public class SamwiseArm extends OctoSamwiseCollection
 
         if (Math.abs(power) > JOYSTICK_SENSITIVITY)  // reduce joystick sensitivity
         {
+            this.isManualJ3 = true;
             motorJ3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            if (!this.isManualJ3)
+            double currentPower     = this.motorJ3.getPower();
+            double targetPower      = -MANUAL_POWER_J3 * power;
+            double power_difference = targetPower - currentPower;
+            if (Math.abs(power_difference) >= POWER_RAMP_DIFFERENCE)
             {
                 runtime.reset();
                 long milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 while (milliTime < TIME_POWER_RAMP_UP)
                 {
-                    motorJ3.setPower(-MANUAL_POWER_J3 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                    motorJ3.setPower(currentPower + power_difference * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
                     milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 }
-                this.isManualJ3 = true;
             }
             else
             {
-                double newPower = -MANUAL_POWER_J3 * power;
-                motorJ3.setPower(newPower);
+                motorJ3.setPower(targetPower);
             }
             System.out.println("manual driveJ3");
         }
@@ -146,16 +158,20 @@ public class SamwiseArm extends OctoSamwiseCollection
 
         if (this.isManualJ3)
         {
-            runtime.reset();
-            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            while (milliTime < TIME_POWER_RAMP_DOWN)
+            do
             {
-                if (milliTime > 1)
+                runtime.reset();
+                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                while (milliTime < TIME_POWER_RAMP_DOWN)
                 {
-                    motorJ3.setPower(-MANUAL_POWER_J1 * motorJ3.getPower() * (1.0 / milliTime));
+                    if (milliTime > 1)
+                    {
+                        motorJ3.setPower(-MANUAL_POWER_J3 * motorJ3.getPower() * (1.0 / milliTime));
+                    }
+                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 }
-                milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            }
+            } while (Math.abs(motorJ3.getPower()) > POWER_RAMP_DIFFERENCE);
+
             motorJ3.setPower(0);
             this.isManualJ3 = false;
             System.out.println("manualStopJ3");
@@ -168,25 +184,28 @@ public class SamwiseArm extends OctoSamwiseCollection
 
         if (Math.abs(power) > JOYSTICK_SENSITIVITY)
         {
+            this.isManualJ2 = true;
             motor1J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             motor2J2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            if (!this.isManualJ2)
+
+            double currentPower     = (this.motor1J2.getPower() + this.motor2J2.getPower()) / 2;
+            double targetPower      = -MANUAL_POWER_J2 * power;
+            double power_difference = targetPower - currentPower;
+            if (Math.abs(power_difference) >= POWER_RAMP_DIFFERENCE_J2)
             {
                 runtime.reset();
                 long milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 while (milliTime < TIME_POWER_RAMP_UP)
                 {
-                    motor1J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
-                    motor2J2.setPower(-MANUAL_POWER_J2 * power * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                    motor1J2.setPower(currentPower + power_difference * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
+                    motor2J2.setPower(currentPower + power_difference * (Double.valueOf(milliTime) / TIME_POWER_RAMP_UP));
                     milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 }
-                this.isManualJ2 = true;
             }
             else
             {
-                double newPower = -MANUAL_POWER_J2 * power;
-                motor1J2.setPower(newPower);
-                motor2J2.setPower(newPower);
+                motor1J2.setPower(targetPower);
+                motor2J2.setPower(targetPower);
             }
             System.out.println("manual driveJ2");
         }
@@ -198,17 +217,22 @@ public class SamwiseArm extends OctoSamwiseCollection
 
         if (this.isManualJ2)
         {
-            runtime.reset();
-            long milliTime = runtime.time(TimeUnit.MILLISECONDS);
-            while (milliTime < TIME_POWER_RAMP_DOWN)
+            do
             {
-                if (milliTime > 1)
+                runtime.reset();
+                long milliTime = runtime.time(TimeUnit.MILLISECONDS);
+                while (milliTime < TIME_POWER_RAMP_DOWN)
                 {
-                    motor1J2.setPower(-MANUAL_POWER_J1 * motor1J2.getPower() * (1.0 / milliTime));
-                    motor2J2.setPower(-MANUAL_POWER_J1 * motor2J2.getPower() * (1.0 / milliTime));
+                    if (milliTime > 1)
+                    {
+                        motor1J2.setPower(-MANUAL_POWER_J2 * motor1J2.getPower() * (1.0 / milliTime));
+                        motor2J2.setPower(-MANUAL_POWER_J2 * motor2J2.getPower() * (1.0 / milliTime));
+                    }
+                    milliTime = runtime.time(TimeUnit.MILLISECONDS);
                 }
-                milliTime = runtime.time(TimeUnit.MILLISECONDS);
             }
+            while (Math.abs(motor1J2.getPower()) > POWER_RAMP_DIFFERENCE || Math.abs(motor2J2.getPower()) > POWER_RAMP_DIFFERENCE);
+
             motor1J2.setPower(0);
             motor2J2.setPower(0);
             this.isManualJ2 = false;
