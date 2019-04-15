@@ -77,6 +77,7 @@ public class SamwiseTeleOp3 extends OpMode {
     public DcMotor leftdrive = null;
     public DcMotor rightdrive = null;
     private double powerlevel = 1.0;
+    private boolean isManualDrive = false;
 
 
     @Override
@@ -175,6 +176,7 @@ public class SamwiseTeleOp3 extends OpMode {
                 leftdrive.setPower(-1 * MotorPower * powerlevel);
                 rightdrive.setPower(-1 * MotorPower * powerlevel);
                 //System.out.println("==> moving ...");
+                isManualDrive = true;
             }
             if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
                 float TurnMotorPower = gamepad2.left_stick_x;
@@ -184,10 +186,14 @@ public class SamwiseTeleOp3 extends OpMode {
                 leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
                 rightdrive.setPower(TurnMotorPower * powerlevel);
                 //System.out.println("==> turning ...");
+                isManualDrive = true;
             }
         } else {
-            leftdrive.setPower(0);
-            rightdrive.setPower(0);
+            if (isManualDrive) {
+                leftdrive.setPower(0);
+                rightdrive.setPower(0);
+                isManualDrive = false;
+            }
         }
 
         // arm control: delegate to parent OctoArmTest

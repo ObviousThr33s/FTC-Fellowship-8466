@@ -18,9 +18,9 @@ public class SamwiseGenius extends SamwiseSmart
 
     /****************** Start: update as hardware or autonomous changes ***************/
      static final double L1 = 21.5; //length between J2 and J3
-     static final double L2 = 21.75; //length between J3 and J4
-     static final double INITIAL_DEGREES_J2 = 211;
-     static final double INITIAL_DEGREES_J3 = 48;
+     static final double L2 = 22.5; //length between J3 and J4
+     static final double INITIAL_DEGREES_J2 = 195; //211;
+     static final double INITIAL_DEGREES_J3 = 55;  //48;
      static final double MIN_DEGREES_J2 = 120;
      static final double MIN_DEGREES_J3 = INITIAL_DEGREES_J3;
      static final double MAX_DEGREES_J2 = INITIAL_DEGREES_J2;

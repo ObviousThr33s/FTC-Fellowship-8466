@@ -50,7 +50,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
     CRServo servoE2;
 
-    boolean runWithArm = false;
+    boolean runWithArm = true;
 
     static final int E1_MAX_COUNT = 4600;
 
@@ -140,7 +140,9 @@ public class SamwiseAutoDrive extends LinearOpMode {
         //landing the Robot
         //hanger.encoderDrive(this, 1, 3000);
         //sleep(2000);
-        hanger.encoderDrive(this, 1, 12850, 5.5);
+        hanger.encoderDrive(this, 1, 12700, 5.5);
+
+        //sleep(1000);
 
         //Unhooking
         hanger.unHook();
@@ -167,7 +169,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
             position = vis.getGoldPosition();  //Find gold mineral position
 
-            System.out.println("==>The Gold Position: " + position);
+            //System.out.println("==>The Gold Position: " + position);
 
             if (position == SamwiseVision.GoldPosition.UNKNOWN) {
                 // it is more likely to be UNKNOWN when two silver minerals in the view.
@@ -186,13 +188,15 @@ public class SamwiseAutoDrive extends LinearOpMode {
         // extending E1 and E2
         if(runWithArm) {
             servoE2.setDirection(DcMotorSimple.Direction.FORWARD);
-            servoE2.setPower(.9);
+            servoE2.setPower(.61);
 
             this.extendL1Auto();
         }
 
         //retracting the hanger without blocking the drive
-        hanger.encoderDriveNoWait(this, .6, 700);
+        hanger.encoderDriveNoWait(this, .6, 1800);
+
+//        sleep(4000);
 
         //driveToCrater the specific route
         driveRoute.drive();
@@ -201,10 +205,10 @@ public class SamwiseAutoDrive extends LinearOpMode {
 
 
         if(runWithArm) {
-            this.driveJ2up(100);
-            //sleep(300);
+            //this.driveJ2up(500);
+            //sleep(1500);
 
-            //this.turnJ1Auto(580);
+            //this.turnJ1Auto(1100);
 
             //this.driveJ3up(800);
 

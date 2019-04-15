@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseGenius;
 
 import java.util.concurrent.TimeUnit;
 
-@TeleOp(name = "Samwise Teleop", group = "Samwise")
+@TeleOp(name = "Samwise Teleop - Servo Test", group = "Samwise")
 //@Disabled
 
 public class SamwiseTeleOpTestServo extends SamwiseTeleOp3 {

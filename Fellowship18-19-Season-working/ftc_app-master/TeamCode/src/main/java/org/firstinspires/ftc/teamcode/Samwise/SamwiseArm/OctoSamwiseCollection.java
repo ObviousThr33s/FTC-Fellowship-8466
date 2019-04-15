@@ -28,9 +28,9 @@ public class OctoSamwiseCollection
     public void collectMinerals()
     {
         servoC1.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoC1.setPower(0.8);
+        servoC1.setPower(1);
         servoC2.setDirection(DcMotorSimple.Direction.REVERSE);
-        servoC2.setPower(0.8);
+        servoC2.setPower(1);
     }
 
     /**

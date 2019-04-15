@@ -58,6 +58,7 @@ public class SamwiseArm extends OctoSamwiseCollection
         motor2J2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor2J2.setDirection(DcMotorSimple.Direction.REVERSE);
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motorJ3.setDirection(DcMotorSimple.Direction.REVERSE);
         motorJ3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
