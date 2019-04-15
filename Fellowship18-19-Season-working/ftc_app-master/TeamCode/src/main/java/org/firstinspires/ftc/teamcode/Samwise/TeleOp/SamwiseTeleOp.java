@@ -16,6 +16,9 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
 
     private ElapsedTime runTime;
 
+    static final double TRIGGER_SENSITIVITY = 0.2;
+    static final double BUMPER_SENSITIVITY = 0.2;
+
     @Override
     public void init()
     {
@@ -37,13 +40,13 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         //        telemetry.update();
         /******************************** Gamepad 1 *******************************************************/
         //------------- a ----------------
-        if (gamepad1.a)
+        if (gamepad1.a && !gamepad1.start)
         {
             armStuff.lowerJ4();
         }
         //------------- b ----------------
         // to collection position
-        if (gamepad1.b)
+        if (gamepad1.b && !gamepad1.start)
         {
             armStuff.stopSam();
             if (Math.abs(armStuff.getJ1CurrentPosition()) < 100 && Math.abs(armStuff.getJ2CurrentPosition()) < 100 && Math.abs(armStuff.getJ3CurrentPosition()) < 100)
@@ -78,20 +81,8 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
 
         //------------- dpad ----------------
         // --------------- pom ---------------------
-        if (gamepad1.dpad_up)
-        {
-            armStuff.hoverPlaneOfMotion(-1);
-        }
-        if (gamepad1.dpad_down)
-        {
-            armStuff.hoverPlaneOfMotion(1);
-        }
-        if (!gamepad1.dpad_up && !gamepad1.dpad_down)
-        {
-            armStuff.hoverPlaneOfMotion(0);
-        }
 
-       /* if (gamepad1.dpad_up)
+        if (gamepad1.dpad_up)
         {
             armStuff.up();
         }
@@ -106,56 +97,42 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         if (gamepad1.dpad_left)
         {
             armStuff.left();
-        }*/
+        }
 
         //------------- triggers ----------------
-      /*  // collection and deposit
+        // plane of motion
         if (gamepad1.left_trigger > 0.1)
         {
-            if (armStuff.isInCollectionPlane()) armStuff.toCollectionPlane();
+            armStuff.hoverPlaneOfMotion(gamepad1.left_trigger);
         }
-
         if (gamepad1.right_trigger > 0.1)
         {
-            if (armStuff.isInCollectionPlane())
-                armStuff.toPositionWithoutJ1(armStuff.pos2J2, armStuff.pos2J3);
+            armStuff.hoverPlaneOfMotion(-gamepad1.right_trigger);
+        }
+        if (gamepad1.left_trigger<0.1 && gamepad1.right_trigger<0.1)
+        {
+            armStuff.hoverPlaneOfMotion(0);
         }
 
-        if (gamepad1.left_bumper)
-        {
-            if (armStuff.isInCollectionPlane())
-                armStuff.toPositionWithoutJ1(armStuff.pos3J2, armStuff.pos3J3);
-        }
-
-        if (gamepad1.right_bumper)
-        {
-            if (armStuff.isInCollectionPlane())
-                armStuff.toPositionWithoutJ1(armStuff.pos4J2, armStuff.pos4J3);
-        }*/
 
         //------------- bumpers----------------
-/*        if (gamepad1.left_bumper)
+        // collection and deposit
+       if (gamepad1.left_bumper)
         {
-            armStuff.moveJ4Down();
+            armStuff.depositMinerals();
         }
         else if (gamepad1.right_bumper)
         {
-            armStuff.moveJ4Up();
+            armStuff.collectMinerals();
         }
         else
         {
-            armStuff.stopJ4();
-        }*/
+            armStuff.stopCollecting();
+        }
 
         //------------- left_stick_x----------------
-        if (gamepad1.left_stick_x > 0.1 /*&& (armStuff.getJ1CurrentPosition() < J1_MAX_TICKS && (armStuff.getJ1CurrentPosition() < J1_RIGHT_PHONE || !armStuff.isPhoneJ2()))*/)
+        if (Math.abs(gamepad1.left_stick_x) > JOYSTICK_SENSITIVITY)
         {
-            //            System.out.println("Time at beginning of \"driveJ1\""+System.currentTimeMillis());
-            armStuff.manualDriveJ1(gamepad1.left_stick_x);
-        }
-        else if (gamepad1.left_stick_x < -0.1 /*&& (armStuff.getJ1CurrentPosition() > J1_MIN_TICKS && (armStuff.getJ1CurrentPosition() > J1_LEFT_PHONE || !armStuff.isPhoneJ2()))*/)
-        {
-            //            System.out.println("Time at beginning of \"driveJ1\""+System.currentTimeMillis());
             armStuff.manualDriveJ1(gamepad1.left_stick_x);
         }
         else
@@ -164,11 +141,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         }
 
         //------------- left_stick_y----------------
-        if (gamepad1.left_stick_y > 0.1)
-        {
-            armStuff.manualDriveJ2(gamepad1.left_stick_y);
-        }
-        else if (gamepad1.left_stick_y < -0.1)
+        if (Math.abs(gamepad1.left_stick_y) > JOYSTICK_SENSITIVITY)
         {
             armStuff.manualDriveJ2(gamepad1.left_stick_y);
         }
@@ -181,11 +154,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         // UNMAPPED FOR NOW
 
         //------------- right_stick_y----------------
-        if (gamepad1.right_stick_y > 0.1)
-        {
-            armStuff.manualDriveJ3(gamepad1.right_stick_y);
-        }
-        else if (gamepad1.right_stick_y < -0.1)
+        if (Math.abs(gamepad1.right_stick_y) > JOYSTICK_SENSITIVITY)
         {
             armStuff.manualDriveJ3(gamepad1.right_stick_y);
         }
@@ -244,17 +213,17 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
 
 
         //------------- triggers ----------------
-        if (gamepad2.left_trigger > 0.2)
+        if (gamepad2.left_trigger > TRIGGER_SENSITIVITY)
         {
             armStuff.depositMinerals();
         }
 
-        if (gamepad2.right_trigger > 0.2)
+        if (gamepad2.right_trigger > TRIGGER_SENSITIVITY)
         {
             armStuff.collectMinerals();
         }
 
-        if (gamepad2.left_trigger < 0.2 && gamepad2.right_trigger < 0.2)
+        if (gamepad2.left_trigger < TRIGGER_SENSITIVITY && gamepad2.right_trigger < TRIGGER_SENSITIVITY)
         {
             armStuff.stopCollecting();
         }
@@ -262,7 +231,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         //------------- bumpers ----------------
         // left bumper: mapped in teleop3
         // right bumper: mapped in teleop3
-        if (Math.abs(gamepad2.right_stick_x) < 0.2)
+        if (Math.abs(gamepad2.right_stick_x) < BUMPER_SENSITIVITY)
         {
             armStuff.stopJ4();
         }

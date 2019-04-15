@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode.Samwise.SamwiseArm;
+package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +12,7 @@ import java.util.prefs.BackingStoreException;
 
 //@TeleOp (name = "Planeofmotion2")
 @TeleOp(name = "Samwise: Teleop Tank 4")
+@Disabled
 public class BetterPlaneofMotion extends OctoArmTeleOp {
     private DcMotor J1 = null;
     private DcMotor J2 = null;

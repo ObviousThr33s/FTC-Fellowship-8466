@@ -25,6 +25,8 @@ public class SamwiseHanger {
     public Servo hangerservo1;
     public Servo markerservo1;
 
+    private boolean isInMotionHanger = false;
+
     public SamwiseHanger() {
 
     }
@@ -67,6 +69,7 @@ public class SamwiseHanger {
     public void move(double power) {
 
         this.hangermotor1.setPower(power);
+        this.isInMotionHanger = true;
         //System.out.println("==> hanger pos : " + this.getMoter1Count());
     }
 
@@ -138,4 +141,12 @@ public class SamwiseHanger {
         //hangermotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    public void stop()
+    {
+        if (this.isInMotionHanger)
+        {
+            this.hangermotor1.setPower(0);
+            this.isInMotionHanger = false;
+        }
+    }
 }

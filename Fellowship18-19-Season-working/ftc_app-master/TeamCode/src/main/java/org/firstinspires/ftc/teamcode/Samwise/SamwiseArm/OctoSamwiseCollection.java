@@ -11,6 +11,9 @@ public class OctoSamwiseCollection
     private CRServo servoC1;
     private CRServo servoC2;
 
+    private boolean isCollecting = false;
+    private boolean isInMotionJ4 = false;
+
     OctoSamwiseCollection(HardwareMap hwm)
     {
         servoJ4 = hwm.crservo.get("J4");
@@ -31,6 +34,7 @@ public class OctoSamwiseCollection
         servoC1.setPower(1);
         servoC2.setDirection(DcMotorSimple.Direction.REVERSE);
         servoC2.setPower(1);
+        this.isCollecting = true;
     }
 
     /**
@@ -46,6 +50,7 @@ public class OctoSamwiseCollection
         servoC1.setPower(0.8);
         servoC2.setDirection(DcMotorSimple.Direction.FORWARD);
         servoC2.setPower(0.8);
+        this.isCollecting = true;
     }
 
     /**
@@ -53,8 +58,12 @@ public class OctoSamwiseCollection
      */
     public void stopCollecting()
     {
-        servoC1.setPower(0);
-        servoC2.setPower(0);
+        if (this.isCollecting)
+        {
+            servoC1.setPower(0);
+            servoC2.setPower(0);
+            this.isCollecting = false;
+        }
     }
 
 
@@ -62,17 +71,23 @@ public class OctoSamwiseCollection
     {
         servoJ4.setDirection(DcMotorSimple.Direction.FORWARD);
         servoJ4.setPower(1);
+        this.isInMotionJ4 = true;
     }
 
     public void moveJ4Down()
     {
         servoJ4.setDirection(DcMotorSimple.Direction.REVERSE);
         servoJ4.setPower(1);
+        this.isInMotionJ4 = true;
     }
 
     public void stopJ4()
     {
-        servoJ4.setPower(0);
+        if (this.isInMotionJ4)
+        {
+            servoJ4.setPower(0);
+            this.isInMotionJ4 = false;
+        }
     }
 
 }

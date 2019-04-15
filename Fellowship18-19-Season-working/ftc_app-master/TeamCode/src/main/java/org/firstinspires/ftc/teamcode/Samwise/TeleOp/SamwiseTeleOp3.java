@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TrapezoidHelper;
 
 /****************************************************************************************************
  *                  Teleop Outline:                                                                 *
@@ -51,7 +52,8 @@ import org.firstinspires.ftc.teamcode.Samwise.Hanger.SamwiseHanger;
  ****************************************************************************************************/
 @TeleOp(name = "Samwise: Teleop Tank 3", group = "Samwise")
 @Disabled
-public class SamwiseTeleOp3 extends OpMode {
+public class SamwiseTeleOp3 extends OpMode
+{
 
     /* Declare OpMode members. */
     public SamwiseHanger swHang = new SamwiseHanger();
@@ -78,10 +80,11 @@ public class SamwiseTeleOp3 extends OpMode {
     public DcMotor rightdrive = null;
     private double powerlevel = 1.0;
     private boolean isManualDrive = false;
-
+    static final double JOYSTICK_SENSITIVITY = 0.1;
 
     @Override
-    public void init() {
+    public void init()
+    {
         swHang.init(hardwareMap, telemetry);
 
         //swDTrain.init(hardwareMap, telemetry);
@@ -101,18 +104,21 @@ public class SamwiseTeleOp3 extends OpMode {
 
 
     @Override
-    public void init_loop() {
+    public void init_loop()
+    {
     }
 
     @Override
-    public void start() {
+    public void start()
+    {
     }
 
     /**
      * This is where our main teleop gamepad input and functions mapping go.
      */
     @Override
-    public void loop() {
+    public void loop()
+    {
         /************************************** Gamepad #1 Mappings *************************************
          *                               Samwise Drive Train and Hanging                                *
          *                       (Please add related function mappings below)                           *
@@ -121,7 +127,14 @@ public class SamwiseTeleOp3 extends OpMode {
         //Hanger system
         //if the a button is pressed then is moves the hanger arm
 
-        swHang.move(-gamepad2.right_stick_y);
+        if (Math.abs(-gamepad2.right_stick_y)>JOYSTICK_SENSITIVITY)
+        {
+            swHang.move(-gamepad2.right_stick_y);
+        }
+        else
+        {
+            swHang.stop();
+        }
         //telemetry.update();
 
         /*if (gamepad2.b) {
@@ -136,62 +149,74 @@ public class SamwiseTeleOp3 extends OpMode {
             return;
         }*/
 
-        if (gamepad2.left_bumper) {
+        if (gamepad2.left_bumper)
+        {
             swHang.Hook();
         }
 
-        if (gamepad2.right_bumper) {
+        if (gamepad2.right_bumper)
+        {
             swHang.unHook();
         }
 
-        if (gamepad2.a) {
+        if (gamepad2.a)
+        {
             swHang.markerservo1.setPosition(.76);
         }
 
-//        //Drive Train
-//        if (gamepad2.b)
-//        {
-//            powerlevel = 0.5;
-//            System.out.println("50% power");
-//        }
-//        else if (gamepad2.a)
-//        {
-//            powerlevel = .7;
-//            System.out.println("70% power");
-//        }
-//        else if (gamepad2.x)
-//        {
-//            powerlevel = 1;
-//            System.out.println("max power");
-//        }
+        //        //Drive Train
+        //        if (gamepad2.b)
+        //        {
+        //            powerlevel = 0.5;
+        //            System.out.println("50% power");
+        //        }
+        //        else if (gamepad2.a)
+        //        {
+        //            powerlevel = .7;
+        //            System.out.println("70% power");
+        //        }
+        //        else if (gamepad2.x)
+        //        {
+        //            powerlevel = 1;
+        //            System.out.println("max power");
+        //        }
 
         // to avoid driving with very small powers not visible) even with no button pressed
-        if (Math.abs(gamepad2.left_stick_x) > 0.1 || Math.abs(gamepad2.left_stick_y) > 0.1) {
-            if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y)) {
+        if (Math.abs(gamepad2.left_stick_x) > JOYSTICK_SENSITIVITY || Math.abs(gamepad2.left_stick_y) > JOYSTICK_SENSITIVITY)
+        {
+            if (Math.abs(gamepad2.left_stick_x) <= Math.abs(gamepad2.left_stick_y))
+            {
 
                 float MotorPower = gamepad2.left_stick_y;
 
                 leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                leftdrive.setPower(-1 * MotorPower * powerlevel);
-                rightdrive.setPower(-1 * MotorPower * powerlevel);
+//                leftdrive.setPower(-1 * MotorPower * powerlevel);
+//                rightdrive.setPower(-1 * MotorPower * powerlevel);
+                TrapezoidHelper.trapezoidDriveTrain(leftdrive,-1 * MotorPower * powerlevel, rightdrive,-1 * MotorPower * powerlevel );
                 //System.out.println("==> moving ...");
                 isManualDrive = true;
             }
-            if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y)) {
+            if (Math.abs(gamepad2.left_stick_x) > Math.abs(gamepad2.left_stick_y))
+            {
                 float TurnMotorPower = gamepad2.left_stick_x;
 
                 leftdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rightdrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
-                rightdrive.setPower(TurnMotorPower * powerlevel);
+//                leftdrive.setPower(-1 * TurnMotorPower * powerlevel);
+//                rightdrive.setPower(TurnMotorPower * powerlevel);
+                TrapezoidHelper.trapezoidDriveTrain(leftdrive,-1 * TurnMotorPower * powerlevel, rightdrive,TurnMotorPower * powerlevel );
                 //System.out.println("==> turning ...");
                 isManualDrive = true;
             }
-        } else {
-            if (isManualDrive) {
-                leftdrive.setPower(0);
-                rightdrive.setPower(0);
+        }
+        else
+        {
+            if (isManualDrive)
+            {
+//                leftdrive.setPower(0);
+//                rightdrive.setPower(0);
+                TrapezoidHelper.trapezoidStopTrain(leftdrive, rightdrive);
                 isManualDrive = false;
             }
         }
