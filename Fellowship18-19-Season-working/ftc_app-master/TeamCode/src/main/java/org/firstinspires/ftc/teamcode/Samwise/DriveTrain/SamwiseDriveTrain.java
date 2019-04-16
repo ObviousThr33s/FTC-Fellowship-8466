@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.AbstractPhysical.DriveTrain;
+import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.TrapezoidHelper;
 
 public class SamwiseDriveTrain extends DriveTrain {
 
@@ -121,7 +122,7 @@ public class SamwiseDriveTrain extends DriveTrain {
         encoderDrive(opMode, TURN_SPEED, inches, -inches, timeout);
     }
 
-    public void makeTurnWithoutWait (double degrees)
+    public void makeTurnWithoutWait (boolean trapezoidRobotTurn, double degrees)
     {
         double inches = INCHES_PER_DEGREE * degrees;
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -135,9 +136,15 @@ public class SamwiseDriveTrain extends DriveTrain {
         leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        leftDrive.setPower(Math.abs(TURN_SPEED));
-        rightDrive.setPower(Math.abs(TURN_SPEED));
-
+        if (trapezoidRobotTurn)
+        {
+            TrapezoidHelper.trapezoidDriveTrain(leftDrive, Math.abs(TURN_SPEED), rightDrive, Math.abs(TURN_SPEED));
+        }
+        else
+        {
+            leftDrive.setPower(Math.abs(TURN_SPEED));
+            rightDrive.setPower(Math.abs(TURN_SPEED));
+        }
     }
 
 

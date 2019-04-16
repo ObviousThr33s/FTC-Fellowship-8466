@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseGenius;
 
 import java.util.concurrent.TimeUnit;
 
-@TeleOp(name = "Samwise Teleop", group = "Samwise")
+@TeleOp(name = "Samwise Teleop Original", group = "Samwise")
 //@Disabled
 
 public class SamwiseTeleOp extends SamwiseTeleOp3
@@ -50,7 +50,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         if (gamepad1.b && !gamepad1.start)
         {
             runTime.reset();
-            armStuff.toCollectionPlane();
+            armStuff.toCollectionPlane(false, false);
             telemetry.addData("Time", runTime.time(TimeUnit.SECONDS));
         }
 
@@ -59,7 +59,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         if (gamepad1.x)
         {
             runTime.reset();
-            armStuff.toLanderSilver();
+            armStuff.toLanderSilver(false, false);
             telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
         }
 
@@ -67,7 +67,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         if (gamepad1.y)
         {
             runTime.reset();
-            armStuff.toLanderGold();
+            armStuff.toLanderGold(false, false);
             telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
         }
 

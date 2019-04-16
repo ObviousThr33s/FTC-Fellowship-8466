@@ -228,7 +228,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
         motorJ1.setTargetPosition(j1Position);
         motorJ1.setPower(j1Power);
 
-        robot.makeTurnWithoutWait(-90);
+        robot.makeTurnWithoutWait(false, -90);
 
         while ((Math.abs(motorJ1.getCurrentPosition() - j1Position) > SAFE_MARGIN || robot.leftDrive.getCurrentPosition() < -200 || robot.rightDrive.getCurrentPosition() > 200) && runTime.time(TimeUnit.SECONDS) < 4)
         {
@@ -240,7 +240,7 @@ public class OctoSamwiseSmart extends OctoSamwiseArm
     public void toPositionReverse(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
     {
         runTime.reset();
-        robot.makeTurnWithoutWait(90);
+        robot.makeTurnWithoutWait(false, 90);
 
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);

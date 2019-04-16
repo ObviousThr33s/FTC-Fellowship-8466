@@ -32,7 +32,7 @@ public class TrapezoidHelper
     {
         trapezoidDriveJ3(motor, 0);
         motor.setPower(0);
-        //        System.out.println(" to stop.");
+//        System.out.println(" to stop.");
     }
 
     public static void trapezoidDriveJ3(DcMotor motor, double targetPower)
@@ -45,13 +45,15 @@ public class TrapezoidHelper
         trapezoidDriveJ2(motor1, motor2, 0);
         motor1.setPower(0);
         motor2.setPower(0);
-        //        System.out.println(" to stop.");
+//        System.out.println(" to stop.");
     }
 
     public static void trapezoidDriveJ2(DcMotor motor1, DcMotor motor2, double targetPower)
     {
         runtime.reset();
         double currentPower = (motor1.getPower() + motor2.getPower()) / 2;
+//        System.out.println("Current power: " + currentPower);
+//        System.out.println("Target power: " + targetPower);
         while (Math.abs(currentPower - targetPower) > POWER_STEP_LENGTH_J2)
         {
             if (currentPower > targetPower)
@@ -65,6 +67,7 @@ public class TrapezoidHelper
                 motor2.setPower(currentPower + POWER_STEP_LENGTH_J2);
             }
             currentPower = (motor1.getPower() + motor2.getPower()) / 2;
+            //            System.out.println("New power: "+currentPower);
         }
 
         if (Math.abs(currentPower - targetPower) > ZERO_POWER)
@@ -72,7 +75,7 @@ public class TrapezoidHelper
             motor1.setPower(targetPower);
             motor2.setPower(targetPower);
         }
-        //        System.out.print("It takes " + runtime.time(TimeUnit.MILLISECONDS) + " milliseconds");
+//        System.out.print("trapezoidDriveJ2 takes " + runtime.time(TimeUnit.MILLISECONDS) + " milliseconds");
     }
 
     public static void trapezoidStopTrain(DcMotor leftDrive, DcMotor rightDrive)
@@ -85,9 +88,9 @@ public class TrapezoidHelper
     public static void trapezoidDriveTrain(DcMotor leftDrive, double leftTargetPower, DcMotor rightDrive, double rightTargetPower)
     {
         runtime.reset();
-        double currentLeftPower =leftDrive.getPower();
-        double currentRightPower =rightDrive.getPower();
-        while (Math.abs(currentLeftPower - leftTargetPower) > POWER_STEP_LENGTH_DRIVETRAIN || Math.abs(currentRightPower - rightTargetPower) > POWER_STEP_LENGTH_DRIVETRAIN )
+        double currentLeftPower  = leftDrive.getPower();
+        double currentRightPower = rightDrive.getPower();
+        while (Math.abs(currentLeftPower - leftTargetPower) > POWER_STEP_LENGTH_DRIVETRAIN || Math.abs(currentRightPower - rightTargetPower) > POWER_STEP_LENGTH_DRIVETRAIN)
         {
             if (currentLeftPower > leftTargetPower)
             {
@@ -119,20 +122,26 @@ public class TrapezoidHelper
         }
         //        System.out.print("It takes " + runtime.time(TimeUnit.MILLISECONDS) + " milliseconds");
     }
+
     private static void trapezoidDriveMotor(DcMotor motor, double targetPower, double powerStepLength)
     {
         runtime.reset();
         double currentPower = motor.getPower();
         powerStepLength = Math.abs(powerStepLength);
+//        System.out.println("Current power: " + currentPower);
+//        System.out.println("Target power: " + targetPower);
+
+
         while (Math.abs(currentPower - targetPower) > powerStepLength)
         {
             if (currentPower > targetPower) motor.setPower(currentPower - powerStepLength);
             else motor.setPower(currentPower + powerStepLength);
             currentPower = motor.getPower();
+            //            System.out.println("New power: "+currentPower);
         }
 
         motor.setPower(targetPower);
-        //        System.out.print("It takes " + runtime.time(TimeUnit.MILLISECONDS) + " milliseconds");
+//        System.out.print("trapezoidDriveMotor takes " + runtime.time(TimeUnit.MILLISECONDS) + " milliseconds");
     }
 
     private static void trapezoidSetPowerWith(DcMotor motor, double targetPower, double powerStepLength)
@@ -162,23 +171,23 @@ public class TrapezoidHelper
         {
             motor1.setPower((diffPosition / positionOffSet) * power);
             motor2.setPower((diffPosition / positionOffSet) * power);
-            diffPosition    = Math.abs(motor1.getTargetPosition() - motor1.getCurrentPosition());
+            diffPosition = Math.abs(motor1.getTargetPosition() - motor1.getCurrentPosition());
         }
         trapezoidStopJ2(motor1, motor2);
     }
 
     public static void trapezoidStopJ3WithTarget(DcMotor motor)
     {
-    double currentPosition = motor.getCurrentPosition();
-    double targetPosition  = motor.getTargetPosition();
-    double positionOffSet  = Math.abs(targetPosition - currentPosition);
-    double power           = motor.getPower();
-    double diffPosition    = Math.abs(motor.getTargetPosition() - motor.getCurrentPosition());
-    while (Math.abs(positionOffSet) <= ZERO_POSITION_OFF_SET)
-    {
-        motor.setPower((diffPosition / positionOffSet) * power);
-        diffPosition    = Math.abs(motor.getTargetPosition() - motor.getCurrentPosition());
+        double currentPosition = motor.getCurrentPosition();
+        double targetPosition  = motor.getTargetPosition();
+        double positionOffSet  = Math.abs(targetPosition - currentPosition);
+        double power           = motor.getPower();
+        double diffPosition    = Math.abs(motor.getTargetPosition() - motor.getCurrentPosition());
+        while (Math.abs(positionOffSet) <= ZERO_POSITION_OFF_SET)
+        {
+            motor.setPower((diffPosition / positionOffSet) * power);
+            diffPosition = Math.abs(motor.getTargetPosition() - motor.getCurrentPosition());
+        }
+        trapezoidStopJ3(motor);
     }
-    trapezoidStopJ3(motor);
-}
 }
