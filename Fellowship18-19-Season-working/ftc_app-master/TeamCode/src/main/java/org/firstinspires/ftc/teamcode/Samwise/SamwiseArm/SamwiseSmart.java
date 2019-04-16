@@ -15,6 +15,10 @@ public class SamwiseSmart extends SamwiseArm
     private static final int OFFSET_TOLERANCE = 10;
     boolean isStop = false;
 
+    int collectionPosJ1 = 2150;
+    int collectionPosJ2 = 1320;
+    int collectionPosJ3 = 1330;
+
     int J1_LANDER_GOLD = -236;
     int J2_LANDER_GOLD = 100;
     int J3_LANDER_GOLD = 2000;
@@ -23,33 +27,20 @@ public class SamwiseSmart extends SamwiseArm
     int J2_LANDER_SILVER = 100;
     int J3_LANDER_SILVER = 1700;
 
-    int initialCollectionPosJ1 = 2150;
-    int initialCollectionPosJ2 = 1320;
-    int initialCollectionPosJ3 = 1330;
-
-    int previousPositionJ1 = initialCollectionPosJ1;
-    int previousPositionJ2 = initialCollectionPosJ2;
-    int previousPositionJ3 = initialCollectionPosJ3;
-
-
     static final double J1_POWER = 0.4;
     static final double J2_POWER = 0.4;
     static final double J3_POWER = 0.4;
 
+    private boolean inInitial = true;
     private boolean inGoldDeposit = false;
     private boolean inSilverDeposit = false;
     private boolean inCollectionPlane = false;
 
-    public boolean isInCollectionPlane()
-    {
-        return inCollectionPlane;
-    }
-
-    ElapsedTime runTime = new ElapsedTime();
-
     private static final int SAFE_POS_J1 = -200;
     private static final int SAFE_POS_J2 = 500;
     private static final int SAFE_POS_J3 = 1500;
+
+    private ElapsedTime runTime = new ElapsedTime();
 
     public SamwiseSmart(HardwareMap hwm)
     {
@@ -71,6 +62,7 @@ public class SamwiseSmart extends SamwiseArm
     public void toInitialPosition()
     {
         toInitialPosition(J1_POWER, J2_POWER, J3_POWER);
+        this.inInitial = true;
         this.inGoldDeposit = false;
         this.inSilverDeposit = false;
         this.inCollectionPlane = false;
@@ -86,31 +78,35 @@ public class SamwiseSmart extends SamwiseArm
             }
             else
             {
-                toInitialCollectionPosition(J1_POWER, J2_POWER, J3_POWER, initialCollectionPosJ1, initialCollectionPosJ2, initialCollectionPosJ2, initialCollectionPosJ3);
-                this.inCollectionPlane = true;
-                this.inSilverDeposit = false;
-                this.inGoldDeposit = false;
+                if (this.inInitial)
+                {
+                    this.toCollectionPosition(J1_POWER, J2_POWER, J3_POWER, collectionPosJ1, collectionPosJ2, collectionPosJ2, collectionPosJ3);
+                    this.inInitial = false;
+                    this.inCollectionPlane = true;
+                    this.inSilverDeposit = false;
+                    this.inGoldDeposit = false;
+                }
             }
         }
     }
 
     public void toLanderGold()
     {
-        runTime.reset();
         if (!this.inGoldDeposit)
         {
             if (this.inSilverDeposit)
             {
-                toPositionWait(false, J1_POWER, J2_POWER, J3_POWER, J1_LANDER_GOLD, J2_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
+                this.toGoldOrSilver(false, J1_POWER, J2_POWER, J3_POWER, J1_LANDER_GOLD, J2_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
             }
-            else
+            else if (this.inCollectionPlane)
             {
-                savePreviousPosition();
-                toPositionWait(true, J1_POWER, J2_POWER, J3_POWER, J1_LANDER_GOLD, J2_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
+                this.saveCollectionPosition();
+                this.toGoldOrSilver(true, J1_POWER, J2_POWER, J3_POWER, J1_LANDER_GOLD, J2_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
+                this.inInitial = false;
+                this.inGoldDeposit = true;
+                this.inCollectionPlane = false;
+                this.inSilverDeposit = false;
             }
-            this.inGoldDeposit = true;
-            this.inCollectionPlane = false;
-            this.inSilverDeposit = false;
         }
     }
 
@@ -118,29 +114,28 @@ public class SamwiseSmart extends SamwiseArm
     {
         if (!this.inSilverDeposit)
         {
-            runTime.reset();
             if (this.inGoldDeposit)
             {
-                toPositionWait(false, J1_POWER, J2_POWER, J3_POWER, J1_LANDER_SILVER, J2_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
+                this.toGoldOrSilver(false, J1_POWER, J2_POWER, J3_POWER, J1_LANDER_SILVER, J2_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
             }
-            else
+            else if (this.inCollectionPlane)
             {
-                savePreviousPosition();
-                toPositionWait(true, J1_POWER, J2_POWER, J3_POWER, J1_LANDER_SILVER, J2_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
+                this.saveCollectionPosition();
+                this.toGoldOrSilver(true, J1_POWER, J2_POWER, J3_POWER, J1_LANDER_SILVER, J2_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
+                this.inSilverDeposit = true;
+                this.inCollectionPlane = false;
+                this.inGoldDeposit = false;
             }
-            this.inSilverDeposit = true;
-            this.inCollectionPlane = false;
-            this.inGoldDeposit = false;
         }
     }
 
     public void backFromLander()
     {
-        if (!this.inCollectionPlane)
+        if (this.inGoldDeposit || this.inSilverDeposit)
         {
-            runTime.reset();
             this.saveLanderPosition();
-            toPositionReverse(J1_POWER, J2_POWER, 0.3, previousPositionJ1, previousPositionJ2, previousPositionJ2, previousPositionJ3);
+            this.backFromLander(J1_POWER, J2_POWER, 0.3, collectionPosJ1, collectionPosJ2, collectionPosJ2, collectionPosJ3);
+            this.inInitial = false;
             this.inSilverDeposit = false;
             this.inGoldDeposit = false;
             this.inCollectionPlane = true;
@@ -174,49 +169,46 @@ public class SamwiseSmart extends SamwiseArm
         J3_LANDER_SILVER = motorJ3.getCurrentPosition();
     }
 
-    public void savePreviousPosition()
+    public void saveCollectionPosition()
     {
-        previousPositionJ1 = motorJ1.getCurrentPosition();
-        previousPositionJ2 = motor2J2.getCurrentPosition();
-        previousPositionJ3 = motorJ3.getCurrentPosition();
+        collectionPosJ1 = motorJ1.getCurrentPosition();
+        collectionPosJ2 = motor2J2.getCurrentPosition();
+        collectionPosJ3 = motorJ3.getCurrentPosition();
     }
 
+    /**
+     * From anywhere to position (0, 0, 0)
+     */
     public void toInitialPosition(double j1Power, double j2Power, double j3Power)
     {
-        runTime.reset();
 
         isStop = false;
 
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(0);
-        //        motorJ1.setPower(j1Power);
         TrapezoidHelper.trapezoidDriveJ1(motorJ1, j1Power);
 
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setTargetPosition(0);
-        //        motorJ3.setPower(j3Power);
         TrapezoidHelper.trapezoidDriveJ3(motorJ3, j3Power);
 
         motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor1J2.setTargetPosition(0);
         motor2J2.setTargetPosition(0);
-        //        motor1J2.setPower(j2Power);
-        //        motor2J2.setPower(j2Power);
         TrapezoidHelper.trapezoidDriveJ2(motor1J2, motor2J2, j2Power);
-        System.out.println("toPosition Time: " + runTime.time(TimeUnit.SECONDS));
     }
 
-    public void toInitialCollectionPosition(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
+    /**
+     * From position (0, 0, 0) --> (2150, 1320, 1330) collection position
+     */
+    public void toCollectionPosition(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
     {
-        runTime.reset();
-
         isStop = false;
 
         // J3
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setTargetPosition(j3Position);
-        //        motorJ3.setPower(j3Power);
         TrapezoidHelper.trapezoidDriveJ3(motorJ3, j3Power);
 
         //J2
@@ -224,20 +216,21 @@ public class SamwiseSmart extends SamwiseArm
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor1J2.setTargetPosition(j2Position1);
         motor2J2.setTargetPosition(j2Position2);
-        //        motor1J2.setPower(j2Power);
-        //        motor2J2.setPower(j2Power);
         TrapezoidHelper.trapezoidDriveJ2(motor1J2, motor2J2, j2Power);
 
 
         //J1 trun first
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);
-        //        motorJ1.setPower(j1Power);
         TrapezoidHelper.trapezoidDriveJ1(motorJ1, j1Power);
-        System.out.println("toPosition Time: " + runTime.time(TimeUnit.SECONDS));
     }
 
-    public void toPositionWait(boolean turnRobot, double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
+    /**
+     * 1. From collection position      (2150, 1320, 1330) --> (-236, 100, 2000) gold position
+     * 2. From collection position      (2150, 1320, 1330) --> (114, 100, 1700) silver position
+     * 3. Switch between gold position  (-236, 100, 2000) <--> (114, 100, 1700) silver position
+     */
+    public void toGoldOrSilver(boolean turnRobot, double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
     {
         runTime.reset();
 
@@ -247,13 +240,10 @@ public class SamwiseSmart extends SamwiseArm
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor1J2.setTargetPosition(j2Position1);
         motor2J2.setTargetPosition(j2Position2);
-        //        motor1J2.setPower(j2Power);
-        //        motor2J2.setPower(j2Power);
         TrapezoidHelper.trapezoidDriveJ2(motor1J2, motor2J2, j2Power);
 
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setTargetPosition(j3Position);
-        //        motorJ3.setPower(j3Power);
         TrapezoidHelper.trapezoidDriveJ3(motorJ3, j3Power);
 
         while (motor2J2.getCurrentPosition() > SAFE_POS_J2 && motorJ3.getCurrentPosition() < SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 4)
@@ -262,39 +252,36 @@ public class SamwiseSmart extends SamwiseArm
 
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);
-        //        motorJ1.setPower(j1Power);
         TrapezoidHelper.trapezoidDriveJ1(motorJ1, j1Power);
 
         if (turnRobot)
         {
             robot.makeTurnWithoutWait(-90);
         }
-
-
-        System.out.println("toPosition Time: " + runTime.time(TimeUnit.SECONDS));
     }
 
-    public void toPositionReverse(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
+    /**
+     * From gold position       (-236, 100, 2000)
+     * or silver position       (114, 100, 1700)
+     * to collection position   (2150, 1320, 1330)
+     */
+    public void backFromLander(double j1Power, double j2Power, double j3Power, int j1Position, int j2Position1, int j2Position2, int j3Position)
     {
         runTime.reset();
         robot.makeTurnWithoutWait(90);
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);
-        //        motorJ1.setPower(j1Power);
         TrapezoidHelper.trapezoidDriveJ1(motorJ1, j1Power);
         isStop = false;
 
-        while ((robot.leftDrive.getCurrentPosition() < -450 || robot.rightDrive.getCurrentPosition() > 450) && runTime.time(TimeUnit.SECONDS) < 4)
+        while ((robot.leftDrive.getCurrentPosition() < -400 || robot.rightDrive.getCurrentPosition() > 400) && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }
 
-        System.out.println("toPositionReverse Time1: " + runTime.time(TimeUnit.SECONDS));
         motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor1J2.setTargetPosition(j2Position1);
         motor2J2.setTargetPosition(j2Position2);
-        //        motor1J2.setPower(j2Power);
-        //        motor2J2.setPower(j2Power);
         TrapezoidHelper.trapezoidDriveJ2(motor1J2, motor2J2, j2Power);
 
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -312,7 +299,6 @@ public class SamwiseSmart extends SamwiseArm
             motorJ3.setPower(j3Power - 0.1);
         }*/
 
-        System.out.println("toPositionReverse Time2: " + runTime.time(TimeUnit.SECONDS));
     }
 
     public int getRobotTicks()
