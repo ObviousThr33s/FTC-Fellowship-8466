@@ -117,7 +117,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
 
         //------------- bumpers----------------
         // collection and deposit
-       if (gamepad1.left_bumper)
+  /*     if (gamepad1.left_bumper)
         {
             armStuff.depositMinerals();
         }
@@ -128,7 +128,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         else
         {
             armStuff.stopCollecting();
-        }
+        }*/
 
         //------------- left_stick_x----------------
         if (Math.abs(gamepad1.left_stick_x) > JOYSTICK_SENSITIVITY)

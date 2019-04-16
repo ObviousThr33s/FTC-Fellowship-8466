@@ -21,11 +21,11 @@ public class SamwiseSmart extends SamwiseArm
 
     int J1_LANDER_SILVER = 114;
     int J2_LANDER_SILVER = 100;
-    int J3_LANDER_SILVER = 2000;
+    int J3_LANDER_SILVER = 1700;
 
     int initialCollectionPosJ1 = 2150;
     int initialCollectionPosJ2 = 1320;
-    int initialCollectionPosJ3 = 2000;
+    int initialCollectionPosJ3 = 1330;
 
     int previousPositionJ1 = initialCollectionPosJ1;
     int previousPositionJ2 = initialCollectionPosJ2;
@@ -48,8 +48,8 @@ public class SamwiseSmart extends SamwiseArm
     ElapsedTime runTime = new ElapsedTime();
 
     private static final int SAFE_POS_J1 = -200;
-    private static final int SAFE_POS_J2 = 700;
-    private static final int SAFE_POS_J3 = 1600;
+    private static final int SAFE_POS_J2 = 500;
+    private static final int SAFE_POS_J3 = 1500;
 
     public SamwiseSmart(HardwareMap hwm)
     {
@@ -213,12 +213,6 @@ public class SamwiseSmart extends SamwiseArm
 
         isStop = false;
 
-        //J1 trun first
-        motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ1.setTargetPosition(j1Position);
-        //        motorJ1.setPower(j1Power);
-        TrapezoidHelper.trapezoidDriveJ1(motorJ1, j1Power);
-
         // J3
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setTargetPosition(j3Position);
@@ -234,6 +228,12 @@ public class SamwiseSmart extends SamwiseArm
         //        motor2J2.setPower(j2Power);
         TrapezoidHelper.trapezoidDriveJ2(motor1J2, motor2J2, j2Power);
 
+
+        //J1 trun first
+        motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ1.setTargetPosition(j1Position);
+        //        motorJ1.setPower(j1Power);
+        TrapezoidHelper.trapezoidDriveJ1(motorJ1, j1Power);
         System.out.println("toPosition Time: " + runTime.time(TimeUnit.SECONDS));
     }
 
