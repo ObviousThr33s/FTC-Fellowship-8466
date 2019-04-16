@@ -140,7 +140,7 @@ public class SamwiseAutoDrive extends LinearOpMode {
         //landing the Robot
         //hanger.encoderDrive(this, 1, 3000);
         //sleep(2000);
-        hanger.encoderDrive(this, 1, 12700, 5.5);
+        hanger.encoderDrive(this, 1, 12620, 5.5);
 
         //sleep(1000);
 

@@ -694,10 +694,15 @@ public class SamwiseDriveRouteFactory {
 
                 driveTrain.encoderDrive(samwiseDrive, 41, 4);
 
+                samwiseDrive.driveJ2up(500);
+
                 driveTrain.turnDrive(samwiseDrive, -101, 5);
                 //driveTrain.turn(samwiseDrive, samwiseDrive.touchBackSide, true, 5);
 
-                samwiseDrive.driveJ2up(500);
+                // turn J1
+                if (samwiseDrive.runWithArm)
+                    samwiseDrive.turnJ1Auto(1250);
+
 
                 driveTrain.driveToDepotFromSide(samwiseDrive, samwiseDrive.touchBackSide, false, samwiseDrive.color, 6);
 
@@ -707,9 +712,7 @@ public class SamwiseDriveRouteFactory {
 
                 md.shake(SamwiseMarkerDeposit.dropPosition);
 
-                // turn J1
-                if (samwiseDrive.runWithArm)
-                    samwiseDrive.turnJ1Auto(1250);
+
 
                 driveTrain.turnDrive(samwiseDrive, 12, 3);
 
