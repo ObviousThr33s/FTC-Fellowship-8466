@@ -9,13 +9,12 @@ public class TrapezoidHelper
 {
     static ElapsedTime runtime = new ElapsedTime();
     private static final double POWER_STEP_LENGTH_DRIVETRAIN = 0.1;
-    private static final double POWER_STEP_LENGTH_J1 = 0.01;
-    private static final double POWER_STEP_LENGTH_J2 = 0.005;
-    private static final double POWER_STEP_LENGTH_J3 = 0.01;
+    private static final double POWER_STEP_LENGTH_J1 = 0.1;
+    private static final double POWER_STEP_LENGTH_J2 = 0.1;
+    private static final double POWER_STEP_LENGTH_J3 = 0.1;
     private static final double ZERO_POWER = 0.0001;
 
     private static final int ZERO_POSITION_OFF_SET = 100;
-    private static final int RAMP_POSITION_OFF_SET = 100;
 
     public static void trapezoidStopeJ1(DcMotor motor)
     {

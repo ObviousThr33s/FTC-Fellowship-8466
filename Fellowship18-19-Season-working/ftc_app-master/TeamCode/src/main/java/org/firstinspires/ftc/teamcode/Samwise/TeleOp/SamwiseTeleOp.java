@@ -36,7 +36,8 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         telemetry.addData("J2 ticks", armStuff.getJ2CurrentPosition() + ", " + armStuff.get2J2CurrentPosition());
         telemetry.addData("J3 ticks", armStuff.getJ3CurrentPosition());
         telemetry.addData("E1 ticks", armStuff.getE1CurrentPosition());
-        telemetry.addData("Robot ticks", armStuff.getRobotTicks());
+        telemetry.addData("Robot left ticks", armStuff.getRobotLeftTicks());
+        telemetry.addData("Robot right ticks", armStuff.getRobotRightTicks());
         //        telemetry.update();
         /******************************** Gamepad 1 *******************************************************/
         //------------- a ----------------
@@ -48,17 +49,9 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         // to collection position
         if (gamepad1.b && !gamepad1.start)
         {
-            armStuff.stopSam();
-            if (Math.abs(armStuff.getJ1CurrentPosition()) < 100 && Math.abs(armStuff.getJ2CurrentPosition()) < 100 && Math.abs(armStuff.getJ3CurrentPosition()) < 100)
-            {
-                armStuff.toCollectionPlane();
-            }
-            else
-            {
-                runTime.reset();
-                armStuff.backFromLander();
-                telemetry.addData("Time", runTime.time(TimeUnit.SECONDS));
-            }
+            runTime.reset();
+            armStuff.toCollectionPlane();
+            telemetry.addData("Time", runTime.time(TimeUnit.SECONDS));
         }
 
         //------------- x ----------------
@@ -73,7 +66,6 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         //------------- y ----------------
         if (gamepad1.y)
         {
-            //            armStuff.stopAll();
             runTime.reset();
             armStuff.toLanderGold();
             telemetry.addData("Time ", runTime.time(TimeUnit.SECONDS));
@@ -109,7 +101,7 @@ public class SamwiseTeleOp extends SamwiseTeleOp3
         {
             armStuff.hoverPlaneOfMotion(-gamepad1.right_trigger);
         }
-        if (gamepad1.left_trigger<0.1 && gamepad1.right_trigger<0.1)
+        if (gamepad1.left_trigger < 0.1 && gamepad1.right_trigger < 0.1)
         {
             armStuff.hoverPlaneOfMotion(0);
         }

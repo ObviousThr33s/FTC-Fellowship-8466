@@ -124,8 +124,10 @@ public class SamwiseDriveTrain extends DriveTrain {
     public void makeTurnWithoutWait (double degrees)
     {
         double inches = INCHES_PER_DEGREE * degrees;
-        int newLeftTarget = leftDrive.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-        int newRightTarget = rightDrive.getCurrentPosition() + (int) (-inches * COUNTS_PER_INCH);
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        int newLeftTarget = (int) (inches * COUNTS_PER_INCH);
+        int newRightTarget =  (int) (-inches * COUNTS_PER_INCH);
         leftDrive.setTargetPosition(newLeftTarget);
         rightDrive.setTargetPosition(newRightTarget);
 
