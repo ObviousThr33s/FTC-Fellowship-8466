@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Samwise.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Samwise.SamwiseArm.SamwiseGenius;
 import java.util.concurrent.TimeUnit;
 
 @TeleOp(name = "Samwise Teleop Wait Trapezoid Turn", group = "Samwise")
-//@Disabled
+@Disabled
 
 public class SamwiseTeleopWaitTrapezoidRobotTurn extends SamwiseTeleOp3
 {
