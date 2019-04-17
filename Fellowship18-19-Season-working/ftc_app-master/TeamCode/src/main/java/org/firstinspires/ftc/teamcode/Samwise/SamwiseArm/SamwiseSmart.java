@@ -25,7 +25,8 @@ public class SamwiseSmart extends SamwiseArm
     static final double TO_LANDER_WAIT_PERCENTAGE_J3 = 0.5;
     // press b to go from gold|silver to collection numbers: wait for J2, J3 cobra before robot, J1 90|90 turn
     static final double LANDER_TO_COLLECTION_WAIT_PERCENTAGE_ROBOT_TURN = 0.6;
-    static final double LANDER_TO_COLLECTION_WAIT_PERCENTAGE_J1 = 0.8;
+    static final double GOLD_LANDER_TO_COLLECTION_WAIT_PERCENTAGE_J1 = 0.8;
+    static final double SILVER_LANDER_TO_COLLECTION_WAIT_PERCENTAGE_J1 = 0.8;
     /**************** todo: fine tune numbers end ********************/
 
     int collectionPosJ1 = 2150;
@@ -242,6 +243,7 @@ public class SamwiseSmart extends SamwiseArm
 
     /**
      * From anywhere to position (0, 0, 0)
+     * and switch between GOLD and SILVER drop
      */
     private void toPosition(int j1Position, int j2Position, int j3Position)
     {
@@ -293,7 +295,7 @@ public class SamwiseSmart extends SamwiseArm
      * 1. From collection position      (2150, 1320, 1330) --> (-236, 100, 2000) gold position
      * 2. From collection position      (2150, 1320, 1330) --> (114, 100, 1700) silver position
      */
-    private void toLander( boolean trapezoidRobotTurn,int j1Position, int j2Position, int j3Position)
+    private void toLander(boolean trapezoidRobotTurn, int j1Position, int j2Position, int j3Position)
     {
         runTime.reset();
 
@@ -309,7 +311,7 @@ public class SamwiseSmart extends SamwiseArm
         motorJ3.setTargetPosition(j3Position);
         TrapezoidHelper.trapezoidDriveJ3(motorJ3, J3_POWER);
 
-        while (motor2J2.getCurrentPosition() > SAFE_POS_J2 && motorJ3.getCurrentPosition() < SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 4)
+        while (motor2J2.getCurrentPosition() > SAFE_POS_J2 || motorJ3.getCurrentPosition() < SAFE_POS_J3 && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }
 
@@ -325,7 +327,7 @@ public class SamwiseSmart extends SamwiseArm
      * or silver position       (114, 100, 1700)
      * to collection position   (2150, 1320, 1330)
      */
-    private void landerToCollection( boolean trapezoidRobotTurn)
+    private void landerToCollection(boolean trapezoidRobotTurn)
     {
         runTime.reset();
         robot.makeTurnWithoutWait(trapezoidRobotTurn, 90);
@@ -334,7 +336,7 @@ public class SamwiseSmart extends SamwiseArm
         TrapezoidHelper.trapezoidDriveJ1(motorJ1, J1_POWER);
         isStop = false;
 
-        while ((Math.abs(robot.leftDrive.getCurrentPosition()) < 1800 || Math.abs(robot.rightDrive.getCurrentPosition()) < 1800 || (collectionPosJ1 - motorJ1.getCurrentPosition()) > 300) && runTime.time(TimeUnit.SECONDS) < 4)
+        while ((Math.abs(robot.leftDrive.getCurrentPosition()) < 1800 || (collectionPosJ1 - motorJ1.getCurrentPosition()) > 300) && runTime.time(TimeUnit.SECONDS) < 4)
         {
         }
 
@@ -349,7 +351,7 @@ public class SamwiseSmart extends SamwiseArm
         TrapezoidHelper.trapezoidDriveJ3(motorJ3, J3_POWER);
     }
 
-    /***************************** 90/90 Sequence in One Loop **************************************/
+    /***************************** 90/90 Sequence **************************************/
 
     /**
      * From position (0, 0, 0) --> (2150, 1320, 1330) collection position
@@ -364,7 +366,7 @@ public class SamwiseSmart extends SamwiseArm
         motorJ1.setTargetPosition(collectionPosJ1);
         TrapezoidHelper.trapezoidDriveJ1(motorJ1, J1_POWER);
         int diff_wait_ticks = (int) (collectionPosJ1 * (1.0 - INITIAL_TO_COLLECTION_WAIT_PERCENTAGE_J1));
-        while (Math.abs(motorJ1.getCurrentPosition() - collectionPosJ1) < diff_wait_ticks && runTime.time(TimeUnit.SECONDS) < 4)
+        while (Math.abs(motorJ1.getCurrentPosition() - collectionPosJ1) > diff_wait_ticks && runTime.time(TimeUnit.SECONDS) < 4)
         {
             //wait for J1
         }
@@ -409,7 +411,7 @@ public class SamwiseSmart extends SamwiseArm
         int diff_wait_ticks_J2 = (int) ((j2Position - collectionPosJ2) * (1.0 - TO_LANDER_WAIT_PERCENTAGE_J2));
         int diff_wait_ticks_J3 = (int) ((j3Position - collectionPosJ3) * (1.0 - TO_LANDER_WAIT_PERCENTAGE_J3));
 
-        while ((Math.abs(j2Position - motor2J2.getCurrentPosition()) > diff_wait_ticks_J2 || Math.abs(j3Position - motorJ3.getCurrentPosition()) > diff_wait_ticks_J3) && runTime.time(TimeUnit.SECONDS) < 4)
+        while ((Math.abs(j2Position - motor2J2.getCurrentPosition()) > Math.abs(diff_wait_ticks_J2) || Math.abs(j3Position - motorJ3.getCurrentPosition()) > Math.abs(diff_wait_ticks_J3)) && runTime.time(TimeUnit.SECONDS) < 4)
         {
             // wait
         }
@@ -418,10 +420,10 @@ public class SamwiseSmart extends SamwiseArm
         // Step 2: J1, robot turn 90/90
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ1.setTargetPosition(j1Position);
-        //        TrapezoidHelper.trapezoidDriveJ1(motorJ1, j1Power);
-        motorJ1.setPower(J1_POWER);
+        TrapezoidHelper.trapezoidDriveJ1(motorJ1, J1_POWER);
+        //        motorJ1.setPower(J1_POWER);
 
-        robot.makeTurnWithoutWait(trapezoidRobotTurn,-90);
+        robot.makeTurnWithoutWait(trapezoidRobotTurn, -90);
     }
 
     /**
@@ -435,12 +437,6 @@ public class SamwiseSmart extends SamwiseArm
 
         runTime.reset();
 
-        // 90/90 turn
-        motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorJ1.setTargetPosition(collectionPosJ1);
-        TrapezoidHelper.trapezoidDriveJ1(motorJ1, J1_POWER);
-        robot.makeTurnWithoutWait(trapezoidRobotTurn, 90);
-
         // cobra
         motor1J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2J2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -448,11 +444,25 @@ public class SamwiseSmart extends SamwiseArm
         motor2J2.setTargetPosition(0);
         TrapezoidHelper.trapezoidDriveJ2(motor1J2, motor2J2, J2_POWER);
 
+        // 90/90 turn
+        motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorJ1.setTargetPosition(collectionPosJ1);
+        TrapezoidHelper.trapezoidDriveJ1(motorJ1, J1_POWER);
+        robot.makeTurnWithoutWait(trapezoidRobotTurn, 90);
+
         // wait for 90|90 turn
         int wait_ticks_robot = (int) (ROBOT_90_TURN_TICKS * LANDER_TO_COLLECTION_WAIT_PERCENTAGE_ROBOT_TURN);
-        int wait_ticks_J1    = (int) ((collectionPosJ1 - collectionPosJ1) * (1.0 - LANDER_TO_COLLECTION_WAIT_PERCENTAGE_J1));
+        int wait_ticks_J1    = 0;
+        if (this.inGoldDeposit)
+        {
+            wait_ticks_J1 = (int) ((J1_LANDER_GOLD - collectionPosJ1) * (1.0 - GOLD_LANDER_TO_COLLECTION_WAIT_PERCENTAGE_J1));
+        }
+        else
+        {
+            wait_ticks_J1 = (int) ((J1_LANDER_SILVER - collectionPosJ1) * (1.0 - SILVER_LANDER_TO_COLLECTION_WAIT_PERCENTAGE_J1));
+        }
         boolean print = false;
-        while ((Math.abs(robot.leftDrive.getCurrentPosition()) < wait_ticks_robot || Math.abs(robot.rightDrive.getCurrentPosition()) < wait_ticks_robot || Math.abs(collectionPosJ1 - motorJ1.getCurrentPosition()) > wait_ticks_J1) && runTime.time(TimeUnit.SECONDS) < 4)
+        while ((Math.abs(robot.leftDrive.getCurrentPosition()) < wait_ticks_robot || Math.abs(collectionPosJ1 - motorJ1.getCurrentPosition()) > Math.abs(wait_ticks_J1)) && runTime.time(TimeUnit.SECONDS) < 4)
         {
             // wait for turn
             if (Math.abs(robot.leftDrive.getCurrentPosition()) < wait_ticks_robot && Math.abs(robot.rightDrive.getCurrentPosition()) < wait_ticks_robot)
@@ -469,7 +479,7 @@ public class SamwiseSmart extends SamwiseArm
                 if (!print)
                 {
                     System.out.println("Lander to collection, J1 turn finished faster. Time: " + runTime.time(TimeUnit.SECONDS) + " seconds");
-                    print =true;
+                    print = true;
                 }
             }
         }
