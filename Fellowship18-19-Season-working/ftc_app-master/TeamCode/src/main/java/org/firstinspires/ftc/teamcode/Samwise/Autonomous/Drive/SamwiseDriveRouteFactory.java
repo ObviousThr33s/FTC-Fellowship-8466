@@ -277,7 +277,7 @@ public class SamwiseDriveRouteFactory {
                 //telemetry.addData(route, "finish third driveToCrater");
                 //telemetry.update();
 
-                driveTrain.turnDrive(samwiseDrive, -45.5, 5.5);
+                driveTrain.turnDrive(samwiseDrive, -46.5, 5.5);
                 //telemetry.addData(route, "finish fourth turn");
                 //telemetry.update();
 
