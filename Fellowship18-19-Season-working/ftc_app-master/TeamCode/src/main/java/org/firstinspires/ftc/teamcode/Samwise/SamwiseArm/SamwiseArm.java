@@ -52,8 +52,8 @@ public class SamwiseArm extends OctoSamwiseCollection
         motor2J2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor2J2.setDirection(DcMotorSimple.Direction.REVERSE);
         motorJ3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //J3 reverse direction is positive ticks; if it is not forward, change it
-        motorJ3.setDirection(DcMotorSimple.Direction.FORWARD);
+        //J3 reverse direction is for phone F; J3 forward direction is for phone E
+        motorJ3.setDirection(DcMotorSimple.Direction.REVERSE);
         motorJ3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorE1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }

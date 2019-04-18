@@ -92,12 +92,12 @@ public class SamwiseSmart extends SamwiseArm
             {
                 if (wait)
                 {
-                    System.out.println("------------------- to collection wait ------------");
+//                    System.out.println("------------------- to collection wait ------------");
                     this.toCollectionWaitSequence();
                 }
                 else
                 {
-                    System.out.println("------------------- to collection ------------");
+//                    System.out.println("------------------- to collection ------------");
                     this.toCollection();
                 }
                 this.inCollectionPlane = true;
@@ -113,7 +113,7 @@ public class SamwiseSmart extends SamwiseArm
         {
             if (this.inSilverDeposit)
             {
-                System.out.println("------------------- from silver to gold both ------------");
+//                System.out.println("------------------- from silver to gold both ------------");
                 this.toPosition(J1_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
                 this.inGoldDeposit = true;
                 this.inCollectionPlane = false;
@@ -124,12 +124,12 @@ public class SamwiseSmart extends SamwiseArm
                 this.saveCollectionPosition();
                 if (wait)
                 {
-                    System.out.println("------------------- from non-silver to gold wait------------");
+//                    System.out.println("------------------- from non-silver to gold wait------------");
                     this.toGoldOrSilverWaitSequence(trapezoidRobotTurn, J1_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
                 }
                 else
                 {
-                    System.out.println("------------------- from non-silver to gold ------------");
+//                    System.out.println("------------------- from non-silver to gold ------------");
                     this.toLander(trapezoidRobotTurn, J1_LANDER_GOLD, J2_LANDER_GOLD, J3_LANDER_GOLD);
                 }
                 this.inGoldDeposit = true;
@@ -145,7 +145,7 @@ public class SamwiseSmart extends SamwiseArm
         {
             if (this.inGoldDeposit)
             {
-                System.out.println("------------------- from gold to silver both ------------");
+//                System.out.println("------------------- from gold to silver both ------------");
                 this.toPosition(J1_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
                 this.inSilverDeposit = true;
                 this.inCollectionPlane = false;
@@ -156,12 +156,12 @@ public class SamwiseSmart extends SamwiseArm
                 this.saveCollectionPosition();
                 if (wait)
                 {
-                    System.out.println("------------------- from non-gold to silver wait ------------");
+//                    System.out.println("------------------- from non-gold to silver wait ------------");
                     this.toGoldOrSilverWaitSequence(trapezoidRobotTurn, J1_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
                 }
                 else
                 {
-                    System.out.println("------------------- from non-gold to silver ------------");
+//                    System.out.println("------------------- from non-gold to silver ------------");
                     this.toLander(trapezoidRobotTurn, J1_LANDER_SILVER, J2_LANDER_SILVER, J3_LANDER_SILVER);
                 }
                 this.inSilverDeposit = true;
@@ -176,12 +176,12 @@ public class SamwiseSmart extends SamwiseArm
         this.saveLanderPosition();
         if (wait)
         {
-            System.out.println("------------------- lander to collection wait------------");
+//            System.out.println("------------------- lander to collection wait------------");
             this.landerToCollectionWaitSequence(trapezoidRobotTurn);
         }
         else
         {
-            System.out.println("------------------- lander to collection ------------");
+//            System.out.println("------------------- lander to collection ------------");
             this.landerToCollection(trapezoidRobotTurn);
         }
         this.inSilverDeposit = false;
@@ -420,7 +420,7 @@ public class SamwiseSmart extends SamwiseArm
         {
             // wait
         }
-        System.out.println("To gold|silver - wait for J2, J3 lift time: " + runTime.time(TimeUnit.SECONDS) + " seconds");
+//        System.out.println("To gold|silver - wait for J2, J3 lift time: " + runTime.time(TimeUnit.SECONDS) + " seconds");
 
         // Step 2: J1, robot turn 90/90
         motorJ1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -474,7 +474,7 @@ public class SamwiseSmart extends SamwiseArm
             {
                 if (!print)
                 {
-                    System.out.println("Lander to collection, Robot turn finished faster. Time: " + runTime.time(TimeUnit.SECONDS) + " seconds");
+//                    System.out.println("Lander to collection, Robot turn finished faster. Time: " + runTime.time(TimeUnit.SECONDS) + " seconds");
                     print = true;
                 }
             }
@@ -483,12 +483,12 @@ public class SamwiseSmart extends SamwiseArm
             {
                 if (!print)
                 {
-                    System.out.println("Lander to collection, J1 turn finished faster. Time: " + runTime.time(TimeUnit.SECONDS) + " seconds");
+//                    System.out.println("Lander to collection, J1 turn finished faster. Time: " + runTime.time(TimeUnit.SECONDS) + " seconds");
                     print = true;
                 }
             }
         }
-        System.out.println("Lander to collection, J1 turn and robot turn finished time: " + runTime.time(TimeUnit.SECONDS) + " seconds");
+//        System.out.println("Lander to collection, J1 turn and robot turn finished time: " + runTime.time(TimeUnit.SECONDS) + " seconds");
 
         motorJ3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorJ3.setTargetPosition(collectionPosJ3);
